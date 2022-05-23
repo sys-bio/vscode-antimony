@@ -16,53 +16,10 @@ import { Stats } from 'webpack';
  * This first part uses the helper class `MultiStepInput` that wraps the API for the multi-step case.
  */
 export async function multiStepInput(context: ExtensionContext, initialEntity: string = null, selectedType: string = null) {
-    console.log("selected type: " + selectedType);
-    var databases;
-    if (selectedType === 'compartment') {
-        databases = [
-            { label: 'Gene Ontology*', id: 'gontology'},
-            { label: 'Cell Type Ontology*', id: 'contology'},
-            { label: 'Mouse Adult Gross Anatomy*', id: 'montology'},
-            { label: 'Ontology for Biomedical Investigations*', id: 'bontology'},
-            { label: 'Foundational Model of Anatomy*', id: 'fontology'},
-            { label: 'ChEBI', id: 'chebi' },
-            { label: 'Protein Ontology', id: 'pontology'},
-            { label: 'UniProt', id: 'uniprot'},
-            { label: 'RHEA', id: 'rhea'}];
-    } else if (selectedType === 'species') {
-        databases = [
-            { label: 'ChEBI*', id: 'chebi' },
-            { label: 'Protein Ontology*', id: 'pontology'},
-            { label: 'UniProt*', id: 'uniprot'},
-            { label: 'RHEA', id: 'rhea'},
-            { label: 'Gene Ontology', id: 'gontology'},
-            { label: 'Cell Type Ontology', id: 'contology'},
-            { label: 'Mouse Adult Gross Anatomy', id: 'montology'},
-            { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
-            { label: 'Foundational Model of Anatomy', id: 'fontology'}];
-    } else if (selectedType === 'reaction') {
-        databases = [
-            { label: 'Gene Ontology*', id: 'gontology'},
-            { label: 'RHEA*', id: 'rhea'},
-            { label: 'ChEBI', id: 'chebi' },
-            { label: 'Protein Ontology', id: 'pontology'},
-            { label: 'UniProt', id: 'uniprot'},
-            { label: 'Cell Type Ontology', id: 'contology'},
-            { label: 'Mouse Adult Gross Anatomy', id: 'montology'},
-            { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
-            { label: 'Foundational Model of Anatomy', id: 'fontology'}];
-    } else {
-        databases = [
-            { label: 'ChEBI', id: 'chebi' },
-            { label: 'UniProt', id: 'uniprot'},
-            { label: 'RHEA', id: 'rhea'},
-            { label: 'Gene Ontology', id: 'gontology'},
-            { label: 'Cell Type Ontology', id: 'contology'},
-            { label: 'Protein Ontology', id: 'pontology'},
-            { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
-            { label: 'Foundational Model of Anatomy', id: 'fontology'},
-            { label: 'Mouse Adult Gross Anatomy', id: 'montology'}];
-    }
+    console.log("3 selected type: " + selectedType);
+    const databases = [
+        { label: 'ChEBI', id: 'chebi' },
+        { label: 'UniProt', id: 'uniprot'}];
 
 
     interface State {
@@ -302,7 +259,7 @@ export class MultiStepInput {
                     }
                     this.current.items = result.items.map((item) => {
                         item['label'] = item['name'];
-                        item['detail'] = item['detail'];
+                        item['detail'] = 'detail';
                         item['description'] = 'description';
                         item['alwaysShow'] = true;
                         return item;

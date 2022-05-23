@@ -147,20 +147,21 @@ def sbml_file_to_ant_file(ls: LanguageServer, args):
 
 @server.thread()
 @server.command('antimony.sendType')
-def get_type(ls: LanguageServer, args) -> dict[str, str]:
-    ''' get the symbol type of a symbol at given line, character and file uri
-    
-        return a dictionary with the value of 'symbol' as the symbol type in string
-    '''
+def get_type(ls: LanguageServer, args):
     global antfile_cache
     global uri
-    line = args[0]
-    character = args[1]
-    uri = args[2]
+    selected_text = args[0]
+    line = args[1]
+    character = args[2]
+    uri = args[3]
     doc = server.workspace.get_document(uri)
     antfile_cache = get_antfile(doc)
+    
+    vscode_logger.info("selected text: " + selected_text + ", line: " + line + ", char: " + character)
+    parser = AntimonyParser()
+    root = parser.parse(selected_text, True)
     position  = SrcPosition(int(line) + 1, int(character) + 1)
-    symbols= antfile_cache.symbols_at(position)[0]
+    symbols, range_ = antfile_cache.symbols_at(position)
     
     symbol = symbols[0].type.__str__()
     vscode_logger.info("symbol: " + symbol)
@@ -180,20 +181,6 @@ def query_species(ls: LanguageServer, args):
             results = services.annot_search_chebi(query)
         elif database == 'uniprot':
             results = services.annot_search_uniprot(query)
-        elif database == 'rhea':
-            results = services.annot_search_rhea(query)
-        elif database == 'gontology':
-            results = services.annot_search_ontology(query, 'GO')
-        elif database == 'contology':
-            results = services.annot_search_ontology(query, 'CL')
-        elif database == 'pontology':
-            results = services.annot_search_ontology(query, 'PR')
-        elif database == 'bontology':
-            results = services.annot_search_ontology(query, 'OBI')
-        elif database == 'montology':
-            results = services.annot_search_ontology(query, 'MA')
-        elif database == 'fontology':
-            results = services.annot_search_ontology(query, 'FMA')
         else:
             # This is not supposed to happen
             raise SystemError("Unknown database '{}'".format(database))
