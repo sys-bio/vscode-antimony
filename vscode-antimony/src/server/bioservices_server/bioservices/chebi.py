@@ -134,7 +134,7 @@ chemical structures, using the ChEBI identifier.
                searchScore = 4.77
                entityStar = 3
              }]
-            >>> res = ch.getLiteEntity("caffeine")
+            >>> res = ch.("caffeine")
             >>> res = ch.getLiteEntity("caffeine", maximumResults=10)
             >>> len(res)
             10

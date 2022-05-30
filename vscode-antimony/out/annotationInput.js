@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MultiStepInput = exports.multiStepInput = void 0;
 const vscode_1 = require("vscode");
 const utils_1 = require("./utils/utils");
+const vscode_2 = require("vscode");
 /**
  * A multi-step input using window.createQuickPick() and window.createInputBox().
  *
@@ -49,14 +50,13 @@ async function multiStepInput(context, initialEntity = null) {
             placeholder: 'Enter query',
             items: [],
             activeItem: null,
-            initialValue: state.initialEntity,
             shouldResume: shouldResume,
             onInputChanged: (value) => onQueryUpdated(state.database['id'], value, input),
         });
         state.entity = pick;
     }
     async function onQueryUpdated(database, query, input) {
-        await (0, utils_1.sleep)(200);
+        await (0, utils_1.sleep)(666);
         if (input.current && input.current.step === 2 && input.instanceOfQuickPick(input.current)) {
             if (input.current.value !== query) {
                 return;
@@ -65,8 +65,14 @@ async function multiStepInput(context, initialEntity = null) {
         else {
             return;
         }
-        vscode_1.commands.executeCommand('antimony.sendQuery', database, query).then(async (result) => {
-            await input.onQueryResults(result);
+        vscode_1.window.withProgress({
+            location: vscode_2.ProgressLocation.Notification,
+            title: "Searching for annotations...",
+            cancellable: true
+        }, (progress, token) => {
+            return vscode_1.commands.executeCommand('antimony.sendQuery', database, query).then(async (result) => {
+                await input.onQueryResults(result);
+            });
         });
     }
     function shouldResume() {
@@ -180,9 +186,6 @@ class MultiStepInput {
         return 'items' in input;
     }
     async onQueryResults(result) {
-        // TODO display a banner saying 'no results' if there aren't any results
-        // Or display a progress bar when querying, just so that the user can distinguish
-        // loading vs. no results
         if (this.current && this.current.step === 2) {
             if (this.instanceOfQuickPick(this.current)) {
                 if (result.error) {
@@ -197,6 +200,9 @@ class MultiStepInput {
                     return;
                 }
                 if (this.current.value === result.query) {
+                    if (result.items.length == 0) {
+                        vscode_1.window.showInformationMessage("Annotation not found");
+                    }
                     this.current.items = result.items.map((item) => {
                         item['label'] = item['name'];
                         item['detail'] = 'detail';

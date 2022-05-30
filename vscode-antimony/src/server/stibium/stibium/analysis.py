@@ -9,7 +9,7 @@ from typing import Any, List, Optional, Set, cast
 from itertools import chain
 from lark.lexer import Token
 from lark.tree import Tree
-
+vscode_logger = logging.getLogger("vscode-antimony logger")
 
 def get_qname_at_position(root: FileNode, pos: SrcPosition) -> Optional[QName]:
     '''Returns (context, token) the given position. `token` may be None if not found.

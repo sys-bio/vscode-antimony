@@ -4,6 +4,7 @@ Author: Gary Geng
 '''
 
 # local
+import logging
 from asyncio.log import logger
 # from .bioservices.chebi import ChEBI
 # from .bioservices.uniprot import UniProt
@@ -16,7 +17,8 @@ from urllib.error import URLError
 
 from typing import Text
 import csv
-
+logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
+vscode_logger = logging.getLogger("vscode-antimony logger")
 
 class NetworkError(Exception):
     pass
@@ -57,11 +59,12 @@ class WebServices:
             return list()
         # sort by length as well. TODO should I do this?
         results.sort(key=lambda e: e.searchScore * -10000 + len(e.chebiAsciiName))
-        results = results[:20]
+        results = results[:10]
         return [{
             'id': res.chebiId,
             'name': res.chebiAsciiName,
-            'prefix': 'chebi'
+            'prefix': 'chebi',
+            'definition' : self.chebi.getCompleteEntity(res.chebiId).definition
         } for res in results]
 
     def annot_search_uniprot(self, query: str):

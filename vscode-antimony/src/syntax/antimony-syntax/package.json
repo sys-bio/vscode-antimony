@@ -12,16 +12,16 @@
     "categories": [
         "Themes"
     ],
-	"bugs": {
-		"url": "https://github.com/sys-bio/vscode-antimony/issues",
-		"email": "bochenma@cs.washington.edu"
-	},
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/sys-bio/vscode-antimony.git"
-	},
-	"homepage": "https://github.com/sys-bio/vscode-antimony/blob/master/README.md",
+    "bugs": {
+        "url": "https://github.com/sys-bio/vscode-antimony/issues",
+        "email": "bochenma@cs.washington.edu"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sys-bio/vscode-antimony.git"
+    },
+    "homepage": "https://github.com/sys-bio/vscode-antimony/blob/master/README.md",
     "contributes": {
         "themes": [
             {

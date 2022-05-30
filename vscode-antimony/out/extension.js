@@ -6,15 +6,15 @@ const utils = require("./utils/utils");
 const path = require("path");
 const node_1 = require("vscode-languageclient/node");
 const annotationInput_1 = require("./annotationInput");
-// for debugging
-let debug = vscode.window.createOutputChannel("Debug");
-debug.show();
+const SBMLEditor_1 = require("./SBMLEditor");
+const AntimonyEditor_1 = require("./AntimonyEditor");
 let client = null;
 let pythonInterpreter = null;
 let lastChangeInterp = 0;
-function activate(context) {
+let timestamp = new Date();
+async function activate(context) {
     // start the language server
-    startLanguageServer(context);
+    await startLanguageServer(context);
     vscode.workspace.onDidChangeConfiguration(async (e) => {
         // restart the language server using the new Python interpreter, if the related
         // setting was changed
@@ -39,6 +39,14 @@ function activate(context) {
     });
     // create annotations
     context.subscriptions.push(vscode.commands.registerCommand('antimony.createAnnotationDialog', (...args) => createAnnotationDialog(context, args)));
+    // convertion
+    context.subscriptions.push(vscode.commands.registerCommand('antimony.convertAntimonyToSBML', (...args) => convertAntimonyToSBML(context, args)));
+    context.subscriptions.push(vscode.commands.registerCommand('antimony.convertSBMLToAntimony', (...args) => convertSBMLToAntimony(context, args)));
+    // custom editor
+    context.subscriptions.push(await SBMLEditor_1.SBMLEditorProvider.register(context, client));
+    context.subscriptions.push(await AntimonyEditor_1.AntimonyEditorProvider.register(context, client));
+    context.subscriptions.push(vscode.commands.registerCommand('antimony.startSBMLWebview', (...args) => startSBMLWebview(context, args)));
+    context.subscriptions.push(vscode.commands.registerCommand('antimony.startAntimonyWebview', (...args) => startAntimonyWebview(context, args)));
     // language config for CodeLens
     const docSelector = {
         language: 'antimony',
@@ -46,18 +54,88 @@ function activate(context) {
     };
     let codeLensProviderDisposable = vscode.languages.registerCodeLensProvider(docSelector, new AntCodeLensProvider());
     context.subscriptions.push(codeLensProviderDisposable);
-    // TODO: implement color schema
-    // vscode.workspace.onDidSaveTextDocument(decorateDocument);
-    // vscode.workspace.onDidOpenTextDocument((doc: vscode.TextDocument) => {
-    // 	decorateDocument(doc);
-    // });
-    // vscode.window.onDidChangeActiveTextEditor(async e => {
-    // 	decorateDocument(e?.document)
-    // });
-    // // underline color should change once the color theme changes (dark/light theme)
-    // vscode.window.onDidChangeActiveColorTheme(() => decorateDocument(window.activeTextEditor?.document));
 }
 exports.activate = activate;
+async function startSBMLWebview(context, args) {
+    if (!client) {
+        utils.pythonInterpreterError();
+        return;
+    }
+    await client.onReady();
+    await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+    vscode.commands.executeCommand("vscode.openWith", vscode.window.activeTextEditor.document.uri, "antimony.sbmlEditor", 2);
+}
+async function startAntimonyWebview(context, args) {
+    if (!client) {
+        utils.pythonInterpreterError();
+        return;
+    }
+    await client.onReady();
+    await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+    vscode.commands.executeCommand("vscode.openWith", vscode.window.activeTextEditor.document.uri, "antimony.antimonyEditor", 2);
+}
+async function saveSBMLWebview(context, args) {
+}
+async function convertAntimonyToSBML(context, args) {
+    if (!client) {
+        utils.pythonInterpreterError();
+        return;
+    }
+    await client.onReady();
+    await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+    const options = {
+        openLabel: "Select",
+        canSelectFolders: true,
+        canSelectFiles: false,
+        canSelectMany: false,
+        filters: {
+            'SBML': ['xml']
+        },
+        title: "Select a location to save your SBML file"
+    };
+    vscode.window.showOpenDialog(options).then(fileUri => {
+        if (fileUri && fileUri[0]) {
+            vscode.commands.executeCommand('antimony.antFiletoSBMLFile', vscode.window.activeTextEditor.document, fileUri[0].fsPath).then(async (result) => {
+                await checkConversionResult(result, "SBML");
+            });
+        }
+    });
+}
+async function convertSBMLToAntimony(context, args) {
+    if (!client) {
+        utils.pythonInterpreterError();
+        return;
+    }
+    await client.onReady();
+    await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+    const options = {
+        openLabel: "Save",
+        canSelectFolders: true,
+        canSelectFiles: false,
+        canSelectMany: false,
+        filters: {
+            'Antimony': ['ant']
+        },
+        title: "Select a location to save your Antimony file"
+    };
+    vscode.window.showOpenDialog(options).then(folderUri => {
+        if (folderUri && folderUri[0]) {
+            vscode.commands.executeCommand('antimony.sbmlFileToAntFile', vscode.window.activeTextEditor.document, folderUri[0].fsPath).then(async (result) => {
+                await checkConversionResult(result, "Antimony");
+            });
+        }
+    });
+}
+async function checkConversionResult(result, type) {
+    if (result.error) {
+        vscode.window.showErrorMessage(`Could not convert file to ${type}: ${result.error}`);
+    }
+    else {
+        vscode.window.showInformationMessage(`${result.msg}`);
+        const document = await vscode.workspace.openTextDocument(`${result.file}`);
+        vscode.window.showTextDocument(document);
+    }
+}
 async function createAnnotationDialog(context, args) {
     // wait till client is ready, or the Python server might not have started yet.
     // note: this is necessary for any command that might use the Python language server.
@@ -66,10 +144,22 @@ async function createAnnotationDialog(context, args) {
         return;
     }
     await client.onReady();
+    await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
     // dialog for annotation
     const selection = vscode.window.activeTextEditor.selection;
     // get the selected text
-    const selectedText = vscode.window.activeTextEditor.document.getText(selection);
+    const doc = vscode.window.activeTextEditor.document;
+    const selectedText = doc.getText(selection);
+    // get the position for insert
+    var line = selection.start.line;
+    while (line < doc.lineCount - 1) {
+        const text = doc.lineAt(line).text;
+        if (text.localeCompare("end", undefined, { sensitivity: 'accent' }) == 0) {
+            line -= 1;
+            break;
+        }
+        line += 1;
+    }
     const initialEntity = selectedText || 'entityName';
     let initialQuery;
     // get current file
@@ -80,7 +170,7 @@ async function createAnnotationDialog(context, args) {
         initialQuery = selectedText;
     }
     const selectedItem = await (0, annotationInput_1.multiStepInput)(context, initialQuery);
-    await insertAnnotation(selectedItem, initialEntity);
+    await insertAnnotation(selectedItem, initialEntity, line);
 }
 function deactivate() {
     if (!client) {
@@ -110,6 +200,18 @@ async function startLanguageServer(context) {
         }
         return;
     }
+    // install dependencies
+    // const parentDir = context.asAbsolutePath(path.join(''));
+    // console.log(parentDir)
+    // const cp = require('child_process')
+    // const command = pythonInterpreter + " -m pip --disable-pip-version-check install --no-cache-dir --upgrade -r ./all-requirements.txt"
+    // cp.exec("dir", {cwd: parentDir}, (err, stdout, stderr) => {
+    // 	console.log('stdout: ' + stdout);
+    // 	console.log('stderr: ' + stderr);
+    // 	if (err) {
+    // 		vscode.window.showErrorMessage(err);
+    // 	}
+    // });
     // create language client and launch server
     const pythonMain = context.asAbsolutePath(path.join('src', 'server', 'main.py'));
     const args = [pythonMain];
@@ -162,14 +264,14 @@ class AntCodeLensProvider {
         return [];
     }
 }
-async function insertAnnotation(selectedItem, entityName) {
+async function insertAnnotation(selectedItem, entityName, line) {
     const entity = selectedItem.entity;
     const id = entity['id'];
     const prefix = entity['prefix'];
-    const snippetText = `\n\n\${1:${entityName}} identity "http://identifiers.org/${prefix}/${id}"`;
+    const snippetText = `\n\${1:${entityName}} identity "http://identifiers.org/${prefix}/${id}"`;
     const snippetStr = new vscode.SnippetString(snippetText);
     const doc = vscode.window.activeTextEditor.document;
-    const pos = doc.lineAt(doc.lineCount - 1).range.end;
+    const pos = doc.lineAt(line).range.end;
     vscode.window.activeTextEditor.insertSnippet(snippetStr, pos);
 }
 //# sourceMappingURL=extension.js.map

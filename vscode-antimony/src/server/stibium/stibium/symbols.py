@@ -13,6 +13,7 @@ from lark.lexer import Token
 
 from lark.tree import Tree
 
+vscode_logger = logging.getLogger("vscode-antimony logger")
 '''Classes that represent scopes. TODO rename all these to Scope, b/c Scope is not the same thing as scope'''
 class AbstractScope(abc.ABC):
     '''Should never be instantiated.'''
@@ -92,6 +93,7 @@ class QName:
 
     def __hash__(self):
         return hash((self.scope, self.name.text))
+    
 
 class Symbol:
     '''A generic Symbol.
@@ -117,6 +119,7 @@ class Symbol:
     comp: str
     is_const: bool
     is_sub: bool
+    definitions: List[str]
 
     def __init__(self, name: str, typ: SymbolType, type_name: Name,
             decl_name: Name = None,
@@ -137,6 +140,7 @@ class Symbol:
         self.comp = comp
         self.is_const = is_const
         self.is_sub = is_sub
+        self.definitions = list()
 
     def def_name(self):
         '''Return the Name that should be considered as the definition'''
@@ -209,10 +213,16 @@ class Symbol:
 
         ret += '```'
 
-        if self.annotations:
-            # add the first annotation
-            ret += '\n***\n{}\n'.format(self.annotations[0].get_uri())
-
+        ''' if self.annotations and self.definitions:
+            vscode_logger.info(self.annotations)
+            vscode_logger.info(self.definitions)
+            for i in range (len(self.annotations)):
+                ret += '\n***{}\n{}\n'.format(self.definitions[i], self.annotations[i].get_uri()) '''
+        vscode_logger.info(self.definitions)
+        vscode_logger.info(self.annotations)
+        if self.definitions:
+            for i in range (len(self.definitions)):
+                ret += '\n***\n{}\n'.format(self.definitions[i])
         return ret
 
 
@@ -464,3 +474,18 @@ class SymbolTable:
         else:
             sym = leaf_table[name]
         sym.annotations.append(node)
+        vscode_logger.info("INSERT ANNOTATION")
+        vscode_logger.info(sym.annotations)
+
+    def insert_definition(self, name, definition):
+        leaf_table = self._leaf_table(ModularModelScope("BIOMD0000000001"))
+        vscode_logger.info("NAME:!!!!")
+        vscode_logger.info(name)
+        if name not in leaf_table:
+            sym = VarSymbol(name, SymbolType.Unknown, name)
+            leaf_table[name] = sym
+        else:
+            sym = leaf_table[name]
+        sym.definitions.append(definition)
+        vscode_logger.info("INSERT Definitions")
+        vscode_logger.info(sym.definitions)

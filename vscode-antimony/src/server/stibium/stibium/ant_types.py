@@ -483,7 +483,7 @@ class Declaration(TrunkNode):
 # TODO All below
 @dataclass
 class Annotation(TrunkNode):
-    children: Tuple[VarName, Keyword, StringLiteral]
+    children: Tuple[VarName, Keyword, StringLiteral, StringLiteral]
 
     def get_var_name(self):
         return self.children[0]
@@ -496,7 +496,9 @@ class Annotation(TrunkNode):
 
     def get_uri(self):
         return self.children[2].get_str()
-
+    
+    def get_def(self):
+        return self.children[3].get_str()
 @dataclass
 class UnitDeclaration(TrunkNode):
     children: Tuple[Keyword, VarName, Operator, Sum] = field(repr=False)

@@ -5,6 +5,7 @@ import os
 import sys
 import logging
 
+
 EXTENSION_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(EXTENSION_ROOT, "..", "pythonFiles", "lib", "python"))
 
@@ -14,6 +15,8 @@ sys.path.append(os.path.join(EXTENSION_ROOT, "server", "stibium"))
 
 from stibium.api import AntCompletion, AntCompletionKind
 from stibium.types import Issue, IssueSeverity
+from stibium.symbols import FuncSymbol, AbstractScope, BaseScope, QName, SymbolTable
+from stibium.ant_types import Name
 
 from bioservices_server.utils import AntFile, pygls_range, sb_position, get_antfile, sb_range
 from bioservices_server.webservices import NetworkError, WebServices
@@ -122,6 +125,13 @@ def sbml_str_to_ant_str(ls: LanguageServer, args):
         }
     ant_str = antimony.getAntimonyString(None)
     return ant_str
+
+@server.thread()
+@server.command('antimony.annotationDescription')
+def annotationDescription(ls: LanguageServer, args):
+    description = args[0]
+    name = args[1]
+    SymbolTable().insert_definition(name, description)
 
 @server.thread()
 @server.command('antimony.sbmlFileToAntFile')
