@@ -8,7 +8,7 @@ model *BIOMD0000000001()
   species I in comp1, ALL in comp1, BwLL;
 
   // Reactions:
-  React0: B -> BL; comp1*(kf_0*B - kr_0*BL);
+  React0: $B -> BL; comp1*(kf_1 + kf_2 + kf_3 - kr_0*BL);
   React1: BL -> BLL; comp1*(kf_1*BL - kr_1*BLL);
   React2: BwLL -> ALL; comp1*(kf_2*BLL - kr_2*ALL);
   React3: A -> AL; comp1*(kf_3*A - kr_3*AL);
@@ -17,7 +17,6 @@ model *BIOMD0000000001()
   React6: BL -> AL; comp1*(kf_6*BL - kr_6*AL);
   React7: I -> IL; comp1*(kf_7*I - kr_7*IL);
   React8: IL -> ILL; comp1*(kf_8*IL - kr_8*ILL);
-  React9: A -> I; comp1*(kf_9*A - kr_9*I);
   React10: AL -> IL; comp1*(kf_10*AL - kr_10*IL);
   React11: ALL -> ILL; comp1*(kf_11*ALL - kr_11*ILL);
   React12: D -> DL; comp1*(kf_12*D - kr_12*DL);
@@ -43,9 +42,15 @@ model *BIOMD0000000001()
   I = 0;
   ALL = 0;
   BwLL = 3;
+  species a = 0;
 
   // Compartment initializations:
   comp1 = 1e-16;
+
+  a '= kf_0 * kf_10;
+  kf_0 '= 1;
+  B '= 1;
+
 
   // Variable initializations:
   t2 = 20;
@@ -84,6 +89,7 @@ model *BIOMD0000000001()
   kf_16 = 0.05;
   kr_16 = 0.0012;
 
+
   // Other declarations: 
   var kf_0, kf_3, kf_7, kf_12, kf_1, kf_4, kf_8, kf_13;
   const comp1, t2, kr_0, kr_1, kf_2, kr_2, kr_3, kr_4, kf_5, kr_5, kf_6, kr_6;
@@ -108,13 +114,8 @@ model *BIOMD0000000001()
 
 
 ALL identity "http://identifiers.org/chebi/CHEBI:26833"
-ALL identity "http://identifiers.org/chebi/CHEBI:763"
- "A C21-steroid that is pregn-4-ene substituted by oxo groups at position 3 and 20 and hydroxy groups at positions 16 and 17."
-ALL identity "http://identifiers.org/chebi/CHEBI:763"
-  "A C21-steroid that is pregn-4-ene substituted by oxo groups at position 3 and 20 and hydroxy groups at positions 16 and 17."
- 
- ALL identity "http://identifiers.org/chebi/CHEBI:763"
-  "A C21-steroid that is pregn-4-ene substituted by oxo groups at position 3 and 20 and hydroxy groups at positions 16 and 17."
- 
+ALL identity "http://identifiers.org/chebi/CHEBI:28"
+ALL identity "http://identifiers.org/chebi/CHEBI:7"
+
 end
 

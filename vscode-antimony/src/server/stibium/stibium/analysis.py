@@ -1,7 +1,7 @@
 
 import logging
-from stibium.ant_types import FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, End, Keyword, Annotation, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, Reaction, SimpleStmt, TreeNode, TrunkNode
-from .types import OverridingDisplayName, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition
+from stibium.ant_types import FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, End, Keyword, Annotation, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, Reaction, SimpleStmt, TreeNode, TrunkNode, RateRules
+from .types import OverridingDisplayName, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition, RateRuleOverRidden, rateRuleNotInReaction
 from .symbols import FuncSymbol, AbstractScope, BaseScope, FunctionScope, MModelSymbol, ModelScope, QName, SymbolTable, ModularModelScope
 
 from dataclasses import dataclass
@@ -9,7 +9,9 @@ from typing import Any, List, Optional, Set, cast
 from itertools import chain
 from lark.lexer import Token
 from lark.tree import Tree
+
 vscode_logger = logging.getLogger("vscode-antimony logger")
+
 
 def get_qname_at_position(root: FileNode, pos: SrcPosition) -> Optional[QName]:
     '''Returns (context, token) the given position. `token` may be None if not found.
@@ -63,7 +65,10 @@ class AntTreeAnalyzer:
         self.root = root
         self.pending_is_assignments = []
         self.pending_annotations = []
+        # for dealing with rate rules not yet declared
+        self.pending_rate_rules = []
         base_scope = BaseScope()
+        self.reaction_item = set()
         for child in root.children:
             if isinstance(child, ErrorToken):
                 continue
@@ -96,6 +101,7 @@ class AntTreeAnalyzer:
                                 'FunctionCall' : self.handle_function_call,
                                 'VariableIn' : self.handle_variable_in,
                                 'IsAssignment' : self.pre_handle_is_assignment,
+                                'RateRules' : self.pre_handle_rate_rule,
                             }[stmt.__class__.__name__](scope, stmt)
                             self.handle_child_incomp(scope, stmt)
             if isinstance(child, ModularModel):
@@ -125,6 +131,7 @@ class AntTreeAnalyzer:
                                 'FunctionCall' : self.handle_function_call,
                                 'VariableIn' : self.handle_variable_in,
                                 'IsAssignment' : self.pre_handle_is_assignment,
+                                'RateRules' : self.pre_handle_rate_rule,
                             }[stmt.__class__.__name__](scope, stmt)
                             self.handle_child_incomp(scope, stmt)
                     if isinstance(cchild, Parameters):
@@ -161,6 +168,7 @@ class AntTreeAnalyzer:
                     'FunctionCall' : self.handle_function_call,
                     'VariableIn' : self.handle_variable_in,
                     'IsAssignment' : self.pre_handle_is_assignment,
+                    'RateRules' : self.pre_handle_rate_rule,
                 }[stmt.__class__.__name__](base_scope, stmt)
                 self.handle_child_incomp(base_scope, stmt)
         
@@ -170,6 +178,8 @@ class AntTreeAnalyzer:
         self.warning = self.table.warning
         self.handle_annotation_list()
         self.handle_is_assignment_list()
+        # handle all rate rules afeter appended to list and finished parsing
+        self.handle_rate_rules()
         self.pending_annotations = []
         self.pending_is_assignments = []
         self.check_parse_tree(self.root, BaseScope())
@@ -363,7 +373,10 @@ class AntTreeAnalyzer:
             self.table.insert(QName(scope, name), SymbolType.Reaction, reaction, comp=comp)
 
         for species in chain(reaction.get_reactants(), reaction.get_products()):
-            self.table.insert(QName(scope, species.get_name()), SymbolType.Species, comp=comp)
+            self.table.insert(QName(scope, species.get_name()), SymbolType.Species, comp=comp, is_const=species.is_const)
+            self.table.get(QName(scope, species.get_name()))[0].in_reaction = True
+            vscode_logger.info(self.table.get(QName(scope, species.get_name()))[0].name + 
+                             " " + str(self.table.get(QName(scope, species.get_name()))[0].is_const))
         self.handle_arith_expr(scope, reaction.get_rate_law())
 
     def handle_assignment(self, scope: AbstractScope, assignment: Assignment):
@@ -429,6 +442,34 @@ class AntTreeAnalyzer:
         qname = QName(scope, name)
         self.table.insert(qname, SymbolType.Parameter)
         self.table.insert_annotation(qname, annotation)
+
+    def pre_handle_rate_rule(self, scope, rate_rule):
+        self.pending_rate_rules.append((scope, rate_rule))
+
+    def handle_rate_rules(self):
+        for scope, rate_rule in self.pending_rate_rules:
+            self.handle_rate_rule(scope, rate_rule)
+
+    def handle_rate_rule(self, scope, rate_rule : RateRules):
+        name = rate_rule.get_name()
+        qname = QName(scope, name)
+        expression = rate_rule.get_value()
+        if len(self.table.get(qname)) != 0:
+            var = self.table.get(qname)[0]
+            if var.type == SymbolType.Species and var.in_reaction and not var.is_const:
+                self.warning.append(rateRuleNotInReaction(rate_rule.range, name.text))
+            rate_rule_string = ""
+            for leaf in expression.scan_leaves():
+                if isinstance(leaf, Name) and leaf.text not in self.table.get_all_names():
+                    self.warning.append(VarNotFound(leaf.range, leaf.text))
+                rate_rule_string += (leaf.text) + " "
+            if var.rate_rule != None:
+                self.warning.append(RateRuleOverRidden(rate_rule.get_name().range, rate_rule.get_name().text, var))
+            var.rate_rule = rate_rule_string
+        else:
+            self.warning.append(VarNotFound(rate_rule.get_name().range, rate_rule.get_name().text))
+            
+            
     
     def pre_handle_is_assignment(self, scope: AbstractScope, is_assignment: IsAssignment):
         self.pending_is_assignments.append((scope, is_assignment))
@@ -590,8 +631,11 @@ class AntTreeAnalyzer:
         species_list = []
         for species in reaction.get_reactants():
             species_list.append(species)
+            # vscode_logger.info(str(self.table.get(QName(scope, species.get_name()))[0].in_reaction) + " " + self.table.get(QName(scope, species.get_name()))[0].name)
+            # self.table.get(QName(scope, species.get_name()))[0].in_reaction = True
         for species in reaction.get_products():
             species_list.append(species)
+            # self.table.get(QName(scope, species.get_name()))[0].in_reaction = True
         for species in species_list:
             species_name = species.get_name()
             matched_species = self.table.get(QName(scope, species_name))

@@ -119,7 +119,8 @@ class Symbol:
     comp: str
     is_const: bool
     is_sub: bool
-    definitions: List[str]
+    rate_rule: str
+    in_reaction: bool
 
     def __init__(self, name: str, typ: SymbolType, type_name: Name,
             decl_name: Name = None,
@@ -128,7 +129,8 @@ class Symbol:
             display_name: str = None,
             comp: str = None,
             is_const: bool = False,
-            is_sub: bool = False):
+            is_sub: bool = False,
+            rate_rule: str = None):
         self.name = name
         self.type = typ
         self.type_name = type_name
@@ -140,7 +142,8 @@ class Symbol:
         self.comp = comp
         self.is_const = is_const
         self.is_sub = is_sub
-        self.definitions = list()
+        self.rate_rule = rate_rule
+        self.in_reaction = False
 
     def def_name(self):
         '''Return the Name that should be considered as the definition'''
@@ -160,6 +163,8 @@ class Symbol:
 
         if self.display_name != None:
             ret += '\n{}'.format(self.display_name)
+        if self.rate_rule is not None:
+            ret += '\n{}'.format("Rate Rule: " + self.rate_rule)
         
         if self.is_sub:
             ret += '\n{}'.format("Substance-only species")
@@ -213,16 +218,15 @@ class Symbol:
 
         ret += '```'
 
-        ''' if self.annotations and self.definitions:
-            vscode_logger.info(self.annotations)
-            vscode_logger.info(self.definitions)
-            for i in range (len(self.annotations)):
-                ret += '\n***{}\n{}\n'.format(self.definitions[i], self.annotations[i].get_uri()) '''
-        vscode_logger.info(self.definitions)
-        vscode_logger.info(self.annotations)
+        '''
         if self.definitions:
             for i in range (len(self.definitions)):
                 ret += '\n***\n{}\n'.format(self.definitions[i])
+                '''
+        if self.annotations:
+            for i in range (len(self.annotations)):
+                vscode_logger.info(self.annotations[i])
+                ret += '\n***\n{}\n'.format(self.annotations[i].get_uri())
         return ret
 
 
@@ -474,7 +478,7 @@ class SymbolTable:
         else:
             sym = leaf_table[name]
         sym.annotations.append(node)
-        vscode_logger.info("INSERT ANNOTATION")
+        vscode_logger.info("HI ANNOTATION")
         vscode_logger.info(sym.annotations)
 
     def insert_definition(self, name, definition):
@@ -486,6 +490,6 @@ class SymbolTable:
             leaf_table[name] = sym
         else:
             sym = leaf_table[name]
-        sym.definitions.append(definition)
-        vscode_logger.info("INSERT Definitions")
-        vscode_logger.info(sym.definitions)
+        #sym.definitions.append(definition)
+        #vscode_logger.info("INSERT Definitions")
+        #vscode_logger.info(sym.definitions)

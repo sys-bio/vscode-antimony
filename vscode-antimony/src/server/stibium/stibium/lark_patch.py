@@ -1,7 +1,7 @@
 '''
 Hacks made on lark, required until lark makes a new release.
 '''
-
+import logging
 from lark.lark import Lark
 from lark.parsers.lalr_parser import ParserState, ParseConf
 from lark.parsers.lalr_puppet import ParserPuppet

@@ -264,7 +264,7 @@ class Species(TrunkNode):
         return self.children[0].get_value()
 
     def is_const(self):
-        return bool(self.children[1])
+        return self.children[1].text
 
     def get_name(self):
         return self.children[2]
@@ -371,6 +371,17 @@ class Assignment(TrunkNode):
 
     def get_type(self):
         return self.unit
+
+# TODO Implement Class for Rate Rules?
+@dataclass
+class RateRules(TrunkNode):
+    children: Tuple[Name, Operator, Operator, ArithmeticExpr] = field(repr=False)
+
+    def get_name(self):
+        return self.children[0]
+    
+    def get_value(self):
+        return self.children[3]
 
 
 @dataclass
@@ -480,6 +491,7 @@ class Declaration(TrunkNode):
         assert isinstance(self.children[2], Operator)
 
 
+
 # TODO All below
 @dataclass
 class Annotation(TrunkNode):
@@ -497,8 +509,6 @@ class Annotation(TrunkNode):
     def get_uri(self):
         return self.children[2].get_str()
     
-    def get_def(self):
-        return self.children[3].get_str()
 @dataclass
 class UnitDeclaration(TrunkNode):
     children: Tuple[Keyword, VarName, Operator, Sum] = field(repr=False)
@@ -541,7 +551,7 @@ class IsAssignment(TrunkNode):
 
 @dataclass
 class SimpleStmt(TrunkNode):
-    children: Tuple[Union[IsAssignment, Reaction, Assignment, Declaration, Annotation, UnitDeclaration, UnitAssignment, VariableIn], Union[Operator, Newline]] = field(repr=False)
+    children: Tuple[Union[IsAssignment, Reaction, Assignment, Declaration, Annotation, UnitDeclaration, UnitAssignment, VariableIn, RateRules], Union[Operator, Newline]] = field(repr=False)
 
     def get_stmt(self):
         return self.children[0]

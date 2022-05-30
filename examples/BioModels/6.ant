@@ -18,6 +18,7 @@ model *BIOMD0000000006()
   Reaction2: $u => $EmptySet; k6*u;
   Reaction3: $z => $u; k4*z*(k4prime/k4 + u^2);
 
+
   // Species initializations:
   EmptySet = 1/cell;
   u = 0;
@@ -36,3 +37,4 @@ model *BIOMD0000000006()
   var alpha;
   const cell, k4, k6, kappa, k4prime;
 end
+entityName identity "http://identifiers.org/chebi/CHEBI:763"

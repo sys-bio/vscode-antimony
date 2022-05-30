@@ -16,7 +16,7 @@ from stibium.ant_types import (FuncCall, IsAssignment, VariableIn, FunctionCall,
                                Power, Product, Reaction, ReactionName,
                                SimpleStmt, Species, SpeciesList, StringLiteral,
                                Sum, TreeNode, TrunkNode, TypeModifier, VarModifier, SubModifier,
-                               VarName, Model, SimpleStmtList, End, Function, Parameters, ModularModel, ModularModelCall)
+                               VarName, Model, SimpleStmtList, End, Function, Parameters, ModularModel, ModularModelCall, RateRules)
 from stibium.symbols import AbstractScope, BaseScope, FuncSymbol
 from stibium.types import ASTNode, SrcRange, SymbolType, Variability
 from stibium.utils import get_tree_range, get_token_range
@@ -67,6 +67,7 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
     'function_call' : FunctionCall,
     'variable_in' : VariableIn,
     'is_assignment' : IsAssignment,
+    "rate_rule" : RateRules,
 }
 
 OPERATORS = {'EQUAL', 'COLON', 'ARROW', 'SEMICOLON', 'LPAR', 'RPAR', 'STAR', 'PLUS', 'MINUS',
