@@ -181,6 +181,20 @@ def query_species(ls: LanguageServer, args):
             results = services.annot_search_chebi(query)
         elif database == 'uniprot':
             results = services.annot_search_uniprot(query)
+        elif database == 'rhea':
+            results = services.annot_search_rhea(query)
+        elif database == 'gontology':
+            results = services.annot_search_ontology(query, 'GO')
+        elif database == 'contology':
+            results = services.annot_search_ontology(query, 'CL')
+        elif database == 'pontology':
+            results = services.annot_search_ontology(query, 'PR')
+        elif database == 'bontology':
+            results = services.annot_search_ontology(query, 'OBI')
+        elif database == 'montology':
+            results = services.annot_search_ontology(query, 'MA')
+        elif database == 'fontology':
+            results = services.annot_search_ontology(query, 'FMA')
         else:
             # This is not supposed to happen
             raise SystemError("Unknown database '{}'".format(database))

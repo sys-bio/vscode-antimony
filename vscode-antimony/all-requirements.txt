@@ -5,7 +5,7 @@ colorama==0.4.4
 colorlog==4.8.0
 easydev==0.11.0
 idna==2.10
-git+ssh://git@github.com/lark-parser/lark.git@5b8c04ca83b9#egg=lark_parser
+#git+git://github.com/lark-parser/lark.git@5b8c04ca83b9#egg=lark_parser
 libChEBIpy==1.0.10
 pexpect==4.8.0
 ptyprocess==0.7.0
@@ -16,4 +16,4 @@ six==1.15.0
 urllib3==1.26.4
 antimony
 bioservices==1.8.3
-# ols_client==0.0.9
+ols_client==0.0.9

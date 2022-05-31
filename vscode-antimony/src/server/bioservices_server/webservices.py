@@ -5,12 +5,23 @@ Author: Gary Geng
 
 # local
 from asyncio.log import logger
-from bioservices import ChEBI, Rhea, UniProt
-import csv
-from io import StringIO
-import logging
+# from .bioservices.chebi import ChEBI
+# from .bioservices.uniprot import UniProt
+
+from bioservices import ChEBI
+from bioservices import UniProt
+from bioservices import Rhea
+
 from ols_client import OlsClient
+
+import pandas as pd
+import logging
+
+from io import StringIO
 from urllib.error import URLError
+
+from typing import Text
+import csv
 
 
 class NetworkError(Exception):
@@ -53,11 +64,7 @@ class WebServices:
             except Exception:
                 raise NetworkError
 
-    def annot_search_chebi(self, query: str) -> list[dict[str, str]]:
-        ''' Search ChEBI with a string query
-        
-            return a list of dictionaries representing the query result
-        '''
+    def annot_search_chebi(self, query: str):
         self.init_chebi()
         # TODO do we want to change searchCategory and maybe THREE STARS?
         if query.strip() == '':
@@ -79,11 +86,7 @@ class WebServices:
             'prefix': 'chebi'
         } for res in results]
 
-    def annot_search_uniprot(self, query: str) -> list[dict[str, str]]:
-        ''' Search UniPort with a string query
-        
-            return a list of dictionaries representing the query result
-        '''
+    def annot_search_uniprot(self, query: str):
         self.init_uniprot()
 
         if query.strip() == '':
@@ -112,11 +115,8 @@ class WebServices:
             })
         return objects
     
-    def annot_search_rhea(self, query: str) -> list[dict[str, str]]:
-        ''' Search RHEA with a string query
-
-            return a list of dictionaries representing the query result
-        '''
+    def annot_search_rhea(self, query: str):
+        rhea_logger = logging.getLogger("rhea logger")
         self.init_rhea()
         
         if query.strip() == '':
@@ -124,11 +124,13 @@ class WebServices:
 
         try:
             result_df = self.rhea.search(query, columns='rhea-id,equation')
+            rhea_logger.info("result_df: " + result_df[0:20])
         except URLError:
             raise NetworkError
 
         result_df = result_df[0:20]
         result_l = result_df.values.tolist()
+        rhea_logger.info(result_l)
         objects = list()
         for row in result_l:
             id_ = row[0]
@@ -142,29 +144,27 @@ class WebServices:
             })
         return objects
     
-    def annot_search_ontology(self, query: str, ontology_id: str) -> list[dict[str, str]]:
-        ''' Search an ontology (given ontology id) with a string query
-        
-            return a list of dictionaries representing the query result
-        '''
+    def annot_search_ontology(self, query: str, ontology_id: str):
+        ontology_logger = logging.getLogger("ontology logger")
         self.init_ontology()
-        ontology_id = ontology_id.lower()
         
         if query.strip() == '':
             return list()
+        ontology_logger.info('here')
         try:
-            result_dict = self.ontology.search(query, ontology_id)
+            result_dict = self.ontology.search(query)
             result_dicts = result_dict['response']['docs']
+            ontology_logger.info(result_dict)
         except URLError:
             raise NetworkError
         
         objects = list()
         
-        for dct in result_dicts:
-            iri = dct['iri']
-            name = dct['label']
-            prefix = dct['ontology_prefix']
-            if (prefix.lower() == ontology_id):
+        for d in result_dicts:
+            iri = d['iri']
+            name = d['label']
+            prefix = d['ontology_prefix']
+            if (prefix == ontology_id):
                 objects.append({
                     'name': name,
                     'iri': iri,

@@ -330,7 +330,14 @@ async function insertAnnotation(selectedItem, entityName, line) {
 	const entity = selectedItem.entity;
 	const id = entity['id'];
 	const prefix = entity['prefix'];
-	const snippetText = `\n\${1:${entityName}} identity "http://identifiers.org/${prefix}/${id}"`;
+	var snippetText;
+	if (prefix === 'rhea') {
+		snippetText = `\n\${1:${entityName}} identity "https://www.rhea-db.org/rhea/${id}"`;
+	} else if (prefix === 'ontology') {
+		snippetText = `\n\${1:${entityName}} identity "${entity['iri']}"`;
+	} else {
+		snippetText = `\n\${1:${entityName}} identity "http://identifiers.org/${prefix}/${id}"`;
+	}
 	const snippetStr = new vscode.SnippetString(snippetText);
 	const doc = vscode.window.activeTextEditor.document;
 	const pos = doc.lineAt(line).range.end;

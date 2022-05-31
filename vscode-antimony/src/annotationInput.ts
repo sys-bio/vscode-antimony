@@ -17,9 +17,35 @@ import { Stats } from 'webpack';
  */
 export async function multiStepInput(context: ExtensionContext, initialEntity: string = null, selectedType: string = null) {
     console.log("3 selected type: " + selectedType);
-    const databases = [
-        { label: 'ChEBI', id: 'chebi' },
-        { label: 'UniProt', id: 'uniprot'}];
+    var databases;
+    if (selectedType === 'compartment') {
+        databases = [
+            { label: 'Gene Ontology', id: 'gontology'},
+            { label: 'Cell Type Ontology', id: 'contology'},
+            { label: 'Mouse Adult Gross Anatomy', id: 'montology'},
+            { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
+            { label: 'Foundational Model of Anatomy', id: 'fontology'}];
+    } else if (selectedType === 'species') {
+        databases = [
+            { label: 'ChEBI', id: 'chebi' },
+            { label: 'Protein Ontology', id: 'pontology'},
+            { label: 'UniProt', id: 'uniprot'}];
+    } else if (selectedType === 'reaction') {
+        databases = [
+            { label: 'Gene Ontology', id: 'gontology'},
+            { label: 'RHEA', id: 'rhea'}];
+    } else {
+        databases = [
+            { label: 'ChEBI', id: 'chebi' },
+            { label: 'UniProt', id: 'uniprot'},
+            { label: 'RHEA', id: 'rhea'},
+            { label: 'Gene Ontology', id: 'gontology'},
+            { label: 'Cell Type Ontology', id: 'contology'},
+            { label: 'Protein Ontology', id: 'pontology'},
+            { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
+            { label: 'Foundational Model of Anatomy', id: 'fontology'},
+            { label: 'Mouse Adult Gross Anatomy', id: 'montology'}];
+    }
 
 
     interface State {
@@ -259,7 +285,7 @@ export class MultiStepInput {
                     }
                     this.current.items = result.items.map((item) => {
                         item['label'] = item['name'];
-                        item['detail'] = 'detail';
+                        item['detail'] = item['detail'];
                         item['description'] = 'description';
                         item['alwaysShow'] = true;
                         return item;

@@ -108,4 +108,9 @@ model *BIOMD0000000001()
 
 
   BLL identity "http://identifiers.org/chebi/CHEBI:27732"
+  React0 identity "https://www.rhea-db.org/rhea/27902"
+  comp1 identity "http://purl.obolibrary.org/obo/GO_0032158"
+  IL identity "http://purl.obolibrary.org/obo/CL_0002281"
+  AL identity "http://purl.obolibrary.org/obo/PR_000003262"
+  BL identity "http://purl.obolibrary.org/obo/OBI_0003232"
 end
