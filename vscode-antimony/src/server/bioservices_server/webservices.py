@@ -116,7 +116,6 @@ class WebServices:
         return objects
     
     def annot_search_rhea(self, query: str):
-        rhea_logger = logging.getLogger("rhea logger")
         self.init_rhea()
         
         if query.strip() == '':
@@ -124,13 +123,11 @@ class WebServices:
 
         try:
             result_df = self.rhea.search(query, columns='rhea-id,equation')
-            rhea_logger.info("result_df: " + result_df[0:20])
         except URLError:
             raise NetworkError
 
         result_df = result_df[0:20]
         result_l = result_df.values.tolist()
-        rhea_logger.info(result_l)
         objects = list()
         for row in result_l:
             id_ = row[0]
@@ -145,16 +142,14 @@ class WebServices:
         return objects
     
     def annot_search_ontology(self, query: str, ontology_id: str):
-        ontology_logger = logging.getLogger("ontology logger")
         self.init_ontology()
+        ontology_id = ontology_id.lower()
         
         if query.strip() == '':
             return list()
-        ontology_logger.info('here')
         try:
-            result_dict = self.ontology.search(query)
+            result_dict = self.ontology.search(query, ontology_id)
             result_dicts = result_dict['response']['docs']
-            ontology_logger.info(result_dict)
         except URLError:
             raise NetworkError
         
@@ -164,7 +159,7 @@ class WebServices:
             iri = d['iri']
             name = d['label']
             prefix = d['ontology_prefix']
-            if (prefix == ontology_id):
+            if (prefix.lower() == ontology_id):
                 objects.append({
                     'name': name,
                     'iri': iri,

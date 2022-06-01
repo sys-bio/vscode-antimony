@@ -20,20 +20,43 @@ export async function multiStepInput(context: ExtensionContext, initialEntity: s
     var databases;
     if (selectedType === 'compartment') {
         databases = [
-            { label: 'Gene Ontology', id: 'gontology'},
-            { label: 'Cell Type Ontology', id: 'contology'},
-            { label: 'Mouse Adult Gross Anatomy', id: 'montology'},
-            { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
-            { label: 'Foundational Model of Anatomy', id: 'fontology'}];
+            { label: 'Recommended Databases:'},
+            { label: '  Gene Ontology', id: 'gontology'},
+            { label: '  Cell Type Ontology', id: 'contology'},
+            { label: '  Mouse Adult Gross Anatomy', id: 'montology'},
+            { label: '  Ontology for Biomedical Investigations', id: 'bontology'},
+            { label: '  Foundational Model of Anatomy', id: 'fontology'},
+            { label: 'OTHER Databases:'},
+            { label: '  ChEBI', id: 'chebi' },
+            { label: '  Protein Ontology', id: 'pontology'},
+            { label: '  UniProt', id: 'uniprot'},
+            { label: '  RHEA', id: 'rhea'}];
     } else if (selectedType === 'species') {
         databases = [
-            { label: 'ChEBI', id: 'chebi' },
-            { label: 'Protein Ontology', id: 'pontology'},
-            { label: 'UniProt', id: 'uniprot'}];
+            { label: 'Recommended Databases:'},
+            { label: '  ChEBI', id: 'chebi' },
+            { label: '  Protein Ontology', id: 'pontology'},
+            { label: '  UniProt', id: 'uniprot'},
+            { label: 'OTHER Databases:'},
+            { label: '  RHEA', id: 'rhea'},
+            { label: '  Gene Ontology', id: 'gontology'},
+            { label: '  Cell Type Ontology', id: 'contology'},
+            { label: '  Mouse Adult Gross Anatomy', id: 'montology'},
+            { label: '  Ontology for Biomedical Investigations', id: 'bontology'},
+            { label: '  Foundational Model of Anatomy', id: 'fontology'}];
     } else if (selectedType === 'reaction') {
         databases = [
-            { label: 'Gene Ontology', id: 'gontology'},
-            { label: 'RHEA', id: 'rhea'}];
+            { label: 'Recommended Databases:'},
+            { label: '  Gene Ontology', id: 'gontology'},
+            { label: '  RHEA', id: 'rhea'},
+            { label: 'OTHER Databases:'},
+            { label: '  ChEBI', id: 'chebi' },
+            { label: '  Protein Ontology', id: 'pontology'},
+            { label: '  UniProt', id: 'uniprot'},
+            { label: '  Cell Type Ontology', id: 'contology'},
+            { label: '  Mouse Adult Gross Anatomy', id: 'montology'},
+            { label: '  Ontology for Biomedical Investigations', id: 'bontology'},
+            { label: '  Foundational Model of Anatomy', id: 'fontology'}];
     } else {
         databases = [
             { label: 'ChEBI', id: 'chebi' },
