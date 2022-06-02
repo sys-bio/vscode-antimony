@@ -107,10 +107,14 @@ model *BIOMD0000000001()
   RemovalACh is "removal of ACh";
 
 
-  BLL identity "http://identifiers.org/chebi/CHEBI:27732"
-  React0 identity "https://www.rhea-db.org/rhea/27902"
-  comp1 identity "http://purl.obolibrary.org/obo/GO_0032158"
-  IL identity "http://purl.obolibrary.org/obo/CL_0002281"
-  AL identity "http://purl.obolibrary.org/obo/PR_000003262"
-  BL identity "http://purl.obolibrary.org/obo/OBI_0003232"
+
+comp1 identity "http://purl.obolibrary.org/obo/GO_0003925"
+BLL identity "http://identifiers.org/chebi/CHEBI:70998"
+IL identity "http://purl.obolibrary.org/obo/PR_000003478"
+AL identity "http://identifiers.org/uniprot/H8GZE7"
+React0 identity "https://www.rhea-db.org/rhea/30771"
+comp1 identity "http://purl.obolibrary.org/obo/MA_0000097"
+comp1 identity "http://purl.obolibrary.org/obo/FMA_83603"
+comp1 identity "http://purl.obolibrary.org/obo/UBERON_0004199"
+comp1 identity "http://purl.obolibrary.org/obo/OBI_0600017"
 end
