@@ -107,5 +107,5 @@ model *BIOMD0000000001()
   RemovalACh is "removal of ACh";
 
 
-BLL identity "http://identifiers.org/chebi/CHEBI:27732"
+  BLL identity "http://identifiers.org/chebi/CHEBI:27732"
 end
