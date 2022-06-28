@@ -16,47 +16,41 @@ import { Stats } from 'webpack';
  * This first part uses the helper class `MultiStepInput` that wraps the API for the multi-step case.
  */
 export async function multiStepInput(context: ExtensionContext, initialEntity: string = null, selectedType: string = null) {
-    console.log("3 selected type: " + selectedType);
+    console.log("selected type: " + selectedType);
     var databases;
     if (selectedType === 'compartment') {
         databases = [
-            { label: 'Recommended Databases:'},
-            { label: '  Gene Ontology', id: 'gontology'},
-            { label: '  Cell Type Ontology', id: 'contology'},
-            { label: '  Mouse Adult Gross Anatomy', id: 'montology'},
-            { label: '  Ontology for Biomedical Investigations', id: 'bontology'},
-            { label: '  Foundational Model of Anatomy', id: 'fontology'},
-            { label: 'OTHER Databases:'},
-            { label: '  ChEBI', id: 'chebi' },
-            { label: '  Protein Ontology', id: 'pontology'},
-            { label: '  UniProt', id: 'uniprot'},
-            { label: '  RHEA', id: 'rhea'}];
+            { label: 'Gene Ontology*', id: 'gontology'},
+            { label: 'Cell Type Ontology*', id: 'contology'},
+            { label: 'Mouse Adult Gross Anatomy*', id: 'montology'},
+            { label: 'Ontology for Biomedical Investigations*', id: 'bontology'},
+            { label: 'Foundational Model of Anatomy*', id: 'fontology'},
+            { label: 'ChEBI', id: 'chebi' },
+            { label: 'Protein Ontology', id: 'pontology'},
+            { label: 'UniProt', id: 'uniprot'},
+            { label: 'RHEA', id: 'rhea'}];
     } else if (selectedType === 'species') {
         databases = [
-            { label: 'Recommended Databases:'},
-            { label: '  ChEBI', id: 'chebi' },
-            { label: '  Protein Ontology', id: 'pontology'},
-            { label: '  UniProt', id: 'uniprot'},
-            { label: 'OTHER Databases:'},
-            { label: '  RHEA', id: 'rhea'},
-            { label: '  Gene Ontology', id: 'gontology'},
-            { label: '  Cell Type Ontology', id: 'contology'},
-            { label: '  Mouse Adult Gross Anatomy', id: 'montology'},
-            { label: '  Ontology for Biomedical Investigations', id: 'bontology'},
-            { label: '  Foundational Model of Anatomy', id: 'fontology'}];
+            { label: 'ChEBI*', id: 'chebi' },
+            { label: 'Protein Ontology*', id: 'pontology'},
+            { label: 'UniProt*', id: 'uniprot'},
+            { label: 'RHEA', id: 'rhea'},
+            { label: 'Gene Ontology', id: 'gontology'},
+            { label: 'Cell Type Ontology', id: 'contology'},
+            { label: 'Mouse Adult Gross Anatomy', id: 'montology'},
+            { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
+            { label: 'Foundational Model of Anatomy', id: 'fontology'}];
     } else if (selectedType === 'reaction') {
         databases = [
-            { label: 'Recommended Databases:'},
-            { label: '  Gene Ontology', id: 'gontology'},
-            { label: '  RHEA', id: 'rhea'},
-            { label: 'OTHER Databases:'},
-            { label: '  ChEBI', id: 'chebi' },
-            { label: '  Protein Ontology', id: 'pontology'},
-            { label: '  UniProt', id: 'uniprot'},
-            { label: '  Cell Type Ontology', id: 'contology'},
-            { label: '  Mouse Adult Gross Anatomy', id: 'montology'},
-            { label: '  Ontology for Biomedical Investigations', id: 'bontology'},
-            { label: '  Foundational Model of Anatomy', id: 'fontology'}];
+            { label: 'Gene Ontology*', id: 'gontology'},
+            { label: 'RHEA*', id: 'rhea'},
+            { label: 'ChEBI', id: 'chebi' },
+            { label: 'Protein Ontology', id: 'pontology'},
+            { label: 'UniProt', id: 'uniprot'},
+            { label: 'Cell Type Ontology', id: 'contology'},
+            { label: 'Mouse Adult Gross Anatomy', id: 'montology'},
+            { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
+            { label: 'Foundational Model of Anatomy', id: 'fontology'}];
     } else {
         databases = [
             { label: 'ChEBI', id: 'chebi' },
