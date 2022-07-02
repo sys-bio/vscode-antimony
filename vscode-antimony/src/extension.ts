@@ -212,7 +212,7 @@ async function createAnnotationDialog(context: vscode.ExtensionContext, args: an
 	} else {
 		initialQuery = selectedText;
 	}
-	vscode.commands.executeCommand('antimony.sendType', selectedText, lineStr, charStr, uri).then(async (result) => {
+	vscode.commands.executeCommand('antimony.sendType', lineStr, charStr, uri).then(async (result) => {
 		const selectedType = await getResult(result);
 		const selectedItem = await multiStepInput(context, initialQuery, selectedType);
 		await insertAnnotation(selectedItem, initialEntity, line);

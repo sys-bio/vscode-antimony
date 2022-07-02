@@ -5,23 +5,12 @@ Author: Gary Geng
 
 # local
 from asyncio.log import logger
-# from .bioservices.chebi import ChEBI
-# from .bioservices.uniprot import UniProt
-
-from bioservices import ChEBI
-from bioservices import UniProt
-from bioservices import Rhea
-
-from ols_client import OlsClient
-
-import pandas as pd
-import logging
-
-from io import StringIO
-from urllib.error import URLError
-
-from typing import Text
+from bioservices import ChEBI, Rhea, UniProt
 import csv
+from io import StringIO
+import logging
+from ols_client import OlsClient
+from urllib.error import URLError
 
 
 class NetworkError(Exception):
@@ -64,7 +53,11 @@ class WebServices:
             except Exception:
                 raise NetworkError
 
-    def annot_search_chebi(self, query: str):
+    def annot_search_chebi(self, query: str) -> list[dict[str, str]]:
+        ''' Search ChEBI with a string query
+        
+            return a list of dictionaries representing the query result
+        '''
         self.init_chebi()
         # TODO do we want to change searchCategory and maybe THREE STARS?
         if query.strip() == '':
@@ -86,7 +79,11 @@ class WebServices:
             'prefix': 'chebi'
         } for res in results]
 
-    def annot_search_uniprot(self, query: str):
+    def annot_search_uniprot(self, query: str) -> list[dict[str, str]]:
+        ''' Search UniPort with a string query
+        
+            return a list of dictionaries representing the query result
+        '''
         self.init_uniprot()
 
         if query.strip() == '':
@@ -115,7 +112,11 @@ class WebServices:
             })
         return objects
     
-    def annot_search_rhea(self, query: str):
+    def annot_search_rhea(self, query: str) -> list[dict[str, str]]:
+        ''' Search RHEA with a string query
+
+            return a list of dictionaries representing the query result
+        '''
         self.init_rhea()
         
         if query.strip() == '':
@@ -141,7 +142,11 @@ class WebServices:
             })
         return objects
     
-    def annot_search_ontology(self, query: str, ontology_id: str):
+    def annot_search_ontology(self, query: str, ontology_id: str) -> list[dict[str, str]]:
+        ''' Search an ontology (given ontology id) with a string query
+        
+            return a list of dictionaries representing the query result
+        '''
         self.init_ontology()
         ontology_id = ontology_id.lower()
         
@@ -155,10 +160,10 @@ class WebServices:
         
         objects = list()
         
-        for d in result_dicts:
-            iri = d['iri']
-            name = d['label']
-            prefix = d['ontology_prefix']
+        for dct in result_dicts:
+            iri = dct['iri']
+            name = dct['label']
+            prefix = dct['ontology_prefix']
             if (prefix.lower() == ontology_id):
                 objects.append({
                     'name': name,
