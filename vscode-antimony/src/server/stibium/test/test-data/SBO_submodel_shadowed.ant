@@ -1,0 +1,9 @@
+model foo()
+  sboTerm=1
+end
+ 
+A: foo()
+A.sboTerm is b
+A.sboTerm = 3
+A.SBOTERM = 27
+foo.sboTerm = 83

@@ -1,0 +1,12 @@
+//Created by libAntimony v2.5
+// Compartments and Species:
+compartment y;
+
+// Compartment initializations:
+y = 1;
+
+// Variable initializations:
+x = 1;
+
+//Other declarations:
+const y, x;

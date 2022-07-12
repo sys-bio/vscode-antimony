@@ -1,0 +1,9 @@
+// Created by libAntimony v2.13.2
+// Variable initializations:
+a = ;
+
+// Other declarations:
+const a;
+
+// Uncertainty parameters:
+a.standardDeviation = 25
