@@ -9,7 +9,7 @@ model *def_comp()
   _J0: S1 -> ; default_compartment*S1;
 
   // Species initializations:
-  S1 = 1;
+  S1 = ;
 
   // Compartment initializations:
   default_compartment = 1;

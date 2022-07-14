@@ -4,4 +4,4 @@ a = -(x + 2);
 x = 1;
 
 // Other declarations:
-const a, x;
+# const a, x;

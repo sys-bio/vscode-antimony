@@ -1,7 +1,7 @@
 //Created by libAntimony v2.5
 // Compartments and Species:
-compartment C;
-species x in C;
+// compartment C;
+// species x in C;
 
 // Species initializations:
 x = 3/ C;
@@ -10,4 +10,4 @@ x = 3/ C;
 C = 1;
 
 //Other declarations:
-const C;
+// const C;

@@ -1,3 +1,3 @@
-compartment default_compartment;
+// compartment default_compartment;
 _J0: S1 -> ; default_compartment*S1;
 default_compartment = 1;

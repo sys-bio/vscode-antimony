@@ -1,7 +1,7 @@
 //Created by libAntimony v2.5
 // Compartments and Species:
-compartment C;
-species a in C;
+// compartment C;
+a in C;
 
 // Reactions:
 J0 in C:  -> a; k1;
@@ -16,4 +16,4 @@ C = 1;
 k1 = 1;
 
 //Other declarations:
-const C, k1;
+// const C, k1;

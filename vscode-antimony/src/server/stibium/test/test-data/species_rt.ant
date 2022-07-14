@@ -4,10 +4,11 @@ compartment y;
 species x in y;
 
 // Species initializations:
-x = 1;
+// x = 1;
 
 // Compartment initializations:
-y = 1;
+// y = 1;
 
 //Other declarations:
 const y;
+var x;

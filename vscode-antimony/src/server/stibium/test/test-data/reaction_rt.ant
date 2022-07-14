@@ -1,6 +1,6 @@
 //Created by libAntimony v2.5
 // Compartments and Species:
-species a;
+// species a;
 
 // Reactions:
 J0: a -> ; k1;
@@ -12,4 +12,4 @@ a = 1;
 k1 = 1;
 
 //Other declarations:
-const k1;
+// const k1;
