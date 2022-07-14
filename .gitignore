@@ -17,3 +17,4 @@ vscode-antimony/pythonFiles
 __pycache__/
 .*
 !.gitignore
+!vscode-antimony/pythonFiles/lib/python/ols_client
