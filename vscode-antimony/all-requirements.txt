@@ -16,4 +16,4 @@ six==1.15.0
 urllib3==1.26.4
 antimony
 bioservices==1.8.3
-ols_client==0.0.9
+# ols_client==0.0.9
