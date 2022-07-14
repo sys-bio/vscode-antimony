@@ -13,8 +13,14 @@ vscode-antimony/out
 **/*.log
 vscode-antimony/.lark-cache
 vscode-antimony/*.prof
-vscode-antimony/pythonFiles
 __pycache__/
 .*
 !.gitignore
+# for ols
+!vscode-antimony/pythonFiles
+vscode-antimony/pythonFiles/*
+!vscode-antimony/pythonFiles/lib
+vscode-antimony/pythonFiles/lib/*
+!vscode-antimony/pythonFiles/lib/python
+vscode-antimony/pythonFiles/lib/python/*
 !vscode-antimony/pythonFiles/lib/python/ols_client
