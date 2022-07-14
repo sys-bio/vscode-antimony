@@ -1,3 +1,4 @@
+vscode-antimony/.vscode
 vscode-antimony/.vscode-test
 vscode-antimony/*.vsix
 vscode-antimony/py36
@@ -8,17 +9,8 @@ vscode-antimony/node_modules
 vscode-antimony/temp
 vscode-antimony/client/out
 vscode-antimony/dist
-vscode-antimony/out
 **/*.log
 vscode-antimony/.lark-cache
 vscode-antimony/*.prof
+vscode-antimony/pythonFiles
 __pycache__/
-
-# for ols
-!vscode-antimony/pythonFiles
-vscode-antimony/pythonFiles/*
-!vscode-antimony/pythonFiles/lib
-vscode-antimony/pythonFiles/lib/*
-!vscode-antimony/pythonFiles/lib/python
-vscode-antimony/pythonFiles/lib/python/*
-!vscode-antimony/pythonFiles/lib/python/ols_client
