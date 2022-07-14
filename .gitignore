@@ -9,6 +9,7 @@ vscode-antimony/node_modules
 vscode-antimony/temp
 vscode-antimony/client/out
 vscode-antimony/dist
+vscode-antimony/out
 **/*.log
 vscode-antimony/.lark-cache
 vscode-antimony/*.prof
