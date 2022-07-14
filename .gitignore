@@ -15,3 +15,5 @@ vscode-antimony/.lark-cache
 vscode-antimony/*.prof
 vscode-antimony/pythonFiles
 __pycache__/
+.*
+!.gitignore
