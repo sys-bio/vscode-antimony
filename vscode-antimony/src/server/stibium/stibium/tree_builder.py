@@ -15,6 +15,7 @@ from stibium.ant_types import (FuncCall, IsAssignment, VariableIn, FunctionCall,
                                Name, Newline, Number, Operator,
                                Power, Product, Reaction, ReactionName,
                                SimpleStmt, Species, SpeciesList, StringLiteral,
+                               SubModelAssignment, SubModelConversionFactor, SubModelDelete, SubModelIsAssignment, SubModelList, SubModelReaction, SubModelRename, SubModelVar, SubModelVariableConversionFactor,
                                Sum, TreeNode, TrunkNode, TypeModifier, VarModifier, SubModifier,
                                VarName, Model, SimpleStmtList, End, Function, Parameters, ModularModel, ModularModelCall)
 from stibium.symbols import AbstractScope, BaseScope, FuncSymbol
@@ -37,6 +38,11 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
     'root': FileNode,
     'simple_stmt': SimpleStmt,
     'var_name': VarName,
+    'sub_model_var': SubModelVar,
+    'sub_model_list': SubModelList,
+    'sub_model_rename': SubModelRename,
+    'sub_model_conversion_factor': SubModelConversionFactor,
+    'var_conversion_factor': SubModelVariableConversionFactor,
     'func_call': FuncCall,
     'in_comp': InComp,
     'namemaybein': NameMaybeIn,
@@ -67,6 +73,10 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
     'function_call' : FunctionCall,
     'variable_in' : VariableIn,
     'is_assignment' : IsAssignment,
+    'sub_model_is_assignment': SubModelIsAssignment,
+    'sub_model_delete': SubModelDelete,
+    'sub_model_assignment': SubModelAssignment,
+    'sub_model_reaction': SubModelReaction,
 }
 
 OPERATORS = {'EQUAL', 'COLON', 'ARROW', 'SEMICOLON', 'LPAR', 'RPAR', 'STAR', 'PLUS', 'MINUS',

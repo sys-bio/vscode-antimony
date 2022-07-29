@@ -1,6 +1,6 @@
 
 import logging
-from stibium.ant_types import FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, End, Keyword, Annotation, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, Reaction, SimpleStmt, TreeNode, TrunkNode
+from stibium.ant_types import FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, SubModelAssignment, SubModelIsAssignment, SubModelDelete, SubModelReaction, SubModelVar, End, Keyword, Annotation, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, Reaction, SimpleStmt, TreeNode, TrunkNode
 from .types import OverridingDisplayName, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition
 from .symbols import FuncSymbol, AbstractScope, BaseScope, FunctionScope, MModelSymbol, ModelScope, QName, SymbolTable, ModularModelScope
 
@@ -62,6 +62,7 @@ class AntTreeAnalyzer:
         self.table = SymbolTable()
         self.root = root
         self.pending_is_assignments = []
+        self.pending_sub_model_is_assignments = []
         self.pending_annotations = []
         base_scope = BaseScope()
         for child in root.children:
@@ -96,6 +97,10 @@ class AntTreeAnalyzer:
                                 'FunctionCall' : self.handle_function_call,
                                 'VariableIn' : self.handle_variable_in,
                                 'IsAssignment' : self.pre_handle_is_assignment,
+                                'SubModelAssignment' : self.handle_sub_model_assignment,
+                                'SubModelIsAssignment' : self.pre_handle_sub_model_is_assignment,
+                                'SubModelDelete': self.handle_sub_model_delete,
+                                'SubModelReaction': self.handle_sub_model_reaction,
                             }[stmt.__class__.__name__](scope, stmt)
                             self.handle_child_incomp(scope, stmt)
             if isinstance(child, ModularModel):
@@ -125,6 +130,10 @@ class AntTreeAnalyzer:
                                 'FunctionCall' : self.handle_function_call,
                                 'VariableIn' : self.handle_variable_in,
                                 'IsAssignment' : self.pre_handle_is_assignment,
+                                'SubModelAssignment' : self.handle_sub_model_assignment,
+                                'SubModelIsAssignment' : self.pre_handle_sub_model_is_assignment,
+                                'SubModelDelete': self.handle_sub_model_delete,
+                                'SubModelReaction': self.handle_sub_model_reaction,
                             }[stmt.__class__.__name__](scope, stmt)
                             self.handle_child_incomp(scope, stmt)
                     if isinstance(cchild, Parameters):
@@ -161,6 +170,10 @@ class AntTreeAnalyzer:
                     'FunctionCall' : self.handle_function_call,
                     'VariableIn' : self.handle_variable_in,
                     'IsAssignment' : self.pre_handle_is_assignment,
+                    'SubModelAssignment' : self.handle_sub_model_assignment,
+                    'SubModelIsAssignment' : self.pre_handle_sub_model_is_assignment,
+                    'SubModelDelete': self.handle_sub_model_delete,
+                    'SubModelReaction': self.handle_sub_model_reaction,
                 }[stmt.__class__.__name__](base_scope, stmt)
                 self.handle_child_incomp(base_scope, stmt)
         
@@ -172,6 +185,7 @@ class AntTreeAnalyzer:
         self.handle_is_assignment_list()
         self.pending_annotations = []
         self.pending_is_assignments = []
+        self.pending_sub_model_is_assignments = []
         self.check_parse_tree(self.root, BaseScope())
 
     def resolve_qname(self, qname: QName):
@@ -365,7 +379,23 @@ class AntTreeAnalyzer:
         for species in chain(reaction.get_reactants(), reaction.get_products()):
             self.table.insert(QName(scope, species.get_name()), SymbolType.Species, comp=comp)
         self.handle_arith_expr(scope, reaction.get_rate_law())
+        
+    def handle_sub_model_reaction(self, scope: AbstractScope, sub_model_reaction: SubModelReaction):
+        pass
+        # name = sub_model_reaction.get_name()
+        # comp = None
+        # if sub_model_reaction.get_maybein() != None and sub_model_reaction.get_maybein().is_in_comp():
+        #     comp = sub_model_reaction.get_maybein().get_comp().get_name_text()
+        # if sub_model_reaction.get_comp():
+        #     comp = sub_model_reaction.get_comp().get_comp().get_name_text()
 
+        # if name is not None:
+        #     self.table.insert(QName(scope, name), SymbolType.Reaction, sub_model_reaction, comp=comp)
+
+        # for species in chain(sub_model_reaction.get_reactants(), sub_model_reaction.get_products()):
+        #     self.table.insert(QName(scope, species.get_name()), SymbolType.Species, comp=comp)
+        # self.handle_arith_expr(scope, sub_model_reaction.get_rate_law())
+        
     def handle_assignment(self, scope: AbstractScope, assignment: Assignment):
         comp = None
         if assignment.get_maybein() != None and assignment.get_maybein().is_in_comp():
@@ -373,7 +403,12 @@ class AntTreeAnalyzer:
         self.table.insert(QName(scope, assignment.get_name()), SymbolType.Parameter,
                             value_node=assignment, comp=comp)
         self.handle_arith_expr(scope, assignment.get_value())
-
+        
+    def handle_sub_model_assignment(self, scope: AbstractScope, sub_model_assignment: SubModelAssignment):
+        # self.table.insert(QName(scope, sub_model_assignment.get_name()), SymbolType.Parameter,
+        #                     value_node=sub_model_assignment)
+        self.handle_arith_expr(scope, sub_model_assignment.get_value())
+        
     def resolve_variab(self, tree) -> Variability:
         return {
             'var': Variability.VARIABLE,
@@ -432,10 +467,17 @@ class AntTreeAnalyzer:
     
     def pre_handle_is_assignment(self, scope: AbstractScope, is_assignment: IsAssignment):
         self.pending_is_assignments.append((scope, is_assignment))
+        
+    def pre_handle_sub_model_is_assignment(self, scope: AbstractScope, sub_model_is_assignment: SubModelIsAssignment):
+        self.pending_sub_model_is_assignments.append((scope, sub_model_is_assignment))
     
     def handle_is_assignment_list(self):
         for scope, is_assignment in self.pending_is_assignments:
             self.handle_is_assignment(scope, is_assignment)
+            
+    def handle_sub_model_is_assignment_list(self):
+        for scope, sub_model_is_assignment in self.pending_is_assignments:
+            self.handle_sub_model_is_assignment(scope, sub_model_is_assignment)
     
     def handle_is_assignment(self, scope: AbstractScope, is_assignment: IsAssignment):
         name = is_assignment.get_var_name()
@@ -464,6 +506,12 @@ class AntTreeAnalyzer:
                 base_var = self.table.get(qname_b)
                 if len(base_var) != 0:
                     base_var[0].display_name = display_name
+                    
+    def handle_sub_model_is_assignment(self, scope: AbstractScope, sub_model_is_assignment: SubModelIsAssignment):
+        name = sub_model_is_assignment.get_var_name()
+        qname = QName(scope, name)
+        var = self.table.get(qname)
+        display_name = sub_model_is_assignment.get_display_name()
     
     def handle_unit_declaration(self, scope: AbstractScope, unitdec: UnitDeclaration):
         varname = unitdec.get_var_name().get_name()
@@ -541,6 +589,9 @@ class AntTreeAnalyzer:
             parameters.append(qname)
         self.table.insert_mmodel(QName(BaseScope(), mmodel), SymbolType.ModularModel, parameters)
         self.table.insert_mmodel(QName(ModularModelScope(str(mmodel.get_name())), mmodel), SymbolType.ModularModel, parameters)
+        
+    def handle_sub_model_delete(self, scope: AbstractScope, sub_model_var: SubModelVar):
+        pass
 
     def process_error_token(self, node):
         node = cast(ErrorToken, node)

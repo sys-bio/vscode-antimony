@@ -1,6 +1,7 @@
 import abc
 from dataclasses import dataclass, field
 import logging
+from optparse import Option
 from typing import List, Optional, Tuple, Union, cast
 from lark.lexer import Token
 from lark.tree import Tree
@@ -216,6 +217,25 @@ class VarName(TrunkNode):
 
     def get_name_text(self):
         return self.children[1].text
+    
+# @dataclass
+# class ModularModelVar(TrunkNode):
+#     children: Tuple[Name, Operator, Name] = field(repr=False)
+    
+#     def get_all_models(self) -> List[Species]:
+#         return cast(List[Species], self.children[::2])
+    
+#     def get_model_name(self):
+#         return self.children[0]
+    
+#     def get_model_name_text(self):
+#         return self.children[0].text
+    
+#     def get_var_name(self):
+#         return self.children[2]
+    
+#     def get_var_name_text(self):
+#         return self.children[2].text
 
 
 # NOTE don't subclass this because we are using type(...) == InComp instead of isinstance() for
@@ -271,7 +291,56 @@ class Species(TrunkNode):
 
     def get_name_text(self):
         return self.get_name().text
+    
 
+@dataclass
+class SubModelVar(TrunkNode):
+    children: Tuple[Optional[Operator], Name] = field(repr=False)
+    
+    def is_const(self):
+        return bool(self.children[0])
+    
+    
+    def get_name(self):
+        return self.children[1]
+
+    def get_name_text(self):
+        return self.get_name().text
+    
+    
+@dataclass
+class SubModelConversionFactor(TrunkNode):
+    children: Tuple[Keyword, Operator, Optional[VarName], Optional[Number], Optional[SubModelVar]] = field(repr=False)
+    def get_var_name(self):
+        return self.children[2]
+    
+    def get_number(self):
+        return self.children[3]
+    
+    def get_mmodel_var(self):
+        return self.children[4]
+
+@dataclass
+class SubModelList(TrunkNode):
+    def get_all_sub_model(self) -> List[SubModelVar]:
+        return cast(List[SubModelVar], self.children[::2])
+
+    def check_rep(self):
+        assert len(self.children) == 0 or len(self.children) % 2 == 1
+        for child in self.children[::2]:
+            assert isinstance(child, SubModelVar)
+        for child in self.children[1::2]:
+            assert isinstance(child, LeafNode) and child.text == '+'
+
+@dataclass
+class SubModelVariableConversionFactor(TrunkNode):
+    children: Tuple[Operator, VarName] = field(repr=False)
+    def get_var_name(self):
+        return self.children[1]
+
+@dataclass
+class SubModelRename(TrunkNode):
+    children: Tuple[Name, Optional[SubModelVariableConversionFactor]] = field(repr=False)
 
 @dataclass
 class ReactionName(TrunkNode):
@@ -536,10 +605,94 @@ class IsAssignment(TrunkNode):
     
     def get_display_name(self):
         return self.children[2]
+    
+@dataclass
+class SubModelIsAssignment(TrunkNode):
+    children: Tuple[SubModelVar, Optional[SubModelVariableConversionFactor], Keyword, Optional[SubModelRename], Optional[EscapedString]] = field(repr=False)
+    def get_sub_model_val(self):
+        return self.children[0]
+    
+    def get_var_conv_factor(self) -> Optional[SubModelVariableConversionFactor]:
+        return self.children[1]
+    
+    def get_display_name(self) -> Optional[EscapedString]:
+        return self.children[4]
+
+@dataclass
+class SubModelDelete(TrunkNode):
+    children: Tuple[Keyword, SubModelVar] = field(repr=False)
+    def get_sub_model_val(self):
+        return self.children[1]
+    
+@dataclass
+class SubModelReaction(TrunkNode):
+    children: Tuple[Optional[ReactionName], SubModelList, Operator, SubModelList, Operator,
+                    ArithmeticExpr, Optional[InComp]] = field(repr=False)
+
+    def get_maybein(self):
+        if self.children[0] is None:
+            return None
+        return self.children[0].get_maybein()
+
+    def get_name(self):
+        if self.children[0] is None:
+            return None
+        return self.children[0].get_name()
+
+    def get_name_text(self):
+        if self.children[0] is None:
+            return None
+        return self.children[0].get_name_text()
+
+    def get_reactant_list(self) -> Optional[SubModelList]:
+        return self.children[1]
+
+    def get_product_list(self) -> Optional[SubModelList]:
+        return self.children[3]
+
+    def get_reactants(self) -> List[SubModelList]:
+        slist = self.get_reactant_list()
+        if slist:
+            return slist.get_all_sub_model()
+        return list()
+
+    def get_products(self) -> List[SubModelList]:
+        slist = self.get_product_list()
+        if slist:
+            return slist.get_all_sub_model()
+        return list()
+
+    def get_rate_law(self):
+        return self.children[5]
+
+    def is_reversible(self):
+        assert self.children[2].text in ('->', '=>')
+        return self.children[2].text == '=>'
+    
+    def get_comp(self):
+        if self.children[6] is not None:
+            return self.children[6]
+        return None
+
+@dataclass
+class SubModelAssignment(TrunkNode):
+    children: Tuple[SubModelVar, Operator, Optional[ArithmeticExpr]] = field(repr=False)
+
+    def get_sub_model_var(self):
+        return self.children[0]
+    
+    def get_name(self):
+        return self.get_sub_model_var().get_name()
+
+    def get_name_text(self):
+        return self.get_sub_model_var().get_name_text()
+    
+    def get_value(self) -> Optional[ArithmeticExpr]:
+        return self.children[2]
 
 @dataclass
 class SimpleStmt(TrunkNode):
-    children: Tuple[Union[IsAssignment, Reaction, Assignment, Declaration, Annotation, UnitDeclaration, UnitAssignment, VariableIn], Union[Operator, Newline]] = field(repr=False)
+    children: Tuple[Union[IsAssignment, Reaction, Assignment, Declaration, Annotation, UnitDeclaration, UnitAssignment, VariableIn, SubModelAssignment, SubModelReaction, SubModelDelete, SubModelIsAssignment], Union[Operator, Newline]] = field(repr=False)
 
     def get_stmt(self):
         return self.children[0]
@@ -586,7 +739,7 @@ class ModularModel(TrunkNode):
 @dataclass
 class ModularModelCall(TrunkNode):
     children: Tuple[Optional[ReactionName], VarName, Operator, 
-                Optional[Parameters], Operator] = field(repr=False)
+                Optional[Parameters], Operator, Optional[SubModelConversionFactor]] = field(repr=False)
     
     def get_maybein(self):
         if self.children[0] is None:
