@@ -287,6 +287,11 @@ class ReactionName(TrunkNode):
     def get_name_text(self):
         return self.get_maybein().get_var_name().get_name_text()
 
+# @dataclass
+# class ObjectiveFunctionName(TrunkNode):
+#     children: Tuple[VarName, Operator] = field(repr=False)
+#     def get_name(self):
+#         return self.children[0].get_name()
 
 @dataclass
 class SpeciesList(TrunkNode):
@@ -351,7 +356,31 @@ class Reaction(TrunkNode):
             return self.children[6]
         return None
 
-
+@dataclass
+class FluxBalanceConstraints(TrunkNode):
+    children: Tuple[Optional[Number], Optional[Operator], VarName, Optional[Operator], Optional[Number]] = field(repr=False)
+    def get_reaction_name(self):
+        return self.children[2]
+    
+    def get_reaction_name_text(self):
+        return self.get_reaction_name().get_name_text()
+    
+@dataclass
+class ObjectiveFunction(TrunkNode):
+    children: Tuple[Optional[ReactionName], Keyword, VarName] = field(repr=False)
+    def get_name(self):
+        if self.children[0] is None:
+            return None
+        return self.children[0].get_name()
+    
+    def get_name_text(self):
+        if self.children[0] is None:
+            return None
+        return self.children[0].get_name_text()
+    
+    def get_reaction_name(self):
+        return self.children[2]
+    
 @dataclass
 class Assignment(TrunkNode):
     unit: Sum = None
@@ -539,7 +568,7 @@ class IsAssignment(TrunkNode):
 
 @dataclass
 class SimpleStmt(TrunkNode):
-    children: Tuple[Union[IsAssignment, Reaction, Assignment, Declaration, Annotation, UnitDeclaration, UnitAssignment, VariableIn], Union[Operator, Newline]] = field(repr=False)
+    children: Tuple[Union[IsAssignment, Reaction, Assignment, Declaration, Annotation, UnitDeclaration, UnitAssignment, VariableIn, FluxBalanceConstraints, ObjectiveFunction], Union[Operator, Newline]] = field(repr=False)
 
     def get_stmt(self):
         return self.children[0]

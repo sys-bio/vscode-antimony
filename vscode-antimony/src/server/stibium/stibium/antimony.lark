@@ -12,6 +12,22 @@ species : [NUMBER] ["$"] NAME
 ARROW : "->"
     | "=>"
 
+flux_balance_constraints : NAME compare NUMBER
+    | NUMBER compare NAME
+    | NUMBER inequalities NAME inequalities NUMBER
+
+compare: "=="
+    | inequalities
+
+inequalities : "<="
+    | ">="
+    | ">"
+    | "<"
+
+objective_function: [reaction_name] ("maximize"|"minimize") NAME
+
+// objective_function_name: NAME ":"
+
 assignment : namemaybein ("=" | AEQ) sum 
 
 AEQ : ":="
@@ -82,6 +98,8 @@ func_call : var_name "(" [parameters] ")"
     | function_call
     | variable_in
     | is_assignment
+    | flux_balance_constraints
+    | objective_function
 
 simple_stmt_list : simple_stmt+
 

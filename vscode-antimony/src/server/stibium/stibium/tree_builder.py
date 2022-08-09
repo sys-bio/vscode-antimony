@@ -13,7 +13,7 @@ from stibium.ant_types import (FuncCall, IsAssignment, VariableIn, FunctionCall,
                                DeclItem, ErrorNode, ErrorToken,
                                FileNode, InComp, Keyword, LeafNode, NameMaybeIn,
                                Name, Newline, Number, Operator,
-                               Power, Product, Reaction, ReactionName,
+                               Power, Product, Reaction, ReactionName, FluxBalanceConstraints, ObjectiveFunction,
                                SimpleStmt, Species, SpeciesList, StringLiteral,
                                Sum, TreeNode, TrunkNode, TypeModifier, VarModifier, SubModifier,
                                VarName, Model, SimpleStmtList, End, Function, Parameters, ModularModel, ModularModelCall)
@@ -33,10 +33,13 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
     'ESCAPED_STRING': StringLiteral,
     'ANNOT_KEYWORD': Keyword,
     'SEMICOLON': Operator,
+    'compare': Operator,
+    'inequalities': Operator,
     'error_node': ErrorNode,
     'root': FileNode,
     'simple_stmt': SimpleStmt,
     'var_name': VarName,
+    # 'objective_function_name': ObjectiveFunctionName,
     'func_call': FuncCall,
     'in_comp': InComp,
     'namemaybein': NameMaybeIn,
@@ -67,11 +70,13 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
     'function_call' : FunctionCall,
     'variable_in' : VariableIn,
     'is_assignment' : IsAssignment,
+    'flux_balance_constraints': FluxBalanceConstraints,
+    'objective_function': ObjectiveFunction,
 }
 
 OPERATORS = {'EQUAL', 'COLON', 'ARROW', 'SEMICOLON', 'LPAR', 'RPAR', 'STAR', 'PLUS', 'MINUS',
-             'DOLLAR', 'CIRCUMFLEX', 'COMMA', 'SLASH', "AEQ", "DBLQUOTE"}
-KEYWORDS = {'ANNOT_KEYWORD', 'IN', 'MODEL', 'FUNCTION', "UNIT", "HAS", "IS", "SUBSTANCEONLY"}
+             'DOLLAR', 'CIRCUMFLEX', 'COMMA', 'SLASH', "AEQ", "DBLQUOTE", "__ANON_1", "__ANON_0", "LESSTHAN", "MORETHAN"}
+KEYWORDS = {'ANNOT_KEYWORD', 'IN', 'MODEL', 'FUNCTION', "UNIT", "HAS", "IS", "SUBSTANCEONLY", "MAXIMIZE", "MINIMIZE"}
 
 for name in OPERATORS:
     TREE_MAP[name] = Operator
