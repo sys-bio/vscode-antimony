@@ -42,7 +42,7 @@ unit_declaration : "unit" var_name "=" sum
 unit_assignment : var_name "has" sum
 
 // this should not be a reaction name, I'm just being lazy
-mmodel_call : [reaction_name] NAME "(" [parameters] ")" (sub_model_conversion_factor)*
+mmodel_call : reaction_name NAME "(" [parameters] ")" [sub_model_conversion_factor_list]
 sub_model_is_assignment : sub_model_var [var_conversion_factor] "is" (sub_model_rename | ESCAPED_STRING)
 sub_model_delete : "delete" sub_model_var
 sub_model_assignment : sub_model_var ("=" | AEQ) [sum]
@@ -51,6 +51,7 @@ sub_model_assignment : sub_model_var ("=" | AEQ) [sum]
 sub_model_var : var_name "." (var_name ".")* NAME
 sub_model_rename : var_name [var_conversion_factor]
 
+sub_model_conversion_factor_list : sub_model_conversion_factor (sub_model_conversion_factor)*
 sub_model_conversion_factor : "," ("timeconv" | "extentconv") "=" (NUMBER | var_name | sub_model_var)
 var_conversion_factor : ("*" | "/") var_name
 

@@ -319,6 +319,11 @@ class SubModelConversionFactor(TrunkNode):
     
     def get_mmodel_var(self):
         return self.children[4]
+    
+@dataclass
+class SubModelConversionFactorList(TrunkNode):
+    def get_all_factors(self) -> List[SubModelConversionFactor]:
+        return cast(List[SubModelConversionFactor], self.children)
 
 @dataclass
 class SubModelList(TrunkNode):
@@ -738,18 +743,17 @@ class ModularModel(TrunkNode):
 
 @dataclass
 class ModularModelCall(TrunkNode):
-    children: Tuple[Optional[ReactionName], VarName, Operator, 
-                Optional[Parameters], Operator, Optional[SubModelConversionFactor]] = field(repr=False)
+    children: Tuple[ReactionName, VarName, Operator, 
+                Optional[Parameters], Operator, Optional[SubModelConversionFactorList]] = field(repr=False)
     
     def get_maybein(self):
-        if self.children[0] is None:
-            return None
         return self.children[0].get_maybein()
 
     def get_name(self):
-        if self.children[0] is None:
-            return None
         return self.children[0].get_name()
+    
+    def get_name_text(self):
+        return self.children[0].get_name_text()
     
     def get_mmodel_name(self):
         return self.children[1]

@@ -1,8 +1,8 @@
 
 import logging
 from stibium.ant_types import FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, SubModelAssignment, SubModelIsAssignment, SubModelDelete, SubModelReaction, SubModelVar, End, Keyword, Annotation, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, Reaction, SimpleStmt, TreeNode, TrunkNode
-from .types import OverridingDisplayName, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition
-from .symbols import FuncSymbol, AbstractScope, BaseScope, FunctionScope, MModelSymbol, ModelScope, QName, SymbolTable, ModularModelScope
+from .types import OverridingDisplayName, SrcRange, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition
+from .symbols import FuncSymbol, AbstractScope, BaseScope, FunctionScope, MModelSymbol, ModelScope, QName, SymbolTable, ModularModelScope, VarSymbol
 
 from dataclasses import dataclass
 from typing import Any, List, Optional, Set, cast
@@ -542,6 +542,13 @@ class AntTreeAnalyzer:
             comp = mmodel_call.get_maybein().get_comp().get_name_text()
         self.table.insert(QName(scope, name), SymbolType.Parameter,
                     value_node=mmodel_call, comp=comp)
+        mmodel = self.table.get(QName(BaseScope(), mmodel_call.get_mmodel_name()))[0]
+        assert isinstance(mmodel, MModelSymbol)
+        for param in mmodel.parameters:
+            symbol = param[0]
+            assert isinstance(symbol, VarSymbol)
+            text = mmodel_call.get_name_text() + "." + symbol.name
+            self.table.insert(QName(scope, Name(range=SrcRange(SrcPosition(8, 2), SrcPosition(8, 5)), text=text)), symbol.type, decl_node=symbol.decl_node, value_node=symbol.value_node)
         
     def handle_function_call(self, scope: AbstractScope, function_call: FunctionCall):
         comp = None
@@ -575,7 +582,7 @@ class AntTreeAnalyzer:
         self.table.insert_function(QName(BaseScope(), function), SymbolType.Function, parameters)
         self.table.insert_function(QName(FunctionScope(str(function.get_name())), function), SymbolType.Function, parameters)
 
-    def handle_mmodel(self, mmodel):
+    def handle_mmodel(self, mmodel: ModularModel):
         # find all type information
         if mmodel.get_params() is not None:
             params = mmodel.get_params().get_items()
