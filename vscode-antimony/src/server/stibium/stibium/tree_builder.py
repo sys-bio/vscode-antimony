@@ -15,7 +15,7 @@ from stibium.ant_types import (FuncCall, IsAssignment, VariableIn, FunctionCall,
                                Name, Newline, Number, Operator,
                                Power, Product, Reaction, ReactionName,
                                SimpleStmt, Species, SpeciesList, StringLiteral,
-                               SubModelAssignment, SubModelConversionFactor, SubModelDelete, SubModelIsAssignment, SubModelList, SubModelReaction, SubModelRename, SubModelVar, SubModelVariableConversionFactor, SubModelConversionFactorList,
+                               SubModelAssignment, SubModelConversionFactor, SubModelDelete, SubModelIsAssignment, SubModelList, SubModelReaction, SubModelRename, SubModelVar, SubModelVarMayBeIn, SubModelVariableConversionFactor, SubModelConversionFactorList,
                                Sum, TreeNode, TrunkNode, TypeModifier, VarModifier, SubModifier,
                                VarName, Model, SimpleStmtList, End, Function, Parameters, ModularModel, ModularModelCall)
 from stibium.symbols import AbstractScope, BaseScope, FuncSymbol
@@ -39,6 +39,7 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
     'simple_stmt': SimpleStmt,
     'var_name': VarName,
     'sub_model_var': SubModelVar,
+    'sub_model_var_maybein': SubModelVarMayBeIn,
     'sub_model_list': SubModelList,
     'sub_model_rename': SubModelRename,
     'sub_model_conversion_factor': SubModelConversionFactor,

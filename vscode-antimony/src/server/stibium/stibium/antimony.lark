@@ -49,6 +49,7 @@ sub_model_assignment : sub_model_var ("=" | AEQ) [sum]
 
 
 sub_model_var : var_name "." (var_name ".")* NAME
+sub_model_var_maybein : sub_model_var [in_comp]
 sub_model_rename : var_name [var_conversion_factor]
 
 sub_model_conversion_factor_list : sub_model_conversion_factor (sub_model_conversion_factor)*

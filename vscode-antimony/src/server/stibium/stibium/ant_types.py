@@ -295,18 +295,33 @@ class Species(TrunkNode):
 
 @dataclass
 class SubModelVar(TrunkNode):
-    children: Tuple[Optional[Operator], Name] = field(repr=False)
     
-    def is_const(self):
-        return bool(self.children[0])
-    
+    def get_mmodel_list(self):
+        items = self.children[:-1:2]
+        return cast(List[VarName], items)
     
     def get_name(self):
-        return self.children[1]
+        return self.children[-1]
 
     def get_name_text(self):
         return self.get_name().text
     
+    def to_string(self):
+        ret = ''
+        for item in self.get_mmodel_list():
+            ret += item.get_name_text() + '.'
+        ret += self.get_name_text()
+        return ret
+    
+@dataclass
+class SubModelVarMayBeIn(TrunkNode):
+    children: Tuple[SubModelVar, Optional[InComp]]=field(repr=False)
+    
+    def get_sub_model_var(self):
+        return self.children[0]
+    
+    def get_incomp(self):
+        return self.children[1]
     
 @dataclass
 class SubModelConversionFactor(TrunkNode):
@@ -681,9 +696,9 @@ class SubModelReaction(TrunkNode):
 
 @dataclass
 class SubModelAssignment(TrunkNode):
-    children: Tuple[SubModelVar, Operator, Optional[ArithmeticExpr]] = field(repr=False)
+    children: Tuple[SubModelVarMayBeIn, Operator, Optional[ArithmeticExpr]] = field(repr=False)
 
-    def get_sub_model_var(self):
+    def get_sub_model_var_maybein(self):
         return self.children[0]
     
     def get_name(self):

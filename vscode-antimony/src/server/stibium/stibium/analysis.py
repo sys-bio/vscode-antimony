@@ -407,7 +407,21 @@ class AntTreeAnalyzer:
     def handle_sub_model_assignment(self, scope: AbstractScope, sub_model_assignment: SubModelAssignment):
         # self.table.insert(QName(scope, sub_model_assignment.get_name()), SymbolType.Parameter,
         #                     value_node=sub_model_assignment)
+        comp = None
+        incomp = sub_model_assignment.get_sub_model_var_maybein().get_incomp()
+        if incomp != None:
+            comp = incomp.get_comp()
+        sub_model_var = sub_model_assignment.get_sub_model_var_maybein().get_sub_model_var()
+        
+        self.table.insert(QName(scope, Name(sub_model_var.range, sub_model_var.to_string())), )
         self.handle_arith_expr(scope, sub_model_assignment.get_value())
+        
+    def _get_mmodel_scope(self, scope: AbstractScope, mmodels: List[VarName]):
+        var_name = mmodels.pop()
+        if mmodels:
+            return self._get_mmodel_scope(scope,mmodels)
+        else:
+            return scope
         
     def resolve_variab(self, tree) -> Variability:
         return {
