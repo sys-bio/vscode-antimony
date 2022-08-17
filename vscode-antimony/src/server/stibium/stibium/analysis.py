@@ -1,7 +1,7 @@
 
 import logging
 from stibium.ant_types import FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, End, Keyword, Annotation, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, Reaction, FluxBalanceConstraints, ObjectiveFunction, SimpleStmt, TreeNode, TrunkNode
-from .types import OverridingDisplayName, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition
+from .types import OverridingDisplayName, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UninitReact, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition
 from .symbols import FuncSymbol, AbstractScope, BaseScope, FunctionScope, MModelSymbol, ModelScope, QName, SymbolTable, ModularModelScope
 
 from dataclasses import dataclass
@@ -231,6 +231,8 @@ class AntTreeAnalyzer:
                     self.process_is_assignment(node, scope)
                 elif type(node.get_stmt()) == Assignment:
                     self.process_maybein(node, scope)
+                elif type(node.get_stmt()) == FluxBalanceConstraints:
+                    self.process_flux_balance(node, scope)
 
     def check_parse_tree_function(self, function, scope):
         # check the expression
@@ -299,6 +301,8 @@ class AntTreeAnalyzer:
                     self.process_is_assignment(node, scope)
                 elif type(node.get_stmt()) == Assignment:
                     self.process_maybein(node, scope)
+                elif type(node.get_stmt()) == FluxBalanceConstraints:
+                    self.process_flux_balance(node, scope)
         self.check_param_unused(used, params)
 
     def check_rate_law(self, rate_law, scope, params=set()):
@@ -610,6 +614,12 @@ class AntTreeAnalyzer:
             if matched_species[0].value_node is None:
                 self.warning.append(SpeciesUndefined(species.range, species_name.text))
         self.process_maybein(node, scope)
+        
+    def process_flux_balance(self, node, scope):
+        reaction = node.get_stmt().get_reaction_name()
+        matched_reaction = self.table.get(QName(scope, reaction))
+        if matched_reaction[0].decl_node is None:
+            self.warning.append(UninitReact(reaction.range, reaction.text))
     
     def process_mmodel_call(self, node, scope):
         mmodel_name = node.get_stmt().get_mmodel_name()

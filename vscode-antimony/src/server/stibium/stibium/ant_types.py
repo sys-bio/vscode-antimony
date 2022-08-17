@@ -358,9 +358,11 @@ class Reaction(TrunkNode):
 
 @dataclass
 class FluxBalanceConstraints(TrunkNode):
-    children: Tuple[Optional[Number], Optional[Operator], VarName, Optional[Operator], Optional[Number]] = field(repr=False)
+    children: Tuple[Optional[Number], Optional[Operator], Name, Optional[Operator], Optional[Number]] = field(repr=False)
     def get_reaction_name(self):
-        return self.children[2]
+        if type(self.children[0]) == Number:
+            return self.children[2]
+        return self.children[0]
     
     def get_reaction_name_text(self):
         return self.get_reaction_name().get_name_text()
