@@ -298,9 +298,9 @@ class SubModelVar(TrunkNode):
     
     def get_mmodel_list(self):
         items = self.children[:-1:2]
-        return cast(List[VarName], items)
+        return list(items)
     
-    def get_name(self):
+    def get_name(self) -> Name:
         return self.children[-1]
 
     def get_name_text(self):

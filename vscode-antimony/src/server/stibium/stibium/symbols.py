@@ -296,6 +296,14 @@ class SymbolTable:
     def get_all_qnames(self):
         '''Get all the unique names in the table as a set (outside of scope) '''
         return self._qnames
+    
+    def get_mmodel(self, mmodel_name: str):
+        '''Get the original modular model Name, or None if DNE'''
+        for qname in self._qnames:
+            if type(qname.name) == ModularModel:
+                if type(qname.scope) == BaseScope and qname.name.get_name_str() == mmodel_name:
+                    return qname.name.get_name()
+        return None
 
     def get_unique_name(self, prefix: str, scope: AbstractScope = None) -> str:
         '''Obtain a unique name under the scope by trying successively larger number suffixes.

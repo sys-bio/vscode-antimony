@@ -1,6 +1,6 @@
 
 import logging
-from stibium.ant_types import FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, SubModelAssignment, SubModelIsAssignment, SubModelDelete, SubModelReaction, SubModelVar, End, Keyword, Annotation, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, Reaction, SimpleStmt, TreeNode, TrunkNode
+from stibium.ant_types import FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, SubModelAssignment, SubModelIsAssignment, SubModelDelete, SubModelReaction, SubModelVar, SubModelVarMayBeIn, End, Keyword, Annotation, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, Reaction, SimpleStmt, TreeNode, TrunkNode
 from .types import OverridingDisplayName, SrcRange, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition
 from .symbols import FuncSymbol, AbstractScope, BaseScope, FunctionScope, MModelSymbol, ModelScope, QName, SymbolTable, ModularModelScope, VarSymbol
 
@@ -343,7 +343,35 @@ class AntTreeAnalyzer:
 
     def get_unique_name(self, prefix: str):
         return self.table.get_unique_name(prefix)
-
+    
+    def _handle_sub_model_var(self, scope: AbstractScope, node: SubModelVar, parent):
+        '''Insert mmodel variable into the table'''
+        symbol = self._get_sub_model_symbol(scope, node.get_mmodel_list(), node.get_name())
+        if symbol is not None:
+            self.table.insert(QName(scope, Name(node.range, node.to_string(), parent=parent)), symbol.type, symbol.decl_node, symbol.value_node, symbol.is_const, symbol.comp, symbol.is_sub)
+        
+    def _get_sub_model_symbol(self, scope: AbstractScope, mmodel_list: List[VarName], param: Name):
+        mmodel_name = mmodel_list.pop(0)
+        qnames = self.table.get(QName(scope, mmodel_name.get_name()))
+        if len(qnames) == 0:
+            self.table.error.append(UninitMModel(mmodel_name.range, mmodel_name.get_name_text()))
+            return None
+        mmodel_call: ModularModelCall = qnames[0].value_node
+        mmodel_str = mmodel_call.get_mmodel_name_str()
+        mmodel = self.table.get_mmodel(mmodel_str)
+        if mmodel is None:
+            self.table.error.append(UninitMModel(mmodel_name.range, mmodel_name.get_name_text()))
+            return None
+        new_scope = ModularModelScope(str(mmodel))
+        if len(mmodel_list) == 0:
+            target = self.table.get(QName(new_scope, param))
+            if len(target) == 0:
+                self.table.error.append(RefUndefined(param.range, param.text))
+                return None
+            return target[0]
+        return self._get_mmodel_scope(new_scope, mmodel_list, param)
+        
+        
     def handle_child_incomp(self, scope: AbstractScope, node: TrunkNode):
         '''Find all `incomp` nodes among the descendants of node and record the compartment names.'''
         for child in node.descendants():
@@ -408,12 +436,15 @@ class AntTreeAnalyzer:
         # self.table.insert(QName(scope, sub_model_assignment.get_name()), SymbolType.Parameter,
         #                     value_node=sub_model_assignment)
         comp = None
-        incomp = sub_model_assignment.get_sub_model_var_maybein().get_incomp()
+        incomp = None
+        sub_model_var = sub_model_assignment.get_sub_model_var_maybein()
+        if type(sub_model_assignment.get_sub_model_var_maybein()) == SubModelVarMayBeIn:
+            incomp = sub_model_assignment.get_sub_model_var_maybein().get_incomp()
+            sub_model_var = sub_model_assignment.get_sub_model_var_maybein().get_sub_model_var()
         if incomp != None:
             comp = incomp.get_comp()
-        sub_model_var = sub_model_assignment.get_sub_model_var_maybein().get_sub_model_var()
         
-        self.table.insert(QName(scope, Name(sub_model_var.range, sub_model_var.to_string())), )
+        self.table.insert(QName(scope, Name(sub_model_var.range, sub_model_var.to_string())), SymbolType.Parameter, comp=comp)
         self.handle_arith_expr(scope, sub_model_assignment.get_value())
         
     def _get_mmodel_scope(self, scope: AbstractScope, mmodels: List[VarName]):
@@ -522,10 +553,8 @@ class AntTreeAnalyzer:
                     base_var[0].display_name = display_name
                     
     def handle_sub_model_is_assignment(self, scope: AbstractScope, sub_model_is_assignment: SubModelIsAssignment):
-        name = sub_model_is_assignment.get_var_name()
-        qname = QName(scope, name)
-        var = self.table.get(qname)
-        display_name = sub_model_is_assignment.get_display_name()
+        name = sub_model_is_assignment.get_sub_model_val()
+        self._handle_sub_model_var(scope, name, sub_model_is_assignment)
     
     def handle_unit_declaration(self, scope: AbstractScope, unitdec: UnitDeclaration):
         varname = unitdec.get_var_name().get_name()
@@ -556,13 +585,6 @@ class AntTreeAnalyzer:
             comp = mmodel_call.get_maybein().get_comp().get_name_text()
         self.table.insert(QName(scope, name), SymbolType.Parameter,
                     value_node=mmodel_call, comp=comp)
-        mmodel = self.table.get(QName(BaseScope(), mmodel_call.get_mmodel_name()))[0]
-        assert isinstance(mmodel, MModelSymbol)
-        for param in mmodel.parameters:
-            symbol = param[0]
-            assert isinstance(symbol, VarSymbol)
-            text = mmodel_call.get_name_text() + "." + symbol.name
-            self.table.insert(QName(scope, Name(range=SrcRange(SrcPosition(8, 2), SrcPosition(8, 5)), text=text)), symbol.type, decl_node=symbol.decl_node, value_node=symbol.value_node)
         
     def handle_function_call(self, scope: AbstractScope, function_call: FunctionCall):
         comp = None
@@ -611,8 +633,8 @@ class AntTreeAnalyzer:
         self.table.insert_mmodel(QName(BaseScope(), mmodel), SymbolType.ModularModel, parameters)
         self.table.insert_mmodel(QName(ModularModelScope(str(mmodel.get_name())), mmodel), SymbolType.ModularModel, parameters)
         
-    def handle_sub_model_delete(self, scope: AbstractScope, sub_model_var: SubModelVar):
-        pass
+    def handle_sub_model_delete(self, scope: AbstractScope, sub_model_delete: SubModelDelete):
+        self._handle_sub_model_var(scope, sub_model_delete.get_sub_model_val(), sub_model_delete)
 
     def process_error_token(self, node):
         node = cast(ErrorToken, node)
