@@ -287,11 +287,6 @@ class ReactionName(TrunkNode):
     def get_name_text(self):
         return self.get_maybein().get_var_name().get_name_text()
 
-# @dataclass
-# class ObjectiveFunctionName(TrunkNode):
-#     children: Tuple[VarName, Operator] = field(repr=False)
-#     def get_name(self):
-#         return self.children[0].get_name()
 
 @dataclass
 class SpeciesList(TrunkNode):

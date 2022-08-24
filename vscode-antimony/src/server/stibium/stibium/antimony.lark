@@ -26,7 +26,6 @@ inequalities : "<="
 
 objective_function: [reaction_name] ("maximize"|"minimize") NAME
 
-// objective_function_name: NAME ":"
 
 assignment : namemaybein ("=" | AEQ) sum 
 
