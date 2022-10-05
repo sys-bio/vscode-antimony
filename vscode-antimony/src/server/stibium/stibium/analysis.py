@@ -616,6 +616,9 @@ class AntTreeAnalyzer:
         self.process_maybein(node, scope)
         
     def process_flux_balance(self, node, scope):
+        '''
+        add warning if the reaction is not initialized in this flux balance constraints
+        '''
         reaction = node.get_stmt().get_reaction_name()
         matched_reaction = self.table.get(QName(scope, reaction))
         if matched_reaction[0].decl_node is None:
