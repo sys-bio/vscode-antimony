@@ -25,7 +25,6 @@ model *BIOMD0000000001()
   React14: I -> D; comp1*(kf_14*I - kr_14*D);
   React15: IL -> DL; comp1*(kf_15*IL - kr_15*DL);
   React16: ILL -> DLL; comp1*(kf_16*ILL - kr_16*DLL);
-  React17: IL -> BLL; kf_16*((IL-BLL/kf_15)*(IL/kf_14+BLL/kf_13)^(kr_11-1))/(1+(IL/kf_14+BLL/kf_13)^kr_11);
 
   // Events:
   RemovalACh: at time > t2: kf_13 = 0, kf_8 = 0, kf_4 = 0, kf_1 = 0, kf_12 = 0, kf_7 = 0, kf_3 = 0, kf_0 = 0;
@@ -109,5 +108,4 @@ model *BIOMD0000000001()
 
 
   BLL identity "http://identifiers.org/chebi/CHEBI:27732"
-  AL identity "http://identifiers.org/chebi/CHEBI:9907"
 end
