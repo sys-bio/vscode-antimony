@@ -39,7 +39,6 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
     'root': FileNode,
     'simple_stmt': SimpleStmt,
     'var_name': VarName,
-    # 'objective_function_name': ObjectiveFunctionName,
     'func_call': FuncCall,
     'in_comp': InComp,
     'namemaybein': NameMaybeIn,
@@ -75,7 +74,7 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
 }
 
 OPERATORS = {'EQUAL', 'COLON', 'ARROW', 'SEMICOLON', 'LPAR', 'RPAR', 'STAR', 'PLUS', 'MINUS',
-             'DOLLAR', 'CIRCUMFLEX', 'COMMA', 'SLASH', "AEQ", "DBLQUOTE", "__ANON_1", "__ANON_0", "LESSTHAN", "MORETHAN"}
+             'DOLLAR', 'CIRCUMFLEX', 'COMMA', 'SLASH', "AEQ", "DBLQUOTE", "COMPARE"}
 KEYWORDS = {'ANNOT_KEYWORD', 'IN', 'MODEL', 'FUNCTION', "UNIT", "HAS", "IS", "SUBSTANCEONLY", "MAXIMIZE", "MINIMIZE"}
 
 for name in OPERATORS:

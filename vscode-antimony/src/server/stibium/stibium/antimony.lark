@@ -12,14 +12,14 @@ species : [NUMBER] ["$"] NAME
 ARROW : "->"
     | "=>"
 
-flux_balance_constraints : NAME compare NUMBER
-    | NUMBER compare NAME
-    | NUMBER inequalities NAME inequalities NUMBER
+flux_balance_constraints : NAME COMPARE NUMBER
+    | NUMBER COMPARE NAME
+    | NUMBER INEQUALITIES NAME INEQUALITIES NUMBER
 
-compare: "=="
-    | inequalities
+COMPARE: "=="
+    | INEQUALITIES
 
-inequalities : "<="
+INEQUALITIES : "<="
     | ">="
     | ">"
     | "<"
