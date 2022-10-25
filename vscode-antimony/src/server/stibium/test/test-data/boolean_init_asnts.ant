@@ -1,0 +1,15 @@
+function isTrue(x)
+  x==true
+end
+
+a = x>y
+b = x>y>z
+c = x>y>=z
+d = x<y
+e = x<=y<=z
+f = x==y
+g = x==y==z
+h = x==y==z==p==d==q
+i = true
+j = false
+h = isTrue(a)

@@ -19,6 +19,8 @@ from stibium.symbols import QName, Symbol, SymbolTable
 
 from stibium.analysis import AntTreeAnalyzer, get_qname_at_position
 
+from stibium.rate_law_reader import RateLawReader
+
 from bioservices_server.utils import AntFile, pygls_range, sb_position, get_antfile, sb_range
 from bioservices_server.webservices import NetworkError, WebServices
 
@@ -167,6 +169,20 @@ def get_type(ls: LanguageServer, args) -> dict[str, str]:
     return {
         'symbol': symbol
     }
+    
+@server.thread()
+@server.command('antimony.getAnnotation')
+def get_annotations(ls: LanguageServer, args):
+    global antfile_cache
+    global uri
+    uri = args[0]
+    doc = server.workspace.get_document(uri)
+    antfile_cache = get_antfile(doc)
+    all_annotations: list = antfile_cache.analyzer.pending_annotations
+    annotation_texts = list()
+    for tup in all_annotations:
+        annotation_texts.append(tup[1].get_name_text())
+    return "|".join(annotation_texts)
 
 @server.thread()
 @server.command('antimony.sendQuery')
@@ -208,6 +224,35 @@ def query_species(ls: LanguageServer, args):
         return {
             'error': 'Connection Error!'
         }
+        
+@server.command('antimony.getRateLawDict')
+def get_rate_law_dict(ls: LanguageServer, args):
+    '''
+    get a list of rate laws that are relevant to the line that user right clicks at
+    list element form: 
+    {
+        'name': rate law name,
+        'orig_expr': the original expression to display to users
+        'expression': the substituted expression(includes the real reactants and products),
+        'latex': the rate law in latex form
+        'constants': list of constant names and descriptions:
+            {
+                'name': constant name
+                'description': constant description
+            }
+    }
+    '''
+    text = args[0] # the line of text that user right clicks at
+    reader = RateLawReader(text)
+    if reader.reactant_product_num == '_error':
+        return {
+            'error': 'Did not select a reaction.'
+        }
+    if reader.no_rate_law_check() == '_error':
+        return {
+            'error': 'Rate law already exists.'
+        }
+    return reader.relevant_rate_laws
 
 #### Hover for displaying information ####
 @server.feature(HOVER)

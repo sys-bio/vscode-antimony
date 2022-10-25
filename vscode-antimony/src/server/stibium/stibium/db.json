@@ -1,0 +1,4190 @@
+{
+   "rateml": {
+      "declarations": {
+         "reservedSymbol": {
+            "_value": "___"
+         },
+         "validReactantName": {
+            "_name": "S"
+         },
+         "validProductName": {
+            "_name": "P"
+         },
+         "validInhibitorName": {
+            "_name": "I"
+         },
+         "validActivatorName": {
+            "_name": "A"
+         },
+         "validModifierName": {
+            "_name": "M"
+         },
+         "listOfValidFunctionNames": {
+            "function": [
+               {
+                  "_name": "ln"
+               },
+               {
+                  "_name": "log"
+               },
+               {
+                  "_name": "sin"
+               },
+               {
+                  "_name": "cos"
+               },
+               {
+                  "_name": "tan"
+               },
+               {
+                  "_name": "exp"
+               },
+               {
+                  "_name": "sqr"
+               },
+               {
+                  "_name": "sqrt"
+               },
+               {
+                  "_name": "fact"
+               },
+               {
+                  "_name": "arcsin"
+               },
+               {
+                  "_name": "arccos"
+               },
+               {
+                  "_name": "arctan"
+               },
+               {
+                  "_name": "sinh"
+               },
+               {
+                  "_name": "cosh"
+               },
+               {
+                  "_name": "tanh"
+               },
+               {
+                  "_name": "arcsinh"
+               },
+               {
+                  "_name": "arccosh"
+               },
+               {
+                  "_name": "arccanh"
+               },
+               {
+                  "_name": "abs"
+               },
+               {
+                  "_name": "pow"
+               },
+               {
+                  "_name": "delay"
+               },
+               {
+                  "_name": "piecewise"
+               },
+               {
+                  "_name": "eq"
+               },
+               {
+                  "_name": "gt"
+               },
+               {
+                  "_name": "lt"
+               },
+               {
+                  "_name": "geq"
+               },
+               {
+                  "_name": "lte"
+               },
+               {
+                  "_name": "neq"
+               },
+               {
+                  "_name": "ceiling"
+               },
+               {
+                  "_name": "floor"
+               },
+               {
+                  "_name": "and"
+               },
+               {
+                  "_name": "or"
+               },
+               {
+                  "_name": "not"
+               },
+               {
+                  "_name": "xor"
+               },
+               {
+                  "_name": "root"
+               },
+               {
+                  "_name": "sec"
+               },
+               {
+                  "_name": "csc"
+               },
+               {
+                  "_name": "cot"
+               },
+               {
+                  "_name": "sech"
+               },
+               {
+                  "_name": "csch"
+               },
+               {
+                  "_name": "coth"
+               },
+               {
+                  "_name": "arcsec"
+               },
+               {
+                  "_name": "arccsc"
+               },
+               {
+                  "_name": "arccot"
+               },
+               {
+                  "_name": "arcsech"
+               },
+               {
+                  "_name": "arccsch"
+               },
+               {
+                  "_name": "arccoth"
+               }
+            ]
+         },
+         "listOfProperties": {
+            "property": [
+               {
+                  "_name": "Simple"
+               },
+               {
+                  "_name": "Linear"
+               },
+               {
+                  "_name": "Reversible"
+               },
+               {
+                  "_name": "Irreversible"
+               },
+               {
+                  "_name": "Mass-action"
+               },
+               {
+                  "_name": "Hyperbolic"
+               },
+               {
+                  "_name": "Sigmoidal"
+               },
+               {
+                  "_name": "Allosteric"
+               },
+               {
+                  "_name": "Inhibited"
+               },
+               {
+                  "_name": "Activated"
+               },
+               {
+                  "_name": "Regulated"
+               }
+            ]
+         }
+      },
+      "listOfRateLaws": {
+         "law": [
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "vo",
+                        "_description": "The constant rate"
+                     }
+                  ]
+               },
+               "math": {
+                  "ci": [
+                     "vo"
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "constant",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Constant Rate",
+               "_property": "Simple,Irreversible",
+               "_description": "This rate laws supplies a constant rate independent of any species molecular concentration.",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "vo",
+               "_display": "v = v_o",
+               "_helpFile": "help\\p1.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "vo",
+                        "_description": "The reaction rate at the operating point, so"
+                     },
+                     {
+                        "_name": "g",
+                        "_description": "Technically dv/dso. The gradient"
+                     },
+                     {
+                        "_name": "so",
+                        "_description": "The operating point at which the orginal equation was linearized"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "plus": "",
+                        "ci": [
+                           "vo"
+                        ],
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "g"
+                              ],
+                              "apply": [
+                                 {
+                                    "minus": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "so"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "linear",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Linearized Rate Law",
+               "_property": "Simple,Reversible,Linear",
+               "_description": "Single substrate linearized rate law. $g$ in the rate law is the unscaled elasticity, $dv/ds_o$.",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "vo+g*(___S1___-so)",
+               "_display": "v = v_o + g (S_1-s_o)",
+               "_helpFile": "help\\p2.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k",
+                        "_description": "Rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "k",
+                           "___S1___"
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "imm",
+               "_SBOTerm": "SBO:0000049",
+               "_displayName": "Irreversible Mass-Action",
+               "_property": "Irreversible,Mass-action,Linear",
+               "_description": "Irreversible Mass-Action",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "k*___S1___",
+               "_display": "v = k S",
+               "_helpFile": "help\\p3.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k1",
+                        "_description": "Reverse rate constant"
+                     },
+                     {
+                        "_name": "k2",
+                        "_description": "Reverse rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "minus": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k1",
+                                 "___S1___"
+                              ]
+                           },
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k2",
+                                 "___P1___"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmm",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Reversible Mass-Action",
+               "_property": "Reversible,Mass-action,Linear",
+               "_description": "Reversible Mass-Action",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "k1*___S1___-k2*___P1___",
+               "_display": "v = k_1 S - k_2 P",
+               "_helpFile": "help\\p4.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k1",
+                        "_description": "Forward rate constant"
+                     },
+                     {
+                        "_name": "n",
+                        "_description": "A Hill coefficient like parameter"
+                     },
+                     {
+                        "_name": "Gamma",
+                        "_description": "Mass-action ratio, $\\Gamma = \\rho/K_{eq}$"
+                     },
+                     {
+                        "_name": "Keq",
+                        "_description": "Thermodynamic equilibrium constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "k1"
+                        ],
+                        "apply": [
+                           {
+                              "power": "",
+                              "ci": [
+                                 "___S1___",
+                                 "n"
+                              ]
+                           },
+                           {
+                              "minus": "",
+                              "cn": {
+                                 "_type": "integer",
+                                 "__text": "1"
+                              },
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "Gamma",
+                                       "Keq"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmodmm",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Modified Reversible Mass-Action",
+               "_property": "Reversible,Mass-action,Linear",
+               "_description": "Modified Reversible Mass-Action",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "k1*___S1___^n*(1-Gamma/Keq)",
+               "_display": "v = k_1 S^n \\left(1-\\displaystyle\\frac{\\Gamma}{K_{eq}}\\right)",
+               "_helpFile": "help\\p5.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "Substrate Michaelis constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vmax",
+                                 "___S1___"
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "ci": [
+                                 "Km1",
+                                 "___S1___"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "imme",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Irreversible Michaelis-Menten",
+               "_property": "Irreversible,Hyperbolic",
+               "_description": "Irreversible Michaelis-Menten",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vmax*___S1___/(Km1 + ___S1___)",
+               "_display": "v = V_m \\displaystyle\\frac{S}{K_m + S}",
+               "_helpFile": "help\\p6.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "Michaelis constant"
+                     },
+                     {
+                        "_name": "Ki",
+                        "_description": "Inhibition constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vmax",
+                                 "___S1___"
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "apply": [
+                                 {
+                                    "times": "",
+                                    "ci": [
+                                       "Km1"
+                                    ],
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___P1___",
+                                                   "Ki"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ],
+                              "ci": [
+                                 "___S1___"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "immep",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Simple Enzyme Product Inhibition",
+               "_property": "Irreversible,Hyperbolic,Regulated,Inhibited",
+               "_description": "Irreversible Michaelis-Menten with Product Inhibition",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vmax*___S1___/(Km1*(1+___P1___/Ki)+___S1___)",
+               "_display": "v = V_m \\displaystyle\\frac{S}{K_m \\left(1 + \\displaystyle\\frac{P}{K_i}\\right) + S}",
+               "_helpFile": "help\\p7.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "Michaelis constant"
+                     },
+                     {
+                        "_name": "Ki",
+                        "_description": "Inhibition constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vmax",
+                                 "___S1___"
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "apply": [
+                                 {
+                                    "times": "",
+                                    "ci": [
+                                       "Km1"
+                                    ],
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___I1___",
+                                                   "Ki"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ],
+                              "ci": [
+                                 "___S1___"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "immec",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Competitive Inhibitor",
+               "_property": "Irreversible,Hyperbolic,Regulated,Inhibited",
+               "_description": "Michaelis-Menten with Competitive Inhibition",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vmax*___S1___/(Km1*(1+___I1___/Ki)+___S1___)",
+               "_display": "v = V_m \\displaystyle\\frac{S}{K_m \\left(1 + \\frac{I}{K_i}\\right) + S}",
+               "_helpFile": "help\\p8.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "Ki",
+                        "_description": "Inhibition constant"
+                     },
+                     {
+                        "_name": "Km",
+                        "_description": "Michaelis constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vmax",
+                                 "___S1___"
+                              ]
+                           },
+                           {
+                              "times": "",
+                              "apply": [
+                                 {
+                                    "plus": "",
+                                    "cn": {
+                                       "_type": "integer",
+                                       "__text": "1"
+                                    },
+                                    "apply": [
+                                       {
+                                          "divide": "",
+                                          "ci": [
+                                             "___I1___",
+                                             "Ki"
+                                          ]
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "plus": "",
+                                    "ci": [
+                                       "Km",
+                                       "___S1___"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "immen",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Non-Competitive Inhibition",
+               "_property": "Irreversible,Hyperbolic,Regulated",
+               "_description": "Michaelis-Menten with Non-Competitive Inhibition",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vmax*___S1___/((1+___I1___/Ki)*(Km+___S1___))",
+               "_display": "v = \\displaystyle {V_{max} \\frac{S_1}{\\left(1 + \\frac{I_1}{K_i}\\right) \\Big(K_m + S_1\\Big)}}",
+               "_helpFile": "help\\p9.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "Ki",
+                        "_description": "Inhibition constant"
+                     },
+                     {
+                        "_name": "Km",
+                        "_description": "Michaelis constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vmax",
+                                 "___S1___"
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "apply": [
+                                 {
+                                    "times": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___I1___",
+                                                   "Ki"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "___S1___"
+                                    ]
+                                 }
+                              ],
+                              "ci": [
+                                 "Km"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "immeu",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": " Uncompetitive Inhibition",
+               "_property": "Irreversible,Hyperbolic,Regulated,Inhibited",
+               "_description": "Michaelis-Menten with Uncompetitive Inhibition",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vmax*___S1___/((1+___I1___/Ki)*___S1___+Km)",
+               "_display": "v = V_m \\displaystyle\\frac{S}{\\left(1 + \\frac{I}{K_i}\\right) S + K_m}",
+               "_helpFile": "help\\p10.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vf",
+                        "_description": "Forward Maximal rate"
+                     },
+                     {
+                        "_name": "KmS",
+                        "_description": "Substate Michaelis constant"
+                     },
+                     {
+                        "_name": "Vr",
+                        "_description": "Reverse Maximal rate"
+                     },
+                     {
+                        "_name": "KmP",
+                        "_description": "Product Michaelis constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "minus": "",
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "Vf",
+                                             "___S1___"
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "KmS"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "Vr",
+                                             "___P1___"
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "KmP"
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "cn": {
+                                 "_type": "integer",
+                                 "__text": "1"
+                              },
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "KmS"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___P1___",
+                                       "KmP"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "uur",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Uni-Uni Reversible Michaelis-Menten",
+               "_property": "Reversible,Hyperbolic,Hyperbolic",
+               "_description": "Uni-Uni Reversible Simple Michaelis-Menten",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "(Vf*___S1___/KmS-Vr*___P1___/KmP)/(1+___S1___/KmS+___P1___/KmP)",
+               "_display": "v =\\frac{V_f \\frac{S}{K_s} - V_r \\frac{P}{K_p}}{1 + \\frac{S}{K_s} + \\frac{P}{K_p}}",
+               "_helpFile": "help\\p12.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "Substrate Michaelis constant"
+                     },
+                     {
+                        "_name": "Keq",
+                        "_description": "Thermodynamic equilibrium constant"
+                     },
+                     {
+                        "_name": "Km2",
+                        "_description": "Product Michaelis constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "Vmax",
+                                       "Km1"
+                                    ]
+                                 },
+                                 {
+                                    "minus": "",
+                                    "ci": [
+                                       "___S1___"
+                                    ],
+                                    "apply": [
+                                       {
+                                          "divide": "",
+                                          "ci": [
+                                             "___P1___",
+                                             "Keq"
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "cn": {
+                                 "_type": "integer",
+                                 "__text": "1"
+                              },
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "Km1"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___P1___",
+                                       "Km2"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmme",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Reversible Haldane Michaelis-Menten",
+               "_property": "Reversible,Hyperbolic",
+               "_description": "Reversible Haldane Modified Michaelis-Menten",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "(Vmax/Km1)*(___S1___-___P1___/Keq)/(1+___S1___/Km1+___P1___/Km2)",
+               "_display": "v = \\left(\\frac{\\displaystyle V_m}{\\displaystyle K_s}\\right)\\ \\displaystyle\\frac{\\displaystyle S - \\displaystyle\\frac{P}{K_{eq}}}{1 + \\displaystyle\\frac{S}{K_s} + \\displaystyle\\frac{P}{K_p}}",
+               "_helpFile": "help\\p11.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "h",
+                        "_description": "Hill coefficient"
+                     },
+                     {
+                        "_name": "K_d",
+                        "_description": "Dissociation constante"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vmax"
+                              ],
+                              "apply": [
+                                 {
+                                    "power": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "h"
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "ci": [
+                                 "K_d"
+                              ],
+                              "apply": [
+                                 {
+                                    "power": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "h"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "HillKa",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Hill Equation",
+               "_property": "Irreversible,Sigmoidal",
+               "_description": "Hill Equation",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vmax*___S1___^h/(K_d+___S1___^h)",
+               "_display": "v = V_m \\displaystyle\\frac{S^h}{K_m + S^h}",
+               "_helpFile": "help\\p13.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "h",
+                        "_description": "Hill coefficient"
+                     },
+                     {
+                        "_name": "K_H",
+                        "_description": "Half maximal activity constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vmax"
+                              ],
+                              "apply": [
+                                 {
+                                    "power": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "h"
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "apply": [
+                                 {
+                                    "power": "",
+                                    "ci": [
+                                       "K_H",
+                                       "h"
+                                    ]
+                                 },
+                                 {
+                                    "power": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "h"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "HillKh",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Hill Equation using Half-Maximal Activity",
+               "_property": "Irreversible,Sigmoidal",
+               "_description": "Hill Equation using Half-Maximal Activity",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vmax*___S1___^h/(K_H^h+___S1___^h)",
+               "_display": "v = V_m \\displaystyle\\frac{S^h}{K_H^h + S^h}",
+               "_helpFile": "help\\p14.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "Km",
+                        "_description": "Michaelis constant"
+                     },
+                     {
+                        "_name": "n",
+                        "_description": "Hill coefficient"
+                     },
+                     {
+                        "_name": "L",
+                        "_description": "Allosteric constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "Vmax",
+                                             "___S1___"
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "Km"
+                                    ]
+                                 },
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km"
+                                                ]
+                                             }
+                                          ]
+                                       },
+                                       {
+                                          "minus": "",
+                                          "ci": [
+                                             "n"
+                                          ],
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          }
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "apply": [
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "n"
+                                    ]
+                                 }
+                              ],
+                              "ci": [
+                                 "L"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "iMWCs",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Simplified Irreversible MWC Model",
+               "_property": "Irreversible,Sigmoidal,Simple",
+               "_description": "Simplified Irreversible MWC Model",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vmax*___S1___/Km*(1+___S1___/Km)^(n-1)/((1+___S1___/Km)^n+L)",
+               "_display": "v = V_m \\frac{S/K_m \\left(1 + S/K_m\\right)^{n-1}}{\\left(1 + S/K_m\\right)^n + L}",
+               "_helpFile": "help\\p15.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "Km",
+                        "_description": "Michaelis constant"
+                     },
+                     {
+                        "_name": "n",
+                        "_description": "Hill coefficient"
+                     },
+                     {
+                        "_name": "L",
+                        "_description": "Allosteric constant"
+                     },
+                     {
+                        "_name": "c",
+                        "_description": "Equilibrium ratio"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vmax"
+                              ],
+                              "apply": [
+                                 {
+                                    "plus": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km"
+                                                ]
+                                             },
+                                             {
+                                                "power": "",
+                                                "apply": [
+                                                   {
+                                                      "plus": "",
+                                                      "cn": {
+                                                         "_type": "integer",
+                                                         "__text": "1"
+                                                      },
+                                                      "apply": [
+                                                         {
+                                                            "divide": "",
+                                                            "ci": [
+                                                               "___S1___",
+                                                               "Km"
+                                                            ]
+                                                         }
+                                                      ]
+                                                   },
+                                                   {
+                                                      "minus": "",
+                                                      "ci": [
+                                                         "n"
+                                                      ],
+                                                      "cn": {
+                                                         "_type": "integer",
+                                                         "__text": "1"
+                                                      }
+                                                   }
+                                                ]
+                                             }
+                                          ]
+                                       },
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "L",
+                                             "c"
+                                          ],
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km"
+                                                ]
+                                             },
+                                             {
+                                                "power": "",
+                                                "apply": [
+                                                   {
+                                                      "plus": "",
+                                                      "cn": {
+                                                         "_type": "integer",
+                                                         "__text": "1"
+                                                      },
+                                                      "apply": [
+                                                         {
+                                                            "divide": "",
+                                                            "apply": [
+                                                               {
+                                                                  "times": "",
+                                                                  "ci": [
+                                                                     "c",
+                                                                     "___S1___"
+                                                                  ]
+                                                               }
+                                                            ],
+                                                            "ci": [
+                                                               "Km"
+                                                            ]
+                                                         }
+                                                      ]
+                                                   },
+                                                   {
+                                                      "minus": "",
+                                                      "ci": [
+                                                         "n"
+                                                      ],
+                                                      "cn": {
+                                                         "_type": "integer",
+                                                         "__text": "1"
+                                                      }
+                                                   }
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "apply": [
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "n"
+                                    ]
+                                 },
+                                 {
+                                    "times": "",
+                                    "ci": [
+                                       "L"
+                                    ],
+                                    "apply": [
+                                       {
+                                          "power": "",
+                                          "apply": [
+                                             {
+                                                "plus": "",
+                                                "cn": {
+                                                   "_type": "integer",
+                                                   "__text": "1"
+                                                },
+                                                "apply": [
+                                                   {
+                                                      "divide": "",
+                                                      "apply": [
+                                                         {
+                                                            "times": "",
+                                                            "ci": [
+                                                               "c",
+                                                               "___S1___"
+                                                            ]
+                                                         }
+                                                      ],
+                                                      "ci": [
+                                                         "Km"
+                                                      ]
+                                                   }
+                                                ]
+                                             }
+                                          ],
+                                          "ci": [
+                                             "n"
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "iMWC",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Irreversible MWC Model",
+               "_property": "Irreversible,Sigmoidal",
+               "_description": "Irreversible MWC Model",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vmax*((___S1___/Km)*(1+___S1___/Km)^(n-1)+L*c*(___S1___/Km)*(1+c*___S1___/Km)^(n-1))/((1+___S1___/Km)^n+L*(1+c*___S1___/Km)^n)",
+               "_display": "v = V_m \\frac{\\alpha (1 + \\alpha)^{n-1} + L c \\alpha (1 + c \\alpha)^{n-1}}{(1 + \\alpha)^n + L(1 + c \\alpha)^n}",
+               "_helpFile": "help\\p16.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "Km",
+                        "_description": "Michaelis constant"
+                     },
+                     {
+                        "_name": "n",
+                        "_description": "Hill coefficient"
+                     },
+                     {
+                        "_name": "L",
+                        "_description": "Allosteric constant"
+                     },
+                     {
+                        "_name": "Ki",
+                        "_description": "Inhibition constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "Vmax",
+                                             "___S1___"
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "Km"
+                                    ]
+                                 },
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km"
+                                                ]
+                                             }
+                                          ]
+                                       },
+                                       {
+                                          "minus": "",
+                                          "ci": [
+                                             "n"
+                                          ],
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          }
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "apply": [
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "n"
+                                    ]
+                                 },
+                                 {
+                                    "times": "",
+                                    "ci": [
+                                       "L"
+                                    ],
+                                    "apply": [
+                                       {
+                                          "power": "",
+                                          "apply": [
+                                             {
+                                                "plus": "",
+                                                "cn": {
+                                                   "_type": "integer",
+                                                   "__text": "1"
+                                                },
+                                                "apply": [
+                                                   {
+                                                      "divide": "",
+                                                      "ci": [
+                                                         "___I1___",
+                                                         "Ki"
+                                                      ]
+                                                   }
+                                                ]
+                                             }
+                                          ],
+                                          "ci": [
+                                             "n"
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "iMWCi",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Irreversible MWC Model with Inhibition",
+               "_property": "Irreversible,Sigmoidal,Allosteric,Regulated,Inhibited",
+               "_description": "Irreversible MWC Model with Inhibition",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vmax*___S1___/Km*(1+___S1___/Km)^(n-1)/((1+___S1___/Km)^n+L*(1+___I1___/Ki)^n)",
+               "_display": "v = V_m \\frac{S/K_m \\left(1 + S/K_m\\right)^{n-1}}{\\left(1 + S/K_m\\right)^n + L \\left( 1 + I/K_i\\right)^n}",
+               "_helpFile": "help\\p17.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "Km",
+                        "_description": "Michaelis constant"
+                     },
+                     {
+                        "_name": "n",
+                        "_description": "Hill coefficient"
+                     },
+                     {
+                        "_name": "L",
+                        "_description": "Allosteric constant"
+                     },
+                     {
+                        "_name": "Ka",
+                        "_description": "Activation constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "Vmax",
+                                             "___S1___"
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "Km"
+                                    ]
+                                 },
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km"
+                                                ]
+                                             }
+                                          ]
+                                       },
+                                       {
+                                          "minus": "",
+                                          "ci": [
+                                             "n"
+                                          ],
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          }
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "apply": [
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "n"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "L"
+                                    ],
+                                    "apply": [
+                                       {
+                                          "power": "",
+                                          "apply": [
+                                             {
+                                                "plus": "",
+                                                "cn": {
+                                                   "_type": "integer",
+                                                   "__text": "1"
+                                                },
+                                                "apply": [
+                                                   {
+                                                      "divide": "",
+                                                      "ci": [
+                                                         "___A1___",
+                                                         "Ka"
+                                                      ]
+                                                   }
+                                                ]
+                                             }
+                                          ],
+                                          "ci": [
+                                             "n"
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "iMWCa",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Irreversible MWC Model with Activation",
+               "_property": "Irreversible,Sigmoidal,Allosteric,Regulated,Activated",
+               "_description": "Irreversible MWC Model with Activation",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vmax*___S1___/Km*(1+___S1___/Km)^(n-1)/((1+___S1___/Km)^n+L/(1+___A1___/Ka)^n)",
+               "_display": "v = V_m \\frac{S/K_m \\left(1 + S/K_m\\right)^{n-1}}{\\left(1 + S/K_m\\right)^n + L / \\left( 1 + A/K_a\\right)^n}",
+               "_helpFile": "help\\p18.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vm",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "Keq",
+                        "_description": "Thermodynamic equilibrium constant"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "Substrate Michaelis constant"
+                     },
+                     {
+                        "_name": "Km2",
+                        "_description": "Product Michaelis constant"
+                     },
+                     {
+                        "_name": "h",
+                        "_description": "Hill coefficient"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vm"
+                              ],
+                              "apply": [
+                                 {
+                                    "minus": "",
+                                    "ci": [
+                                       "___S1___"
+                                    ],
+                                    "apply": [
+                                       {
+                                          "divide": "",
+                                          "ci": [
+                                             "___P1___",
+                                             "Keq"
+                                          ]
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km1"
+                                                ]
+                                             },
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___P1___",
+                                                   "Km2"
+                                                ]
+                                             }
+                                          ]
+                                       },
+                                       {
+                                          "minus": "",
+                                          "ci": [
+                                             "h"
+                                          ],
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          }
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "cn": {
+                                 "_type": "integer",
+                                 "__text": "1"
+                              },
+                              "apply": [
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km1"
+                                                ]
+                                             },
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___P1___",
+                                                   "Km2"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "h"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rHofHill",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Reversible Hill Model",
+               "_property": "Reversible,Linear",
+               "_description": "Reversible Hill model, see Rohwer and Hofmeyr, Kinetic and Thermodynamic Aspects of Enzyme Control and Regulation, J. Phys. Chem. B, 2010, 114 (49), pp 16280–16289, DOI: 10.1021/jp108412s",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vm*((___S1___-___P1___/Keq)*(___S1___/Km1+___P1___/Km2)^(h-1))/(1+(___S1___/Km1+___P1___/Km2)^h)",
+               "_display": "v = V_m \\frac{V_f {\\displaystyle\\alpha\\ \\left(1 - \\rho\\right)\\ \\left(\\alpha + \\pi\\right)^{h-1}}}{\\displaystyle 1 + \\left(\\alpha + \\pi\\right)^h}",
+               "_helpFile": "help\\p19.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vmax",
+                        "_description": "Maximal rate"
+                     },
+                     {
+                        "_name": "Keq",
+                        "_description": "Thermodynamic equilibrium constant"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "Substrate Michaelis Constant"
+                     },
+                     {
+                        "_name": "Km2",
+                        "_description": "Product Michaelis Constant"
+                     },
+                     {
+                        "_name": "h",
+                        "_description": "Hill coefficient"
+                     },
+                     {
+                        "_name": "Ki",
+                        "_description": "Inhibition constant"
+                     },
+                     {
+                        "_name": "factor",
+                        "_description": "Modifier factor"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vmax"
+                              ],
+                              "apply": [
+                                 {
+                                    "minus": "",
+                                    "ci": [
+                                       "___S1___"
+                                    ],
+                                    "apply": [
+                                       {
+                                          "divide": "",
+                                          "ci": [
+                                             "___P1___",
+                                             "Keq"
+                                          ]
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km1"
+                                                ]
+                                             },
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___P1___",
+                                                   "Km2"
+                                                ]
+                                             }
+                                          ]
+                                       },
+                                       {
+                                          "minus": "",
+                                          "ci": [
+                                             "h"
+                                          ],
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          }
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "power": "",
+                                                "apply": [
+                                                   {
+                                                      "divide": "",
+                                                      "ci": [
+                                                         "___I1___",
+                                                         "Ki"
+                                                      ]
+                                                   }
+                                                ],
+                                                "ci": [
+                                                   "h"
+                                                ]
+                                             }
+                                          ]
+                                       },
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "times": "",
+                                                "ci": [
+                                                   "factor"
+                                                ],
+                                                "apply": [
+                                                   {
+                                                      "power": "",
+                                                      "apply": [
+                                                         {
+                                                            "divide": "",
+                                                            "ci": [
+                                                               "___I1___",
+                                                               "Ki"
+                                                            ]
+                                                         }
+                                                      ],
+                                                      "ci": [
+                                                         "h"
+                                                      ]
+                                                   }
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km1"
+                                                ]
+                                             },
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___P1___",
+                                                   "Km2"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "h"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rHofHillm",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Reversible Hill Model with Modifier",
+               "_property": "Reversible,Sigmoidal,Allosteric,Regulated",
+               "_description": "Reversible Hill Model with Modifier",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vmax*((___S1___-___P1___/Keq)*(___S1___/Km1+___P1___/Km2)^(h-1))/((1+(___I1___/Ki)^h)/(1+factor*(___I1___/Ki)^h)+(___S1___/Km1+___P1___/Km2)^h)",
+               "_display": "v = V_m \\frac{V_f {\\displaystyle\\alpha\\ \\left(1 - \\rho\\right)\\ \\left(\\alpha + \\pi\\right)^{h-1}}}{\\displaystyle\\frac{1 + \\mu^h}{1 + \\sigma \\mu^h} + \\left(\\alpha + \\pi\\right)^h}",
+               "_helpFile": "help\\p20.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "v_o",
+                        "_description": "Reaction rate at the operating point"
+                     },
+                     {
+                        "_name": "e",
+                        "_description": "Level of enzyme concentration away from operatingpoint (if applicable)"
+                     },
+                     {
+                        "_name": "eo",
+                        "_description": "Operating point for enzyme concentration"
+                     },
+                     {
+                        "_name": "elast1",
+                        "_description": "Elasticity at operating point"
+                     },
+                     {
+                        "_name": "so",
+                        "_description": "Concentation of substate at operating point"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "v_o"
+                        ],
+                        "apply": [
+                           {
+                              "divide": "",
+                              "ci": [
+                                 "e",
+                                 "eo"
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "cn": {
+                                 "_type": "integer",
+                                 "__text": "1"
+                              },
+                              "apply": [
+                                 {
+                                    "times": "",
+                                    "ci": [
+                                       "elast1"
+                                    ],
+                                    "apply": [
+                                       {
+                                          "ln": "",
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "so"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "linlog",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Lin-Log Approximation",
+               "_property": "Irreversible,Simple",
+               "_description": "Lin-Log Approximation",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "v_o*(e/eo)*(1+elast1*ln(___S1___/so))",
+               "_display": "v = v_o \\left( \\frac{e}{e_o} \\right) \\left( 1 + \\varepsilon^v_{S_1} \\ln\\left( \\frac{S_1}{S_o} \\right) \\right)",
+               "_helpFile": "help\\p21.html"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k",
+                        "_description": "Forward rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "k",
+                           "___S1___",
+                           "___S2___"
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "immBiU",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Irreversible Mass-Action Bi-Uni",
+               "_property": "Irreversible,Mass-action,Linear",
+               "_description": "Irreversible Mass-Action Bi-Uni",
+               "_numSubstrates": "2",
+               "_numProducts": "1",
+               "_infixExpression": "k*___S1___*___S2___",
+               "_display": "v = k S_1 S_2",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k1",
+                        "_description": "Forward rate Constant"
+                     },
+                     {
+                        "_name": "k2",
+                        "_description": "Reverse rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "minus": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k1",
+                                 "___S1___",
+                                 "___S2___"
+                              ]
+                           },
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k2",
+                                 "___P1___"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmmBiU",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Reversible Mass-Action Bi-Uni",
+               "_property": "Reversible,Mass-action,Linear",
+               "_description": "Reversible Mass-Action Bi-Uni",
+               "_numSubstrates": "2",
+               "_numProducts": "1",
+               "_infixExpression": "k1*___S1___*___S2___-k2*___P1___",
+               "_display": "v = k_1 S_1 S_2 - k_2 P_1",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vf",
+                        "_description": "Forward maximal rate"
+                     },
+                     {
+                        "_name": "Keq",
+                        "_description": "Equilibrium constant"
+                     },
+                     {
+                        "_name": "KmS1",
+                        "_description": "Km for $S_1$"
+                     },
+                     {
+                        "_name": "KmS2",
+                        "_description": "Km for $S_2$"
+                     },
+                     {
+                        "_name": "Vr",
+                        "_description": "Reverse maximal rate"
+                     },
+                     {
+                        "_name": "KmP",
+                        "_description": "Km for P"
+                     },
+                     {
+                        "_name": "KiA",
+                        "_description": "Product inhibition constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vf"
+                              ],
+                              "apply": [
+                                 {
+                                    "minus": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "___S1___",
+                                             "___S2___"
+                                          ]
+                                       },
+                                       {
+                                          "divide": "",
+                                          "ci": [
+                                             "___P1___",
+                                             "Keq"
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "apply": [
+                                 {
+                                    "times": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "___S2___"
+                                    ]
+                                 },
+                                 {
+                                    "times": "",
+                                    "ci": [
+                                       "KmS1",
+                                       "___S2___"
+                                    ]
+                                 },
+                                 {
+                                    "times": "",
+                                    "ci": [
+                                       "KmS2",
+                                       "___S1___"
+                                    ]
+                                 },
+                                 {
+                                    "times": "",
+                                    "apply": [
+                                       {
+                                          "divide": "",
+                                          "ci": [
+                                             "Vf"
+                                          ],
+                                          "apply": [
+                                             {
+                                                "times": "",
+                                                "ci": [
+                                                   "Vr",
+                                                   "Keq"
+                                                ]
+                                             }
+                                          ]
+                                       },
+                                       {
+                                          "plus": "",
+                                          "ci": [
+                                             "KmP"
+                                          ],
+                                          "apply": [
+                                             {
+                                                "times": "",
+                                                "ci": [
+                                                   "___P1___"
+                                                ],
+                                                "apply": [
+                                                   {
+                                                      "plus": "",
+                                                      "cn": {
+                                                         "_type": "integer",
+                                                         "__text": "1"
+                                                      },
+                                                      "apply": [
+                                                         {
+                                                            "divide": "",
+                                                            "ci": [
+                                                               "___S1___",
+                                                               "KiA"
+                                                            ]
+                                                         }
+                                                      ]
+                                                   }
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmmbu",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Ordered Bi Uni kinetics",
+               "_property": "Reversible,Hyperbolic",
+               "_description": "Ordered Bi Uni kinetics",
+               "_numSubstrates": "2",
+               "_numProducts": "1",
+               "_infixExpression": "Vf*(___S1___*___S2___-___P1___/Keq)/(___S1___*___S2___+KmS1*___S2___+KmS2*___S1___+Vf/(Vr*Keq)*(KmP+___P1___*(1+___S1___/KiA)))",
+               "_display": "v = V_f \\frac{S_1 S_2-P_1/Keq}{S_1 S_2 + K_{S_1}\\ S_2 + K_{S_2}\\ S_1+\\frac{V_f}{V_r Keq} (K_{P_1} + P_1 (1+\\frac{S_1}{KiA}))}",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k",
+                        "_description": "Forward rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "k",
+                           "___S1___"
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "immUBi",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Irreversible Mass-Action Uni-Bi",
+               "_property": "Irreversible,Mass-action,Linear",
+               "_description": "Irreversible Mass-Action Uni-Bi",
+               "_numSubstrates": "1",
+               "_numProducts": "2",
+               "_infixExpression": "k*___S1___",
+               "_display": "k S_1",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k1",
+                        "_description": "Forward rate constant"
+                     },
+                     {
+                        "_name": "k2",
+                        "_description": "Reverse rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "minus": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k1",
+                                 "___S1___"
+                              ]
+                           },
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k2",
+                                 "___P1___",
+                                 "___P2___"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmmUniBi",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Reversible Mass-Action Uni-Bi",
+               "_property": "Reversible,Mass-action,Linear",
+               "_description": "Reversible Mass-Action Uni-Bi",
+               "_numSubstrates": "1",
+               "_numProducts": "2",
+               "_infixExpression": "k1*___S1___-k2*___P1___*___P2___",
+               "_display": "v = k_1 S_1 - k_2 P_1 P_2",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k",
+                        "_description": "Forward rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "k",
+                           "___S1___",
+                           "___S2___"
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "immBiBi",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Irreversible Mass-Action Bi-Bi",
+               "_property": "Irreversible,Mass-action,Linear",
+               "_description": "Irreversible Mass-Action Bi-Bi",
+               "_numSubstrates": "2",
+               "_numProducts": "2",
+               "_infixExpression": "k*___S1___*___S2___",
+               "_display": "v = k S_1 S_2",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k1",
+                        "_description": "Forward rate constant"
+                     },
+                     {
+                        "_name": "k2",
+                        "_description": "Reverse rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "minus": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k1",
+                                 "___S1___",
+                                 "___S2___"
+                              ]
+                           },
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k2",
+                                 "___P1___",
+                                 "___P2___"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmmBiBi",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Reversible Mass-Action Bi-Bi",
+               "_property": "Mass-action,Reversible,Linear",
+               "_description": "Reversible Mass-Action Bi-Bi",
+               "_numSubstrates": "2",
+               "_numProducts": "2",
+               "_infixExpression": "k1*___S1___*___S2___-k2*___P1___*___P2___",
+               "_display": "v = k_1 S_1 S_2 - k_2 P_1 P_2",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k",
+                        "_description": "Forward rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "k",
+                           "___S1___"
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "immUTri",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Irreversible Mass-Action Uni-Tri",
+               "_property": "Irreversible,Mass-action,Linear",
+               "_description": "Irreversible Mass-Action Uni-Tri",
+               "_numSubstrates": "1",
+               "_numProducts": "3",
+               "_infixExpression": "k*___S1___",
+               "_display": "v = k S_1",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k1",
+                        "_description": "Forward rate constant"
+                     },
+                     {
+                        "_name": "k2",
+                        "_description": "Reverse rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "minus": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k1",
+                                 "___S1___"
+                              ]
+                           },
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k2",
+                                 "___P1___",
+                                 "___P2___",
+                                 "___P3___"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmmUTri",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Reversible Mass-Action Uni-Tri",
+               "_property": "Reversible,Mass-action,Linear",
+               "_description": "Reversible Mass-Action Uni-Tri",
+               "_numSubstrates": "1",
+               "_numProducts": "3",
+               "_infixExpression": "k1*___S1___-k2*___P1___*___P2___*___P3___",
+               "_display": "v = k_1 S_1 - k_2 P_1 P_2 P_3",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k",
+                        "_description": "Forward rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "k",
+                           "___S1___",
+                           "___S2___"
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "immBiTri",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Irreversible Mass-Action Bi-Tr",
+               "_property": "Irreversible,Mass-action,Linear",
+               "_description": "Irreversible Mass-Action Bi-Tri",
+               "_numSubstrates": "2",
+               "_numProducts": "3",
+               "_infixExpression": "k*___S1___*___S2___",
+               "_display": "v = k S_1 S_2",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k1",
+                        "_description": "Reverse Rate Constant"
+                     },
+                     {
+                        "_name": "k2",
+                        "_description": "Reverse rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "minus": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k1",
+                                 "___S1___",
+                                 "___S2___"
+                              ]
+                           },
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k2",
+                                 "___P1___",
+                                 "___P2___",
+                                 "___P3___"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmmBiTri",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Reversible Mass-Action Bi-Tri",
+               "_property": "Reversible,Mass-action,Linear",
+               "_description": "Reversible Mass-Action Bi-Tri",
+               "_numSubstrates": "2",
+               "_numProducts": "3",
+               "_infixExpression": "k1*___S1___*___S2___-k2*___P1___*___P2___*___P3___",
+               "_display": "v = k_1 S_1 S_2 - k_2 P_1 P_2 P_3",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k",
+                        "_description": "Forward rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "k",
+                           "___S1___",
+                           "___S2___",
+                           "___S3___"
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "immTriTri",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Irreversible Mass-Action Tri-Tri",
+               "_property": "Irreversible,Mass-action,Linear",
+               "_description": "Irreversible Mass-Action Tri-Tri",
+               "_numSubstrates": "3",
+               "_numProducts": "3",
+               "_infixExpression": "k*___S1___*___S2___*___S3___",
+               "_display": "v = k S_1 S_2 S_3",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k1",
+                        "_description": "Forward rate constant"
+                     },
+                     {
+                        "_name": "k2",
+                        "_description": "Reverse rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "minus": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k1",
+                                 "___S1___",
+                                 "___S2___",
+                                 "___S3___"
+                              ]
+                           },
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k2",
+                                 "___P1___",
+                                 "___P2___",
+                                 "___P3___"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmmTriTri",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Reversible Mass-Action Tri-Tri",
+               "_property": "Reversible,Mass-action,Linear",
+               "_description": "Reversible Mass-Action Tri-Tri",
+               "_numSubstrates": "3",
+               "_numProducts": "3",
+               "_infixExpression": "k1*___S1___*___S2___*___S3___-k2*___P1___*___P2___*___P3___",
+               "_display": "v = k_1 S_1 S_2 S_3 - k_2 P_1 P_2 P_3",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k",
+                        "_description": "Forward rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "k",
+                           "___S1___",
+                           "___S2___",
+                           "___S3___"
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "immTriU",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Irreversible Mass-Action Tri-Uni",
+               "_property": "Irreversible,Mass-action,Linear",
+               "_description": "Irreversible Mass-Action Tri-Uni",
+               "_numSubstrates": "3",
+               "_numProducts": "1",
+               "_infixExpression": "k*___S1___*___S2___*___S3___",
+               "_display": "v = k S_1 S_2 S_3",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k1",
+                        "_description": "Forward rate constant"
+                     },
+                     {
+                        "_name": "k2",
+                        "_description": "Reverse rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "minus": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k1",
+                                 "___S1___",
+                                 "___S2___",
+                                 "___S3___"
+                              ]
+                           },
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k2",
+                                 "___P1___"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmmTriU",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Reversible Mass-Action Tri-Uni",
+               "_property": "Reversible,Mass-action,Linear",
+               "_description": "Reversible Mass-Action Tri-Uni",
+               "_numSubstrates": "3",
+               "_numProducts": "1",
+               "_infixExpression": "k1*___S1___*___S2___*___S3___-k2*___P1___",
+               "_display": "v = k_1 S_1 S_2 S_3 - k_2 P_1",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k",
+                        "_description": "Forward rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "k",
+                           "___S1___",
+                           "___S2___",
+                           "___S3___"
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "immTriBi",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Irreversible Mass-Action Tri-Bi",
+               "_property": "Mass-action,Irreversible,Linear",
+               "_description": "Irreversible Mass-Action Tri-Bi",
+               "_numSubstrates": "3",
+               "_numProducts": "2",
+               "_infixExpression": "k*___S1___*___S2___*___S3___",
+               "_display": "v = k S_1 S_2 S_3",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k1",
+                        "_description": "Forward rate constant"
+                     },
+                     {
+                        "_name": "k2",
+                        "_description": "Reverse rate constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "minus": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k1",
+                                 "___S1___",
+                                 "___S2___",
+                                 "___S3___"
+                              ]
+                           },
+                           {
+                              "times": "",
+                              "ci": [
+                                 "k2",
+                                 "___P1___",
+                                 "___P2___"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmmTriBi",
+               "_SBOTerm": "SBO:0000000",
+               "_displayName": "Reversible Mass-Action Tri-Bi",
+               "_property": "Reversible,Mass-action,Linear",
+               "_description": "Reversible Mass-Action Tri-Bi",
+               "_numSubstrates": "3",
+               "_numProducts": "2",
+               "_infixExpression": "k1*___S1___*___S2___*___S3___-k2*___P1___*___P2___",
+               "_display": "v = k_1 S_1 S_2 S_3 - k_2 P_1 P_2",
+               "_helpFile": "help\\noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "vo",
+                        "_description": "Reaction rate at the operating point"
+                     },
+                     {
+                        "_name": "eps",
+                        "_description": "Elasticity at the operating point"
+                     },
+                     {
+                        "_name": "so",
+                        "_description": "Substate concentration at the operating point"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "vo"
+                        ],
+                        "apply": [
+                           {
+                              "plus": "",
+                              "cn": {
+                                 "_type": "integer",
+                                 "__text": "1"
+                              },
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "eps"
+                                          ],
+                                          "apply": [
+                                             {
+                                                "minus": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "so"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "so"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "linearElast",
+               "_SBOTerm": "SBO00000000",
+               "_displayName": "Linear Model using Elasticities",
+               "_property": "Simple,Linear,Reversible",
+               "_description": "Linear model using elasticities",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "vo*(1+eps*(___S1___-so)/so)",
+               "_display": "v = v_o\\left( 1 + \\varepsilon^v_{s_o} \\frac{S_1 - s_o}{s_o} \\right)",
+               "_helpFile": "help/noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "k",
+                        "_description": "Rate constant"
+                     },
+                     {
+                        "_name": "e",
+                        "_description": "Elasticity coefficient of reaction rate with respect to species concentration"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "times": "",
+                        "ci": [
+                           "k"
+                        ],
+                        "apply": [
+                           {
+                              "power": "",
+                              "ci": [
+                                 "___S1___",
+                                 "e"
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "powerLaw",
+               "_SBOTerm": "SBO00000000",
+               "_displayName": "Power Law",
+               "_property": "Simple,Irreversible",
+               "_description": "Power law",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "k*___S1___^e",
+               "_display": "v = k S^{\\varepsilon^v_S}",
+               "_helpFile": "help/noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vf",
+                        "_description": "none"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "none"
+                     },
+                     {
+                        "_name": "Vr",
+                        "_description": "none"
+                     },
+                     {
+                        "_name": "Km2",
+                        "_description": "none"
+                     },
+                     {
+                        "_name": "Ki",
+                        "_description": "none"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "minus": "",
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "Vf",
+                                             "___S1___"
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "Km1"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "Vr",
+                                             "___P1___"
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "Km2"
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "cn": {
+                                 "_type": "integer",
+                                 "__text": "1"
+                              },
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "Km1"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___P1___",
+                                       "Km2"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___I1___",
+                                       "Ki"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmmc",
+               "_SBOTerm": "SBO00000000",
+               "_displayName": "Reversible Competitive Inhibition",
+               "_property": "Hyperbolic,Inhibited,Regulated,Reversible",
+               "_description": "Reversible competitive inhibition",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "(Vf*___S1___/Km1-Vr*___P1___/Km2)/(1+___S1___/Km1+___P1___/Km2+___I1___/Ki)",
+               "_display": "v = \\frac{V_r \\frac{S_1}{Km_1} - V_r \\frac{P_1}{Km_2}}{1 + \\frac{S_1}{Km_1} + \\frac{P_1}{Km_2} + \\frac{I_1}{K_i}}",
+               "_helpFile": "help/noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vf",
+                        "_description": "Maximal forward rate"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "Km for substrate, $S_1$"
+                     },
+                     {
+                        "_name": "Vr",
+                        "_description": "Maximal reverse rate"
+                     },
+                     {
+                        "_name": "Km2",
+                        "_description": "Km for product, $P_1$"
+                     },
+                     {
+                        "_name": "Ki",
+                        "_description": "Uncompetitive inhibition constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "minus": "",
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "Vf",
+                                             "___S1___"
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "Km1"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "Vr",
+                                             "___P1___"
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "Km2"
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "cn": {
+                                 "_type": "integer",
+                                 "__text": "1"
+                              },
+                              "apply": [
+                                 {
+                                    "times": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km1"
+                                                ]
+                                             },
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___P1___",
+                                                   "Km2"
+                                                ]
+                                             }
+                                          ]
+                                       },
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___I1___",
+                                                   "Ki"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rmmnc",
+               "_SBOTerm": "SBO00000000",
+               "_displayName": "Reversible Uncompetitive Rate Law",
+               "_property": "Reversible,Inhibited,Regulated",
+               "_description": "Reversible uncompetitive rate law",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "(Vf*___S1___/Km1-Vr*___P1___/Km2)/(1+(___S1___/Km1+___P1___/Km2)*(1+___I1___/Ki))",
+               "_display": "v = \\frac{V_r \\frac{S_1}{Km_1} - V_r \\frac{P_1}{Km_2}}{1 + \\left(\\frac{S_1}{Km_1} + \\frac{P_1}{Km_2}\\right)\\left(1 + \\frac{I_1}{K_i}\\right)}",
+               "_helpFile": "help/noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vm",
+                        "_description": "Maximal reaction rate"
+                     },
+                     {
+                        "_name": "Keq",
+                        "_description": "Equilibrium constant"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "Substrate Km"
+                     },
+                     {
+                        "_name": "Km2",
+                        "_description": "Product Km"
+                     },
+                     {
+                        "_name": "h",
+                        "_description": "Hill coefficient"
+                     },
+                     {
+                        "_name": "L",
+                        "_description": "Allosteric constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vm"
+                              ],
+                              "apply": [
+                                 {
+                                    "minus": "",
+                                    "ci": [
+                                       "___S1___"
+                                    ],
+                                    "apply": [
+                                       {
+                                          "divide": "",
+                                          "ci": [
+                                             "___P1___",
+                                             "Keq"
+                                          ]
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km1"
+                                                ]
+                                             },
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___P1___",
+                                                   "Km2"
+                                                ]
+                                             }
+                                          ]
+                                       },
+                                       {
+                                          "minus": "",
+                                          "ci": [
+                                             "h"
+                                          ],
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          }
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "ci": [
+                                 "L"
+                              ],
+                              "apply": [
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km1"
+                                                ]
+                                             },
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___P1___",
+                                                   "Km2"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "h"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rMWCs",
+               "_SBOTerm": "SBO00000000",
+               "_displayName": "Reversible MWC Model",
+               "_property": "Reversible,Sigmoidal",
+               "_description": "Simplifed reversible MWC model",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vm*((___S1___-___P1___/Keq)*(1+___S1___/Km1+___P1___/Km2)^(h-1))/(L+(1+___S1___/Km1+___P1___/Km2)^h)",
+               "_display": "v = V_m \\frac{V_f {\\displaystyle\\alpha\\ \\left(1 - \\rho\\right)\\ \\left(1 + \\alpha + \\pi\\right)^{h-1}}}{\\displaystyle L + \\left(1 + \\alpha + \\pi\\right)^h}",
+               "_helpFile": "help/noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vm",
+                        "_description": "Maximal reaction rate"
+                     },
+                     {
+                        "_name": "Keq",
+                        "_description": "Equilibrium constant"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "Substrate Km"
+                     },
+                     {
+                        "_name": "Km2",
+                        "_description": "Product Km"
+                     },
+                     {
+                        "_name": "h",
+                        "_description": "Hill coefficient"
+                     },
+                     {
+                        "_name": "L",
+                        "_description": "Allosteric constant"
+                     },
+                     {
+                        "_name": "Ki",
+                        "_description": "Inhibition constant"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vm"
+                              ],
+                              "apply": [
+                                 {
+                                    "minus": "",
+                                    "ci": [
+                                       "___S1___"
+                                    ],
+                                    "apply": [
+                                       {
+                                          "divide": "",
+                                          "ci": [
+                                             "___P1___",
+                                             "Keq"
+                                          ]
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km1"
+                                                ]
+                                             },
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___P1___",
+                                                   "Km2"
+                                                ]
+                                             }
+                                          ]
+                                       },
+                                       {
+                                          "minus": "",
+                                          "ci": [
+                                             "h"
+                                          ],
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          }
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "apply": [
+                                 {
+                                    "times": "",
+                                    "ci": [
+                                       "L"
+                                    ],
+                                    "apply": [
+                                       {
+                                          "power": "",
+                                          "apply": [
+                                             {
+                                                "plus": "",
+                                                "cn": {
+                                                   "_type": "integer",
+                                                   "__text": "1"
+                                                },
+                                                "apply": [
+                                                   {
+                                                      "divide": "",
+                                                      "ci": [
+                                                         "___I1___",
+                                                         "Ki"
+                                                      ]
+                                                   }
+                                                ]
+                                             }
+                                          ],
+                                          "ci": [
+                                             "h"
+                                          ]
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "power": "",
+                                    "apply": [
+                                       {
+                                          "plus": "",
+                                          "cn": {
+                                             "_type": "integer",
+                                             "__text": "1"
+                                          },
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___",
+                                                   "Km1"
+                                                ]
+                                             },
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___P1___",
+                                                   "Km2"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ],
+                                    "ci": [
+                                       "h"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rMWCi",
+               "_SBOTerm": "SBO00000000",
+               "_displayName": "Reversible MWC with Inhibitor",
+               "_property": "Reversible,Inhibited,Regulated,Allosteric,Sigmoidal",
+               "_description": "Simplified reversible MWC model with inhibitor",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vm*((___S1___-___P1___/Keq)*(1+___S1___/Km1+___P1___/Km2)^(h-1))/(L*(1+___I1___/Ki)^h+(1+___S1___/Km1+___P1___/Km2)^h)",
+               "_display": "v = V_m \\frac{V_f {\\displaystyle\\alpha\\ \\left(1 - \\rho\\right)\\ \\left(1 + \\alpha + \\pi\\right)^{h-1}}}{\\displaystyle L \\left( 1 + I/K_i\\right)^n + \\left(1 + \\alpha + \\pi\\right)^h}",
+               "_helpFile": "help/noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vm",
+                        "_description": "Mximla reaction rate"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "Substrate 1 Km"
+                     },
+                     {
+                        "_name": "Km2",
+                        "_description": "Substrate 2 Km"
+                     },
+                     {
+                        "_name": "Keq",
+                        "_description": "Equilibrium constant"
+                     },
+                     {
+                        "_name": "Km3",
+                        "_description": "Product Km"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vm"
+                              ],
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "Km1"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___S2___",
+                                       "Km2"
+                                    ]
+                                 },
+                                 {
+                                    "minus": "",
+                                    "cn": {
+                                       "_type": "integer",
+                                       "__text": "1"
+                                    },
+                                    "apply": [
+                                       {
+                                          "divide": "",
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___P1___"
+                                                ],
+                                                "apply": [
+                                                   {
+                                                      "times": "",
+                                                      "ci": [
+                                                         "___S1___",
+                                                         "___S2___"
+                                                      ]
+                                                   }
+                                                ]
+                                             }
+                                          ],
+                                          "ci": [
+                                             "Keq"
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "cn": {
+                                 "_type": "integer",
+                                 "__text": "1"
+                              },
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "Km1"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___S2___",
+                                       "Km2"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "___S1___",
+                                             "___S2___"
+                                          ]
+                                       },
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "Km1",
+                                             "Km2"
+                                          ]
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___P1___",
+                                       "Km3"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rROBiUni",
+               "_SBOTerm": "SBO00000000",
+               "_displayName": "Random order Bi-Uni",
+               "_property": "Reversible,Hyperbolic",
+               "_description": "Random order Bi-Uni reaction",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vm*(___S1___/Km1)*(___S2___/Km2)*(1-(___P1___/(___S1___*___S2___))/Keq)/(1+___S1___/Km1+___S2___/Km2+___S1___*___S2___/(Km1*Km2)+___P1___/Km3)",
+               "_display": "v = V_m\\ \\frac{\\alpha_1 \\alpha_2 (1 - \\rho)}{1 + \\alpha_1 + \\alpha_2  + \\alpha_1 \\alpha_2 + \\pi}",
+               "_helpFile": "help/noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vm",
+                        "_description": "Maximal reaction rate"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "Substrate Km"
+                     },
+                     {
+                        "_name": "Keq",
+                        "_description": "Equilibrium constant"
+                     },
+                     {
+                        "_name": "Km2",
+                        "_description": "Product 1 Km"
+                     },
+                     {
+                        "_name": "Km3",
+                        "_description": "Product 2 Km"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vm"
+                              ],
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "Km1"
+                                    ]
+                                 },
+                                 {
+                                    "minus": "",
+                                    "cn": {
+                                       "_type": "integer",
+                                       "__text": "1"
+                                    },
+                                    "apply": [
+                                       {
+                                          "divide": "",
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "ci": [
+                                                   "___S1___"
+                                                ],
+                                                "apply": [
+                                                   {
+                                                      "times": "",
+                                                      "ci": [
+                                                         "___P1___",
+                                                         "___P2___"
+                                                      ]
+                                                   }
+                                                ]
+                                             }
+                                          ],
+                                          "ci": [
+                                             "Keq"
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "plus": "",
+                              "cn": {
+                                 "_type": "integer",
+                                 "__text": "1"
+                              },
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "Km1"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___P1___",
+                                       "Km2"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "apply": [
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "___P1___",
+                                             "___P2___"
+                                          ]
+                                       },
+                                       {
+                                          "times": "",
+                                          "ci": [
+                                             "Km2",
+                                             "Km3"
+                                          ]
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___P2___",
+                                       "Km3"
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rROUniBi",
+               "_SBOTerm": "SBO00000000",
+               "_displayName": "Random Order Uni-Bi",
+               "_property": "Reversible,Hyperbolic",
+               "_description": "Random Order UniBi",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vm*(___S1___/Km1)*(1-(___S1___/(___P1___*___P2___))/Keq)/(1+___S1___/Km1+___P1___/Km2+___P1___*___P2___/(Km2*Km3)+___P2___/Km3)",
+               "_display": "v = V_m\\ \\frac{\\alpha (1 - \\rho)}{1 + \\alpha_1 + \\pi_1 + \\pi_2 + \\pi_1 \\pi_2}",
+               "_helpFile": "help/noHelp.htm"
+            },
+            {
+               "listOfParameters": {
+                  "parameter": [
+                     {
+                        "_name": "Vm",
+                        "_description": "Maximal reaction rate"
+                     },
+                     {
+                        "_name": "Km1",
+                        "_description": "Substate 1 Km"
+                     },
+                     {
+                        "_name": "Km2",
+                        "_description": "Substate 2 Km"
+                     },
+                     {
+                        "_name": "Keq",
+                        "_description": "Equilibrium constant"
+                     },
+                     {
+                        "_name": "Km4",
+                        "_description": "Product 1 Km"
+                     },
+                     {
+                        "_name": "Km3",
+                        "_description": "Product 2 Km"
+                     }
+                  ]
+               },
+               "math": {
+                  "apply": [
+                     {
+                        "divide": "",
+                        "apply": [
+                           {
+                              "times": "",
+                              "ci": [
+                                 "Vm"
+                              ],
+                              "apply": [
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "Km1"
+                                    ]
+                                 },
+                                 {
+                                    "divide": "",
+                                    "ci": [
+                                       "___S1___",
+                                       "Km2"
+                                    ]
+                                 },
+                                 {
+                                    "minus": "",
+                                    "cn": {
+                                       "_type": "integer",
+                                       "__text": "1"
+                                    },
+                                    "apply": [
+                                       {
+                                          "divide": "",
+                                          "apply": [
+                                             {
+                                                "divide": "",
+                                                "apply": [
+                                                   {
+                                                      "times": "",
+                                                      "ci": [
+                                                         "___P1___",
+                                                         "___P2___"
+                                                      ]
+                                                   },
+                                                   {
+                                                      "times": "",
+                                                      "ci": [
+                                                         "___S1___",
+                                                         "___S2___"
+                                                      ]
+                                                   }
+                                                ]
+                                             }
+                                          ],
+                                          "ci": [
+                                             "Keq"
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "times": "",
+                              "apply": [
+                                 {
+                                    "plus": "",
+                                    "cn": {
+                                       "_type": "integer",
+                                       "__text": "1"
+                                    },
+                                    "apply": [
+                                       {
+                                          "divide": "",
+                                          "ci": [
+                                             "___S1___",
+                                             "Km1"
+                                          ]
+                                       },
+                                       {
+                                          "divide": "",
+                                          "ci": [
+                                             "___P2___",
+                                             "Km4"
+                                          ]
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "plus": "",
+                                    "cn": {
+                                       "_type": "integer",
+                                       "__text": "1"
+                                    },
+                                    "apply": [
+                                       {
+                                          "divide": "",
+                                          "ci": [
+                                             "___S2___",
+                                             "Km2"
+                                          ]
+                                       },
+                                       {
+                                          "divide": "",
+                                          "ci": [
+                                             "___P1___",
+                                             "Km3"
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ],
+                  "_xmlns": "http://www.w3.org/1998/Math/MathML"
+               },
+               "_id": "rROBiBi",
+               "_SBOTerm": "SBO00000000",
+               "_displayName": "Random Order Bi-Bi",
+               "_property": "Reversible,Hyperbolic",
+               "_description": "Random order Bi-Bi",
+               "_numSubstrates": "1",
+               "_numProducts": "1",
+               "_infixExpression": "Vm*(___S1___/Km1)*(___S1___/Km2)*(1-(___P1___*___P2___/(___S1___*___S2___)/Keq))/((1+___S1___/Km1+___P2___/Km4)*(1+___S2___/Km2+___P1___/Km3))",
+               "_display": "v = V_m\\ \\frac{\\alpha_1 \\alpha_2 (1 - \\rho)}{(1 + \\alpha_1 + \\pi_2) (1 + \\alpha2 + \\pi_1) } ",
+               "_helpFile": "help/noHelp.htm"
+            }
+         ]
+      },
+      "_xmlns": "http://www.sys-bio.org/rateml",
+      "_formatVersion": "2.0",
+      "_date": "",
+      "_databaseTimeStamp": "2016-07-14T18:31:28.177-08:00"
+   }
+}

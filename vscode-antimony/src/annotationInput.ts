@@ -15,7 +15,7 @@ import { Stats } from 'webpack';
  * 
  * This first part uses the helper class `MultiStepInput` that wraps the API for the multi-step case.
  */
-export async function multiStepInput(context: ExtensionContext, initialEntity: string = null, selectedType: string = null) {
+export async function annotationMultiStepInput(context: ExtensionContext, initialEntity: string = null, selectedType: string = null) {
     console.log("selected type: " + selectedType);
     var databases;
     if (selectedType === 'compartment') {

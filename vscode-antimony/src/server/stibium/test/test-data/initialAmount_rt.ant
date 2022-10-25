@@ -1,0 +1,13 @@
+//Created by libAntimony v2.5
+// Compartments and Species:
+// compartment C;
+// species x in C;
+
+// Species initializations:
+x = 3/ C;
+
+// Compartment initializations:
+C = 1;
+
+//Other declarations:
+// const C;

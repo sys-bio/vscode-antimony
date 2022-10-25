@@ -5,8 +5,8 @@ namemaybein : var_name [in_comp]
 
 empty:
 reaction_name : namemaybein ":"
-reaction : [reaction_name] species_list ARROW [species_list] ";" sum [in_comp]
-    | [reaction_name] [species_list] ARROW species_list ";" sum [in_comp]
+reaction : [reaction_name] species_list ARROW [species_list] ";" [sum] [in_comp]
+    | [reaction_name] [species_list] ARROW species_list ";" [sum] [in_comp]
 species_list : species ("+" species)*
 species : [NUMBER] ["$"] NAME
 ARROW : "->"
@@ -14,18 +14,34 @@ ARROW : "->"
 
 flux_balance_constraints : NAME COMPARE NUMBER
     | NUMBER COMPARE NAME
-    | NUMBER INEQUALITIES NAME INEQUALITIES NUMBER
+    | NUMBER COMPARE NAME COMPARE NUMBER
 
-COMPARE: "=="
-    | INEQUALITIES
-
-INEQUALITIES : "<="
-    | ">="
-    | ">"
-    | "<"
 
 objective_function: [reaction_name] ("maximize"|"minimize") NAME
 
+
+event : [reaction_name] "at" [event_delay] bool_exp [event_trigger_list] ":" event_assignment_list
+
+event_delay : bool_exp "after"
+
+
+event_trigger_list : ("," event_trigger)*
+
+// atom has to be changed to (NUMBER | var_name)
+event_trigger : "t0" "=" BOOLEAN
+    | "priority" "=" sum
+    | "fromTrigger" "=" BOOLEAN
+    | "persistent" "=" BOOLEAN
+
+event_assignment_list : event_assignment ("," event_assignment)*
+event_assignment : var_name "=" sum
+
+BOOLEAN : "true" | "false"
+
+COMPARE : ">=" | "<=" | ">" | "<" | "=="
+
+
+LOGICAL : "&&" | "||"
 
 assignment : namemaybein ("=" | AEQ) sum 
 
@@ -62,6 +78,12 @@ VAR_MODIFIER: /\b(var|const)\b/
 SUB_MODIFIER: /\b(substanceOnly)\b/
 TYPE_MODIFIER: /\b(species|compartment|formula)\b/
 
+?bool_exp : expressions
+    | expressions (LOGICAL expressions)*
+
+?expressions : sum
+    | sum (COMPARE sum)*
+
 ?sum : product
     | sum "+" product
     | sum "-" product
@@ -72,6 +94,7 @@ TYPE_MODIFIER: /\b(species|compartment|formula)\b/
 
 ?power: atom
     | power "^" atom
+    | "exp" atom
 
 ?atom : NUMBER
     | var_name
@@ -80,6 +103,7 @@ TYPE_MODIFIER: /\b(species|compartment|formula)\b/
     | "+" atom
     | "(" sum ")"
     | func_call 
+    | "(" bool_exp ")"
 
 func_call : var_name "(" [parameters] ")"
 
@@ -99,6 +123,7 @@ func_call : var_name "(" [parameters] ")"
     | is_assignment
     | flux_balance_constraints
     | objective_function
+    | event
 
 simple_stmt_list : simple_stmt+
 

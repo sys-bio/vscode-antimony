@@ -1,0 +1,25 @@
+// function isTrue(x)
+//   x==true
+// end
+
+at x>y after time>5: c=3
+at x>y>z after time>5: c=3
+at x>y>=z after time>5: c=3
+at x<y after time>5: c=3
+at x<=y<=z after time>5: c=3
+at x==y after time>5: c=3
+at x==y==z after time>5: c=3
+at x==y==z==p==d==q after time>5: c=3
+at true after time>5: c=3
+at false after time>5: c=3
+at isTrue(a) after time>5: c=3
+at a > b after time>5: c=3
+at (a > b) && (b < c) after time>5: c=3
+at (a > b) && (b > c) && (c > d) after time>5: c=3
+at a > b > c after time>5: c=3
+at a > b >= c after time>5: c=3
+at a after time>5: c=3
+at 1 after time>5: c=3
+at true || (false && (true || true) && false) after time>5: c=3
+at -0.5 after time > 5 : c=3
+

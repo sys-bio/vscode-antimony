@@ -12,6 +12,8 @@ from stibium.ant_types import (FuncCall, IsAssignment, VariableIn, FunctionCall,
                                Declaration, DeclAssignment,
                                DeclItem, ErrorNode, ErrorToken,
                                FileNode, InComp, Keyword, LeafNode, NameMaybeIn,
+                               Boolean, BooleanExpr, CompareSign, Parenthesis, ParenthesisList, Logical,
+                               Event, EventDelay, Expressions, EventTrigger, EventTriggerList, EventAssignment, EventAssignmentList,
                                Name, Newline, Number, Operator,
                                Power, Product, Reaction, ReactionName, FluxBalanceConstraints, ObjectiveFunction,
                                SimpleStmt, Species, SpeciesList, StringLiteral,
@@ -33,8 +35,12 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
     'ESCAPED_STRING': StringLiteral,
     'ANNOT_KEYWORD': Keyword,
     'SEMICOLON': Operator,
-    'compare': Operator,
-    'inequalities': Operator,
+    'boolean': Boolean,
+    'bool_exp': BooleanExpr,
+    'compare_sign': CompareSign,
+    'parenthesis': Parenthesis,
+    'parenthesis_list': ParenthesisList,
+    'logical': Logical,
     'error_node': ErrorNode,
     'root': FileNode,
     'simple_stmt': SimpleStmt,
@@ -44,6 +50,13 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
     'namemaybein': NameMaybeIn,
     'reaction_name': ReactionName,
     'reaction': Reaction,
+    'event': Event,
+    'event_delay': EventDelay,
+    'expressions': Expressions,
+    'event_trigger': EventTrigger,
+    'event_trigger_list': EventTriggerList,
+    'event_assignment': EventAssignment,
+    'event_assignment_list': EventAssignmentList,
     'species': Species,
     'species_list': SpeciesList,
     'assignment': Assignment,
@@ -74,8 +87,10 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
 }
 
 OPERATORS = {'EQUAL', 'COLON', 'ARROW', 'SEMICOLON', 'LPAR', 'RPAR', 'STAR', 'PLUS', 'MINUS',
-             'DOLLAR', 'CIRCUMFLEX', 'COMMA', 'SLASH', "AEQ", "DBLQUOTE", "COMPARE"}
-KEYWORDS = {'ANNOT_KEYWORD', 'IN', 'MODEL', 'FUNCTION', "UNIT", "HAS", "IS", "SUBSTANCEONLY", "MAXIMIZE", "MINIMIZE"}
+             'DOLLAR', 'CIRCUMFLEX', 'COMMA', 'SLASH', "AEQ", "DBLQUOTE",
+             'COMPARE', 'PARENTHESIS', 'BOOLEAN', 'LOGICAL' }
+KEYWORDS = {'ANNOT_KEYWORD', 'IN', 'MODEL', 'FUNCTION', "UNIT", "HAS", "IS", "SUBSTANCEONLY", "MAXIMIZE", "MINIMIZE"
+            'PRIORITY', 'FROMTRIGGER', 'T0', 'PERSISTENT'}
 
 for name in OPERATORS:
     TREE_MAP[name] = Operator

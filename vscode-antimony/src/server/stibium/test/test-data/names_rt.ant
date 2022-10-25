@@ -1,0 +1,9 @@
+//Created by libAntimony v2.5
+// Variable initializations:
+x = 1;
+
+//Other declarations:
+const x;
+
+//Display Names:
+x is "This Name!";

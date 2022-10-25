@@ -6,7 +6,7 @@
 
 The Antimony extension adds language support for Antimony to Visual Studio Code for building models in Systems Biology.
 
-The currently available version 0.1 is a public beta version developed by [Gary Geng](https://www.linkedin.com/in/gary-geng-9995a2160/), [Steve Ma](https://www.linkedin.com/in/steve-ma/), [Dr. Joseph Hellerstein](https://sites.google.com/uw.edu/joseph-hellerstein/home?authuser=0), and [Dr. Herbert Sauro](https://bioe.uw.edu/portfolio-items/sauro/) at the University of Washington. Steve Ma is responsible for future releases, and please feel free to [contact](mailto:bochenma@cs.washington.edu) him if you have any questions.
+The currently available version 0.2 is a public beta version developed by [Longxuan Fan](https://www.linkedin.com/in/longxf), [Sai Anish Konanki](https://www.linkedin.com/in/anish-konanki-8b81a575/), [Eva Liu](https://www.linkedin.com/in/evaliu02), [Steve Ma](https://www.linkedin.com/in/steve-ma/), [Gary Geng](https://www.linkedin.com/in/gary-geng-9995a2160/), [Dr. Joseph Hellerstein](https://sites.google.com/uw.edu/joseph-hellerstein/home?authuser=0), and [Dr. Herbert Sauro](https://bioe.uw.edu/portfolio-items/sauro/) at the University of Washington. Dr. Joseph Hellerstein is responsible for future releases, and please feel free to [contact](mailto:joseph.hellerstein@gmail.com) him if you have any questions.
 
 Please note that the current release does not support the complete Antimony grammar. While most grammar has been supported, more will be included in future releases.
 
@@ -26,15 +26,14 @@ The extension provides many convenient features for developing biological models
 
 ⚠️ Note: the default syntax highlighting for Antimony is provided by a separate extension [Antimony Syntax](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony-syntax), and is also available in the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) 
 
-### 2. Automatic annotation creation with ChEBI and UniProt
+### 2. Automatic annotation creation with database recommendation
+The extension can recognize different types of variables, and recommend databases base on the [OMEX metadata specification](https://doi.org/10.1515/jib-2021-0020).
 
 <p align=center>
-<img src="docs/images/annotations.gif" width=75%>
+<img src="docs/images/annotation0.2.gif" width=75%>
 <br/>
-<em>(Creating an annotation through the ChEBI database)</em>
+<em>(Creating an annotation of species BLL through the ChEBI database)</em>
 </p>
-
-⚠️ Note: support for more databases & performance optimization will come soon!
 
 ### 3. Hover messages 
 
@@ -71,22 +70,41 @@ On the other hand, certain issues are not errors in tellurium, but we thought it
 
 The extension supports a wide range of errors and warnings, and we plan to support more in the upcoming releases. Read more in [issues](https://github.com/sys-bio/vscode-antimony/issues).
 
+### 6. Converter between Antimony and SBML
+
+<p align=center>
+<img src="docs/images/converter_SBML.gif" width=75%>
+<br/>
+<em>(Exporting Antimony file in SBML format)</em>
+</p>
+
+### 7. Antimony/SBML preview
+
+<p align=center>
+<img src="docs/images/preview.gif" width=75%>
+<br/>
+<em>(Previewing Antimony file as SBML)</em>
+</p>
+
+### 8. Automatic creation of rate laws
+
+<p align=center>
+<img src="docs/images/rate_law.gif" width=75%>
+<br/>
+<em>(Creating a rate law on a reversible reaction)</em>
+</p>
+
+### 9. Annotation recommender for species
+
+<p align=center>
+<img src="docs/images/recommender.gif" width=75%>
+<br/>
+<em>(Creating annotation for species BLL with Annotation Recommender)</em>
+</p>
+
 ## Known Issues
 I have an open issue for [manually curating models](https://github.com/sys-bio/vscode-antimony/issues/26) from BioModels to test the extension. Please feel free to contribute and submit issues.
-* "Events" are currently not supported and false error messages will be triggered.
-* "Rate rules" are currently not supported and false error messages will be triggered.
-
-## Preview Features for 0.2
-* [Be able to detect subvariables in modular models](https://github.com/sys-bio/vscode-antimony/issues/48).
-* [Support semantic synthesis of models](https://github.com/sys-bio/vscode-antimony/issues/23).
-* [Automatic creation of rate laws](https://github.com/sys-bio/vscode-antimony/issues/22).
-* [Performance improvement for creating annotations](https://github.com/sys-bio/vscode-antimony/issues/27).
-* [Fix annotation insert position](https://github.com/sys-bio/vscode-antimony/issues/48).
-* [Better caching](https://github.com/sys-bio/vscode-antimony/issues/9).
-* [Grammar support for events](https://github.com/sys-bio/vscode-antimony/issues/4).
-* [Warning and error detection for events](https://github.com/sys-bio/vscode-antimony/issues/20).
-* [Grammar support for rate rules](https://github.com/sys-bio/vscode-antimony/issues/45).
-* [Warning and error detection for modular models](https://github.com/sys-bio/vscode-antimony/issues/16).
+* subvariables in modular models are currently not supported and false error messages will be triggered.
 
 ## Release Notes
 
@@ -106,3 +124,12 @@ I have an open issue for [manually curating models](https://github.com/sys-bio/v
 
 ### 0.1.4
 * Updated docs, included a list for updates in 0.2.
+
+### 0.2.0
+* Added grammar support and warning/error detection for rate rules, sbo and cvterms, events, flux balance constraints, interaction, and import.
+* Converter between Antimony and SBML
+* Antimony/SBML preview.
+* More databases supported in create annotation, and database recommendations.
+* Automatic creation of rate laws.
+* Annotation recommender for species.
+

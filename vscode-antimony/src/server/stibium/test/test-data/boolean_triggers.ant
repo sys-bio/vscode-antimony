@@ -1,0 +1,15 @@
+// function isTrue(x)
+//   x==true
+// end
+
+at x>y: c=3
+at x>y>z: c=3
+at x>y>=z: c=3
+at x<y: c=3
+at x<=y<=z: c=3
+at x==y: c=3
+at x==y==z: c=3
+at x==y==z==p==d==q: c=3
+at true: c=3
+at false: c=3
+at isTrue(a): c=3

@@ -1,0 +1,15 @@
+//Created by libAntimony v2.5
+model foo()
+
+  // Compartments and Species:
+  species x;
+
+  // Species initializations:
+  x = 1;
+end
+
+model *bar()
+
+  // Sub-modules, and any changes to those submodules:
+  A: foo();
+end

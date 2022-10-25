@@ -179,13 +179,21 @@ class UninitFunction(Issue):
         self.val = val
         self.message = ("Function '{}' not defined").format(val)
 
+class UninitRateLaw(Issue):
+    def __init__(self, range, val): 
+        super().__init__(range, IssueSeverity.Warning)
+        if val is None:
+            val = ''
+        self.val = val
+        self.message = ("Reaction '{}' missing rate law").format(val)
+
 class IncorrectParamNum(Issue):
     def __init__(self, range, val1, val2): 
         super().__init__(range, IssueSeverity.Error)
         self.message = ("Incorrect number of parameters, expected {}, given {}").format(val1, val2)
 
 class ParamIncorrectType(Issue):
-    def __init__(self, range, type1, type2): 
+    def __init__(self, range, type1, type2):
         super().__init__(range, IssueSeverity.Error)
         self.message = ("Incorrect type being passed in, expected {}, given {}").format(type1, type2)
 
@@ -207,11 +215,24 @@ class UninitReact(Issue):
         self.val = val
         self.message = ("Reaction '{}' has not been initialized, using default value").format(val)
 
+class ObscuredEventTrigger(Issue):
+    def __init__(self, old_range: SrcRange, new_range: SrcRange, name: str):
+        super().__init__(old_range, IssueSeverity.Warning)
+        self.old_range = old_range
+        self.new_range = new_range
+        self.name = name
+        self.message = ("Event trigger '{name}' is being overridden by a declaration of the same name on "
+                        "line {new_line}:{new_column}").format(
+            name=name,
+            new_line=new_range.start.line,
+            new_column=new_range.start.column,
+        )
+
 class VarNotFound(Issue):
     def __init__(self, range, val): 
         super().__init__(range, IssueSeverity.Warning)
         self.val = val
-        self.message = ("Variable '{}' not fount").format(val)
+        self.message = ("Variable '{}' not found").format(val)
 
 
 class ObscuredDeclaration(Issue):

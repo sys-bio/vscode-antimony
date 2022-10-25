@@ -1,9 +1,11 @@
 '''Classes for working with and storing symbols.
 '''
+import requests
 import logging
+from bioservices import ChEBI, UniProt, Rhea
 from stibium.ant_types import Annotation, Name, TreeNode
 from .types import Issue, ObscuredValueCompartment, RedefinedFunction, OverrodeValue, ObscuredDeclaration, ObscuredValue, SrcRange, SymbolType, IncompatibleType
-from .ant_types import VarName, Declaration, VariableIn, Function, DeclItem, Assignment, ModularModel, Number, ModularModelCall
+from .ant_types import LeafNode, VarName, Declaration, VariableIn, Function, DeclItem, Assignment, ModularModel, Number, ModularModelCall, Event
 
 import abc
 from collections import defaultdict, namedtuple
@@ -12,6 +14,8 @@ from typing import DefaultDict, Dict, List, Optional, Set, Tuple, Union
 from lark.lexer import Token
 
 from lark.tree import Tree
+
+vscode_logger = logging.getLogger("vscode logger: ")
 
 '''Classes that represent scopes. TODO rename all these to Scope, b/c Scope is not the same thing as scope'''
 class AbstractScope(abc.ABC):
@@ -117,6 +121,7 @@ class Symbol:
     comp: str
     is_const: bool
     is_sub: bool
+    events: List[Event]
 
     def __init__(self, name: str, typ: SymbolType, type_name: Name,
             decl_name: Name = None,
@@ -125,7 +130,8 @@ class Symbol:
             display_name: str = None,
             comp: str = None,
             is_const: bool = False,
-            is_sub: bool = False):
+            is_sub: bool = False,
+            ):
         self.name = name
         self.type = typ
         self.type_name = type_name
@@ -137,6 +143,8 @@ class Symbol:
         self.comp = comp
         self.is_const = is_const
         self.is_sub = is_sub
+        self.queried_annotations = dict()
+        self.events = list()
 
     def def_name(self):
         '''Return the Name that should be considered as the definition'''
@@ -203,6 +211,13 @@ class Symbol:
                     "Initialized Value:" + init_val)
         else:
             ret += '\n({}) {}\n'.format(self.type, self.name)
+        if self.events:
+            for event in self.events:
+                event_name = event.get_name_text()
+                if event_name is not None:
+                    ret += 'event {}\n'.format(event_name)
+                else:
+                    ret += 'unnamed event {}\n'.format(event.unnamed_label)
 
         if self.comp:
             ret += 'In compartment: {}\n'.format(self.comp)
@@ -211,7 +226,53 @@ class Symbol:
 
         if self.annotations:
             # add the first annotation
-            ret += '\n***\n{}\n'.format(self.annotations[0].get_uri())
+            for annotation in self.annotations:
+                uri = annotation.get_uri()
+                ret += '\n***\n{}\n'.format(uri)
+                if uri[0:4] != 'http':
+                    continue
+                if uri in self.queried_annotations.keys():
+                    ret += self.queried_annotations[uri]
+                    continue
+                uri_split = uri.split('/')
+                website = uri_split[2]
+                chebi_id = uri_split[4]
+                if website == 'identifiers.org':
+                    if uri_split[3] == 'chebi':
+                        chebi = ChEBI()
+                        res = chebi.getCompleteEntity(chebiId=chebi_id)
+                        name = res.chebiAsciiName
+                        definition = res.definition
+                        queried = '\n{}\n\n{}\n'.format(name, definition)
+                        ret += queried
+                        self.queried_annotations[uri] = queried
+                    else:
+                        continue
+                        # uniport = UniProt()
+                elif website == 'www.rhea-db.org':
+                    rhea = Rhea()
+                    df_res = rhea.query(uri_split[4], columns="equation", limit=10)
+                    equation = df_res['Equation']
+                    queried = '\n{}\n'.format(equation[0])
+                    df_res += queried
+                    self.queried_annotations[uri] = queried
+                else:
+                    ontology_name = uri_split[-1].split('_')[0].lower()
+                    iri = uri_split[-1]
+                    response = requests.get('http://www.ebi.ac.uk/ols/api/ontologies/' + ontology_name + '/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F' + iri).json()
+                    if ontology_name == 'pr' or ontology_name == 'ma' or ontology_name == 'obi' or ontology_name == 'fma':
+                        definition = response['description']
+                    else:
+                        response_annot = response['annotation']
+                        definition = response_annot['definition']
+                    name = response['label']
+                    queried =  '\n{}\n'.format(name)
+                    if definition:
+                        queried += '\n{}\n'.format(definition[0])
+                    ret += queried
+                    self.queried_annotations[uri] = queried
+                
+                
 
         return ret
 
@@ -464,3 +525,13 @@ class SymbolTable:
         else:
             sym = leaf_table[name]
         sym.annotations.append(node)
+        
+    def insert_event(self, qname: QName, node: Event):
+        leaf_table = self._leaf_table(qname.scope)
+        name = qname.name.text
+        if name not in leaf_table:
+            sym = VarSymbol(name, SymbolType.Unknown, qname.name)
+            leaf_table[name] = sym
+        else:
+            sym = leaf_table[name]
+        sym.events.append(node)

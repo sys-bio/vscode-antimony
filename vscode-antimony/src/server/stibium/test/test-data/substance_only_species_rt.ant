@@ -1,0 +1,6 @@
+// Created by libAntimony v2.10.0
+// Compartments and Species:
+substanceOnly species S1;
+
+// Species initializations:
+S1 = 1;
