@@ -5,7 +5,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { QuickPickItem, window, Disposable, QuickInputButton, QuickInput, ExtensionContext, QuickInputButtons, QuickPick } from 'vscode';
+import { QuickPickItem, window, Disposable, QuickInputButton, QuickInput, ExtensionContext, QuickInputButtons, commands, QuickPick } from 'vscode';
+import { ProgressLocation } from 'vscode'
 
 /**
  * A multi-step input using window.createQuickPick() and window.createInputBox().
@@ -15,6 +16,8 @@ import { QuickPickItem, window, Disposable, QuickInputButton, QuickInput, Extens
 export async function rateLawSingleStepInput(context: ExtensionContext, line: number, initialEntity: string = null,) {
     let databases = [];
     let rateLawDict;
+
+    
     vscode.commands.executeCommand('antimony.getRateLawDict', initialEntity).then(async (result) => {
         rateLawDict = result;
         
@@ -47,6 +50,7 @@ export async function rateLawSingleStepInput(context: ExtensionContext, line: nu
     const title = 'Insert Rate Law';
 
     async function pickDatabase(input: MultiStepInput, state: Partial<State>) {
+        progressBar(input);
         const pick = await input.showQuickPick({
             title,
             step: 1,
@@ -59,6 +63,18 @@ export async function rateLawSingleStepInput(context: ExtensionContext, line: nu
         });
         state.database = pick;
         onQueryUpdated(state.database['id'], state.database['label'], state.database['index'], input)
+    }
+
+    async function progressBar(input: MultiStepInput) {
+        window.withProgress({
+			location: ProgressLocation.Notification,
+			title: "Searching for rate laws...",
+			cancellable: true
+		}, (progress, token) => {
+            return commands.executeCommand('antimony.getRateLawDict', initialEntity).then(async (result) => {
+                await input.onQueryResults(result);
+            });
+        })
     }
 
     async function onQueryUpdated(expresion: string, rateLawName: string, rateLawIndex: number, input: MultiStepInput) {

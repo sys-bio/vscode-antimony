@@ -4,11 +4,9 @@
  *  Modified by Gary Geng and Steve Ma for the Antimony VSCode extension project.
  *--------------------------------------------------------------------------------------------*/
 
-import { QuickPickItem, window, Disposable, CancellationToken, QuickInputButton, QuickInput, ExtensionContext, QuickInputButtons, Uri, commands, QuickPick } from 'vscode';
-import { integer, LogMessageNotification } from 'vscode-languageclient';
+import { QuickPickItem, window, Disposable, QuickInputButton, QuickInput, ExtensionContext, QuickInputButtons, commands, QuickPick } from 'vscode';
 import { sleep } from './utils/utils';
 import { ProgressLocation } from 'vscode'
-import { Stats } from 'webpack';
 
 /**
  * A multi-step input using window.createQuickPick() and window.createInputBox().
