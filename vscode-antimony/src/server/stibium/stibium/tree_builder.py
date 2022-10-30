@@ -15,7 +15,7 @@ from stibium.ant_types import (FuncCall, IsAssignment, VariableIn, FunctionCall,
                                Boolean, BooleanExpr, CompareSign, Parenthesis, ParenthesisList, Logical,
                                Event, EventDelay, Expressions, EventTrigger, EventTriggerList, EventAssignment, EventAssignmentList,
                                Name, Newline, Number, Operator,
-                               Power, Product, Reaction, ReactionName,
+                               Power, Product, Reaction, ReactionName, FluxBalanceConstraints, ObjectiveFunction,
                                SimpleStmt, Species, SpeciesList, StringLiteral,
                                Sum, TreeNode, TrunkNode, TypeModifier, VarModifier, SubModifier,
                                VarName, Model, SimpleStmtList, End, Function, Parameters, ModularModel, ModularModelCall)
@@ -82,12 +82,14 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
     'function_call' : FunctionCall,
     'variable_in' : VariableIn,
     'is_assignment' : IsAssignment,
+    'flux_balance_constraints': FluxBalanceConstraints,
+    'objective_function': ObjectiveFunction,
 }
 
 OPERATORS = {'EQUAL', 'COLON', 'ARROW', 'SEMICOLON', 'LPAR', 'RPAR', 'STAR', 'PLUS', 'MINUS',
              'DOLLAR', 'CIRCUMFLEX', 'COMMA', 'SLASH', "AEQ", "DBLQUOTE",
              'COMPARE', 'PARENTHESIS', 'BOOLEAN', 'LOGICAL' }
-KEYWORDS = {'ANNOT_KEYWORD', 'IN', 'MODEL', 'FUNCTION', "UNIT", "HAS", "IS", "SUBSTANCEONLY",
+KEYWORDS = {'ANNOT_KEYWORD', 'IN', 'MODEL', 'FUNCTION', "UNIT", "HAS", "IS", "SUBSTANCEONLY", "MAXIMIZE", "MINIMIZE"
             'PRIORITY', 'FROMTRIGGER', 'T0', 'PERSISTENT'}
 
 for name in OPERATORS:

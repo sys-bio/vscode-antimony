@@ -1,7 +1,7 @@
 
 import logging
-from stibium.ant_types import FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, End, Keyword, Annotation, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, Reaction, SimpleStmt, TreeNode, TrunkNode
-from .types import OverridingDisplayName, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UninitRateLaw, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition
+from stibium.ant_types import FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, End, Keyword, Annotation, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, Reaction, FluxBalanceConstraints, ObjectiveFunction, SimpleStmt, TreeNode, TrunkNode
+from .types import OverridingDisplayName, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UninitReact, UninitRateLaw, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition
 import requests
 from bioservices import ChEBI, UniProt, Rhea
 from stibium.ant_types import FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, End, Keyword, Annotation, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, Reaction, Event, SimpleStmt, TreeNode, TrunkNode
@@ -113,6 +113,8 @@ class AntTreeAnalyzer:
                                 'FunctionCall' : self.handle_function_call,
                                 'VariableIn' : self.handle_variable_in,
                                 'IsAssignment' : self.pre_handle_is_assignment,
+                                'FluxBalanceConstraints': self.handle_flux_balance,
+                                'ObjectiveFunction': self.handle_objective_function,
                             }[stmt.__class__.__name__](scope, stmt)
                             self.handle_child_incomp(scope, stmt)
                             self.handle_is_const(scope, stmt)
@@ -144,6 +146,8 @@ class AntTreeAnalyzer:
                                 'FunctionCall' : self.handle_function_call,
                                 'VariableIn' : self.handle_variable_in,
                                 'IsAssignment' : self.pre_handle_is_assignment,
+                                'FluxBalanceConstraints': self.handle_flux_balance,
+                                'ObjectiveFunction': self.handle_objective_function,
                             }[stmt.__class__.__name__](scope, stmt)
                             self.handle_child_incomp(scope, stmt)
                             self.handle_is_const(scope, stmt)
@@ -182,6 +186,8 @@ class AntTreeAnalyzer:
                     'FunctionCall' : self.handle_function_call,
                     'VariableIn' : self.handle_variable_in,
                     'IsAssignment' : self.pre_handle_is_assignment,
+                    'FluxBalanceConstraints': self.handle_flux_balance,
+                    'ObjectiveFunction': self.handle_objective_function,
                 }[stmt.__class__.__name__](base_scope, stmt)
                 self.handle_child_incomp(base_scope, stmt)
                 self.handle_is_const(base_scope, stmt)
@@ -248,6 +254,8 @@ class AntTreeAnalyzer:
                     self.process_is_assignment(node, scope)
                 elif type(node.get_stmt()) == Assignment:
                     self.process_maybein(node, scope)
+                elif type(node.get_stmt()) == FluxBalanceConstraints:
+                    self.process_flux_balance(node, scope)
                 elif type(node.get_stmt()) == Event:
                     self.process_event(node, scope)
 
@@ -319,6 +327,8 @@ class AntTreeAnalyzer:
                     self.process_is_assignment(node, scope)
                 elif type(node.get_stmt()) == Assignment:
                     self.process_maybein(node, scope)
+                elif type(node.get_stmt()) == FluxBalanceConstraints:
+                    self.process_flux_balance(node, scope)
                 elif type(node.get_stmt()) == Event:
                     self.process_event(node, scope)
         self.check_param_unused(used, params)
@@ -423,6 +433,9 @@ class AntTreeAnalyzer:
             self.handle_arith_expr(scope, rate_law)
         self.handle_arith_expr(scope, reaction.get_rate_law())
         
+    def handle_flux_balance(self, scope: AbstractScope, flux_balance: FluxBalanceConstraints):
+        self.table.insert(QName(scope, flux_balance.get_reaction_name()), SymbolType.Reaction)
+
     def pre_handle_event(self, scope: AbstractScope, event: Event):
         self.pending_events.append((scope, event))
         name = event.get_name()
@@ -447,6 +460,9 @@ class AntTreeAnalyzer:
             self.table.insert_event(qname, event)
             self.handle_arith_expr(scope, assignment)
 
+    def handle_objective_function(self, scope: AbstractScope, function: ObjectiveFunction):
+        self.table.insert(QName(scope, function.get_reaction_name()), SymbolType.Reaction)
+    
     def handle_assignment(self, scope: AbstractScope, assignment: Assignment):
         comp = None
         if assignment.get_maybein() != None and assignment.get_maybein().is_in_comp():
@@ -734,6 +750,15 @@ class AntTreeAnalyzer:
             if matched_species[0].value_node is None:
                 self.warning.append(SpeciesUndefined(species.range, species_name.text))
         self.process_maybein(node, scope)
+        
+    def process_flux_balance(self, node, scope):
+        '''
+        add warning if the reaction is not initialized in this flux balance constraints
+        '''
+        reaction = node.get_stmt().get_reaction_name()
+        matched_reaction = self.table.get(QName(scope, reaction))
+        if matched_reaction[0].decl_node is None:
+            self.warning.append(UninitReact(reaction.range, reaction.text))
     
     def process_mmodel_call(self, node, scope):
         mmodel_name = node.get_stmt().get_mmodel_name()

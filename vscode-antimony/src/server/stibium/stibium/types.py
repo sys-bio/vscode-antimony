@@ -209,6 +209,11 @@ class UninitCompt(Issue):
         self.val = val
         self.message = ("Compartment '{}' has not been initialized, using default value").format(val)
 
+class UninitReact(Issue):
+    def __init__(self, range, val): 
+        super().__init__(range, IssueSeverity.Warning)
+        self.val = val
+        self.message = ("Reaction '{}' has not been initialized, using default value").format(val)
 
 class ObscuredEventTrigger(Issue):
     def __init__(self, old_range: SrcRange, new_range: SrcRange, name: str):

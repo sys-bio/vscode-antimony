@@ -12,6 +12,14 @@ species : [NUMBER] ["$"] NAME
 ARROW : "->"
     | "=>"
 
+flux_balance_constraints : NAME COMPARE NUMBER
+    | NUMBER COMPARE NAME
+    | NUMBER COMPARE NAME COMPARE NUMBER
+
+
+objective_function: [reaction_name] ("maximize"|"minimize") NAME
+
+
 event : [reaction_name] "at" [event_delay] bool_exp [event_trigger_list] ":" event_assignment_list
 
 event_delay : bool_exp "after"
@@ -113,6 +121,8 @@ func_call : var_name "(" [parameters] ")"
     | function_call
     | variable_in
     | is_assignment
+    | flux_balance_constraints
+    | objective_function
     | event
 
 simple_stmt_list : simple_stmt+
