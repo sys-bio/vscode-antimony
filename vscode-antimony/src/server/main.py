@@ -36,6 +36,7 @@ import threading
 import time
 from AMAS import recommender, species_annotation
 from bioservices import ChEBI
+import SBMLDiagrams
 
 # TODO remove this for production
 logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
@@ -146,6 +147,24 @@ def sbml_file_to_ant_file(ls: LanguageServer, args):
             f.write(ant_str["ant_str"])
         return {
             'msg': 'Antimony has been exported to {}'.format(output_dir),
+            'file': full_path_name
+        }
+
+@server.thread()
+@server.command('antimony.antFiletoDiagram')
+def ant_file_to_sbml_file(ls: LanguageServer, args):
+    ant = args[0].fileName
+    output_dir = args[1]
+    sbml_str = _get_sbml_str(ant)
+    if 'error' in sbml_str:
+        return sbml_str
+    else:
+        model_name = os.path.basename(ant)
+        full_path_name = os.path.join(output_dir, os.path.splitext(model_name)[0]+'_diagram.png')
+        df = SBMLDiagrams.load(sbml_str['sbml_str'])
+        df.draw(output_fileName=full_path_name)
+        return {
+            'msg': 'Diagram has been exported to {}'.format(output_dir),
             'file': full_path_name
         }
 

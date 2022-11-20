@@ -29,6 +29,7 @@
 		"onCommand:antimony.switchIndicationOff",
 		"onCommand:antimony.convertAntimonyToSBML",
 		"onCommand:antimony.convertSBMLToAntimony",
+		"onCommand:antimony.convertAntimonyToDiagram",
 		"onCommand:antimony.startSBMLWebview",
 		"onCommand:antimony.startAntimonyWebview",
 		"onCustomEditor:antimony.sbmlEditor",
@@ -123,6 +124,10 @@
 				"title": "Convert to Antimony"
 			},
 			{
+				"command": "antimony.convertAntimonyToDiagram",
+				"title": "Convert to Diagram"
+			},
+			{
 				"command": "antimony.startSBMLWebview",
 				"title": "preview SBML",
 				"icon": "docs/images/sbml_color.png"
@@ -189,6 +194,12 @@
 					"title": "Convert to Antimony",
 					"group": "1_modification",
 					"when": "editorLangId == xml"
+				},
+				{
+					"command": "antimony.convertAntimonyToDiagram",
+					"title": "Convert to Diagram",
+					"group": "1_modification",
+					"when": "editorLangId == antimony"
 				}
 			],
 			"editor/title": [

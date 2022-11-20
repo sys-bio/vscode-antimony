@@ -130,6 +130,13 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('antimony.convertSBMLToAntimony',
 			(...args: any[]) => convertSBMLToAntimony(context, args)));
 	
+	// SBMLDiagram
+	context.subscriptions.push(
+		vscode.commands.registerCommand('antimony.convertAntimonyToDiagram',
+			(...args: any[]) => {
+				convertAntimonyToDiagram(context, args);
+			}));
+
 	// custom editor
 	context.subscriptions.push(await SBMLEditorProvider.register(context, client));
 	context.subscriptions.push(await AntimonyEditorProvider.register(context, client));
@@ -278,6 +285,70 @@ async function checkConversionResult(result, type) {
 		vscode.window.showInformationMessage(`${result.msg}`)
 		const document = await vscode.workspace.openTextDocument(`${result.file}`)
 		vscode.window.showTextDocument(document);
+	}
+}
+
+async function convertAntimonyToDiagram(context: vscode.ExtensionContext, args: any[]) {
+	if (!client) {
+		utils.pythonInterpreterError();
+		return;
+	}
+	await client.onReady();
+
+	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+
+	const options: vscode.OpenDialogOptions = {
+		openLabel: "Select",
+		canSelectFolders: true,
+		canSelectFiles: false,
+		canSelectMany: false,
+		filters: {
+			'Images': ['png']
+		},
+		title: "Select a location to save your SBML diagram"
+	};
+   vscode.window.showOpenDialog(options).then(fileUri => {
+	   if (fileUri && fileUri[0]) {
+		let diagram;
+			   vscode.commands.executeCommand('antimony.antFiletoDiagram', vscode.window.activeTextEditor.document, 
+				   fileUri[0].fsPath).then(async (result) => {
+				await checkSBMLDiagramResult(result);
+				diagram = result;
+				const panel = vscode.window.createWebviewPanel(
+					'antimony',
+					'SBMLDiagram',
+					vscode.ViewColumn.Two,
+					{
+					  localResourceRoots: [vscode.Uri.file(path.dirname(diagram.file))]
+					}
+				);
+				const pngSrc = panel.webview.asWebviewUri(vscode.Uri.file(diagram.file));
+				panel.webview.html = getWebviewContent(pngSrc);
+			});
+	   }
+   });
+   
+}
+
+function getWebviewContent(uri: vscode.Uri) {
+	return `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+	  <meta charset="UTF-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <title>SBMLDiagram</title>
+  </head>
+  <body>
+	  <img src=${uri} width="300" />
+  </body>
+  </html>`;
+  }  
+
+async function checkSBMLDiagramResult(result) {
+	if (result.error) {
+		vscode.window.showErrorMessage(`Could not convert file to diagram: ${result.error}`)
+	} else {
+		vscode.window.showInformationMessage(`${result.msg}`);
 	}
 }
 
