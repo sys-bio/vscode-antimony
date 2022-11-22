@@ -285,7 +285,7 @@ def recommend(ls: LanguageServer, args):
     symbol = symbols[0]
     if symbol.type != SymbolType.Species and symbol.type != SymbolType.Reaction:
         return {
-            'error': "Did not select species"
+            'error': "Please select species or reaction name"
         }
     if symbol.type == SymbolType.Species:
         recom = recommender.Recommender()
