@@ -270,9 +270,12 @@ async function convertSBMLToAntimony(context: vscode.ExtensionContext, args: any
 	};
 	vscode.window.showOpenDialog(options).then(folderUri => {
 		if (folderUri && folderUri[0]) {
+				let sbmlFile;
 				vscode.commands.executeCommand('antimony.sbmlFileToAntFile', vscode.window.activeTextEditor.document, 
 				folderUri[0].fsPath).then(async (result) => {
 					await checkConversionResult(result, "Antimony");
+					sbmlFile = result;
+					vscode.commands.executeCommand('vscode.open', sbmlFile.file, vscode.ViewColumn.Two);
 				});
 		}
 	});
