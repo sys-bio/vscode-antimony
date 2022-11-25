@@ -307,21 +307,23 @@ async function findStoichiometricInconsistencies(context: vscode.ExtensionContex
 	};
 	vscode.window.showOpenDialog(options).then(fileUri => {
 		if (fileUri && fileUri[0]) {
-		 let siList;
-				vscode.commands.executeCommand('antimony.findSIs', vscode.window.activeTextEditor.document, 
-					fileUri[0].fsPath).then(async (result) => {
-				 await checkSBMLLintResult(result);
-				 siList = result;
-				 const panel = vscode.window.createWebviewPanel(
-					 'txt',
-					 'SI List',
-					 vscode.ViewColumn.Two,
-					 {
-					   localResourceRoots: [vscode.Uri.file(path.dirname(siList.file))]
-					 }
-				 );
-				 const pngSrc = panel.webview.asWebviewUri(vscode.Uri.file(siList.file));
-				 panel.webview.html = getWebviewContent(pngSrc);
+		 	let siFile;
+			vscode.commands.executeCommand('antimony.findSIs', vscode.window.activeTextEditor.document, 
+			fileUri[0].fsPath).then(async (result) => {
+				await checkSBMLLintResult(result);
+				console.log(result);
+				siFile = result;
+				vscode.commands.executeCommand('vscode.open', siFile.file, vscode.ViewColumn.Two);
+				//  const panel = vscode.window.createWebviewPanel(
+				// 	 'antimony',
+				// 	 'SI List',
+				// 	 vscode.ViewColumn.Two,
+				// 	 {
+				// 	   localResourceRoots: [vscode.Uri.file(path.dirname(siList.file))]
+				// 	 }
+				//  );
+				//  const txtSrc = panel.webview.asWebviewUri(vscode.Uri.file(siList.file));
+				//  panel.webview.html = getWebviewContent(txtSrc);
 			 });
 		}
 	});
@@ -336,10 +338,10 @@ function getWebviewContent(uri: vscode.Uri) {
 	  <title>Stoichiometric Inconsistencies</title>
   </head>
   <body>
-	<p src=${uri} width="350" />
+	<iframe src=${uri} frameborder='5' height='250' width='90%'/>
   </body>
   </html>`;
-  }  
+}
 
 async function checkSBMLLintResult(result) {
 	if (result.error) {
