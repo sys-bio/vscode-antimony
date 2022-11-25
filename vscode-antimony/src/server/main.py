@@ -5,6 +5,8 @@ import os
 import sys
 import logging
 
+import libsbml
+
 EXTENSION_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(EXTENSION_ROOT, "..", "pythonFiles", "lib", "python"))
 
@@ -188,6 +190,25 @@ def get_annotations(ls: LanguageServer, args):
     for tup in all_sbos:
         annotation_texts.append(tup[1].get_name_text())
     return "|".join(annotation_texts)
+
+@server.thread()
+@server.command('antimony.findSIs')
+def find_stoich_inconsist(ls: LanguageServer, args):
+    ant = args[0].fileName
+    output_dir = args[1]
+    sbml_str = _get_sbml_str(ant)
+    if 'error' in sbml_str:
+        return sbml_str
+    else:
+        model_name = os.path.basename(ant)
+        full_path_name = os.path.join(output_dir, os.path.splitext(model_name)[0]+'.txt')
+        df = libsbml.load(sbml_str['sbml_str'])
+        df.draw(output_fileName=full_path_name)
+        return {
+            'msg': 'SI List has been exported to {}'.format(output_dir),
+            'file': full_path_name
+        }
+
 
 @server.thread()
 @server.command('antimony.sendQuery')

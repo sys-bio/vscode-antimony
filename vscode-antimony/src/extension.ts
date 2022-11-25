@@ -112,6 +112,11 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('antimony.insertRateLawDialog',
 			(...args: any[]) => insertRateLawDialog(context, args)));
 
+	// find stoichiometric inconsistencies
+	context.subscriptions.push(
+		vscode.commands.registerCommand('antimony.findStoichiometricInconsistencies',
+			(...args: any[]) => findStoichiometricInconsistencies(context, args)));
+
 	// switch visual annotations on
 	context.subscriptions.push(
 		vscode.commands.registerCommand('antimony.switchIndicationOn',
@@ -278,6 +283,69 @@ async function checkConversionResult(result, type) {
 		vscode.window.showInformationMessage(`${result.msg}`)
 		const document = await vscode.workspace.openTextDocument(`${result.file}`)
 		vscode.window.showTextDocument(document);
+	}
+}
+
+async function findStoichiometricInconsistencies(context: vscode.ExtensionContext, args: any[]) {
+	if (!client) {
+		utils.pythonInterpreterError();
+		return;
+	}
+	await client.onReady();
+
+	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+
+	const options: vscode.OpenDialogOptions = {
+		openLabel: "Select",
+		canSelectFolders: true,
+		canSelectFiles: false,
+		canSelectMany: false,
+		filters: {
+			'Text Files': ['txt']
+		},
+		title: "Select a location to save your Stoichiometric Inconsistencies List"
+	};
+	vscode.window.showOpenDialog(options).then(fileUri => {
+		if (fileUri && fileUri[0]) {
+		 let siList;
+				vscode.commands.executeCommand('antimony.findSIs', vscode.window.activeTextEditor.document, 
+					fileUri[0].fsPath).then(async (result) => {
+				 await checkSBMLLintResult(result);
+				 siList = result;
+				 const panel = vscode.window.createWebviewPanel(
+					 'txt',
+					 'SI List',
+					 vscode.ViewColumn.Two,
+					 {
+					   localResourceRoots: [vscode.Uri.file(path.dirname(siList.file))]
+					 }
+				 );
+				 const pngSrc = panel.webview.asWebviewUri(vscode.Uri.file(siList.file));
+				 panel.webview.html = getWebviewContent(pngSrc);
+			 });
+		}
+	});
+}
+
+function getWebviewContent(uri: vscode.Uri) {
+	return `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+	  <meta charset="UTF-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <title>Stoichiometric Inconsistencies</title>
+  </head>
+  <body>
+	<p src=${uri} width="350" />
+  </body>
+  </html>`;
+  }  
+
+async function checkSBMLLintResult(result) {
+	if (result.error) {
+		vscode.window.showErrorMessage(`Could not convert check for SI: ${result.error}`)
+	} else {
+		vscode.window.showInformationMessage(`${result.msg}`);
 	}
 }
 
@@ -579,3 +647,5 @@ async function insertAnnotation(selectedItem, entityName, line) {
 	const pos = doc.lineAt(line).range.end;
 	vscode.window.activeTextEditor.insertSnippet(snippetStr, pos);
 }
+
+

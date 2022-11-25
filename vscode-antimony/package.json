@@ -25,6 +25,7 @@
 		"onCommand:antimony.createAnnotationDialog",
 		"onCommand:antimony.recommendAnnotationDialog",
 		"onCommand:antimony.insertRateLaw",
+		"onCommand:antimony.findStoichiometricInconsistencies",
 		"onCommand:antimony.switchIndicationOn",
 		"onCommand:antimony.switchIndicationOff",
 		"onCommand:antimony.convertAntimonyToSBML",
@@ -101,12 +102,16 @@
 			{
 				"command": "antimony.recommendAnnotationDialog",
 				"title": "Annotation Recommender"
-      },
-      {
+      		},
+      		{
 				"command": "antimony.insertRateLawDialog",
 				"title": "Insert Rate Law"
-      },
-      {
+      		},
+	  		{
+				"command": "antimony.findStoichiometricInconsistencies",
+				"title": "Find Stoichiometric Inconsistencies"
+			},
+      		{
 				"command": "antimony.switchIndicationOn",
 				"title": "Turn Annotated Variable Indications On"
 			},
@@ -159,14 +164,20 @@
 					"title": "Annotation Recommender",
 					"group": "1_modification",
 					"when": "editorLangId == antimony"
-        },
-        {
+        		},
+       			{
 					"command": "antimony.insertRateLawDialog",
 					"title": "Insert Rate Law",
 					"group": "1_modification",
 					"when": "editorLangId == antimony"
-        },
-        {
+        		},
+				{
+					"command": "antimony.findStoichiometricInconsistencies",
+					"title": "Find Stoichiometric Inconsistencies",
+					"group": "1_modification",
+					"when": "editorLangId == antimony"
+        		},
+        		{
 					"command": "antimony.switchIndicationOn",
 					"title": "Turn Annotated Variable Indications On",
 					"group": "1_modification",
