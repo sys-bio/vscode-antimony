@@ -5,8 +5,6 @@ import os
 import sys
 import logging
 
-import libsbml
-
 EXTENSION_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(EXTENSION_ROOT, "..", "pythonFiles", "lib", "python"))
 
@@ -38,6 +36,7 @@ import threading
 import time
 from AMAS import recommender, species_annotation
 from bioservices import ChEBI
+from SBMLLint.tools import sbmllint
 
 # TODO remove this for production
 logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
@@ -208,7 +207,6 @@ def find_stoich_inconsist(ls: LanguageServer, args):
             'msg': 'SI List has been exported to {}'.format(output_dir),
             'file': full_path_name
         }
-
 
 @server.thread()
 @server.command('antimony.sendQuery')
