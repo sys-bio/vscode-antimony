@@ -201,8 +201,9 @@ def find_stoich_inconsist(ls: LanguageServer, args):
     else:
         model_name = os.path.basename(ant)
         full_path_name = os.path.join(output_dir, os.path.splitext(model_name)[0]+'.txt')
-        df = libsbml.load(sbml_str['sbml_str'])
-        df.draw(output_fileName=full_path_name)
+        rep = sbmllint.MoietyComparator.analyzeReactions(sbml_str['sbml_str'])
+        with open(full_path_name, 'w') as f:
+            f.write(rep.report)
         return {
             'msg': 'SI List has been exported to {}'.format(output_dir),
             'file': full_path_name
