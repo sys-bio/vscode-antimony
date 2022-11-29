@@ -32,6 +32,7 @@
 		"onCommand:antimony.convertSBMLToAntimony",
 		"onCommand:antimony.startSBMLWebview",
 		"onCommand:antimony.startAntimonyWebview",
+		"onCommand:antimony.startFindSIWebview",
 		"onCustomEditor:antimony.sbmlEditor",
 		"onCustomEditor:antimony.antimonyEditor"
 	],
@@ -136,6 +137,11 @@
 				"command": "antimony.startAntimonyWebview",
 				"title": "preview Antimony",
 				"icon": "docs/images/logo.png"
+			},
+			{
+				"command": "antimony.startFindSIWebview",
+				"title": "view Stoichiometric Inconsistencies",
+				"icon": "docs/images/logo.png"
 			}
 		],
 		"languages": [
@@ -168,12 +174,6 @@
        			{
 					"command": "antimony.insertRateLawDialog",
 					"title": "Insert Rate Law",
-					"group": "1_modification",
-					"when": "editorLangId == antimony"
-        		},
-				{
-					"command": "antimony.findStoichiometricInconsistencies",
-					"title": "Find Stoichiometric Inconsistencies",
 					"group": "1_modification",
 					"when": "editorLangId == antimony"
         		},
@@ -214,6 +214,12 @@
 					"title": "preview Antimony",
 					"group": "navigation",
 					"when": "editorLangId == xml"
+				},
+				{
+					"command": "antimony.startSBMLWebview",
+					"title": "view Stoichiometric Inconsistencies",
+					"group": "navigation",
+					"when": "editorLangId == antimony"
 				}
 			]
 		},

@@ -11,6 +11,7 @@ import { annotationMultiStepInput } from './annotationInput';
 import { rateLawSingleStepInput } from './rateLawInput';
 import { SBMLEditorProvider } from './SBMLEditor';
 import { AntimonyEditorProvider } from './AntimonyEditor';
+import { FindStoichInconsisProvider } from './findStoichIncon';
 
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
@@ -113,9 +114,9 @@ export async function activate(context: vscode.ExtensionContext, webviewPanel: v
 			(...args: any[]) => insertRateLawDialog(context, args)));
 
 	// find stoichiometric inconsistencies
-	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.findStoichiometricInconsistencies',
-			(...args: any[]) => findStoichiometricInconsistencies(document, webviewPanel)));
+	// context.subscriptions.push(
+	// 	vscode.commands.registerCommand('antimony.findStoichiometricInconsistencies',
+	// 		(...args: any[]) => findStoichiometricInconsistencies(document, webviewPanel)));
 
 	// switch visual annotations on
 	context.subscriptions.push(
@@ -138,12 +139,16 @@ export async function activate(context: vscode.ExtensionContext, webviewPanel: v
 	// custom editor
 	context.subscriptions.push(await SBMLEditorProvider.register(context, client));
 	context.subscriptions.push(await AntimonyEditorProvider.register(context, client));
+	context.subscriptions.push(await FindStoichInconsisProvider.register(context, client));
 	context.subscriptions.push(
 		vscode.commands.registerCommand('antimony.startSBMLWebview',
 			(...args: any[]) => startSBMLWebview(context, args)));
 	context.subscriptions.push(
 		vscode.commands.registerCommand('antimony.startAntimonyWebview',
 			(...args: any[]) => startAntimonyWebview(context, args)));
+	context.subscriptions.push(
+		vscode.commands.registerCommand('antimony.startFindSIWebview',
+			(...args: any[]) => startFindSIWebview(context, args)));
 
 	// language config for CodeLens
 	const docSelector = {
@@ -206,6 +211,19 @@ async function startSBMLWebview(context: vscode.ExtensionContext, args: any[]) {
 }
 
 async function startAntimonyWebview(context: vscode.ExtensionContext, args: any[]) {
+	if (!client) {
+		utils.pythonInterpreterError();
+		return;
+	}
+	await client.onReady();
+
+	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+
+	vscode.commands.executeCommand("vscode.openWith", 
+		vscode.window.activeTextEditor.document.uri, "antimony.antimonyEditor", 2);
+}
+
+async function startFindSIWebview(context: vscode.ExtensionContext, args: any[]) {
 	if (!client) {
 		utils.pythonInterpreterError();
 		return;
@@ -284,59 +302,6 @@ async function checkConversionResult(result, type) {
 		const document = await vscode.workspace.openTextDocument(`${result.file}`)
 		vscode.window.showTextDocument(document);
 	}
-}
-
-async function findStoichiometricInconsistencies(document: vscode.TextDocument, webviewPanel: vscode.WebviewPanel) {
-	if (!client) {
-		utils.pythonInterpreterError();
-		return;
-	}
-	await client.onReady();
-
-	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
-
-	vscode.commands.executeCommand('antimony.findSIs', document.getText)
-	.then(async (result: any) => {
-		let msg = '';
-		console.log(result)
-		msg = result.msg;
-		console.log(msg)
-		webviewPanel.webview.html = 
-			`
-			<!DOCTYPE html>
-			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Antimony</title>
-			</head>
-			<body>
-				<div contenteditable="true" id="antimony">
-					<pre id="antimony-text">
-						${msg}
-					</pre>
-					<script>
-						let size = getComputedStyle(document.body).getPropertyValue('--vscode-editor-font-size')
-						document.getElementById("antimony").style="font-size: " + size;
-
-						(function() {
-							const vscode = acquireVsCodeApi();
-							document.addEventListener('keydown', e => {
-								if (e.ctrlKey && e.key === 's') {
-									const node = document.getElementById('antimony-text');
-									vscode.postMessage({
-										command: 'antimonyOnSave',
-										antimony: node.innerHTML
-									})
-								}
-							});
-						}())
-					</script>
-				</div>
-				
-			</html>
-			`;
-	});
 }
 
 async function createAnnotationDialog(context: vscode.ExtensionContext, args: any[]) {
