@@ -193,20 +193,22 @@ def get_annotations(ls: LanguageServer, args):
 @server.thread()
 @server.command('antimony.findSIs')
 def find_stoich_inconsist(ls: LanguageServer, args):
-    ant = args[0].fileName
-    output_dir = args[1]
-    sbml_str = _get_sbml_str(ant)
+    #ant = args[0].fileName
+    #output_dir = args[1]
+    temp = '\n'.join(args.split('\n')[1:])
+    sbml_str = antimony.loadSBMLString(args)
     if 'error' in sbml_str:
         return sbml_str
     else:
-        model_name = os.path.basename(ant)
-        full_path_name = os.path.join(output_dir, os.path.splitext(model_name)[0]+'.txt')
-        rep = sbmllint.MoietyComparator.analyzeReactions(sbml_str['sbml_str'])
-        with open(full_path_name, 'w') as f:
-            f.write(rep.report)
+        #model_name = os.path.basename(ant)
+        #full_path_name = os.path.join(output_dir, os.path.splitext(model_name)[0]+'.txt')
+        rep = sbmllint.MoietyComparator.analyzeReactions(sbml_str)
+        #with open(full_path_name, 'w') as f:
+        #    f.write(rep.report)
         return {
-            'msg': 'SI List has been exported to {}'.format(output_dir),
-            'file': full_path_name
+            #'msg': 'SI List has been exported to {}'.format(output_dir),
+            #'file': full_path_name
+            'msg': rep.report
         }
 
 @server.thread()

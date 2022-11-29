@@ -70,7 +70,7 @@ function updateDecorations() {
 	}
 }
 
-export async function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext, webviewPanel: vscode.WebviewPanel, document: vscode.TextDocument) {
 	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
 	// start the language server
 	await startLanguageServer(context);
@@ -115,7 +115,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// find stoichiometric inconsistencies
 	context.subscriptions.push(
 		vscode.commands.registerCommand('antimony.findStoichiometricInconsistencies',
-			(...args: any[]) => findStoichiometricInconsistencies(context, args)));
+			(...args: any[]) => findStoichiometricInconsistencies(document, webviewPanel)));
 
 	// switch visual annotations on
 	context.subscriptions.push(
@@ -286,7 +286,7 @@ async function checkConversionResult(result, type) {
 	}
 }
 
-async function findStoichiometricInconsistencies(context: vscode.ExtensionContext, args: any[]) {
+async function findStoichiometricInconsistencies(document: vscode.TextDocument, webviewPanel: vscode.WebviewPanel) {
 	if (!client) {
 		utils.pythonInterpreterError();
 		return;
@@ -295,60 +295,48 @@ async function findStoichiometricInconsistencies(context: vscode.ExtensionContex
 
 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 
-	const options: vscode.OpenDialogOptions = {
-		openLabel: "Select",
-		canSelectFolders: true,
-		canSelectFiles: false,
-		canSelectMany: false,
-		filters: {
-			'Text Files': ['txt']
-		},
-		title: "Select a location to save your Stoichiometric Inconsistencies List"
-	};
-	vscode.window.showOpenDialog(options).then(fileUri => {
-		if (fileUri && fileUri[0]) {
-		 	let siFile;
-			vscode.commands.executeCommand('antimony.findSIs', vscode.window.activeTextEditor.document, 
-			fileUri[0].fsPath).then(async (result) => {
-				await checkSBMLLintResult(result);
-				console.log(result);
-				siFile = result;
-				vscode.commands.executeCommand('vscode.open', siFile.file, vscode.ViewColumn.Two);
-				//  const panel = vscode.window.createWebviewPanel(
-				// 	 'antimony',
-				// 	 'SI List',
-				// 	 vscode.ViewColumn.Two,
-				// 	 {
-				// 	   localResourceRoots: [vscode.Uri.file(path.dirname(siList.file))]
-				// 	 }
-				//  );
-				//  const txtSrc = panel.webview.asWebviewUri(vscode.Uri.file(siList.file));
-				//  panel.webview.html = getWebviewContent(txtSrc);
-			 });
-		}
+	vscode.commands.executeCommand('antimony.findSIs', document.getText)
+	.then(async (result: any) => {
+		let msg = '';
+		console.log(result)
+		msg = result.msg;
+		console.log(msg)
+		webviewPanel.webview.html = 
+			`
+			<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>Antimony</title>
+			</head>
+			<body>
+				<div contenteditable="true" id="antimony">
+					<pre id="antimony-text">
+						${msg}
+					</pre>
+					<script>
+						let size = getComputedStyle(document.body).getPropertyValue('--vscode-editor-font-size')
+						document.getElementById("antimony").style="font-size: " + size;
+
+						(function() {
+							const vscode = acquireVsCodeApi();
+							document.addEventListener('keydown', e => {
+								if (e.ctrlKey && e.key === 's') {
+									const node = document.getElementById('antimony-text');
+									vscode.postMessage({
+										command: 'antimonyOnSave',
+										antimony: node.innerHTML
+									})
+								}
+							});
+						}())
+					</script>
+				</div>
+				
+			</html>
+			`;
 	});
-}
-
-function getWebviewContent(uri: vscode.Uri) {
-	return `<!DOCTYPE html>
-  <html lang="en">
-  <head>
-	  <meta charset="UTF-8">
-	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	  <title>Stoichiometric Inconsistencies</title>
-  </head>
-  <body>
-	<iframe src=${uri} frameborder='5' height='250' width='90%'/>
-  </body>
-  </html>`;
-}
-
-async function checkSBMLLintResult(result) {
-	if (result.error) {
-		vscode.window.showErrorMessage(`Could not convert check for SI: ${result.error}`)
-	} else {
-		vscode.window.showInformationMessage(`${result.msg}`);
-	}
 }
 
 async function createAnnotationDialog(context: vscode.ExtensionContext, args: any[]) {
