@@ -22,3 +22,4 @@ vscode-antimony/pythonFiles/lib/*
 !vscode-antimony/pythonFiles/lib/python
 vscode-antimony/pythonFiles/lib/python/*
 !vscode-antimony/pythonFiles/lib/python/ols_client
+.env
