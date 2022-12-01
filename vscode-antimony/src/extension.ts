@@ -342,7 +342,7 @@ function getWebviewContent(uri: vscode.Uri) {
 	  <img src=${uri} width="300" />
   </body>
   </html>`;
-  }  
+  }
 
 async function checkSBMLDiagramResult(result) {
 	if (result.error) {
