@@ -297,6 +297,16 @@ async function convertAntimonyToDiagram(context: vscode.ExtensionContext, args: 
 
 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 
+	const selection = vscode.window.activeTextEditor.selection;
+	const positionAt = selection.anchor;
+	const lineStr = positionAt.line.toString();
+	const charStr = positionAt.character.toString();
+	// get the selected text
+	const doc = vscode.window.activeTextEditor.document;
+	const uri = doc.uri.toString();
+	const selectedText = doc.getText(selection);
+	const initialEntity = selectedText || 'entityName';
+
 	const options: vscode.OpenDialogOptions = {
 		openLabel: "Select",
 		canSelectFolders: true,
@@ -311,7 +321,7 @@ async function convertAntimonyToDiagram(context: vscode.ExtensionContext, args: 
 	   if (fileUri && fileUri[0]) {
 		let diagram;
 			   vscode.commands.executeCommand('antimony.antFiletoDiagram', vscode.window.activeTextEditor.document, 
-				   fileUri[0].fsPath).then(async (result) => {
+				   fileUri[0].fsPath, initialEntity, uri, lineStr, charStr).then(async (result) => {
 				await checkSBMLDiagramResult(result);
 				diagram = result;
 				const panel = vscode.window.createWebviewPanel(

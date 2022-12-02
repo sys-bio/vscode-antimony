@@ -37,6 +37,7 @@ import time
 from AMAS import recommender, species_annotation
 from bioservices import ChEBI
 import SBMLDiagrams
+import tellurium as te
 
 # TODO remove this for production
 logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
@@ -155,18 +156,45 @@ def sbml_file_to_ant_file(ls: LanguageServer, args):
 def ant_file_to_sbml_file(ls: LanguageServer, args):
     ant = args[0].fileName
     output_dir = args[1]
-    sbml_str = _get_sbml_str(ant)
-    if 'error' in sbml_str:
-        return sbml_str
+    selected_species = args[2]
+    if selected_species == 'entityName':
+        sbml_str = _get_sbml_str(ant)
+        if 'error' in sbml_str:
+            return {
+                'error': 'Error in antimony file!'
+            }
+        else:
+            model_name = os.path.basename(ant)
+            df = SBMLDiagrams.load(sbml_str['sbml_str'])
     else:
-        model_name = os.path.basename(ant)
-        full_path_name = os.path.join(output_dir, os.path.splitext(model_name)[0]+'_diagram.png')
-        df = SBMLDiagrams.load(sbml_str['sbml_str'])
-        df.draw(output_fileName=full_path_name)
-        return {
-            'msg': 'Diagram has been exported to {}'.format(output_dir),
-            'file': full_path_name
-        }
+        uri = args[3]
+        line = int(args[4]) + 1
+        char = int(args[5]) + 1
+        doc = server.workspace.get_document(uri)
+        antfile_cache = get_antfile(doc)
+        position  = SrcPosition(line, char)
+        symbols= antfile_cache.symbols_at(position)[0]
+        symbol = symbols[0].type.__str__()
+        if symbol != SymbolType.Species:
+            return {
+                'error': 'Please select species!'
+            }
+        model_str = 'model *temp()\n'
+        reaction_list = antfile_cache.analyzer.reaction_list()
+        for react_prod_list, reaction_str in reaction_list:
+            if selected_species in react_prod_list:
+                model_str += reaction_str + '\n'
+        model_str += 'end'
+        r = te.loada(model_str)
+        sbmlStr = r.getSBML()
+        df = SBMLDiagrams.load(sbmlStr)
+    full_path_name = os.path.join(output_dir, os.path.splitext(model_name)[0]+'_diagram.png')
+    df.draw(output_fileName=full_path_name)
+    return {
+        'msg': 'Diagram has been exported to {}'.format(output_dir),
+        'file': full_path_name
+    }
+        
 
 @server.thread()
 @server.command('antimony.sendType')
@@ -186,7 +214,6 @@ def get_type(ls: LanguageServer, args) -> dict[str, str]:
     symbols= antfile_cache.symbols_at(position)[0]
     
     symbol = symbols[0].type.__str__()
-    vscode_logger.info("symbol: " + symbol)
     return {
         'symbol': symbol
     }

@@ -417,6 +417,17 @@ class Reaction(TrunkNode):
         if self.children[6] is not None:
             return self.children[6]
         return None
+
+    def to_string(self) -> str:
+        ret = ''
+        if isinstance(self, LeafNode):
+            ret += self.text
+        else:
+            for node in self.descendants():
+                if isinstance(node, LeafNode):
+                    ret += node.text
+        return ret
+    
     
 @dataclass
 class InteractionName(TrunkNode):
