@@ -157,7 +157,6 @@ def ant_file_to_sbml_file(ls: LanguageServer, args):
     ant = args[0].fileName
     output_dir = args[1]
     selected_species = args[2]
-    logging.info('number of args: ' + str(len(args)))
     if selected_species == 'entityName':
         sbml_str = _get_sbml_str(ant)
         if 'error' in sbml_str:
@@ -178,7 +177,7 @@ def ant_file_to_sbml_file(ls: LanguageServer, args):
         symbol = symbols[0].type.__str__()
         if symbol != SymbolType.Species:
             return {
-                'error': 'Please select species!'
+                'error': 'Selected ' + symbol + '. Please select species!'
             }
         model_str = 'model *temp()\n'
         reaction_list = antfile_cache.analyzer.reaction_list()
