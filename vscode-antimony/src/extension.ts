@@ -322,18 +322,20 @@ async function convertAntimonyToDiagram(context: vscode.ExtensionContext, args: 
 		let diagram;
 			   vscode.commands.executeCommand('antimony.antFiletoDiagram', vscode.window.activeTextEditor.document, 
 				   fileUri[0].fsPath, initialEntity, uri, lineStr, charStr).then(async (result) => {
-				await checkSBMLDiagramResult(result);
+				let error = await checkSBMLDiagramResult(result);
 				diagram = result;
-				const panel = vscode.window.createWebviewPanel(
-					'antimony',
-					'SBMLDiagram',
-					vscode.ViewColumn.Two,
-					{
-					  localResourceRoots: [vscode.Uri.file(path.dirname(diagram.file))]
-					}
-				);
-				const pngSrc = panel.webview.asWebviewUri(vscode.Uri.file(diagram.file));
-				panel.webview.html = getWebviewContent(pngSrc);
+				if (!diagram.error) {
+					const panel = vscode.window.createWebviewPanel(
+						'antimony',
+						'SBMLDiagram',
+						vscode.ViewColumn.Two,
+						{
+						  localResourceRoots: [vscode.Uri.file(path.dirname(diagram.file))]
+						}
+					);
+					const pngSrc = panel.webview.asWebviewUri(vscode.Uri.file(diagram.file));
+					panel.webview.html = getWebviewContent(pngSrc);
+				}
 			});
 	   }
    });
@@ -356,7 +358,7 @@ function getWebviewContent(uri: vscode.Uri) {
 
 async function checkSBMLDiagramResult(result) {
 	if (result.error) {
-		vscode.window.showErrorMessage(`Could not convert file to diagram: ${result.error}`)
+		vscode.window.showErrorMessage(`Could not convert file to diagram: ${result.error}`);
 	} else {
 		vscode.window.showInformationMessage(`${result.msg}`);
 	}

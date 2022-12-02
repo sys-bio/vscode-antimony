@@ -173,7 +173,7 @@ def ant_file_to_sbml_file(ls: LanguageServer, args):
         doc = server.workspace.get_document(uri)
         antfile_cache = get_antfile(doc)
         position  = SrcPosition(line, char)
-        symbols= antfile_cache.symbols_at(position)[0]
+        symbols = antfile_cache.symbols_at(position)[0]
         symbol = symbols[0].type.__str__()
         if symbol != SymbolType.Species:
             return {
