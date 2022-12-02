@@ -180,7 +180,7 @@ def ant_file_to_sbml_file(ls: LanguageServer, args):
                 'error': 'Selected ' + symbol_type.__str__() + '. Please select species!'
             }
         model_str = 'model *temp()\n'
-        reaction_list = antfile_cache.analyzer.reaction_list()
+        reaction_list = antfile_cache.analyzer.reaction_list
         for react_prod_list, reaction_str in reaction_list:
             if selected_species in react_prod_list:
                 model_str += reaction_str + '\n'
