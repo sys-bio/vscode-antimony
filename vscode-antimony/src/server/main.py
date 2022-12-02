@@ -174,10 +174,10 @@ def ant_file_to_sbml_file(ls: LanguageServer, args):
         antfile_cache = get_antfile(doc)
         position  = SrcPosition(line, char)
         symbols = antfile_cache.symbols_at(position)[0]
-        symbol = symbols[0].type.__str__()
-        if symbol != SymbolType.Species:
+        symbol_type = symbols[0].type
+        if symbol_type is not SymbolType.Species:
             return {
-                'error': 'Selected ' + symbol + '. Please select species!'
+                'error': 'Selected ' + symbol_type.__str__() + '. Please select species!'
             }
         model_str = 'model *temp()\n'
         reaction_list = antfile_cache.analyzer.reaction_list()
