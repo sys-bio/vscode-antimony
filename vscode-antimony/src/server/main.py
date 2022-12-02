@@ -157,6 +157,7 @@ def ant_file_to_sbml_file(ls: LanguageServer, args):
     ant = args[0].fileName
     output_dir = args[1]
     selected_species = args[2]
+    logging.info('number of args: ' + len(args))
     if selected_species == 'entityName':
         sbml_str = _get_sbml_str(ant)
         if 'error' in sbml_str:
