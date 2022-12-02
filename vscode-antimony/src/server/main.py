@@ -164,7 +164,6 @@ def ant_file_to_sbml_file(ls: LanguageServer, args):
                 'error': 'Error in antimony file!'
             }
         else:
-            model_name = os.path.basename(ant)
             df = SBMLDiagrams.load(sbml_str['sbml_str'])
     else:
         uri = args[3]
@@ -188,6 +187,7 @@ def ant_file_to_sbml_file(ls: LanguageServer, args):
         r = te.loada(model_str)
         sbmlStr = r.getSBML()
         df = SBMLDiagrams.load(sbmlStr)
+    model_name = os.path.basename(ant)
     full_path_name = os.path.join(output_dir, os.path.splitext(model_name)[0]+'_diagram.png')
     df.draw(output_fileName=full_path_name)
     return {
