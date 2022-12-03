@@ -297,49 +297,51 @@ async function convertAntimonyToDiagram(context: vscode.ExtensionContext, args: 
 
 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 
-	const selection = vscode.window.activeTextEditor.selection;
-	const positionAt = selection.anchor;
-	const lineStr = positionAt.line.toString();
-	const charStr = positionAt.character.toString();
-	// get the selected text
 	const doc = vscode.window.activeTextEditor.document;
 	const uri = doc.uri.toString();
-	const selectedText = doc.getText(selection);
-	const initialEntity = selectedText || 'entityName';
 
-	const options: vscode.OpenDialogOptions = {
-		openLabel: "Select",
-		canSelectFolders: true,
-		canSelectFiles: false,
-		canSelectMany: false,
-		filters: {
-			'Images': ['png']
-		},
-		title: "Select a location to save your SBML diagram"
-	};
-   vscode.window.showOpenDialog(options).then(fileUri => {
-	   if (fileUri && fileUri[0]) {
-		let diagram;
-			   vscode.commands.executeCommand('antimony.antFiletoDiagram', vscode.window.activeTextEditor.document, 
-				   fileUri[0].fsPath, initialEntity, uri, lineStr, charStr).then(async (result) => {
-				let error = await checkSBMLDiagramResult(result);
-				diagram = result;
-				if (!diagram.error) {
-					const panel = vscode.window.createWebviewPanel(
-						'antimony',
-						'SBMLDiagram',
-						vscode.ViewColumn.Two,
-						{
-						  localResourceRoots: [vscode.Uri.file(path.dirname(diagram.file))]
-						}
-					);
-					const pngSrc = panel.webview.asWebviewUri(vscode.Uri.file(diagram.file));
-					panel.webview.html = getWebviewContent(pngSrc);
+	let speciesStr;
+	vscode.commands.executeCommand('antimony.getDiagramQuickpick', uri).then(async (result) => {
+		speciesStr = result;
+		let speciesList = speciesStr.species_list.split(' ');
+		let selectedSpeciesList = await vscode.window.showQuickPick(speciesList, {canPickMany: true});
+		if (selectedSpeciesList && selectedSpeciesList.length === 0) {
+			vscode.window.showErrorMessage('Please select at least one species!');
+		} else {
+			const options: vscode.OpenDialogOptions = {
+				openLabel: "Select",
+				canSelectFolders: true,
+				canSelectFiles: false,
+				canSelectMany: false,
+				filters: {
+					'Images': ['png']
+				},
+				title: "Select a location to save your SBML diagram"
+			};
+			vscode.window.showOpenDialog(options).then(fileUri => {
+				if (fileUri && fileUri[0]) {
+				 let diagram;
+						vscode.commands.executeCommand('antimony.antFiletoDiagram', vscode.window.activeTextEditor.document, 
+							fileUri[0].fsPath, selectedSpeciesList).then(async (result) => {
+						 let error = await checkSBMLDiagramResult(result);
+						 diagram = result;
+						 if (!diagram.error) {
+							 const panel = vscode.window.createWebviewPanel(
+								 'antimony',
+								 'SBMLDiagram',
+								 vscode.ViewColumn.Two,
+								 {
+								   localResourceRoots: [vscode.Uri.file(path.dirname(diagram.file))]
+								 }
+							 );
+							 const pngSrc = panel.webview.asWebviewUri(vscode.Uri.file(diagram.file));
+							 panel.webview.html = getWebviewContent(pngSrc);
+						 }
+					 });
 				}
 			});
-	   }
-   });
-   
+		}
+	});
 }
 
 function getWebviewContent(uri: vscode.Uri) {
@@ -373,7 +375,6 @@ async function createAnnotationDialog(context: vscode.ExtensionContext, args: an
 	}
 	await client.onReady();
 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
-  
 	// dialog for annotation
 	const selection = vscode.window.activeTextEditor.selection;
   

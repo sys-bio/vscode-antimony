@@ -152,41 +152,36 @@ def sbml_file_to_ant_file(ls: LanguageServer, args):
         }
 
 @server.thread()
+@server.command('antimony.getDiagramQuickpick')
+def ant_file_to_sbml_file(ls: LanguageServer, args):
+    uri = args[0]
+    doc = server.workspace.get_document(uri)
+    antfile_cache = get_antfile(doc)
+    reaction_list = antfile_cache.analyzer.reaction_list
+    species_set = set()
+    for species_names, reaction_part_str in reaction_list:
+        species_set.update(species_names)
+    species_list = list(species_set)
+    species_list.sort()
+    return {
+        'species_list': " ".join(species_list)
+    }
+
+@server.thread()
 @server.command('antimony.antFiletoDiagram')
 def ant_file_to_sbml_file(ls: LanguageServer, args):
     ant = args[0].fileName
     output_dir = args[1]
-    selected_species = args[2]
-    if selected_species == 'entityName':
-        sbml_str = _get_sbml_str(ant)
-        if 'error' in sbml_str:
-            return {
-                'error': 'Error in antimony file!'
-            }
-        else:
-            df = SBMLDiagrams.load(sbml_str['sbml_str'])
-    else:
-        uri = args[3]
-        line = int(args[4]) + 1
-        char = int(args[5]) + 1
-        doc = server.workspace.get_document(uri)
-        antfile_cache = get_antfile(doc)
-        position  = SrcPosition(line, char)
-        symbols = antfile_cache.symbols_at(position)[0]
-        symbol_type = symbols[0].type
-        if symbol_type is not SymbolType.Species:
-            return {
-                'error': 'Selected ' + symbol_type.__str__() + '. Please select species!'
-            }
-        model_str = 'model *temp()\n'
-        reaction_list = antfile_cache.analyzer.reaction_list
-        for react_prod_list, reaction_str in reaction_list:
-            if selected_species in react_prod_list:
-                model_str += reaction_str + '\n'
-        model_str += 'end'
-        r = te.loada(model_str)
-        sbmlStr = r.getSBML()
-        df = SBMLDiagrams.load(sbmlStr)
+    selected_species_list = args[2]
+    model_str = 'model *temp()\n'
+    reaction_list = antfile_cache.analyzer.reaction_list
+    for react_prod_list, reaction_str in reaction_list:
+        if any((match := item) in react_prod_list for item in selected_species_list):
+            model_str += reaction_str + '\n'
+    model_str += 'end'
+    r = te.loada(model_str)
+    sbmlStr = r.getSBML()
+    df = SBMLDiagrams.load(sbmlStr)
     model_name = os.path.basename(ant)
     full_path_name = os.path.join(output_dir, os.path.splitext(model_name)[0]+'_diagram.png')
     df.draw(output_fileName=full_path_name)
