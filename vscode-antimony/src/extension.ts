@@ -304,7 +304,7 @@ async function convertAntimonyToDiagram(context: vscode.ExtensionContext, args: 
 	vscode.commands.executeCommand('antimony.getDiagramQuickpick', uri).then(async (result) => {
 		speciesStr = result;
 		let speciesList = speciesStr.species_list.split(' ');
-		let selectedSpeciesList = await vscode.window.showQuickPick(speciesList, {canPickMany: true});
+		let selectedSpeciesList = await vscode.window.showQuickPick(speciesList, {canPickMany: true, placeHolder: 'select species to include in your diagram'});
 		if (selectedSpeciesList && selectedSpeciesList.length === 0) {
 			vscode.window.showErrorMessage('Please select at least one species!');
 		} else {
