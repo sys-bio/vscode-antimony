@@ -294,42 +294,22 @@ async function findStoichiometricInconsistencies(context: vscode.ExtensionContex
 	await client.onReady();
 
 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
-
-	const options: vscode.OpenDialogOptions = {
-		openLabel: "Select",
-		canSelectFolders: true,
-		canSelectFiles: false,
-		canSelectMany: false,
-		filters: {
-			'Text Files': ['txt']
-		},
-		title: "Select a location to save your Stoichiometric Inconsistencies List"
-	};
-	vscode.window.showOpenDialog(options).then(fileUri => {
-		if (fileUri && fileUri[0]) {
-		 	let siFile;
-			vscode.commands.executeCommand('antimony.findSIs', vscode.window.activeTextEditor.document, 
-			fileUri[0].fsPath).then(async (result) => {
-				await checkSBMLLintResult(result);
-				console.log(result);
-				siFile = result;
-				vscode.commands.executeCommand('vscode.open', siFile.file, vscode.ViewColumn.Two);
-				//  const panel = vscode.window.createWebviewPanel(
-				// 	 'antimony',
-				// 	 'SI List',
-				// 	 vscode.ViewColumn.Two,
-				// 	 {
-				// 	   localResourceRoots: [vscode.Uri.file(path.dirname(siList.file))]
-				// 	 }
-				//  );
-				//  const txtSrc = panel.webview.asWebviewUri(vscode.Uri.file(siList.file));
-				//  panel.webview.html = getWebviewContent(txtSrc);
-			 });
-		}
-	});
+	let siFile;
+	vscode.commands.executeCommand('antimony.findSIs', vscode.window.activeTextEditor.document).then(async (result) => {
+		await checkSBMLLintResult(result);
+		console.log(result);
+		siFile = result;
+		vscode.commands.executeCommand('vscode.open', siFile.file, vscode.ViewColumn.Two);
+		 const panel = vscode.window.createWebviewPanel(
+			 'antimony',
+			 'SI List',
+			 vscode.ViewColumn.Two,
+		 );
+		 panel.webview.html = getSBMLLintWebviewContent(siFile.file);
+		});
 }
 
-function getWebviewContent(uri: vscode.Uri) {
+function getSBMLLintWebviewContent(file: string) {
 	return `<!DOCTYPE html>
   <html lang="en">
   <head>
@@ -338,7 +318,9 @@ function getWebviewContent(uri: vscode.Uri) {
 	  <title>Stoichiometric Inconsistencies</title>
   </head>
   <body>
-	<iframe src=${uri} frameborder='5' height='250' width='90%'/>
+  	<pre id="SBMLLint">
+  		${file}
+	</pre>
   </body>
   </html>`;
 }
