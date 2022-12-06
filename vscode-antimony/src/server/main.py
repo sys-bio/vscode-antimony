@@ -198,11 +198,37 @@ def find_stoich_inconsist(ls: LanguageServer, args):
     if 'error' in sbml_str:
         return sbml_str
     else:
-        model_name = os.path.basename(ant)
-        rep = sbmllint.MoietyComparator.analyzeReactions(sbml_str['sbml_str'])
+        #model_name = os.path.basename(ant)
+        #rep = sbmllint.MoietyComparator.analyzeReactions(sbml_str['sbml_str'])
+        report = ""
+        xml = sbmllint.util.getXML(sbml_str['sbml_str'])
+        reader = sbmllint.libsbml.SBMLReader()
+        document = reader.readSBMLFromString(xml)
+        sbmllint.util.checkSBMLDocument(document)
+        model = document.getModel()
+        
+        sbmllint.config.setConfiguration(fid=None)
+        config_dct = sbmllint.config.getConfiguration()
+        simple = sbmllint.SimpleSBML()
+        simple.initialize(model)
+        m = sbmllint.GAMES_PP(simple)
+        games_result = m.analyze(simple.reactions)
+        if games_result:
+            gr = sbmllint.GAMESReport(m, explain_threshold=config_dct[sbmllint.cn.CFG_GAMES_THRESHOLD])
+            errortype_dic = {sbmllint.TYPE_I: gr.reportTypeOneError,
+                            sbmllint.TYPE_II: gr.reportTypeTwoError,
+                            sbmllint.TYPE_III: gr.reportTypeThreeError,
+                            sbmllint.CANCELING: gr.reportCancelingError,
+                            sbmllint.ECHELON: gr.reportEchelonError
+                            }
+            for errors in m.error_summary:
+                for category in errortype_dic.keys():
+                    if errors.type == category:
+                        func = errortype_dic[category]            
+                        report, _ = func(errors.errors, explain_details=True)
         return {
             'msg': 'SI List has been exported',
-            'file': rep.report
+            'file': report
         }
 
 @server.thread()
