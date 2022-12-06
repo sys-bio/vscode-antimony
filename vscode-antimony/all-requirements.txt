@@ -20,3 +20,4 @@ bioservices==1.8.3
 AMAS-sb==0.0.1
 orjson==3.8.0
 SBMLDiagrams
+tellurium
