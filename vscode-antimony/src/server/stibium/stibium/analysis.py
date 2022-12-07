@@ -92,6 +92,7 @@ class AntTreeAnalyzer:
         self.unnamed_events_num = 0
         base_scope = BaseScope()
         self.reaction_item = set()
+        self.reaction_list = list()
         for child in root.children:
             if isinstance(child, ErrorToken):
                 continue
@@ -492,6 +493,7 @@ class AntTreeAnalyzer:
             else:
                 self.table.insert(QName(scope, name), SymbolType.Reaction, reaction, comp=comp)
 
+        species_names = set()
         for species in chain(reaction.get_reactants(), reaction.get_products()):
             if insert:
                 self.import_table.insert(QName(scope, species.get_name()), SymbolType.Species, comp=comp)
@@ -499,6 +501,11 @@ class AntTreeAnalyzer:
             else:
                 self.table.insert(QName(scope, species.get_name()), SymbolType.Species, comp=comp)
                 self.table.get(QName(scope, species.get_name()))[0].in_reaction = True
+            species_names.add(species.get_name_text())
+        reaction_str = reaction.to_string()
+        reaction_part_str = reaction_str.split(';')[0] + ';'
+        self.reaction_list.append((species_names, reaction_part_str))
+
         rate_law = reaction.get_rate_law()
         if rate_law is not None:
             self.handle_arith_expr(scope, rate_law, insert)

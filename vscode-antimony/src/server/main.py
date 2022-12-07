@@ -36,6 +36,8 @@ import threading
 import time
 from AMAS import recommender, species_annotation
 from bioservices import ChEBI
+import SBMLDiagrams
+import tellurium as te
 
 # TODO remove this for production
 logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
@@ -150,6 +152,47 @@ def sbml_file_to_ant_file(ls: LanguageServer, args):
         }
 
 @server.thread()
+@server.command('antimony.getDiagramQuickpick')
+def ant_file_to_sbml_file(ls: LanguageServer, args):
+    uri = args[0]
+    doc = server.workspace.get_document(uri)
+    antfile_cache = get_antfile(doc)
+    reaction_list = antfile_cache.analyzer.reaction_list
+    species_set = set()
+    for species_names, reaction_part_str in reaction_list:
+        species_set.update(species_names)
+    species_list = list(species_set)
+    species_list.sort()
+    return {
+        'species_list': " ".join(species_list)
+    }
+
+@server.thread()
+@server.command('antimony.antFiletoDiagram')
+def ant_file_to_sbml_file(ls: LanguageServer, args):
+    ant = args[0].fileName
+    output_dir = args[1]
+    selected_species_list = args[2]
+    model_str = 'model *temp()\n'
+    reaction_list = antfile_cache.analyzer.reaction_list
+    for react_prod_list, reaction_str in reaction_list:
+        if any((match := item) in react_prod_list for item in selected_species_list):
+            model_str += reaction_str + '\n'
+    model_str += 'end'
+    r = te.loada(model_str)
+    sbmlStr = r.getSBML()
+    df = SBMLDiagrams.load(sbmlStr)
+    model_name = os.path.basename(ant)
+    full_path_name = os.path.join(output_dir, os.path.splitext(model_name)[0]+'_diagram.png')
+    df.autolayout()
+    df.draw(output_fileName=full_path_name,showReactionIds=True)
+    return {
+        'msg': 'Diagram has been exported to {}'.format(output_dir),
+        'file': full_path_name
+    }
+        
+
+@server.thread()
 @server.command('antimony.sendType')
 def get_type(ls: LanguageServer, args) -> dict[str, str]:
     ''' get the symbol type of a symbol at given line, character and file uri
@@ -167,7 +210,6 @@ def get_type(ls: LanguageServer, args) -> dict[str, str]:
     symbols= antfile_cache.symbols_at(position)[0]
     
     symbol = symbols[0].type.__str__()
-    vscode_logger.info("symbol: " + symbol)
     return {
         'symbol': symbol
     }
