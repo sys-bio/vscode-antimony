@@ -184,7 +184,8 @@ def ant_file_to_sbml_file(ls: LanguageServer, args):
     df = SBMLDiagrams.load(sbmlStr)
     model_name = os.path.basename(ant)
     full_path_name = os.path.join(output_dir, os.path.splitext(model_name)[0]+'_diagram.png')
-    df.draw(output_fileName=full_path_name)
+    df.autolayout()
+    df.draw(output_fileName=full_path_name,showReactionIds=True)
     return {
         'msg': 'Diagram has been exported to {}'.format(output_dir),
         'file': full_path_name
