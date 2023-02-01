@@ -94,21 +94,33 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 			vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(path_to_venv_win), true);
 			vscode.window.showInformationMessage('Virtual environment exists, it is activated now.')
 		}
-	// } else if (os.platform().toString() == 'linux' && fs.existsSync(path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.9"))) {
-	// 	if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.9")) {
-	// 		vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.9"), true);
-	// 		vscode.window.showInformationMessage('Virtual environment exists, it is activated now.')
-	// 	}
+	} else if (os.platform().toString() == 'linux' && fs.existsSync(path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.10"))) {
+		if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.10")) {
+			vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.10"), true);
+			vscode.window.showInformationMessage('Virtual environment exists, it is activated now.')
+		}
 	} else {
-		vscode.window.showInformationMessage('To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
-		.then(async selection => {
-			// installing virtual env
-			if (selection === 'Yes') {
-				fixVirtualEnv()
-			} else if (selection === 'No') {
-				vscode.window.showInformationMessage('The default python interpreter will be used.')
-			}
-		});
+		if (os.platform().toString() == 'linux') {
+			vscode.window.showInformationMessage('[IMPORTANT: Linux users will have to install python3, venv python package and pip before proceeding.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			.then(async selection => {
+				// installing virtual env
+				if (selection === 'Yes') {
+					fixVirtualEnv();
+				} else if (selection === 'No') {
+					vscode.window.showInformationMessage('The default python interpreter will be used.')
+				}
+			});
+		} else {
+			vscode.window.showInformationMessage('To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			.then(async selection => {
+				// installing virtual env
+				if (selection === 'Yes') {
+					fixVirtualEnv();
+				} else if (selection === 'No') {
+					vscode.window.showInformationMessage('The default python interpreter will be used.')
+				}
+			});
+		}
 	}
 }
 
@@ -116,7 +128,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 async function fixVirtualEnv() {
 	vscode.window.showInformationMessage('Installation may take a few minutes. A pop up will display when finished. Please do not close VSCode during this time.')
 	var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'runshell.ts');
-	// var current_path_to_shell_script = path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh')
+	var current_path_to_shell_script = path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh')
 	shell.exec('npx ts-node ' + current_path_to_tsscript, (err, stdout, stderr) => {
 		if (err) {
 			vscode.window.showInformationMessage('Installation Error. Try again. Error Message "' + err + '."')
@@ -124,37 +136,24 @@ async function fixVirtualEnv() {
 		} else {
 			if (os.platform().toString() == 'darwin') {
 				vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/[venv_vscode_antimony_virtual_env]/bin/python3.9"), true);
-				const action = 'Reload';
-
-				vscode.window
-				.showInformationMessage(
-					`Installation finished. Reload to activate.`,
-					action
-				)
-				.then(selectedAction => {
-					if (selectedAction === action) {
-						vscode.commands.executeCommand('workbench.action.reloadWindow');
-					}
-				});
 			} else if (os.platform().toString() == 'win32' || os.platform().toString() == 'win64') {
 				vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(path_to_venv_win), true);
-				const action = 'Reload';
+			} else if (os.platform().toString() == 'linux') {
+				vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.10"), true);
+			}
 
-				vscode.window
-				.showInformationMessage(
-					`Installation finished. Reload to activate.`,
-					action
-				)
-				.then(selectedAction => {
-					if (selectedAction === action) {
-						vscode.commands.executeCommand('workbench.action.reloadWindow');
-					}
-				});
-			} 
-			// else if (os.platform().toString() == 'linux') {
-			// 	vscode.window.showInformationMessage('Run "bash ' + current_path_to_shell_script + '" in the vscode terminal to install the virtual env and necessary dependencies on your device. You can find the "Terminal" button on the top most left menu. Then, press "New Terminal" and run the command mentioned.')
-			// 	vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.9"), true);
-			// }
+			const action = 'Reload';
+
+			vscode.window
+			.showInformationMessage(
+				`Installation finished. Reload to activate.`,
+				action
+			)
+			.then(selectedAction => {
+				if (selectedAction === action) {
+					vscode.commands.executeCommand('workbench.action.reloadWindow');
+				}
+			});
 		}
 	});
 }
