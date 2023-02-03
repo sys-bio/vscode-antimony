@@ -2,7 +2,6 @@
 
 echo "script runs"
 
-:ve
 setlocal
 set py=%1
 if "%py%"=="" set py=python3.9
@@ -47,5 +46,3 @@ if "%VIRTUAL_ENV%"=="" (
 ) else (
     echo Already in a virtual environment!
 )
-
-ve %*
