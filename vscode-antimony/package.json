@@ -37,7 +37,8 @@
 		"onCommand:antimony.browseBiomodels",
 		"onCustomEditor:antimony.sbmlEditor",
 		"onCustomEditor:antimony.antimonyEditor",
-		"onCustomEditor:antimony.fixVirtualEnv"
+		"onCustomEditor:antimony.fixVirtualEnv",
+		"onCommand:antimony.exportAsPython"
 	],
 	"main": "./dist/extension.js",
 	"bugs": {
@@ -158,6 +159,10 @@
 			{
 				"command": "antimony.fixVirtualEnv",
 				"title": "Fix Virtual Environment"
+			},
+			{
+				"command": "antimony.exportAsPython",
+				"title": "Create Python Model"
 			}
 		],
 		"languages": [
@@ -238,6 +243,12 @@
         		{
 					"command": "antimony.browseBiomodels",
 					"title": "Browse Biomodels",
+					"group": "1_modification",
+					"when": "editorLangId == antimony"
+				},
+				{
+					"command": "antimony.exportAsPython",
+					"title": "Create Python Model",
 					"group": "1_modification",
 					"when": "editorLangId == antimony"
 				}

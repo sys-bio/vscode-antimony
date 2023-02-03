@@ -277,6 +277,11 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('antimony.fixVirtualEnv',
 			(...args: any[]) => fixVirtualEnv()));
 
+	// export as python
+	context.subscriptions.push(
+		vscode.commands.registerCommand('antimony.exportAsPython',
+			(...args: any[]) => exportAsPython(context, args)));
+
 	// language config for CodeLens
 	const docSelector = {
 		language: 'antimony',
@@ -409,11 +414,11 @@ async function convertAntimonyToSBML(context: vscode.ExtensionContext, args: any
 	};
    vscode.window.showOpenDialog(options).then(fileUri => {
 	   if (fileUri && fileUri[0]) {
-			   vscode.commands.executeCommand('antimony.antFiletoSBMLFile', vscode.window.activeTextEditor.document, 
-				   fileUri[0].fsPath).then(async (result) => {
-				await checkConversionResult(result, "SBML");
+			vscode.commands.executeCommand('antimony.antFiletoSBMLFile', vscode.window.activeTextEditor.document, 
+				fileUri[0].fsPath).then(async (result) => {
+			await checkConversionResult(result, "SBML");
 			});
-	   }
+	   	}
    });
 }
 
@@ -438,10 +443,10 @@ async function convertSBMLToAntimony(context: vscode.ExtensionContext, args: any
 	};
 	vscode.window.showOpenDialog(options).then(folderUri => {
 		if (folderUri && folderUri[0]) {
-				vscode.commands.executeCommand('antimony.sbmlFileToAntFile', vscode.window.activeTextEditor.document, 
-				folderUri[0].fsPath).then(async (result) => {
-					await checkConversionResult(result, "Antimony");
-				});
+			vscode.commands.executeCommand('antimony.sbmlFileToAntFile', vscode.window.activeTextEditor.document, 
+			folderUri[0].fsPath).then(async (result) => {
+				await checkConversionResult(result, "Antimony");
+			});
 		}
 	});
 }
@@ -667,6 +672,60 @@ async function browseBioModels(context: vscode.ExtensionContext, args: any[]) {
 		resolve()
 	});
 }
+
+function getPythonString(model: string) {
+	let pythonString;
+	pythonString = `
+#%%
+import tellurium as te
+
+#%%
+r = te.loada(\'\'\'${model}\'\'\')
+
+#%%
+# implement and simulate your model here
+	`
+	return pythonString;
+}
+
+// Export Antimony as Python
+async function exportAsPython(context: vscode.ExtensionContext, args: any[]) {
+	if (!client) {
+		utils.pythonInterpreterError();
+		return;
+	}
+	await client.onReady();
+
+	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+
+	const options: vscode.OpenDialogOptions = {
+		openLabel: "Select",
+		canSelectFolders: true,
+		canSelectFiles: false,
+		canSelectMany: false,
+		filters: {
+			'Python': ['py']
+		},
+		title: "Select a location to save your Python biomodel file"
+	};
+   	vscode.window.showOpenDialog(options).then(fileUri => {
+	   	if (fileUri && fileUri[0]) {
+			let pythonFileName: string = path.basename(vscode.window.activeTextEditor.document.fileName, '.ant') + '.py';
+			let outputDir: string = fileUri[0].fsPath;
+			let fullPathName: string = path.join(outputDir, pythonFileName);
+			let antString: string = vscode.window.activeTextEditor.document.getText();
+			let pythonString: string = getPythonString(antString);
+			fs.writeFile(fullPathName, pythonString, (error) => {
+				if (error) {
+					console.error(error);
+				} else {
+					console.log('The python model was saved to ' + fullPathName);
+				}
+			});
+	   	}
+	});
+}
+
 
 // ****** helper functions ******
 
