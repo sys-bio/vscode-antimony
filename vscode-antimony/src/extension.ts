@@ -83,9 +83,9 @@ var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'runshell.ts');
 async function createVirtualEnv(context: vscode.ExtensionContext) {
 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 	// asking permissions
-	if ((os.platform().toString() == 'darwin') && fs.existsSync(path.normalize(os.homedir() + "/[venv_vscode_antimony_virtual_env]/bin/python3.9"))) {
-		if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== path.normalize(os.homedir() + "/[venv_vscode_antimony_virtual_env]/bin/python3.9")) {
-			vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/[venv_vscode_antimony_virtual_env]/bin/python3.9"), true);
+	if ((os.platform().toString() == 'darwin') && fs.existsSync(path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python"))) {
+		if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python")) {
+			vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python"), true);
 			vscode.window.showInformationMessage('Virtual environment exists, it is activated now.')
 		}
 	} else if ((os.platform().toString() == 'win32' || os.platform().toString() == 'win64') && fs.existsSync(path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env"))) {
@@ -110,7 +110,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 				}
 			});
 		} else {
-			vscode.window.showInformationMessage('[IMPORTANT: Install python3 before proceeding.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			vscode.window.showInformationMessage('[IMPORTANT: Mac users install python3.9 before proceeding. Windows users install python3.10.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
@@ -136,7 +136,7 @@ async function progressBar(filePath: string) {
 					throw error;
 				} else {
 					if (os.platform().toString() == 'darwin') {
-						vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/[venv_vscode_antimony_virtual_env]/bin/python3.9"), true);
+						vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python"), true);
 					} else if (os.platform().toString() == 'win32' || os.platform().toString() == 'win64') {
 						vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/Scripts/python"), true);
 					} else if (os.platform().toString() == 'linux') {
