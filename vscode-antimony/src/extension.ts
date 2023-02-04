@@ -100,7 +100,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 		}
 	} else {
 		if (os.platform().toString() == 'linux') {
-			vscode.window.showInformationMessage('[IMPORTANT: Linux users will have to install python3, venv python package and pip before proceeding.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			vscode.window.showInformationMessage('[IMPORTANT: Linux users will have to install python3.10, venv python3.10 package and pip before proceeding.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
@@ -126,7 +126,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 async function progressBar(filePath: string) {
     window.withProgress({            
         location: ProgressLocation.Notification,
-        title: "Running virtual environment installation...",
+        title: "Running virtual environment installation. Will take a few minutes, do not close VSCode",
         cancellable: true
     }, ( progress, token ) => {
         return new Promise<void>(resolve => {
