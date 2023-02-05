@@ -15,7 +15,7 @@ import { SBMLEditorProvider } from './SBMLEditor';
 import { AntimonyEditorProvider } from './AntimonyEditor';
 var shell = require('shelljs');
 import { modelSearchInput } from './modelBrowse';
-import { TextDocument } from 'vscode';
+import { ProgressLocation, TextDocument, window } from 'vscode';
 
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
@@ -79,84 +79,95 @@ function updateDecorations() {
 }
 
 var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'runshell.ts');
-var path_to_venv_win = path.join(__dirname, '..', 'src', 'server', 'venv_vscode_antimony_virtual_env', 'Scripts', 'python.exe');
 // setup virtual environment
 async function createVirtualEnv(context: vscode.ExtensionContext) {
 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 	// asking permissions
-	if ((os.platform().toString() == 'darwin') && fs.existsSync(path.normalize(os.homedir() + "/[venv_vscode_antimony_virtual_env]/bin/python3.9"))) {
-		if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== path.normalize(os.homedir() + "/[venv_vscode_antimony_virtual_env]/bin/python3.9")) {
-			vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/[venv_vscode_antimony_virtual_env]/bin/python3.9"), true);
+	if ((os.platform().toString() == 'darwin') && fs.existsSync(path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python"))) {
+		if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python")) {
+			vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python"), true);
 			vscode.window.showInformationMessage('Virtual environment exists, it is activated now.')
 		}
-	} else if ((os.platform().toString() == 'win32' || os.platform().toString() == 'win64') && fs.existsSync(path.normalize(path_to_venv_win))) {
-		if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== path.normalize(path_to_venv_win)) {
-			vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(path_to_venv_win), true);
+	} else if ((os.platform().toString() == 'win32' || os.platform().toString() == 'win64') && fs.existsSync(path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env"))) {
+		if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/Scripts/python")) {
+			vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/Scripts/python"), true);
 			vscode.window.showInformationMessage('Virtual environment exists, it is activated now.')
 		}
-	// } else if (os.platform().toString() == 'linux' && fs.existsSync(path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.9"))) {
-	// 	if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.9")) {
-	// 		vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.9"), true);
-	// 		vscode.window.showInformationMessage('Virtual environment exists, it is activated now.')
-	// 	}
+	} else if (os.platform().toString() == 'linux' && fs.existsSync(path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.10"))) {
+		if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.10")) {
+			vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.10"), true);
+			vscode.window.showInformationMessage('Virtual environment exists, it is activated now.')
+		}
 	} else {
-		vscode.window.showInformationMessage('To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
-		.then(async selection => {
-			// installing virtual env
-			if (selection === 'Yes') {
-				fixVirtualEnv()
-			} else if (selection === 'No') {
-				vscode.window.showInformationMessage('The default python interpreter will be used.')
-			}
-		});
+		if (os.platform().toString() == 'linux') {
+			vscode.window.showInformationMessage('[IMPORTANT: Linux users will have to install python3.10, venv python3.10 package and pip before proceeding.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			.then(async selection => {
+				// installing virtual env
+				if (selection === 'Yes') {
+					fixVirtualEnv();
+				} else if (selection === 'No') {
+					vscode.window.showInformationMessage('The default python interpreter will be used.')
+				}
+			});
+		} else {
+			vscode.window.showInformationMessage('[IMPORTANT: Mac users install python3.9 before proceeding. Windows users install python3.10.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			.then(async selection => {
+				// installing virtual env
+				if (selection === 'Yes') {
+					fixVirtualEnv();
+				} else if (selection === 'No') {
+					vscode.window.showInformationMessage('The default python interpreter will be used.')
+				}
+			});
+		}
 	}
+}
+
+async function progressBar(filePath: string) {
+    window.withProgress({            
+        location: ProgressLocation.Notification,
+        title: "Running virtual environment installation. Will take a few minutes, do not close VSCode",
+        cancellable: true
+    }, ( progress, token ) => {
+        return new Promise<void>(resolve => {
+            shell.exec(`${filePath}`, (error, stdout, stderr) => {
+				if (error) {
+					vscode.window.showInformationMessage('Installation Error. Try again. Error Message: "' + error)
+					throw error;
+				} else {
+					if (os.platform().toString() == 'darwin') {
+						vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python"), true);
+					} else if (os.platform().toString() == 'win32' || os.platform().toString() == 'win64') {
+						vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/Scripts/python"), true);
+					} else if (os.platform().toString() == 'linux') {
+						vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.10"), true);
+					}
+		
+					const action = 'Reload';
+		
+					vscode.window
+					.showInformationMessage(
+						`Installation finished. Reload to activate.`,
+						action
+					)
+					.then(selectedAction => {
+						if (selectedAction === action) {
+							vscode.commands.executeCommand('workbench.action.reloadWindow');
+						}
+					});
+				}
+                resolve();
+            });
+        });
+    });
 }
 
 // setup virtual environment
 async function fixVirtualEnv() {
-	vscode.window.showInformationMessage('Installation may take a few minutes. A pop up will display when finished. Please do not close VSCode during this time.')
 	var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'runshell.ts');
-	// var current_path_to_shell_script = path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh')
-	shell.exec('npx ts-node ' + current_path_to_tsscript, (err, stdout, stderr) => {
-		if (err) {
-			vscode.window.showInformationMessage('Installation Error. Try again. Error Message "' + err + '."')
-			throw err;
-		} else {
-			if (os.platform().toString() == 'darwin') {
-				vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/[venv_vscode_antimony_virtual_env]/bin/python3.9"), true);
-				const action = 'Reload';
-
-				vscode.window
-				.showInformationMessage(
-					`Installation finished. Reload to activate.`,
-					action
-				)
-				.then(selectedAction => {
-					if (selectedAction === action) {
-						vscode.commands.executeCommand('workbench.action.reloadWindow');
-					}
-				});
-			} else if (os.platform().toString() == 'win32' || os.platform().toString() == 'win64') {
-				vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(path_to_venv_win), true);
-				const action = 'Reload';
-
-				vscode.window
-				.showInformationMessage(
-					`Installation finished. Reload to activate.`,
-					action
-				)
-				.then(selectedAction => {
-					if (selectedAction === action) {
-						vscode.commands.executeCommand('workbench.action.reloadWindow');
-					}
-				});
-			} 
-			// else if (os.platform().toString() == 'linux') {
-			// 	vscode.window.showInformationMessage('Run "bash ' + current_path_to_shell_script + '" in the vscode terminal to install the virtual env and necessary dependencies on your device. You can find the "Terminal" button on the top most left menu. Then, press "New Terminal" and run the command mentioned.')
-			// 	vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/venv_vscode_antimony_virtual_env/bin/python3.9"), true);
-			// }
-		}
-	});
+	// shell.exec('npx ts-node ' + current_path_to_tsscript, (err, stdout, stderr) => {
+	// });
+	progressBar('npx ts-node ' + current_path_to_tsscript)
 }
 
 async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<any, any>) {
