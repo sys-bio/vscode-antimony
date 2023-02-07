@@ -96,6 +96,12 @@
 						"scope": "machine",
 						"description": "When editing SBML files, opens up up antimony version automatically."
 					},
+					"vscode-antimony.promptChangingPython": {
+						"type": "boolean",
+						"default": "true",
+						"scope": "machine",
+						"description": "When using export as python model, prompt user to change python interpreter."
+					},
 					"vscode-antimony.highlightColor": {
 						"type": "string",
 						"default": "indigo",

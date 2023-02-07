@@ -38,7 +38,8 @@ if "%VIRTUAL_ENV%"=="" (
         echo bioservices==1.8.3 ^  
         echo # ols_client==0.0.9 ^  
         echo AMAS-sb==0.0.1 ^  
-        echo orjson==3.8.0) > "%USERPROFILE%\%venv%"\all-requirements.txt
+        echo orjson==3.8.0
+        echo tellurium) > "%USERPROFILE%\%venv%"\all-requirements.txt
         py -m pip --disable-pip-version-check install -t "%USERPROFILE%\%venv%\Lib\site-packages" --no-cache-dir --upgrade -r "%USERPROFILE%\%venv%"\all-requirements.txt && success=1
     ) else (
         echo Virtual environment %venv% already exists, activating...

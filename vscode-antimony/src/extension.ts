@@ -706,6 +706,21 @@ async function exportAsPython(context: vscode.ExtensionContext, args: any[]) {
 		return;
 	}
 	await client.onReady();
+	const antimonyConfig = vscode.workspace.getConfiguration('vscode-antimony');
+
+	const promptPythonInterpreter = antimonyConfig.get('promptChangingPython');
+	if (promptPythonInterpreter) {
+		vscode.window.showInformationMessage("Do you want to change default python interpreter to vscode-antimony one?", ...['Yes', 'No', 'Don\'t show again'])
+		.then(async selection => {
+			if (selection === "Yes") {
+				const antimonyInterpreter = getPythonInterpreter();
+				vscode.workspace.getConfiguration('python').update('defaultInterpreterPath', antimonyInterpreter);
+				antimonyConfig.update('promptChangingPython', false);
+			} else if (selection === 'Don\'t show again') {
+				antimonyConfig.update('promptChangingPython', false);
+			}
+		})
+	}
 
 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 

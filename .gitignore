@@ -25,3 +25,4 @@ vscode-antimony/pythonFiles/lib/*
 vscode-antimony/pythonFiles/lib/python/*
 !vscode-antimony/pythonFiles/lib/python/ols_client
 vscode-antimony/src/server/stibium/.lark-cache
+examples/BioModels/1.py
