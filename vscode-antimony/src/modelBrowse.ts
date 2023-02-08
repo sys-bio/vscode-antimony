@@ -253,6 +253,8 @@ export class MultiStepInput {
                 
                 if (result.length == 0) {
                     window.showInformationMessage("Biomodel not found")
+                } else if (result.length == 100) {
+                    window.showInformationMessage("Displaying the first 100 results for the search query")
                 }
                 this.current.items = result.map((item) => {
                     item['label'] = item['name'] + " (" + item['id'] + ")";
