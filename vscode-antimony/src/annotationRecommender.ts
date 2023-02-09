@@ -91,13 +91,11 @@ export async function singleStepInputRec(context: ExtensionContext, line: number
             const prefix = annotation.split(':')[0].toLowerCase();
             const id = annotation.split(':')[1]
             var snippetText;
-            // if (prefix === 'rhea') {
-            //     snippetText = `\n\${1:${initialQuery}} identity "https://www.rhea-db.org/rhea/${annotation}"`;
-            // } else if (prefix === 'ontology') {
-            //     // snippetText = `\n\${1:${initialQuery}} identity "${entity['iri']}"`;
-            // } else {
+            if (prefix === 'rhea') {
+                snippetText = `\n\${1:${initialQuery}} identity "https://www.rhea-db.org/rhea/${id}"`;
+            } else {
             snippetText = `\n\${1:${initialQuery}} identity "http://identifiers.org/${prefix}/${annotation}"`;
-            // }
+            }
             const snippetStr = new vscode.SnippetString(snippetText);
             const doc = vscode.window.activeTextEditor.document;
             const pos = doc.lineAt(line).range.end;

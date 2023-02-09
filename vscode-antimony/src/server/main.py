@@ -34,7 +34,7 @@ from pygls.types import (CompletionItem, CompletionItemKind, CompletionList, Com
                          TextDocumentContentChangeEvent, TextDocumentPositionParams, Position)
 import threading
 import time
-from AMAS import recommender, species_annotation
+from AMAS import recommender, species_annotation, reaction_annotation
 from bioservices import ChEBI
 import requests
 import zipfile
@@ -286,31 +286,68 @@ def recommend(ls: LanguageServer, args):
             'error': "Did not select a symbol"
         }
     symbol = symbols[0]
-    if symbol.type != SymbolType.Species:
+    if symbol.type != SymbolType.Species and symbol.type != SymbolType.Reaction:
         return {
-            'error': "Did not select species"
+            'error': "Please select species or reaction name"
         }
-    recom = recommender.Recommender()
-    display_name = symbol.display_name
-    if display_name is not None:
-        annotations = recom.getSpeciesAnnotation(pred_str=display_name.replace("\"", ""))
+    if symbol.type == SymbolType.Species:
+        recom = recommender.Recommender()
+        display_name = symbol.display_name
+        if display_name is not None:
+            annotations = recom.getSpeciesAnnotation(pred_str=display_name.replace("\"", ""))
+        else:
+            annotations = recom.getSpeciesAnnotation(pred_str=symbol.name)
+        chebi = species_annotation.chebi_low_synonyms
+        ret = list()
+        limit = 0
+        for annotation in annotations.candidates:
+            sorted_chebi = sorted(chebi[annotation[0]], key=len)
+            ret.append({
+                'label': sorted_chebi[0],
+                'id': annotation[0]
+            })
+            limit += 1
+            if limit >= 10:
+                break
+        return {
+            'annotations': ret
+        }
     else:
-        annotations = recom.getSpeciesAnnotation(pred_str=symbol.name)
-    chebi = species_annotation.chebi_low_synonyms
-    ret = list()
-    limit = 0
-    for annotation in annotations.candidates:
-        sorted_chebi = sorted(chebi[annotation[0]], key=len)
-        ret.append({
-            'label': sorted_chebi[0],
-            'id': annotation[0]
-        })
-        limit += 1
-        if limit >= 10:
-            break
-    return {
-        'annotations': ret
-    }
+        reaction = symbol.decl_node
+        species_list = []
+        for reactant in reaction.get_reactants():
+            species_list.append(reactant)
+        for product in reaction.get_products():
+            species_list.append(reaction.get_products())
+        species_dict = dict()
+        species_list = []
+        for species in species_list:
+            species_list.append(species.get_name_text())
+            species_dict[species.get_name_text()] = species.display_name
+        reaction_spec = dict()
+        reaction_spec[reaction.get_name_text()] = species_list
+
+        model_specs = []
+        model_specs.append((species_dict, dict()))
+        model_specs.append((reaction_spec, dict()))
+        recom = recommender.Recommender(model_specs=model_specs)
+        annotations = recom.getReactionAnnotation(reaction.get_name_text())
+        # rhea = reaction_annotation.ref_rhea_to_chebi
+        ret = list()
+        limit = 0
+        for annotation in annotations.candidates:
+            # sorted_rhea = sorted(rhea[annotation[0]], key=len)
+            ret.append({
+                'label': annotation[0],
+                'id': annotation[0]
+            })
+            limit += 1
+            if limit >= 10:
+                break
+        return {
+            'annotations': ret
+        }
+        
 
 @server.thread()
 @server.command('antimony.searchModel')
