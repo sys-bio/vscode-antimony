@@ -23,19 +23,26 @@ The Antimony extension pack includes two extensions: [Antimony](https://marketpl
 <img src="docs\images\Step3.png" width=75%>
 </p>
 
+* On the other hand, if a user does not have an XML or Antimony file, they can open the Command Palette (Ctrl + Shift + P for Windows, Cmd + Shift + P for Mac) and type "Open Antimony Start Page". This will open a simple Antimony page, which will allow for the installation of the virtual environment.
+<p align=center>
+<img src="docs\images\startPage.png" width=75%>
+</p>
+
 * Click yes to allow creation of virtual environment and installation of required dependencies <b> (Linux users will have to have python3, venv package and pip installed before clicking yes). </b>
-* Click no to use your own default python interpreter (You can access this in the VSCode Settings. Use (command ,) for Mac and (control ,) for Windows.
+* Click no to use your own default python interpreter (You can access this in the VSCode Settings. Use (Cmd + ,) for Mac and (Ctrl + ,) for Windows).
 <br/>
 <p align=center>
 <img src="docs\images\installation.gif" width=75%>
 <br/>
 </p>
+
 * If there are errors, right click on the .ant file and press "Fix Virtual Environment".
 <br/>
 <p align=center>
 <img src="docs\images\fix.gif" width=75%>
 <br/>
 </p>
+
 
 ## Features
 The extension provides many convenient features for developing biological models with the Antimony language in tellurium. The current release focuses on the areas below.
@@ -75,7 +82,7 @@ The extension allows a user to browse for different biomodels from the [BioModel
 ⚠️ Note: the default syntax highlighting for Antimony is provided by a separate extension [Antimony Syntax](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony-syntax), and is also available in the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) 
 
 ### 4. Automatic annotation creation with database recommendation
-The extension can recognize different types of variables, and recommend databases base on the [OMEX metadata specification](https://doi.org/10.1515/jib-2021-0020).
+The extension can recognize different types of variables, and recommend databases based on the [OMEX metadata specification](https://doi.org/10.1515/jib-2021-0020).
 
 <p align=center>
 <img src="docs/images/annotation0.2.gif" width=75%>
@@ -150,6 +157,13 @@ The extension supports a wide range of errors and warnings, and we plan to suppo
 <em>(Creating annotation for species BLL with Annotation Recommender)</em>
 </p>
 
+### 12. Highlight indication for annotated species
+<p align=center>
+<img src="docs/images/highlight.gif" width=75%>
+<br/>
+<em>(Displaying highlight indication for annotated species, BLL)</em>
+</p>
+
 ## Known Issues
 I have an open issue for [manually curating models](https://github.com/sys-bio/vscode-antimony/issues/26) from BioModels to test the extension. Please feel free to contribute and submit issues.
 * subvariables in modular models are currently not supported and false error messages will be triggered.
@@ -180,6 +194,7 @@ I have an open issue for [manually curating models](https://github.com/sys-bio/v
 * More databases supported in create annotation, and database recommendations.
 * Automatic creation of rate laws.
 * Annotation recommender for species.
+* Highlight indication for annotated species
 
 ### 0.2.4
 * Automatic virtual environment installation
