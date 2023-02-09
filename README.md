@@ -16,16 +16,22 @@ The Antimony extension pack includes two extensions: [Antimony](https://marketpl
 * Once you open VSCode, download the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) from the Visual Studio Code Extension Marketplace and install.
 <p align=center>
 <img src="docs\images\Step2.png" width=75%>
+<br/>
+<em>(Download Antimony Extension)</em>
 </p>
 
 * When an XML or Antimony model file is opened for the first time, a pop up will show.
 <p align=center>
 <img src="docs\images\Step3.png" width=75%>
+<br/>
+<em>(Pop up for setup)</em>
 </p>
 
 * On the other hand, if a user does not have an XML or Antimony file, they can open the Command Palette (Ctrl + Shift + P for Windows, Cmd + Shift + P for Mac) and type "Open Antimony Start Page". This will open a simple Antimony page, which will allow for the installation of the virtual environment.
 <p align=center>
 <img src="docs\images\startPage.png" width=75%>
+<br/>
+<em>(Open Antimony Tutorial Page)</em>
 </p>
 
 * Click yes to allow creation of virtual environment and installation of required dependencies <b> (Linux users will have to have python3, venv package and pip installed before clicking yes). </b>
@@ -34,7 +40,7 @@ The Antimony extension pack includes two extensions: [Antimony](https://marketpl
 <p align=center>
 <img src="docs\images\installation.gif" width=75%>
 <br/>
-<em>(Installation and setup of Antimony Extension)</em>
+<em>(Permissions for Virtual Environment Setup)</em>
 </p>
 
 * If there are errors, right click on the .ant file and press "Fix Virtual Environment".
@@ -42,6 +48,7 @@ The Antimony extension pack includes two extensions: [Antimony](https://marketpl
 <p align=center>
 <img src="docs\images\fix.gif" width=75%>
 <br/>
+<em>(Fixing Antimony Extension Virtual Environment Setup)</em>
 </p>
 
 
