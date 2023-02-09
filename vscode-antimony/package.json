@@ -23,6 +23,7 @@
 	"activationEvents": [
 		"onLanguage:antimony",
 		"onLanguage:xml",
+		"onCommand:antimony.openStartPage",
 		"onCommand:antimony.createAnnotationDialog",
 		"onCommand:antimony.recommendAnnotationDialog",
 		"onCommand:antimony.insertRateLaw",
@@ -91,13 +92,19 @@
 						"type": "boolean",
 						"default": "true",
 						"scope": "machine",
-						"description": "When editing SBML files, opens up up antimony version automatically."
+						"description": "When editing SBML files, opens up antimony version automatically."
+					},
+					"vscode-antimony.openStartPage": {
+						"type": "boolean",
+						"default": "true",
+						"scope": "machine",
+						"description": "Opens an Antimony start page when user clicks."
 					},
 					"vscode-antimony.highlightColor": {
 						"type": "string",
 						"default": "indigo",
 						"scope": "machine",
-						"description": "Set visual indications (colored cighlights) to a preferred color (e.g. red, orange, yellow, green, blue, indigo)."
+						"description": "Set visual indications (colored highlights) to a preferred color (e.g. red, orange, yellow, green, blue, indigo)."
 					}
 				}
 			}
@@ -122,6 +129,10 @@
 			{
 				"command": "antimony.switchIndicationOff",
 				"title": "Turn Annotated Variable Indications Off"
+			},
+			{
+				"command": "antimony.openStartPage",
+				"title": "Open Antimony Start Page"
 			},
 			{
 				"command": "antimony.convertAntimonyToSBML",
