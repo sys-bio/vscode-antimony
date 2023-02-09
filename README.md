@@ -12,8 +12,17 @@ Please note that the current release does not support the complete Antimony gram
 
 ## Installation
 The Antimony extension pack includes two extensions: [Antimony](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) and [Antimony Syntax](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony-syntax) for the color scheme. The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) is also available on the Visual Studio Code Marketplace. (We recommend installing the extension pack directly so you have full access to all of the features.) <br/>
-* For installation, download the extension pack from the Visual Studio Code Marketplace and install.
-* When an .ant file is opened for the first time, a pop up will show.
+* First, install [VSCode](https://code.visualstudio.com/download) for your specific operating system (Mac, Windows, or Linux)
+* Once you open VSCode, download the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) from the Visual Studio Code Extension Marketplace and install.
+<p align=center>
+<img src="docs\images\Step2.png" width=75%>
+</p>
+
+* When an XML or Antimony model file is opened for the first time, a pop up will show.
+<p align=center>
+<img src="docs\images\Step3.png" width=75%>
+</p>
+
 * Click yes to allow creation of virtual environment and installation of required dependencies <b> (Linux users will have to have python3, venv package and pip installed before clicking yes). </b>
 * Click no to use your own default python interpreter.
 <br/>
