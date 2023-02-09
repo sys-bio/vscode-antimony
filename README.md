@@ -25,7 +25,7 @@ The Antimony extension pack includes two extensions: [Antimony](https://marketpl
 
 * On the other hand, if a user does not have an XML or Antimony file, they can open the Command Palette (Ctrl + Shift + P for Windows, Cmd + Shift + P for Mac) and type "Open Antimony Start Page". This will open a simple Antimony page, which will allow for the installation of the virtual environment.
 <p align=center>
-<img src="docs\images\startPage.png" width=75%>
+<img src="docs\images\StartPage.png" width=75%>
 </p>
 
 * Click yes to allow creation of virtual environment and installation of required dependencies <b> (Linux users will have to have python3, venv package and pip installed before clicking yes). </b>
