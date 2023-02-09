@@ -202,7 +202,37 @@ async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<an
 		}
 }
 
+async function openStartPage() {
+	const openStartPage = vscode.workspace.getConfiguration('vscode-antimony').get('openStartPage');
+	const startPageStr = `A -> B; k1*A
+B -> C; k2*B
+k1 = 1
+k2 = 2
+A = 10
+B = 0
+C = 0`;
+	if (openStartPage) {
+		const startPageDir = os.tmpdir();
+		var startPageName = `startPage.ant`;
+		var startPagePath = path.join(startPageDir, startPageName);
+		fs.writeFile(startPagePath, startPageStr, (error) => {
+			if (error) {
+				console.error(error);
+			} else {
+				console.log('The file was saved to ' + startPagePath);
+			}
+		});
+		// Create the temporary file and open it in the editor
+		const startPageFile = vscode.workspace.openTextDocument(startPagePath).then((doc) => {
+			vscode.window.showTextDocument(doc, { preview: false });
+		});
+	}
+}
+
 export async function activate(context: vscode.ExtensionContext) {
+	context.subscriptions.push(
+		vscode.commands.registerCommand('antimony.openStartPage',
+			(...args: any[]) => openStartPage()));
 	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
 	await createVirtualEnv(context);
 
