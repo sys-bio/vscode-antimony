@@ -34,6 +34,7 @@ The Antimony extension pack includes two extensions: [Antimony](https://marketpl
 <p align=center>
 <img src="docs\images\installation.gif" width=75%>
 <br/>
+<em>(Installation and setup of Antimony Extension)</em>
 </p>
 
 * If there are errors, right click on the .ant file and press "Fix Virtual Environment".
@@ -51,6 +52,8 @@ The extension provides many convenient features for developing biological models
 
 <p align=center>
 <img src="docs/images/roundTrippingDemo.png" width=75%>
+<br/>
+<em>(SBML to Antimony conversion)</em>
 </p>
 
 When an SBML file is opened, the editor will automatically convert the SBML file to the Antimony format. User can edit the Antimony file, and save the changes made to the Antimony model back to the original SBML file.
