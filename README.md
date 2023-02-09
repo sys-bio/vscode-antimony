@@ -24,7 +24,7 @@ The Antimony extension pack includes two extensions: [Antimony](https://marketpl
 </p>
 
 * Click yes to allow creation of virtual environment and installation of required dependencies <b> (Linux users will have to have python3, venv package and pip installed before clicking yes). </b>
-* Click no to use your own default python interpreter.
+* Click no to use your own default python interpreter (You can access this in the VSCode Settings. Use (command ,) for Mac and (control ,) for Windows.
 <br/>
 <p align=center>
 <img src="docs\images\installation.gif" width=75%>
