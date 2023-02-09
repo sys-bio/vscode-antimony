@@ -1,0 +1,15 @@
+Adding new python dependencies: <br/>
+    When using new python dependencies for vscode-antimony development, don't forget to edit:
+    <li>all-requirements.txt
+    <li> virtualEnvWin.bat
+    <li>virtualEnvLinux.sh 
+<br/>
+<br/>
+Packaging and publishing to VSCode Marketplace: <br/>
+    https://code.visualstudio.com/api/working-with-extensions/publishing-extension <br/>
+    <li>Step 1: npm install -g @vscode/vsce
+    <li>Step 2: Change the version (and maybe publisher as well) in package.json
+    <li>Step 3: run "cd <extension_file>",
+    <li>Step 4: run "vsce package"
+    <li>Step 5: run "vsce publish <version_of_extension>"
+
