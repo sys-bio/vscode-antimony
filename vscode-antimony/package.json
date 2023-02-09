@@ -28,8 +28,6 @@
 		"onCommand:antimony.insertRateLaw",
 		"onCommand:antimony.switchIndicationOn",
 		"onCommand:antimony.switchIndicationOff",
-		"onCommand:antimony.openSBMLAsAntimonyOn",
-		"onCommand:antimony.openSBMLAsAntimonyOff",
 		"onCommand:antimony.convertAntimonyToSBML",
 		"onCommand:antimony.convertSBMLToAntimony",
 		"onCommand:antimony.startSBMLWebview",
@@ -126,14 +124,6 @@
 				"title": "Turn Annotated Variable Indications Off"
 			},
 			{
-				"command": "antimony.openSBMLAsAntimonyOn",
-				"title": "Open SBML As Antimony On"
-			},
-			{
-				"command": "antimony.openSBMLAsAntimonyOff",
-				"title": "Open SBML As Antimony Off"
-			},
-			{
 				"command": "antimony.convertAntimonyToSBML",
 				"title": "Convert to SBML"
 			},
@@ -204,18 +194,6 @@
 					"title": "Turn Annotated Variable Indications Off",
 					"group": "1_modification",
 					"when": "config.vscode-antimony.annotatedVariableIndicatorOn == true"
-				},
-				{
-					"command": "antimony.openSBMLAsAntimonyOn",
-					"title": "SBML Opens As Antimony On",
-					"group": "1_modification",
-					"when": "config.vscode-antimony.openSBMLAsAntimony == true"
-				},
-				{
-					"command": "antimony.openSBMLAsAntimonyOff",
-					"title": "SBML Opens As Antimony Off",
-					"group": "1_modification",
-					"when": "config.vscode-antimony.openSBMLAsAntimony == false"
 				},
 				{
 					"command": "antimony.convertAntimonyToSBML",
