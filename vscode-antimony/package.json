@@ -46,7 +46,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/sys-bio/vscode-antimony.git"
+		"url": "https://github.com/sys-bio/vscode-antimony/blob/master/LICENSE"
 	},
 	"homepage": "https://github.com/sys-bio/vscode-antimony/blob/master/README.md",
 	"contributes": {
