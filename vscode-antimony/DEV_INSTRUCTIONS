@@ -13,3 +13,10 @@ Packaging and publishing to VSCode Marketplace: <br/>
     <li>Step 4: run "vsce package"
     <li>Step 5: run "vsce publish <version_of_extension>"
 
+Set up a symlink (On Windows cmd): <br/>
+    <li>run "git config core.symlinks true" to allow for symlinks
+    <li>run "mklink [Name of Symlink File] [Name of Source File]
+
+Remove a symlink (On Linux terminal): <br/>
+    <li>run "cp --remove-destination 'readlink [Name of Symlink File]' [Name of Symlink File]"
+    <li>run "readlink [Name of Symlink File]" to check if there is a path returned. If a path is shown, the symlink is still active
