@@ -4,7 +4,7 @@
 	"description": "Extensions for Antimony development in Visual Studio Code.",
 	"author": "Steve Ma, Gary Geng, Joseph Hellerstein, Herbet Sauro",
 	"publisher": "stevem",
-	"version": "0.1.9",
+	"version": "0.2.4",
 	"icon": "docs/images/logo.png",
 	"engines": {
 		"vscode": "^1.62.0"
@@ -46,7 +46,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/sys-bio/vscode-antimony/blob/master/LICENSE"
+		"url": "https://github.com/sys-bio/vscode-antimony.git"
 	},
 	"homepage": "https://github.com/sys-bio/vscode-antimony/blob/master/README.md",
 	"contributes": {
