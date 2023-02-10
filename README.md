@@ -15,21 +15,21 @@ The Antimony extension pack includes two extensions: [Antimony](https://marketpl
 * First, install [VSCode](https://code.visualstudio.com/download) for your specific operating system (Mac, Windows, or Linux)
 * Once you open VSCode, download the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) from the Visual Studio Code Extension Marketplace and install.
 <p align=center>
-<img src="docs\images\Step2.png" width=75%>
+<img src="docs/images/Step2.png" width=75%>
 <br/>
 <em>(Download Antimony Extension)</em>
 </p>
 
 * When an XML or Antimony model file is opened for the first time, a pop up will show.
 <p align=center>
-<img src="docs\images\Step3.png" width=75%>
+<img src="docs/images/Step3.png" width=75%>
 <br/>
 <em>(Pop up for setup)</em>
 </p>
 
 * On the other hand, if a user does not have a SBML or Antimony file, they can open the Command Palette (Ctrl + Shift + P for Windows, Cmd + Shift + P for Mac) and type "Open Antimony Start Page". This will open a simple Antimony page, which will allow for the installation of the virtual environment.
 <p align=center>
-<img src="docs\images\startPage.png" width=75%>
+<img src="docs/images/startPage.png" width=75%>
 <br/>
 <em>(Open Antimony Start Page)</em>
 </p>
@@ -38,7 +38,7 @@ The Antimony extension pack includes two extensions: [Antimony](https://marketpl
 * Click no to use your own default python interpreter (You can access this in the VSCode Settings. Use (Cmd + ,) for Mac and (Ctrl + ,) for Windows).
 <br/>
 <p align=center>
-<img src="docs\images\installation.gif" width=75%>
+<img src="docs/images/installation.gif" width=75%>
 <br/>
 <em>(Permissions for Virtual Environment Setup)</em>
 </p>
@@ -46,7 +46,7 @@ The Antimony extension pack includes two extensions: [Antimony](https://marketpl
 * If there are errors, right click on the .ant file and press "Fix Virtual Environment".
 <br/>
 <p align=center>
-<img src="docs\images\fix.gif" width=75%>
+<img src="docs/images/fix.gif" width=75%>
 <br/>
 <em>(Fixing Antimony Extension Virtual Environment Setup)</em>
 </p>
@@ -199,14 +199,14 @@ I have an open issue for [manually curating models](https://github.com/sys-bio/v
 
 ### 0.2.0
 * Added grammar support and warning/error detection for rate rules, sbo and cvterms, events, flux balance constraints, interaction, and import.
-* Converter between Antimony and SBML
+* Converter between Antimony and SBML.
 * Antimony/SBML preview.
 * More databases supported in create annotation, and database recommendations.
 * Automatic creation of rate laws.
 * Annotation recommender for species.
-* Highlight indication for annotated species
+* Highlight indication for annotated species.
 
 ### 0.2.4
-* Automatic virtual environment installation
-* SBML to Antimony Conversion and Editing
-* Browsing Biomodels
+* Automatic virtual environment installation.
+* SBML to Antimony Conversion and Editing.
+* Browsing Biomodels.
