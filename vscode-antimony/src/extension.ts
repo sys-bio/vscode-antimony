@@ -164,10 +164,10 @@ async function progressBar(filePath: string) {
 
 // setup virtual environment
 async function fixVirtualEnv() {
-	var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'runshell.ts');
+	var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'server', 'runshell.js');
 	// shell.exec('npx ts-node ' + current_path_to_tsscript, (err, stdout, stderr) => {
 	// });
-	progressBar('npx ts-node ' + current_path_to_tsscript)
+	progressBar('node ' + current_path_to_tsscript)
 }
 
 async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<any, any>) {
