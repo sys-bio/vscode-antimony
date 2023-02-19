@@ -1,11 +1,9 @@
 #!/bin/bash
-// import * as path from 'path';
-// import * as os from 'os';
+
 const os = require('os');
 const path = require('path');
 const { exec } = require("child_process")
-// import shell from 'shelljs';
-// const shell = require('shelljs');
+
 const current_path_to_silicon_shell = path.join(__dirname, '..', 'server', 'virtualEnvSilicon.sh');
 const current_path_to_linux_shell = path.join(__dirname, '..', 'server', 'virtualEnvLinux.sh');
 const current_path_to_dir = path.join(__dirname, '..');
