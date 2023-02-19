@@ -9,7 +9,7 @@ const current_path_to_linux_shell = path.join(__dirname, '..', 'server', 'virtua
 const current_path_to_dir = path.join(__dirname, '..');
 
 if (os.platform().toString() === 'darwin') {
-    exec(`bash ${current_path_to_silicon_shell}`)
+    exec(`sh ${current_path_to_silicon_shell}`)
 } else if (os.platform().toString() === 'win32') {
     const path_to_win_shell = path.join(__dirname);
     exec(`${path_to_win_shell}\\virtualEnvWin.bat`)
