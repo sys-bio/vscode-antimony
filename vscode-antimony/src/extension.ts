@@ -13,7 +13,6 @@ import { annotationMultiStepInput } from './annotationInput';
 import { rateLawSingleStepInput } from './rateLawInput';
 import { SBMLEditorProvider } from './SBMLEditor';
 import { AntimonyEditorProvider } from './AntimonyEditor';
-// var shell = require('shelljs');
 import { modelSearchInput } from './modelBrowse';
 import { ProgressLocation, TextDocument, window } from 'vscode';
 import { exec } from 'child_process';
