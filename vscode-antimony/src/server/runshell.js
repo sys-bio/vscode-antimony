@@ -14,6 +14,5 @@ if (os.platform().toString() === 'darwin') {
     const path_to_win_shell = path.join(__dirname);
     exec(`${path_to_win_shell}\\virtualEnvWin.bat`)
 } else if (os.platform().toString() === 'linux') {
-    shell.cd(current_path_to_dir)
     exec(`bash ${current_path_to_linux_shell}`);
 }
