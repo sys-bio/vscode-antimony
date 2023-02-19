@@ -13,9 +13,9 @@ import { annotationMultiStepInput } from './annotationInput';
 import { rateLawSingleStepInput } from './rateLawInput';
 import { SBMLEditorProvider } from './SBMLEditor';
 import { AntimonyEditorProvider } from './AntimonyEditor';
-var shell = require('shelljs');
 import { modelSearchInput } from './modelBrowse';
 import { ProgressLocation, TextDocument, window } from 'vscode';
+import { exec } from 'child_process';
 
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
@@ -130,7 +130,7 @@ async function progressBar(filePath: string) {
         cancellable: true
     }, ( progress, token ) => {
         return new Promise<void>(resolve => {
-            shell.exec(`${filePath}`, (error, stdout, stderr) => {
+            exec(`${filePath}`, (error, stdout, stderr) => {
 				if (error) {
 					vscode.window.showInformationMessage('Installation Error. Try again. Error Message: "' + error)
 					throw error;
