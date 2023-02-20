@@ -4,7 +4,7 @@
 	"description": "Extensions for Antimony development in Visual Studio Code.",
 	"author": "Steve Ma, Gary Geng, Joseph Hellerstein, Herbet Sauro",
 	"publisher": "stevem",
-	"version": "0.2.4",
+	"version": "0.2.6",
 	"icon": "docs/images/logo.png",
 	"engines": {
 		"vscode": "^1.62.0"
@@ -221,10 +221,10 @@
 				{
 					"command": "antimony.fixVirtualEnv",
 					"title": "Fix Virtual Environment",
-          			"group": "1_modification",
+					"group": "1_modification",
 					"when": "editorLangId == antimony"
-        		},
-        		{
+				},
+				{
 					"command": "antimony.browseBiomodels",
 					"title": "Browse Biomodels",
 					"group": "1_modification",
