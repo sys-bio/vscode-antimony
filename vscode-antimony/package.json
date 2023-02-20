@@ -221,10 +221,10 @@
 				{
 					"command": "antimony.fixVirtualEnv",
 					"title": "Fix Virtual Environment",
-          			"group": "1_modification",
+					"group": "1_modification",
 					"when": "editorLangId == antimony"
-        		},
-        		{
+				},
+				{
 					"command": "antimony.browseBiomodels",
 					"title": "Browse Biomodels",
 					"group": "1_modification",
