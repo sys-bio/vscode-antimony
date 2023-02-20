@@ -100,7 +100,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 		}
 	} else {
 		if (os.platform().toString() == 'linux') {
-			vscode.window.showInformationMessage('[IMPORTANT: Linux users will have to install python3.10, venv python3.10 package and pip before proceeding.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			vscode.window.showInformationMessage('[IMPORTANT: Linux users will have to install python3.10, venv python3.10 package, pip and NodeJS before proceeding.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
@@ -109,8 +109,18 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 					vscode.window.showInformationMessage('The default python interpreter will be used.')
 				}
 			});
-		} else {
-			vscode.window.showInformationMessage('[IMPORTANT: Mac users install python3.9 before proceeding. Windows users install python3.10.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+		} else if (os.platform().toString() == 'win32' || os.platform().toString() == 'win64'){
+			vscode.window.showInformationMessage('[IMPORTANT: Windows users install python3.10 and NodeJS.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			.then(async selection => {
+				// installing virtual env
+				if (selection === 'Yes') {
+					fixVirtualEnv();
+				} else if (selection === 'No') {
+					vscode.window.showInformationMessage('The default python interpreter will be used.')
+				}
+			});
+		} else if (os.platform().toString() == 'darwin') {
+			vscode.window.showInformationMessage('[IMPORTANT: Mac users install python3.9 and NodeJS before proceeding.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
