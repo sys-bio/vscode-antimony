@@ -35,7 +35,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Open Antimony Start Page)</em>
 </p>
 
-* Click yes to allow creation of virtual environment and installation of required dependencies <b> (Linux users will have to have python3, venv package and pip installed before clicking yes). </b>
+* Click yes to allow creation of virtual environment and installation of required dependencies <b> (Linux users will have to have python3.10, venv package, pip and NodeJS installed before clicking yes). </b> <b> (Mac users will have to have [Python3.9 (must be version 3.9)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg), and [NodeJS](https://nodejs.org/en/download/) installed). </b> <b> (Windows users will have to have [Python3.10 (must be version 3.10)](https://www.python.org/ftp/python/3.10.10/python-3.10.10-amd64.exe), and [NodeJS](https://nodejs.org/en/download/) installed). </b>
 * Click no to use your own default python interpreter (You can access this in the VSCode Settings. Use (Cmd + ,) for Mac and (Ctrl + ,) for Windows).
 <br/>
 <p align=center>
