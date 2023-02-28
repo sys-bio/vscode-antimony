@@ -211,3 +211,7 @@ I have an open issue for [manually curating models](https://github.com/sys-bio/v
 * Automatic virtual environment installation.
 * SBML to Antimony Conversion and Editing.
 * Browsing Biomodels.
+
+### 0.2.8
+Minor bug fixes
+Updated User Instructions
