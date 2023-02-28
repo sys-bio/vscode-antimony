@@ -3,6 +3,7 @@ Adding new python dependencies: <br/>
     <li>all-requirements.txt
     <li> virtualEnvWin.bat
     <li>virtualEnvLinux.sh 
+    <li>virtualEnvSilicon.sh 
 <br/>
 <br/>
 Packaging and publishing to VSCode Marketplace: <br/>
