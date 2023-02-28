@@ -1,5 +1,5 @@
 Adding new python dependencies: <br/>
-    When using new python dependencies for vscode-antimony development, don't forget to edit:
+    When using new python dependencies for vscode-antimony development, dont forget to edit:
     <li>all-requirements.txt
     <li> virtualEnvWin.bat
     <li>virtualEnvLinux.sh 
