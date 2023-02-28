@@ -12,7 +12,7 @@ Please note that the current release does not support the complete Antimony gram
 
 ## Installation
 The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) is available on the Visual Studio Code Extensions Tab and the Visual Studio Code Marketplace. (We recommend installing the extension pack directly so you have full access to all of the features.) <br/>
-* **_This extension requires [NodeJS](https://nodejs.org/en/download/) to be installed before use._**
+* **_This extension requires [NodeJS](https://nodejs.org/en/download/) to be installed before use. Restart computer after installation of Node JS._**
 * Install [VSCode](https://code.visualstudio.com/download) for your specific operating system (Mac, Windows, or Linux)
 * Once you open VSCode, download the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) from the Visual Studio Code Extension Marketplace and install. Follow the numbered points in the figure below.
 <p align=center>
@@ -35,7 +35,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Open Antimony Start Page)</em>
 </p>
 
-* Click yes to allow creation of virtual environment and installation of required dependencies <b> (Linux users will have to have python3.10, venv package, pip and NodeJS installed before clicking yes). </b> <b> (Mac users will have to have [Python3.9 (must be version 3.9)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg), and [NodeJS](https://nodejs.org/en/download/) installed). </b> <b> (Windows users will have to have [Python3.10 (must be version 3.10)](https://www.python.org/ftp/python/3.10.10/python-3.10.10-amd64.exe), and [NodeJS](https://nodejs.org/en/download/) installed). </b>
+* Click yes to allow creation of virtual environment and installation of required dependencies <b> (Linux users will have to have python3.10, venv package, pip and NodeJS installed before clicking yes. Once installed, restart the computer.) </b> <b> (Mac users will have to have [Python3.9 (must be version 3.9)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg), and [NodeJS](https://nodejs.org/en/download/) installed. Once installed, restart the computer.) </b> <b> (Windows users will have to have [Python3.10 (must be version 3.10)](https://www.python.org/ftp/python/3.10.10/python-3.10.10-amd64.exe), and [NodeJS](https://nodejs.org/en/download/) installed. Once installed, restart the computer.) </b>
 * Click no to use your own default python interpreter (You can access this in the VSCode Settings. Use (Cmd + ,) for Mac and (Ctrl + ,) for Windows).
 <br/>
 <p align=center>
