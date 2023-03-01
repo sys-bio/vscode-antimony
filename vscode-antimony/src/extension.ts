@@ -88,7 +88,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 			vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python"), true);
 			vscode.window.showInformationMessage('Virtual environment exists, it is activated now.')
 		}
-	} else if ((os.platform().toString() == 'win32' || os.platform().toString() == 'win64') && fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"))) {
+	} else if ((os.platform().toString() == 'win32' || os.platform().toString() == 'win64') && fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env"))) {
 		if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python")) {
 			vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"), true);
 			vscode.window.showInformationMessage('Virtual environment exists, it is activated now.')
