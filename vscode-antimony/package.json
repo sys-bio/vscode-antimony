@@ -158,7 +158,7 @@
 			},
 			{
 				"command": "antimony.fixVirtualEnv",
-				"title": "Fix Virtual Environment"
+				"title": "Reinstall Virtual Environment"
 			}
 		],
 		"languages": [
@@ -220,7 +220,7 @@
 				},
 				{
 					"command": "antimony.fixVirtualEnv",
-					"title": "Fix Virtual Environment",
+					"title": "Reinstall Virtual Environment",
 					"group": "1_modification",
 					"when": "editorLangId == antimony"
 				},

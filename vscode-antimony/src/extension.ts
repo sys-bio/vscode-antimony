@@ -157,7 +157,7 @@ async function progressBar(filePath: string) {
 		
 					vscode.window
 					.showInformationMessage(
-						`Installation finished. Reload to activate.`,
+						`Installation finished. Reload to activate. Right click in the editor after reload to view features.`,
 						action
 					)
 					.then(selectedAction => {

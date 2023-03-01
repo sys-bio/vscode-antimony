@@ -6,13 +6,24 @@
 
 The Antimony extension adds language support for Antimony to Visual Studio Code for building models in Systems Biology.
 
-The currently available version 0.2 is a public beta version developed by [Longxuan Fan](https://www.linkedin.com/in/longxf), [Sai Anish Konanki](https://www.linkedin.com/in/anish-konanki-8b81a575/), [Eva Liu](https://www.linkedin.com/in/evaliu02), [Steve Ma](https://www.linkedin.com/in/steve-ma/), [Gary Geng](https://www.linkedin.com/in/gary-geng-9995a2160/), [Dr. Joseph Hellerstein](https://sites.google.com/uw.edu/joseph-hellerstein/home?authuser=0), and [Dr. Herbert Sauro](https://bioe.uw.edu/portfolio-items/sauro/) at the University of Washington. Dr. Joseph Hellerstein is responsible for future releases, and please feel free to [contact](mailto:joseph.hellerstein@gmail.com) him if you have any questions.
+The currently available version 0.2 is a public beta version developed by [Longxuan Fan](https://www.linkedin.com/in/longxf), [Sai Anish Konanki](https://www.linkedin.com/in/sai-anish-konanki-8b81a575/), [Eva Liu](https://www.linkedin.com/in/evaliu02), [Steve Ma](https://www.linkedin.com/in/steve-ma/), [Gary Geng](https://www.linkedin.com/in/gary-geng-9995a2160/), [Dr. Joseph Hellerstein](https://sites.google.com/uw.edu/joseph-hellerstein/home?authuser=0), and [Dr. Herbert Sauro](https://bioe.uw.edu/portfolio-items/sauro/) at the University of Washington. Dr. Joseph Hellerstein is responsible for future releases, and please feel free to [contact](mailto:joseph.hellerstein@gmail.com) him if you have any questions.
 
 Please note that the current release does not support the complete Antimony grammar. While most grammar has been supported, more will be included in future releases. Flux balance constraints and submodeling are not supported currently.
 
 ## Installation
 The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) is available on the Visual Studio Code Extensions Tab and the Visual Studio Code Marketplace. (We recommend installing the extension pack directly so you have full access to all of the features.) <br/>
-* **_This extension requires [NodeJS](https://nodejs.org/en/download/) to be installed before use. Restart computer after installation of Node JS._**
+* **_This extension requires [NodeJS](https://nodejs.org/en/download/) to be installed before use regardless of operating system used. Restart Visual Studio Code after installation of NodeJS._**
+<br/>
+<br/>
+* **_Mac users must install [Python3.9 (must be version 3.9)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg). Once installed, restart Visual Code Studio._**
+<br/>
+<br/>
+* **_Windows users must install [Python3.10 (must be version 3.10)](https://www.python.org/ftp/python/3.10.10/python-3.10.10-amd64.exe). Once installed, restart Visual Code Studio._**
+<br/>
+<br/>
+* **_Linux users will have to install Python3.10, venv package, and pip before clicking yes. Once installed, restart Visual Studio Code._**
+<br/>
+<br/>
 * Install [VSCode](https://code.visualstudio.com/download) for your specific operating system (Mac, Windows, or Linux)
 * Once you open VSCode, download the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) from the Visual Studio Code Extension Marketplace and install. Follow the numbered points in the figure below.
 <p align=center>
@@ -35,7 +46,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Open Antimony Start Page)</em>
 </p>
 
-* Click yes to allow creation of virtual environment and installation of required dependencies <b> (Linux users will have to have python3.10, venv package, pip and NodeJS installed before clicking yes. Once installed, restart the computer.) </b> <b> (Mac users will have to have [Python3.9 (must be version 3.9)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg), and [NodeJS](https://nodejs.org/en/download/) installed. Once installed, restart the computer.) </b> <b> (Windows users will have to have [Python3.10 (must be version 3.10)](https://www.python.org/ftp/python/3.10.10/python-3.10.10-amd64.exe), and [NodeJS](https://nodejs.org/en/download/) installed. Once installed, restart the computer.) </b>
+* Click yes to allow creation of virtual environment and installation of required dependencies
 * Click no to use your own default python interpreter (You can access this in the VSCode Settings. Use (Cmd + ,) for Mac and (Ctrl + ,) for Windows).
 <br/>
 <p align=center>
@@ -44,7 +55,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Permissions for Virtual Environment Setup)</em>
 </p>
 
-* If there are errors, right click on the .ant file and press "Fix Virtual Environment".
+* If there are errors, right click on the .ant file and press "Reinstall Virtual Environment".
 <br/>
 <p align=center>
 <img src="docs/images/fix.gif" width=75%>
@@ -52,6 +63,13 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Fixing Antimony Extension Virtual Environment Setup)</em>
 </p>
 
+* Now, right clicking anywhere in the .ant file will display a list of features that can be accessed by users.
+<br/>
+<p align=center>
+<img src="docs/images/rightclick.png" width=75%>
+<br/>
+<em>(List of options when right clicking in the file)</em>
+</p>
 
 ## Features
 The extension provides many convenient features for developing biological models with the Antimony language in tellurium. The current release focuses on the areas below.
