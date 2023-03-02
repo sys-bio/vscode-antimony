@@ -8,25 +8,50 @@ The Antimony extension adds language support for Antimony to Visual Studio Code 
 
 The currently available version 0.2 is a public beta version developed by [Longxuan Fan](https://www.linkedin.com/in/longxf), [Sai Anish Konanki](https://www.linkedin.com/in/anish-konanki-8b81a575/), [Eva Liu](https://www.linkedin.com/in/evaliu02), [Steve Ma](https://www.linkedin.com/in/steve-ma/), [Gary Geng](https://www.linkedin.com/in/gary-geng-9995a2160/), [Dr. Joseph Hellerstein](https://sites.google.com/uw.edu/joseph-hellerstein/home?authuser=0), and [Dr. Herbert Sauro](https://bioe.uw.edu/portfolio-items/sauro/) at the University of Washington. Dr. Joseph Hellerstein is responsible for future releases, and please feel free to [contact](mailto:joseph.hellerstein@gmail.com) him if you have any questions.
 
-Please note that the current release does not support the complete Antimony grammar. While most grammar has been supported, more will be included in future releases.
+Please note that the current release does not support the complete Antimony grammar. While most grammar has been supported, more will be included in future releases. Flux balance constraints and submodeling are not supported currently.
 
 ## Installation
-The Antimony extension pack includes two extensions: [Antimony](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) and [Antimony Syntax](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony-syntax) for the color scheme. The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) is also available on the Visual Studio Code Marketplace. (We recommend installing the extension pack directly so you have full access to all of the features.) <br/>
-* For installation, download the extension pack from the Visual Studio Code Marketplace and install.
-* When an .ant file is opened for the first time, a pop up will show.
+The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) is available on the Visual Studio Code Extensions Tab and the Visual Studio Code Marketplace. (We recommend installing the extension pack directly so you have full access to all of the features.) <br/>
+* **_This extension requires [NodeJS](https://nodejs.org/en/download/) to be installed before use._**
+* Install [VSCode](https://code.visualstudio.com/download) for your specific operating system (Mac, Windows, or Linux)
+* Once you open VSCode, download the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) from the Visual Studio Code Extension Marketplace and install. Follow the numbered points in the figure below.
+<p align=center>
+<img src="docs/images/Step2.png" width=75%>
+<br/>
+<em>(Download Antimony Extension)</em>
+</p>
+
+* When an XML or Antimony model file is opened for the first time, a pop up will show.
+<p align=center>
+<img src="docs/images/Step3.png" width=75%>
+<br/>
+<em>(Pop up for setup)</em>
+</p>
+
+* On the other hand, if a user does not have a SBML or Antimony file, they can open the Command Palette (Ctrl + Shift + P for Windows, Cmd + Shift + P for Mac) and type "Open Antimony Start Page". This will open a simple Antimony page, which will allow for the installation of the virtual environment.
+<p align=center>
+<img src="docs/images/startPage.png" width=75%>
+<br/>
+<em>(Open Antimony Start Page)</em>
+</p>
+
 * Click yes to allow creation of virtual environment and installation of required dependencies <b> (Linux users will have to have python3, venv package and pip installed before clicking yes). </b>
-* Click no to use your own default python interpreter.
+* Click no to use your own default python interpreter (You can access this in the VSCode Settings. Use (Cmd + ,) for Mac and (Ctrl + ,) for Windows).
 <br/>
 <p align=center>
-<img src="docs\images\installation.gif" width=75%>
+<img src="docs/images/installation.gif" width=75%>
 <br/>
+<em>(Permissions for Virtual Environment Setup)</em>
 </p>
+
 * If there are errors, right click on the .ant file and press "Fix Virtual Environment".
 <br/>
 <p align=center>
-<img src="docs\images\fix.gif" width=75%>
+<img src="docs/images/fix.gif" width=75%>
 <br/>
+<em>(Fixing Antimony Extension Virtual Environment Setup)</em>
 </p>
+
 
 ## Features
 The extension provides many convenient features for developing biological models with the Antimony language in tellurium. The current release focuses on the areas below.
@@ -35,6 +60,8 @@ The extension provides many convenient features for developing biological models
 
 <p align=center>
 <img src="docs/images/roundTrippingDemo.png" width=75%>
+<br/>
+<em>(SBML to Antimony conversion)</em>
 </p>
 
 When an SBML file is opened, the editor will automatically convert the SBML file to the Antimony format. User can edit the Antimony file, and save the changes made to the Antimony model back to the original SBML file.
@@ -66,7 +93,7 @@ The extension allows a user to browse for different biomodels from the [BioModel
 ⚠️ Note: the default syntax highlighting for Antimony is provided by a separate extension [Antimony Syntax](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony-syntax), and is also available in the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) 
 
 ### 4. Automatic annotation creation with database recommendation
-The extension can recognize different types of variables, and recommend databases base on the [OMEX metadata specification](https://doi.org/10.1515/jib-2021-0020).
+The extension can recognize different types of variables, and recommend databases based on the [OMEX metadata specification](https://doi.org/10.1515/jib-2021-0020).
 
 <p align=center>
 <img src="docs/images/annotation0.2.gif" width=75%>
@@ -141,6 +168,13 @@ The extension supports a wide range of errors and warnings, and we plan to suppo
 <em>(Creating annotation for species BLL with Annotation Recommender)</em>
 </p>
 
+### 12. Highlight indication for annotated species
+<p align=center>
+<img src="docs/images/highlight.gif" width=75%>
+<br/>
+<em>(Displaying highlight indication for annotated species, BLL)</em>
+</p>
+
 ## Known Issues
 I have an open issue for [manually curating models](https://github.com/sys-bio/vscode-antimony/issues/26) from BioModels to test the extension. Please feel free to contribute and submit issues.
 * subvariables in modular models are currently not supported and false error messages will be triggered.
@@ -166,13 +200,14 @@ I have an open issue for [manually curating models](https://github.com/sys-bio/v
 
 ### 0.2.0
 * Added grammar support and warning/error detection for rate rules, sbo and cvterms, events, flux balance constraints, interaction, and import.
-* Converter between Antimony and SBML
+* Converter between Antimony and SBML.
 * Antimony/SBML preview.
 * More databases supported in create annotation, and database recommendations.
 * Automatic creation of rate laws.
 * Annotation recommender for species.
+* Highlight indication for annotated species.
 
 ### 0.2.4
-* Automatic virtual environment installation
-* SBML to Antimony Conversion and Editing
-* Browsing Biomodels
+* Automatic virtual environment installation.
+* SBML to Antimony Conversion and Editing.
+* Browsing Biomodels.

@@ -13,9 +13,9 @@ import { annotationMultiStepInput } from './annotationInput';
 import { rateLawSingleStepInput } from './rateLawInput';
 import { SBMLEditorProvider } from './SBMLEditor';
 import { AntimonyEditorProvider } from './AntimonyEditor';
-var shell = require('shelljs');
 import { modelSearchInput } from './modelBrowse';
 import { ProgressLocation, TextDocument, window } from 'vscode';
+import { exec } from 'child_process';
 
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
@@ -100,7 +100,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 		}
 	} else {
 		if (os.platform().toString() == 'linux') {
-			vscode.window.showInformationMessage('[IMPORTANT: Linux users will have to install python3.10, venv python3.10 package and pip before proceeding.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			vscode.window.showInformationMessage('[IMPORTANT: Linux users will have to install python3.10, venv python3.10 package, pip and NodeJS before proceeding.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
@@ -109,8 +109,18 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 					vscode.window.showInformationMessage('The default python interpreter will be used.')
 				}
 			});
-		} else {
-			vscode.window.showInformationMessage('[IMPORTANT: Mac users install python3.9 before proceeding. Windows users install python3.10.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+		} else if (os.platform().toString() == 'win32' || os.platform().toString() == 'win64'){
+			vscode.window.showInformationMessage('[IMPORTANT: Windows users install python3.10 and NodeJS.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			.then(async selection => {
+				// installing virtual env
+				if (selection === 'Yes') {
+					fixVirtualEnv();
+				} else if (selection === 'No') {
+					vscode.window.showInformationMessage('The default python interpreter will be used.')
+				}
+			});
+		} else if (os.platform().toString() == 'darwin') {
+			vscode.window.showInformationMessage('[IMPORTANT: Mac users install python3.9 and NodeJS before proceeding.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
@@ -130,7 +140,7 @@ async function progressBar(filePath: string) {
         cancellable: true
     }, ( progress, token ) => {
         return new Promise<void>(resolve => {
-            shell.exec(`${filePath}`, (error, stdout, stderr) => {
+            exec(`${filePath}`, (error, stdout, stderr) => {
 				if (error) {
 					vscode.window.showInformationMessage('Installation Error. Try again. Error Message: "' + error)
 					throw error;
@@ -164,10 +174,10 @@ async function progressBar(filePath: string) {
 
 // setup virtual environment
 async function fixVirtualEnv() {
-	var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'runshell.ts');
+	var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'server', 'runshell.js');
 	// shell.exec('npx ts-node ' + current_path_to_tsscript, (err, stdout, stderr) => {
 	// });
-	progressBar('npx ts-node ' + current_path_to_tsscript)
+	progressBar('node ' + current_path_to_tsscript)
 }
 
 async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<any, any>) {
@@ -202,7 +212,37 @@ async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<an
 		}
 }
 
+async function openStartPage() {
+	const openStartPage = vscode.workspace.getConfiguration('vscode-antimony').get('openStartPage');
+	const startPageStr = `A -> B; k1*A
+B -> C; k2*B
+k1 = 1
+k2 = 2
+A = 10
+B = 0
+C = 0`;
+	if (openStartPage) {
+		const startPageDir = os.tmpdir();
+		var startPageName = `startPage.ant`;
+		var startPagePath = path.join(startPageDir, startPageName);
+		fs.writeFile(startPagePath, startPageStr, (error) => {
+			if (error) {
+				console.error(error);
+			} else {
+				console.log('The file was saved to ' + startPagePath);
+			}
+		});
+		// Create the temporary file and open it in the editor
+		const startPageFile = vscode.workspace.openTextDocument(startPagePath).then((doc) => {
+			vscode.window.showTextDocument(doc, { preview: false });
+		});
+	}
+}
+
 export async function activate(context: vscode.ExtensionContext) {
+	context.subscriptions.push(
+		vscode.commands.registerCommand('antimony.openStartPage',
+			(...args: any[]) => openStartPage()));
 	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
 	await createVirtualEnv(context);
 

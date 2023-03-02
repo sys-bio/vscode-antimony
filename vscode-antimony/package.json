@@ -4,7 +4,7 @@
 	"description": "Extensions for Antimony development in Visual Studio Code.",
 	"author": "Steve Ma, Gary Geng, Joseph Hellerstein, Herbet Sauro",
 	"publisher": "stevem",
-	"version": "0.1.9",
+	"version": "0.2.6",
 	"icon": "docs/images/logo.png",
 	"engines": {
 		"vscode": "^1.62.0"
@@ -23,13 +23,12 @@
 	"activationEvents": [
 		"onLanguage:antimony",
 		"onLanguage:xml",
+		"onCommand:antimony.openStartPage",
 		"onCommand:antimony.createAnnotationDialog",
 		"onCommand:antimony.recommendAnnotationDialog",
 		"onCommand:antimony.insertRateLaw",
 		"onCommand:antimony.switchIndicationOn",
 		"onCommand:antimony.switchIndicationOff",
-		"antimony.openSBMLAsAntimonyOn",
-		"antimony.openSBMLAsAntimonyOff",
 		"onCommand:antimony.convertAntimonyToSBML",
 		"onCommand:antimony.convertSBMLToAntimony",
 		"onCommand:antimony.startSBMLWebview",
@@ -94,7 +93,13 @@
 						"type": "boolean",
 						"default": "true",
 						"scope": "machine",
-						"description": "When editing SBML files, opens up up antimony version automatically."
+						"description": "When editing SBML files, opens up antimony version automatically."
+					},
+					"vscode-antimony.openStartPage": {
+						"type": "boolean",
+						"default": "true",
+						"scope": "machine",
+						"description": "Opens an Antimony start page when user clicks."
 					},
 					"vscode-antimony.promptChangingPython": {
 						"type": "boolean",
@@ -106,7 +111,7 @@
 						"type": "string",
 						"default": "indigo",
 						"scope": "machine",
-						"description": "Set visual indications (colored cighlights) to a preferred color (e.g. red, orange, yellow, green, blue, indigo)."
+						"description": "Set visual indications (colored highlights) to a preferred color (e.g. red, orange, yellow, green, blue, indigo)."
 					}
 				}
 			}
@@ -133,12 +138,8 @@
 				"title": "Turn Annotated Variable Indications Off"
 			},
 			{
-				"command": "antimony.openSBMLAsAntimonyOn",
-				"title": "Open SBML As Antimony On"
-			},
-			{
-				"command": "antimony.openSBMLAsAntimonyOff",
-				"title": "Open SBML As Antimony Off"
+				"command": "antimony.openStartPage",
+				"title": "Open Antimony Start Page"
 			},
 			{
 				"command": "antimony.convertAntimonyToSBML",
@@ -217,18 +218,6 @@
 					"when": "config.vscode-antimony.annotatedVariableIndicatorOn == true"
 				},
 				{
-					"command": "antimony.openSBMLAsAntimonyOn",
-					"title": "SBML Opens As Antimony On",
-					"group": "1_modification",
-					"when": "config.vscode-antimony.openSBMLAsAntimony == true"
-				},
-				{
-					"command": "antimony.openSBMLAsAntimonyOff",
-					"title": "SBML Opens As Antimony Off",
-					"group": "1_modification",
-					"when": "config.vscode-antimony.openSBMLAsAntimony == false"
-				},
-				{
 					"command": "antimony.convertAntimonyToSBML",
 					"title": "Convert to SBML",
 					"group": "1_modification",
@@ -243,10 +232,10 @@
 				{
 					"command": "antimony.fixVirtualEnv",
 					"title": "Fix Virtual Environment",
-          			"group": "1_modification",
+					"group": "1_modification",
 					"when": "editorLangId == antimony"
-        		},
-        		{
+				},
+				{
 					"command": "antimony.browseBiomodels",
 					"title": "Browse Biomodels",
 					"group": "1_modification",
