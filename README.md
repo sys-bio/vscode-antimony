@@ -225,3 +225,7 @@ I have an open issue for [manually curating models](https://github.com/sys-bio/v
 ### 0.2.8
 Minor bug fixes
 Updated User Instructions
+
+### 0.2.9
+Minor bug fixes
+Updated User Instructions
