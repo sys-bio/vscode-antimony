@@ -4,7 +4,7 @@
 	"description": "Extensions for Antimony development in Visual Studio Code.",
 	"author": "Steve Ma, Gary Geng, Joseph Hellerstein, Herbet Sauro",
 	"publisher": "stevem",
-	"version": "0.2.6",
+	"version": "0.2.9",
 	"icon": "docs/images/logo.png",
 	"engines": {
 		"vscode": "^1.62.0"
@@ -165,7 +165,7 @@
 			},
 			{
 				"command": "antimony.fixVirtualEnv",
-				"title": "Fix Virtual Environment"
+				"title": "Reinstall Virtual Environment"
 			},
 			{
 				"command": "antimony.exportAsPython",
@@ -231,7 +231,7 @@
 				},
 				{
 					"command": "antimony.fixVirtualEnv",
-					"title": "Fix Virtual Environment",
+					"title": "Reinstall Virtual Environment",
 					"group": "1_modification",
 					"when": "editorLangId == antimony"
 				},
