@@ -726,16 +726,7 @@ async function browseBioModels(context: vscode.ExtensionContext, args: any[]) {
 
 function getPythonString(model: string) {
 	let pythonString;
-	pythonString = `
-#%%
-import tellurium as te
-
-#%%
-r = te.loada(\'\'\'${model}\'\'\')
-
-#%%
-# implement and simulate your model here
-	`
+	pythonString = `${model}`
 	return pythonString;
 }
 
@@ -753,8 +744,9 @@ async function exportAsPython(context: vscode.ExtensionContext, args: any[]) {
 		vscode.window.showInformationMessage("Do you want to change default python interpreter to vscode-antimony one?", ...['Yes', 'No', 'Don\'t show again'])
 		.then(async selection => {
 			if (selection === "Yes") {
-				const antimonyInterpreter = getPythonInterpreter();
-				vscode.workspace.getConfiguration('python').update('defaultInterpreterPath', antimonyInterpreter);
+				const antimonyInterpreter = getPythonInterpreter(); 
+				// we are not allowed to change workspace config of other extensions...
+				// vscode.workspace.getConfiguration('python').update('defaultInterpreterPath', antimonyInterpreter);
 				antimonyConfig.update('promptChangingPython', false);
 			} else if (selection === 'Don\'t show again') {
 				antimonyConfig.update('promptChangingPython', false);
@@ -770,24 +762,25 @@ async function exportAsPython(context: vscode.ExtensionContext, args: any[]) {
 		canSelectFiles: false,
 		canSelectMany: false,
 		filters: {
-			'Python': ['py']
+			'Jupyter Notebook': ['.ipynb']
 		},
 		title: "Select a location to save your Python biomodel file"
 	};
+
    	vscode.window.showOpenDialog(options).then(fileUri => {
 	   	if (fileUri && fileUri[0]) {
-			let pythonFileName: string = path.basename(vscode.window.activeTextEditor.document.fileName, '.ant') + '.py';
-			let outputDir: string = fileUri[0].fsPath;
-			let fullPathName: string = path.join(outputDir, pythonFileName);
+			let pythonFileName: string = path.basename(vscode.window.activeTextEditor.document.fileName, '.ant');
 			let antString: string = vscode.window.activeTextEditor.document.getText();
 			let pythonString: string = getPythonString(antString);
-			fs.writeFile(fullPathName, pythonString, (error) => {
-				if (error) {
-					console.error(error);
-				} else {
-					console.log('The python model was saved to ' + fullPathName);
-				}
-			});
+			vscode.commands.executeCommand('antimony.createNotebook', pythonFileName, pythonString).then(async (result) => {
+
+			})
+			
+			// const panel = vscode.window.createWebviewPanel(
+			// 	'ipynb',
+			// 	pythonFileName,
+			// 	vscode.ViewColumn.Two
+			// );
 	   	}
 	});
 }

@@ -40,6 +40,10 @@ import requests
 import zipfile
 import io
 
+import nbformat as nbf
+from nbformat import read
+from IPython import get_ipython
+
 # TODO remove this for production
 # logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
 # vscode_logger = logging.getLogger("vscode-antimony logger")
@@ -353,6 +357,48 @@ def get_model(ls: LanguageServer, args):
         "filename": extract.namelist()[0],
         "data": data
     }
+
+@server.thread()
+@server.command('antimony.createNotebook')
+def create_notebook(ls: LanguageServer, args):
+    import nbformat as nbf
+    from nbconvert.preprocessors import ExecutePreprocessor
+
+
+    nb = nbf.v4.new_notebook()
+    text = """\
+    # My first automatic Jupyter Notebook
+    This is an auto-generated notebook."""
+
+    cell1 = """\
+import tellurium as te"""
+
+    cell2 = """\
+r = te.loada(\'\'\'{}\'\'\')""".format(args[1])
+
+    text2 = """\
+# Implement and simulate your model in the cell below
+    """
+
+    cell3 = """\
+"""
+
+    nb['cells'] = [nbf.v4.new_markdown_cell(text),
+                nbf.v4.new_code_cell(cell1), nbf.v4.new_code_cell(cell2),
+                nbf.v4.new_markdown_cell(text2), nbf.v4.new_code_cell(cell3)]
+    
+    fname = args[0] + '.ipynb'
+
+    with open(fname, 'w') as f:
+        nbf.write(nb, f)
+
+    with open(fname, 'r') as f:
+        nb_in = nbf.read(f, nbf.NO_CONVERT)
+    
+    ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
+
+    ep.preprocess(nb_in)
+    
 
 #### Hover for displaying information ####
 @server.feature(HOVER)
