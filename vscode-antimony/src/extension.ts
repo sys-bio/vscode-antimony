@@ -775,7 +775,9 @@ async function exportAsPython(context: vscode.ExtensionContext, args: any[]) {
 			vscode.commands.executeCommand('antimony.createNotebook', pythonFileName, pythonString).then(async (result) => {
 
 			})
-			
+			vscode.window.showTextDocument(document, {
+				viewColumn: vscode.ViewColumn.Beside
+			});
 			// const panel = vscode.window.createWebviewPanel(
 			// 	'ipynb',
 			// 	pythonFileName,
