@@ -392,7 +392,7 @@ r = te.loada(\'\'\'{}\'\'\')""".format(args[1])
     with open(fname, 'w') as f:
         nbf.write(nb, f)
 
-    with open(fname, 'r') as f:
+    with open(fname) as f:
         nb_in = nbf.read(f, nbf.NO_CONVERT)
     
     ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
