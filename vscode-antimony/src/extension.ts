@@ -175,9 +175,28 @@ async function progressBar(filePath: string) {
 // setup virtual environment
 async function fixVirtualEnv() {
 	var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'server', 'runshell.js');
-	// shell.exec('npx ts-node ' + current_path_to_tsscript, (err, stdout, stderr) => {
-	// });
-	progressBar('node ' + current_path_to_tsscript)
+
+	if (process.env.VIRTUAL_ENV) {
+		console.log('Virtual environment is activated');
+		const virtualEnvPath = process.env.VIRTUAL_ENV;
+		if (virtualEnvPath != path.normalize(os.homedir() + "/vscode_antimony_virtual_env")) {
+			const action = 'Reload';
+
+			vscode.window
+			.showInformationMessage(
+				`Deactivate current active virtual environment before allowing antimony virtual environment installation.`,
+				action
+			)
+			.then(selectedAction => {
+				if (selectedAction === action) {
+					vscode.commands.executeCommand('workbench.action.reloadWindow');
+				}
+			});
+		}
+	} else {
+		console.log('Virtual environment is not activated');
+		progressBar('node ' + current_path_to_tsscript)
+	}
 }
 
 async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<any, any>) {

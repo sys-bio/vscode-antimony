@@ -16,6 +16,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 * **_Mac users must install [Python3.9 (must be version 3.9)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg). Once installed, restart Visual Code Studio._** <br/><br/>
 * **_Windows users must install [Python3.10 (must be version 3.10)](https://www.python.org/ftp/python/3.10.10/python-3.10.10-amd64.exe). Once installed, restart Visual Code Studio._**<br/><br/>
 * **_Linux users will have to install Python3.10, venv package, and pip before clicking yes. Once installed, restart Visual Studio Code._**<br/><br/>
+* **_If there are any non-VSCode-Antimony-associated virtual environments activated, please deactivate them before setting up VSCode Antimony._**<br/><br/>
 * Install [VSCode](https://code.visualstudio.com/download) for your specific operating system (Mac, Windows, or Linux)
 * Once you open VSCode, download the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) from the Visual Studio Code Extension Marketplace and install. Follow the numbered points in the figure below.
 <p align=center>
