@@ -724,12 +724,6 @@ async function browseBioModels(context: vscode.ExtensionContext, args: any[]) {
 	});
 }
 
-function getPythonString(model: string) {
-	let pythonString;
-	pythonString = `${model}`
-	return pythonString;
-}
-
 // Export Antimony as Python
 async function exportAsPython(context: vscode.ExtensionContext, args: any[]) {
 	if (!client) {
@@ -770,9 +764,8 @@ async function exportAsPython(context: vscode.ExtensionContext, args: any[]) {
    	vscode.window.showOpenDialog(options).then(fileUri => {
 	   	if (fileUri && fileUri[0]) {
 			let pythonFileName: string = path.basename(vscode.window.activeTextEditor.document.fileName, '.ant');
-			let antString: string = vscode.window.activeTextEditor.document.getText();
-			let pythonString: string = getPythonString(antString);
-			vscode.commands.executeCommand('antimony.createNotebook', pythonFileName, pythonString).then(async (result) => {
+			let filePath: string = vscode.window.activeTextEditor.document.uri.path.substring(1)
+			vscode.commands.executeCommand('antimony.createNotebook', pythonFileName, filePath).then(async (result) => {
 
 			})
 			// vscode.window.showTextDocument(document, {
