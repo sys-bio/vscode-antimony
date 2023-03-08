@@ -110,7 +110,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 				}
 			});
 		} else if (os.platform().toString() == 'win32' || os.platform().toString() == 'win64'){
-			vscode.window.showInformationMessage('[IMPORTANT: Windows users MUST install python3.10 (must be version 3.10), and NodeJS.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			vscode.window.showInformationMessage('[IMPORTANT: Windows users MUST install python3.11 (must be version 3.11), and NodeJS.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
