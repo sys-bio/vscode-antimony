@@ -205,6 +205,7 @@ async function installEnv() {
 async function fixVirtualEnv() {
 	if (fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"))) {
 		rimraf(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"));
+		installEnv();
 	} else {
 		installEnv();
 	}
