@@ -16,6 +16,7 @@ import { AntimonyEditorProvider } from './AntimonyEditor';
 import { modelSearchInput } from './modelBrowse';
 import { ProgressLocation, TextDocument, window } from 'vscode';
 import { exec } from 'child_process';
+import rimraf from 'rimraf'
 
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
@@ -104,7 +105,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
-					fixVirtualEnv();
+					installEnv();
 				} else if (selection === 'No') {
 					vscode.window.showInformationMessage('The default python interpreter will be used.')
 				}
@@ -114,7 +115,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
-					fixVirtualEnv();
+					installEnv();
 				} else if (selection === 'No') {
 					vscode.window.showInformationMessage('The default python interpreter will be used.')
 				}
@@ -124,7 +125,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
-					fixVirtualEnv();
+					installEnv();
 				} else if (selection === 'No') {
 					vscode.window.showInformationMessage('The default python interpreter will be used.')
 				}
@@ -173,7 +174,7 @@ async function progressBar(filePath: string) {
 }
 
 // setup virtual environment
-async function fixVirtualEnv() {
+async function installEnv() {
 	var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'server', 'runshell.js');
 
 	if (process.env.VIRTUAL_ENV) {
@@ -192,10 +193,20 @@ async function fixVirtualEnv() {
 					vscode.commands.executeCommand('workbench.action.reloadWindow');
 				}
 			});
+		} else {
+			progressBar('node ' + current_path_to_tsscript)
 		}
 	} else {
 		console.log('Virtual environment is not activated');
 		progressBar('node ' + current_path_to_tsscript)
+	}
+}
+
+async function fixVirtualEnv() {
+	if (fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"))) {
+		rimraf(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"));
+	} else {
+		installEnv();
 	}
 }
 
@@ -342,7 +353,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('antimony.browseBiomodels',
 			(...args: any[]) => browseBioModels(context, args)));
 
-	// fix virtual env
+	// Reinstall virtual env
 	context.subscriptions.push(
 		vscode.commands.registerCommand('antimony.fixVirtualEnv',
 			(...args: any[]) => fixVirtualEnv()));
