@@ -79,7 +79,6 @@ function updateDecorations() {
 	}
 }
 
-var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'runshell.ts');
 // setup virtual environment
 async function createVirtualEnv(context: vscode.ExtensionContext) {
 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
@@ -202,14 +201,14 @@ async function installEnv() {
 	}
 }
 
-async function fixVirtualEnv() {
-	if (fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"))) {
-		rimraf(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"));
-		installEnv();
-	} else {
-		installEnv();
-	}
-}
+// async function fixVirtualEnv() {
+// 	if (fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"))) {
+// 		rimraf(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"));
+// 		installEnv();
+// 	} else {
+// 		installEnv();
+// 	}
+// }
 
 async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<any, any>) {
 	if (path.extname(event.fileName) === '.xml') {
@@ -353,11 +352,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('antimony.browseBiomodels',
 			(...args: any[]) => browseBioModels(context, args)));
-
-	// Reinstall virtual env
-	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.fixVirtualEnv',
-			(...args: any[]) => fixVirtualEnv()));
 
 	// language config for CodeLens
 	const docSelector = {
