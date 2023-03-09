@@ -204,8 +204,8 @@ async function installVirtualEnv() {
 async function fixVirtualEnv() {
 	if (fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"))) {
 		if ((!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/pip3.11")) && (os.platform().toString() == 'win32' || os.platform().toString() == 'win64')) || 
-		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/pip3.9")) && os.platform().toString() == 'darwin') || 
-		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10")) && os.platform().toString() == 'darwin')) {
+		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9")) && os.platform().toString() == 'darwin') || 
+		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10")) && os.platform().toString() == 'linux')) {
 			vscode.window.showInformationMessage('The incorrect version of python has been installed. Refer to VSCode Antimony Extension installation instructions before reinstalling virtual environment here.', ...['Yes', 'No'])
 			.then(async selection => {
 				// installing virtual env
@@ -296,7 +296,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
 
 	await fixVirtualEnv();
-	
+
 	await createVirtualEnv(context);
 
 	roundTripping = vscode.workspace.getConfiguration('vscode-antimony').get('openSBMLAsAntimony');
