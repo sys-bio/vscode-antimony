@@ -16,6 +16,7 @@ import { AntimonyEditorProvider } from './AntimonyEditor';
 import { modelSearchInput } from './modelBrowse';
 import { ProgressLocation, TextDocument, window } from 'vscode';
 import { exec } from 'child_process';
+import rimraf from 'rimraf'
 
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
@@ -104,7 +105,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
-					fixVirtualEnv();
+					installVirtualEnv();
 				} else if (selection === 'No') {
 					vscode.window.showInformationMessage('The default python interpreter will be used.')
 				}
@@ -114,7 +115,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
-					fixVirtualEnv();
+					installVirtualEnv();
 				} else if (selection === 'No') {
 					vscode.window.showInformationMessage('The default python interpreter will be used.')
 				}
@@ -124,7 +125,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
-					fixVirtualEnv();
+					installVirtualEnv();
 				} else if (selection === 'No') {
 					vscode.window.showInformationMessage('The default python interpreter will be used.')
 				}
@@ -172,15 +173,16 @@ async function progressBar(filePath: string) {
     });
 }
 
+const action = 'Reload';
+
 // setup virtual environment
-async function fixVirtualEnv() {
+async function installVirtualEnv() {
 	var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'server', 'runshell.js');
 
 	if (process.env.VIRTUAL_ENV) {
 		console.log('Virtual environment is activated');
 		const virtualEnvPath = process.env.VIRTUAL_ENV;
 		if (virtualEnvPath != path.normalize(os.homedir() + "/vscode_antimony_virtual_env")) {
-			const action = 'Reload';
 
 			vscode.window
 			.showInformationMessage(
@@ -196,6 +198,35 @@ async function fixVirtualEnv() {
 	} else {
 		console.log('Virtual environment is not activated');
 		progressBar('node ' + current_path_to_tsscript)
+	}
+}
+
+async function fixVirtualEnv() {
+	if (fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"))) {
+		if ((!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/pip3.11")) && (os.platform().toString() == 'win32' || os.platform().toString() == 'win64')) || 
+		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/pip3.9")) && os.platform().toString() == 'darwin') || 
+		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10")) && os.platform().toString() == 'darwin')) {
+			vscode.window.showInformationMessage('The incorrect version of python has been installed. Refer to VSCode Antimony Extension installation instructions before reinstalling virtual environment here.', ...['Yes', 'No'])
+			.then(async selection => {
+				// installing virtual env
+				if (selection === 'Yes') {
+					rimraf(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"));
+					installVirtualEnv();
+				} else if (selection === 'No') {
+					vscode.window
+					.showInformationMessage(
+						`The extension will not work without the proper python version.`,
+						action
+					)
+					.then(selectedAction => {
+						if (selectedAction === action) {
+							vscode.commands.executeCommand('workbench.action.reloadWindow');
+						}
+					});
+					
+				}
+			});
+		}
 	}
 }
 
@@ -263,6 +294,9 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('antimony.openStartPage',
 			(...args: any[]) => openStartPage()));
 	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
+
+	await fixVirtualEnv();
+	
 	await createVirtualEnv(context);
 
 	roundTripping = vscode.workspace.getConfiguration('vscode-antimony').get('openSBMLAsAntimony');
@@ -341,11 +375,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('antimony.browseBiomodels',
 			(...args: any[]) => browseBioModels(context, args)));
-
-	// fix virtual env
-	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.fixVirtualEnv',
-			(...args: any[]) => fixVirtualEnv()));
 
 	// language config for CodeLens
 	const docSelector = {

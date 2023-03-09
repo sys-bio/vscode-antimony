@@ -35,8 +35,7 @@
 		"onCommand:antimony.startAntimonyWebview",
 		"onCommand:antimony.browseBiomodels",
 		"onCustomEditor:antimony.sbmlEditor",
-		"onCustomEditor:antimony.antimonyEditor",
-		"onCustomEditor:antimony.fixVirtualEnv"
+		"onCustomEditor:antimony.antimonyEditor"
 	],
 	"main": "./dist/extension.js",
 	"bugs": {
@@ -155,10 +154,6 @@
 				"command": "antimony.startAntimonyWebview",
 				"title": "preview Antimony",
 				"icon": "docs/images/logo.png"
-			},
-			{
-				"command": "antimony.fixVirtualEnv",
-				"title": "Reinstall Virtual Environment"
 			}
 		],
 		"languages": [
@@ -217,12 +212,6 @@
 					"title": "Convert to Antimony",
 					"group": "1_modification",
 					"when": "editorLangId == xml"
-				},
-				{
-					"command": "antimony.fixVirtualEnv",
-					"title": "Reinstall Virtual Environment",
-					"group": "1_modification",
-					"when": "editorLangId == antimony"
 				},
 				{
 					"command": "antimony.browseBiomodels",
