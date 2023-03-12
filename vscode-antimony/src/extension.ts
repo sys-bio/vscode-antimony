@@ -212,7 +212,7 @@ async function fixVirtualEnv() {
 				// installing virtual env
 				if (selection === 'Yes') {
 					rimraf(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"));
-					installVirtualEnv();
+					installEnv();
 				} else if (selection === 'No') {
 					vscode.window
 					.showInformationMessage(
