@@ -15,7 +15,6 @@
 # $ ve python3.10 ./.venv-diff
 
 ve() {
-    local py=${1:-python3}
     local venv="venv_vscode_antimony_virtual_env"
 
     echo "Creating and activating virtual environment ${venv}"
