@@ -283,6 +283,7 @@
 	},
 	"dependencies": {
 		"python-shell": "^3.0.1",
+		"rimraf": "^4.3.1",
 		"shelljs": "^0.8.5",
 		"ts-node-dev": "^2.0.0",
 		"vsce": "^2.6.3",

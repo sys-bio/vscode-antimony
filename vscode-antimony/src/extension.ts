@@ -79,7 +79,6 @@ function updateDecorations() {
 	}
 }
 
-var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'runshell.ts');
 // setup virtual environment
 async function createVirtualEnv(context: vscode.ExtensionContext) {
 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
@@ -105,7 +104,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
-					installVirtualEnv();
+					installEnv();
 				} else if (selection === 'No') {
 					vscode.window.showInformationMessage('The default python interpreter will be used.')
 				}
@@ -115,7 +114,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
-					installVirtualEnv();
+					installEnv();
 				} else if (selection === 'No') {
 					vscode.window.showInformationMessage('The default python interpreter will be used.')
 				}
@@ -125,7 +124,7 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
-					installVirtualEnv();
+					installEnv();
 				} else if (selection === 'No') {
 					vscode.window.showInformationMessage('The default python interpreter will be used.')
 				}
@@ -176,7 +175,7 @@ async function progressBar(filePath: string) {
 const action = 'Reload';
 
 // setup virtual environment
-async function installVirtualEnv() {
+async function installEnv() {
 	var current_path_to_tsscript = path.join(__dirname, '..', 'src', 'server', 'runshell.js');
 
 	if (process.env.VIRTUAL_ENV) {
@@ -194,6 +193,8 @@ async function installVirtualEnv() {
 					vscode.commands.executeCommand('workbench.action.reloadWindow');
 				}
 			});
+		} else {
+			progressBar('node ' + current_path_to_tsscript)
 		}
 	} else {
 		console.log('Virtual environment is not activated');
@@ -211,7 +212,7 @@ async function fixVirtualEnv() {
 				// installing virtual env
 				if (selection === 'Yes') {
 					rimraf(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"));
-					installVirtualEnv();
+					installEnv();
 				} else if (selection === 'No') {
 					vscode.window
 					.showInformationMessage(
