@@ -799,6 +799,29 @@ async function exportAsPython(context: vscode.ExtensionContext, args: any[]) {
 	});
 }
 
+async function syncAntNb(context: vscode.ExtensionContext, args: any[]) {
+	if (!client) {
+		utils.pythonInterpreterError();
+		return;
+	}
+	await client.onReady();
+
+	vscode.window.onDidChangeActiveTextEditor(editor => {
+		activeEditor = editor;
+		if (editor) {
+			activeEditor.document.fileName
+			vscode.window.activeTextEditor.document.uri.path
+		}
+	}, null, context.subscriptions);
+
+	// update decorations on change to file
+	vscode.workspace.onDidChangeTextDocument(event => {
+		if (activeEditor && event.document === activeEditor.document) {
+
+		}
+	}, null, context.subscriptions);
+}
+
 
 // ****** helper functions ******
 
