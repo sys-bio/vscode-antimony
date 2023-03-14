@@ -12,11 +12,27 @@ Please note that the current release does not support the complete Antimony gram
 
 ## Installation (Please follow instructions as given)
 The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) is available on the Visual Studio Code Extensions Tab and the Visual Studio Code Marketplace. (We recommend installing the extension pack directly so you have full access to all of the features.) <br/>
-* **_This extension requires [NodeJS](https://nodejs.org/en/download/) to be installed before use regardless of operating system used. Restart Visual Studio Code after installation of NodeJS._** <br/><br/>
+
+### Windows
+* **_Windows users must install [Python3.11 (must be version 3.11)](https://www.python.org/ftp/python/3.11.2/python-3.11.2-amd64.exe)._**<br/><br/>
+* **_Check "Add python.exe to PATH" when installing Python 3.11.2_**
+<p align=center>
+<img src="docs/images/path.png" width=75%>
+<br/>
+<em>(Python Installation)</em>
+</p>
+
+* **_Once installed, restart Visual Code Studio._** <br/><br/>
+
+### Mac
 * **_Mac users must install [Python3.9 (must be version 3.9)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg). Once installed, restart Visual Code Studio._** <br/><br/>
-* **_Windows users must install [Python3.10 (must be version 3.10)](https://www.python.org/ftp/python/3.10.10/python-3.10.10-amd64.exe). Once installed, restart Visual Code Studio._**<br/><br/>
+
+### Linux
 * **_Linux users will have to install Python3.10, venv package, and pip before clicking yes. Once installed, restart Visual Studio Code._**<br/><br/>
-* **_If there are any non-VSCode-Antimony-associated virtual environments activated, please deactivate them before setting up VSCode Antimony._**<br/><br/>
+
+### Steps below apply for all 3 Operating Systems
+* **_This extension requires [NodeJS](https://nodejs.org/en/download/) to be installed before use regardless of operating system used. Restart Visual Studio Code after installation of NodeJS._** <br/><br/>
+* **_If there are any non VSCode Antimony associated virtual environments activated, please deactivate them before setting up VSCode Antimony._**<br/><br/>
 * Install [VSCode](https://code.visualstudio.com/download) for your specific operating system (Mac, Windows, or Linux)
 * Once you open VSCode, download the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) from the Visual Studio Code Extension Marketplace and install. Follow the numbered points in the figure below.
 <p align=center>
@@ -223,10 +239,6 @@ I have an open issue for [manually curating models](https://github.com/sys-bio/v
 * SBML to Antimony Conversion and Editing.
 * Browsing Biomodels.
 
-### 0.2.8
-Minor bug fixes
-Updated User Instructions
-
-### 0.2.9
-Minor bug fixes
-Updated User Instructions
+### 0.2.10
+* Minor bug fixes
+* Updated User Instructions
