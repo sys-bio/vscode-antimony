@@ -4,7 +4,7 @@
 	"description": "Extensions for Antimony development in Visual Studio Code.",
 	"author": "Steve Ma, Gary Geng, Joseph Hellerstein, Herbet Sauro",
 	"publisher": "stevem",
-	"version": "0.2.9",
+	"version": "0.2.11",
 	"icon": "docs/images/logo.png",
 	"engines": {
 		"vscode": "^1.62.0"
@@ -35,8 +35,7 @@
 		"onCommand:antimony.startAntimonyWebview",
 		"onCommand:antimony.browseBiomodels",
 		"onCustomEditor:antimony.sbmlEditor",
-		"onCustomEditor:antimony.antimonyEditor",
-		"onCustomEditor:antimony.fixVirtualEnv"
+		"onCustomEditor:antimony.antimonyEditor"
 	],
 	"main": "./dist/extension.js",
 	"bugs": {
@@ -155,10 +154,6 @@
 				"command": "antimony.startAntimonyWebview",
 				"title": "preview Antimony",
 				"icon": "docs/images/logo.png"
-			},
-			{
-				"command": "antimony.fixVirtualEnv",
-				"title": "Reinstall Virtual Environment"
 			}
 		],
 		"languages": [
@@ -217,12 +212,6 @@
 					"title": "Convert to Antimony",
 					"group": "1_modification",
 					"when": "editorLangId == xml"
-				},
-				{
-					"command": "antimony.fixVirtualEnv",
-					"title": "Reinstall Virtual Environment",
-					"group": "1_modification",
-					"when": "editorLangId == antimony"
 				},
 				{
 					"command": "antimony.browseBiomodels",
@@ -294,6 +283,7 @@
 	},
 	"dependencies": {
 		"python-shell": "^3.0.1",
+		"rimraf": "^4.3.1",
 		"shelljs": "^0.8.5",
 		"ts-node-dev": "^2.0.0",
 		"vsce": "^2.6.3",
