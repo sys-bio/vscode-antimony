@@ -100,7 +100,8 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 		}
 	} else {
 		if (os.platform().toString() == 'linux') {
-			vscode.window.showInformationMessage('[IMPORTANT: Linux users will have to install python3.10, venv python3.10 package, pip, and NodeJS.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			vscode.window.showInformationMessage(`[IMPORTANT: Linux users will have to install python3.10, venv python3.10 package, pip, and NodeJS.] 
+			To install dependencies so the extension works properly, allow installation of virtual environment`, {modal: true}, ...['Yes', 'No'])
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
@@ -110,7 +111,8 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 				}
 			});
 		} else if (os.platform().toString() == 'win32' || os.platform().toString() == 'win64'){
-			vscode.window.showInformationMessage('[IMPORTANT: Windows users MUST install python3.10 (must be version 3.10), and NodeJS.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			vscode.window.showInformationMessage(`[IMPORTANT: Windows users MUST install python3.10 (must be version 3.10), and NodeJS.] 
+			To install dependencies so the extension works properly, allow installation of virtual environment`, {modal: true}, ...['Yes', 'No'])
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
@@ -120,7 +122,8 @@ async function createVirtualEnv(context: vscode.ExtensionContext) {
 				}
 			});
 		} else if (os.platform().toString() == 'darwin') {
-			vscode.window.showInformationMessage('[IMPORTANT: Mac users MUST install python3.9 (must be version 3.9), and NodeJS.] To install dependencies so the extension works properly, allow installation of virtual environment', ...['Yes', 'No'])
+			vscode.window.showInformationMessage(`[IMPORTANT: Mac users MUST install python3.9 (must be version 3.9), and NodeJS.] 
+			To install dependencies so the extension works properly, allow installation of virtual environment`, {modal: true}, ...['Yes', 'No'])
 			.then(async selection => {
 				// installing virtual env
 				if (selection === 'Yes') {
@@ -157,7 +160,7 @@ async function progressBar(filePath: string) {
 		
 					vscode.window
 					.showInformationMessage(
-						`Installation finished. Reload to activate. Right click in the editor after reload to view features.`,
+						`Installation finished. Reload to activate. Right click in the editor after reload to view features.`, {modal: true},
 						action
 					)
 					.then(selectedAction => {
@@ -202,34 +205,35 @@ async function installEnv() {
 	}
 }
 
-async function fixVirtualEnv() {
-	if (fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"))) {
-		if ((!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/pip3.11")) && (os.platform().toString() == 'win32' || os.platform().toString() == 'win64')) || 
-		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9")) && os.platform().toString() == 'darwin') || 
-		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10")) && os.platform().toString() == 'linux')) {
-			vscode.window.showInformationMessage('The incorrect version of python has been installed. Refer to VSCode Antimony Extension installation instructions before reinstalling virtual environment here.', ...['Yes', 'No'])
-			.then(async selection => {
-				// installing virtual env
-				if (selection === 'Yes') {
-					rimraf(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"));
-					installEnv();
-				} else if (selection === 'No') {
-					vscode.window
-					.showInformationMessage(
-						`The extension will not work without the proper python version.`,
-						action
-					)
-					.then(selectedAction => {
-						if (selectedAction === action) {
-							vscode.commands.executeCommand('workbench.action.reloadWindow');
-						}
-					});
-					
-				}
-			});
-		}
-	}
-}
+// async function fixVirtualEnv() {
+// 	if (fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"))) {
+// 		if ((fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/pip3.11.exe")) == false && (os.platform().toString() == 'win32' || os.platform().toString() == 'win64')) || 
+// 		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9")) && os.platform().toString() == 'darwin') || 
+// 		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10")) && os.platform().toString() == 'linux')) {
+// 			vscode.window.showInformationMessage(`The incorrect version of python has been installed. 
+// 			Refer to [VSCode Antimony Extension installation instructions](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) before reinstalling virtual environment.
+// 			Delete installed virtual environment?`, ...['Yes', 'No'])
+// 			.then(async selection => {
+// 				// installing virtual env
+// 				if (selection === 'Yes') {
+// 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
+// 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
+// 				} else if (selection === 'No') {
+// 					vscode.window
+// 					.showInformationMessage(
+// 						`The extension will not work without the proper python version.`,
+// 						action
+// 					)
+// 					.then(selectedAction => {
+// 						if (selectedAction === action) {
+// 							vscode.commands.executeCommand('workbench.action.reloadWindow');
+// 						}
+// 					});
+// 				}
+// 			});
+// 		}
+// 	}
+// }
 
 async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<any, any>) {
 	if (path.extname(event.fileName) === '.xml') {
@@ -296,7 +300,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			(...args: any[]) => openStartPage()));
 	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
 
-	await fixVirtualEnv();
+	// await fixVirtualEnv();
 
 	await createVirtualEnv(context);
 
