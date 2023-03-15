@@ -67,7 +67,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 * If there are errors during the installation, cancel and attempt to restart VSCode or your computer before clicking yes to the prompt again. Otherwise, right click on the file and press "Delete Virtual Environment". Then, restart VSCode.
 <br/>
 <p align=center>
-<img src="docs/images/deletevenv.png" width=75%>
+<img src="docs/images/deletevirenv.png" width=75%>
 <br/>
 <em>(Error Fix)</em>
 </p>
@@ -76,7 +76,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <br/>
 <br/>
 <p align=center>
-<img src="docs/images/pyvererror.png" width=75%>
+<img src="docs/images/pythonvererror.png" width=75%>
 <br/>
 <em>(Python Version Error)</em>
 </p>
