@@ -64,15 +64,22 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Permissions for Virtual Environment Setup)</em>
 </p>
 
-<!-- * If there are errors, right click on the .ant file and press "Reinstall Virtual Environment".
+* If there are errors during the installation, cancel and attempt to restart VSCode or your computer before clicking yes to the prompt again. Otherwise, right click on the file and press "Delete Virtual Environment". Then, restart VSCode.
 <br/>
 <p align=center>
-<img src="docs/images/fix.gif" width=75%>
+<img src="docs/images/deletevenv.png" width=75%>
 <br/>
-<em>(Fixing Antimony Extension Virtual Environment Setup)</em>
-</p> -->
-* If there are errors, attempt to restart VSCode or your computer before clicking yes to the prompt again.
+<em>(Error Fix)</em>
+</p>
+
+* A pop up may show if the incorrect python version is installed. Click yes, install the correct python version per instructions above and restart VSCode.
 <br/>
+<br/>
+<p align=center>
+<img src="docs/images/pyvererror.png" width=75%>
+<br/>
+<em>(Python Version Error)</em>
+</p>
 
 * Now, right clicking anywhere in the .ant file will display a list of features that can be accessed by users.
 <br/>

@@ -205,35 +205,43 @@ async function installEnv() {
 	}
 }
 
-// async function fixVirtualEnv() {
-// 	if (fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"))) {
-// 		if ((fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/pip3.11.exe")) == false && (os.platform().toString() == 'win32' || os.platform().toString() == 'win64')) || 
-// 		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9")) && os.platform().toString() == 'darwin') || 
-// 		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10")) && os.platform().toString() == 'linux')) {
-// 			vscode.window.showInformationMessage(`The incorrect version of python has been installed. 
-// 			Refer to [VSCode Antimony Extension installation instructions](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) before reinstalling virtual environment.
-// 			Delete installed virtual environment?`, ...['Yes', 'No'])
-// 			.then(async selection => {
-// 				// installing virtual env
-// 				if (selection === 'Yes') {
-// 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
-// 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
-// 				} else if (selection === 'No') {
-// 					vscode.window
-// 					.showInformationMessage(
-// 						`The extension will not work without the proper python version.`,
-// 						action
-// 					)
-// 					.then(selectedAction => {
-// 						if (selectedAction === action) {
-// 							vscode.commands.executeCommand('workbench.action.reloadWindow');
-// 						}
-// 					});
-// 				}
-// 			});
-// 		}
-// 	}
-// }
+async function venvErrorFix() {
+	if (fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"))) {
+		if ((fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/pip3.11.exe")) == false && (os.platform().toString() == 'win32' || os.platform().toString() == 'win64')) || 
+		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9")) && os.platform().toString() == 'darwin') || 
+		(!fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10")) && os.platform().toString() == 'linux')) {
+			deleteVirtualEnv(`The incorrect version of python has been installed. 
+			Refer to [VSCode Antimony Extension installation instructions](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) before restarting VSCode and reinstalling virtual environment.
+			Delete installed virtual environment?`)
+		} else if (!client) {
+			deleteVirtualEnv(`An error occured during virtual environment installation. Delete installed virtal environment?`)
+		} else {
+			deleteVirtualEnv(`Delete installed virtal environment?`)
+		}
+	}
+}
+
+async function deleteVirtualEnv(message) {
+	vscode.window.showInformationMessage(message, { modal: true }, ...['Yes', 'No'])
+		.then(async selection => {
+			// installing virtual env
+			if (selection === 'Yes') {
+				fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
+				fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
+			} else if (selection === 'No') {
+				vscode.window
+				.showInformationMessage(
+					`The extension will not work without deleting and reinstalling the virtual environment.`,
+					action
+				)
+				.then(selectedAction => {
+					if (selectedAction === action) {
+						vscode.commands.executeCommand('workbench.action.reloadWindow');
+					}
+				});
+			}
+		});
+}
 
 async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<any, any>) {
 	if (path.extname(event.fileName) === '.xml') {
@@ -298,9 +306,12 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('antimony.openStartPage',
 			(...args: any[]) => openStartPage()));
+
 	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
 
-	// await fixVirtualEnv();
+	context.subscriptions.push(
+		vscode.commands.registerCommand('antimony.deleteVirtualEnv',
+			(...args: any[]) => venvErrorFix()));
 
 	await createVirtualEnv(context);
 
