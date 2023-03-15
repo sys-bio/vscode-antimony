@@ -64,13 +64,15 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Permissions for Virtual Environment Setup)</em>
 </p>
 
-* If there are errors, right click on the .ant file and press "Reinstall Virtual Environment".
+<!-- * If there are errors, right click on the .ant file and press "Reinstall Virtual Environment".
 <br/>
 <p align=center>
 <img src="docs/images/fix.gif" width=75%>
 <br/>
 <em>(Fixing Antimony Extension Virtual Environment Setup)</em>
-</p>
+</p> -->
+* If there are errors, attempt to restart VSCode or your computer before clicking yes to the prompt again.
+<br/>
 
 * Now, right clicking anywhere in the .ant file will display a list of features that can be accessed by users.
 <br/>
