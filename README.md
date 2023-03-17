@@ -64,7 +64,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Permissions for Virtual Environment Setup)</em>
 </p>
 
-* If there are errors during the installation, cancel and attempt to restart VSCode or your computer before clicking yes to the prompt again. Otherwise, right click on the file and press "Delete Virtual Environment". Then, restart VSCode.
+* If there are errors during the installation, cancel and attempt to restart VSCode or your computer before clicking yes to the prompt again. Otherwise, clear the error prompts--if there are any--on the bottom right corner, right click on the ant/xml file and press "Delete Virtual Environment". Then, restart VSCode.
 <br/>
 <p align=center>
 <img src="docs/images/deletevirenv.png" width=75%>
