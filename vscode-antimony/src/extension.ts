@@ -214,7 +214,7 @@ async function venvErrorFix() {
 			Refer to [VSCode Antimony Extension installation instructions](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) before restarting VSCode and reinstalling virtual environment.
 			Delete installed virtual environment?`)
 		} else {
-			deleteVirtualEnv(`Delete installed virtal environment?`)
+			deleteVirtualEnv(`Delete installed virtual environment?`)
 		}
 	}
 }
@@ -226,7 +226,7 @@ async function deleteVirtualEnv(message) {
 			if (selection === 'Yes') {
 				if (os.platform.toString() == 'win32' || os.platform().toString() == 'win64') {
 					var rimraf = require("rimraf");
-					rimraf(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"));
+					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true, force: true });
 				} else {
 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
