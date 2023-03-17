@@ -213,8 +213,6 @@ async function venvErrorFix() {
 			deleteVirtualEnv(`The incorrect version of python has been installed. 
 			Refer to [VSCode Antimony Extension installation instructions](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) before restarting VSCode and reinstalling virtual environment.
 			Delete installed virtual environment?`)
-		} else if (!client) {
-			deleteVirtualEnv(`An error occured during virtual environment installation. Delete installed virtal environment?`)
 		} else {
 			deleteVirtualEnv(`Delete installed virtal environment?`)
 		}
@@ -226,8 +224,13 @@ async function deleteVirtualEnv(message) {
 		.then(async selection => {
 			// installing virtual env
 			if (selection === 'Yes') {
-				fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
-				fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
+				if (os.platform.toString() == 'win32' || os.platform().toString() == 'win64') {
+					var rimraf = require("rimraf");
+					rimraf(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"));
+				} else {
+					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
+					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
+				}
 			} else if (selection === 'No') {
 				vscode.window
 				.showInformationMessage(
