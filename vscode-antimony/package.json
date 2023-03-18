@@ -35,7 +35,8 @@
 		"onCommand:antimony.startAntimonyWebview",
 		"onCommand:antimony.browseBiomodels",
 		"onCustomEditor:antimony.sbmlEditor",
-		"onCustomEditor:antimony.antimonyEditor"
+		"onCustomEditor:antimony.antimonyEditor",
+		"onCommand:antimony.deleteVirtualEnv"
 	],
 	"main": "./dist/extension.js",
 	"bugs": {
@@ -154,6 +155,10 @@
 				"command": "antimony.startAntimonyWebview",
 				"title": "preview Antimony",
 				"icon": "docs/images/logo.png"
+			},
+			{
+				"command": "antimony.deleteVirtualEnv",
+				"title": "Delete Virtual Environment"
 			}
 		],
 		"languages": [
@@ -193,13 +198,13 @@
 					"command": "antimony.switchIndicationOn",
 					"title": "Turn Annotated Variable Indications On",
 					"group": "1_modification",
-					"when": "config.vscode-antimony.annotatedVariableIndicatorOn == false"
+					"when": "config.vscode-antimony.annotatedVariableIndicatorOn == false && editorLangId == antimony"
 				},
 				{
 					"command": "antimony.switchIndicationOff",
 					"title": "Turn Annotated Variable Indications Off",
 					"group": "1_modification",
-					"when": "config.vscode-antimony.annotatedVariableIndicatorOn == true"
+					"when": "config.vscode-antimony.annotatedVariableIndicatorOn == true && editorLangId == antimony"
 				},
 				{
 					"command": "antimony.convertAntimonyToSBML",
@@ -218,6 +223,12 @@
 					"title": "Browse Biomodels",
 					"group": "1_modification",
 					"when": "editorLangId == antimony"
+				},
+				{
+					"command": "antimony.deleteVirtualEnv",
+					"title": "Delete Virtual Environment",
+					"group": "1_modification",
+					"when": "editorLangId == antimony || editorLangId == xml"
 				}
 			],
 			"editor/title": [
