@@ -8,7 +8,7 @@ from typing import Callable, Dict, Optional, Type, TypeVar, Union, cast
 from lark.lexer import Token
 from lark.tree import Tree
 
-from stibium.ant_types import (FuncCall, IsAssignment, VariableIn, FunctionCall, UnitAssignment, BuiltinUnit, UnitDeclaration, Annotation, Sboterm, Sbo, ArithmeticExpr, Assignment, Atom, DeclModifiers,
+from stibium.ant_types import (FuncCall, IsAssignment, NewAnnotation, VariableIn, FunctionCall, UnitAssignment, BuiltinUnit, UnitDeclaration, Annotation, Sboterm, Sbo, ArithmeticExpr, Assignment, Atom, DeclModifiers,
                                Declaration, DeclAssignment,
                                DeclItem, ErrorNode, ErrorToken,
                                FileNode, InComp, Keyword, LeafNode, NameMaybeIn,
@@ -68,6 +68,7 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
     'decl_assignment': DeclAssignment,
     'decl_modifiers': DeclModifiers,
     'annotation': Annotation,
+    'new_annot': NewAnnotation,
     'sboterm': Sboterm,
     'sum': Sum,
     'product': Product,
