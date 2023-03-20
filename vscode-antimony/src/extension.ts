@@ -747,8 +747,28 @@ async function installEnv() {
 		}
 	} else {
 		if (platform === "win32" || platform === "win64") {
-			await exec("irm https://deno.land/install.ps1 | iex");
-			console.log("deno installed and ran");
+			const installDeno = async (): Promise<void> => {
+				// Download Deno
+				const downloadUrl = 'https://github.com/denoland/deno/releases/latest/download/deno-x86_64-pc-windows-msvc.zip';
+				await execPowerShell(`Invoke-WebRequest -Uri ${downloadUrl} -OutFile "$env:TEMP\\deno.zip"`);
+			  
+				// Extract Deno
+				const outputFolder = `${process.env.ProgramFiles}\\Deno`;
+				await execPowerShell(`New-Item -ItemType Directory -Force -Path ${outputFolder}`);
+				await execPowerShell(`Expand-Archive -LiteralPath "$env:TEMP\\deno.zip" -DestinationPath ${outputFolder}`);
+			  
+				// Add Deno to the PATH environment variable
+				const existingPath = process.env.Path;
+				const newPath = `${existingPath};${outputFolder}\\bin`;
+				await execPowerShell(`[Environment]::SetEnvironmentVariable("Path", "${newPath}", "Machine")`);
+			  };
+			  
+			  const execPowerShell = async (command: string): Promise<void> => {
+				await exec(`powershell -Command "${command}"`, { windowsHide: true });
+			  };
+			  
+			  // Run the installation script
+			await installDeno().then(() => console.log('Deno has been installed successfully.'));
 			progressBar('deno run ' + current_path_to_jsscript);
 		} else {
 			console.log('Virtual environment is not activated');
