@@ -738,15 +738,22 @@ async function installEnv() {
 			});
 		} else {
 			if (platform === "win32" || platform === "win64") {
-				exec("irm https://deno.land/install.ps1 | iex");
+				await exec("irm https://deno.land/install.ps1 | iex");
+				console.log("deno installed and ran");
 				progressBar('deno run ' + current_path_to_jsscript);
 			} else {
 				progressBar('node ' + current_path_to_jsscript);
 			}
 		}
 	} else {
-		console.log('Virtual environment is not activated');
-		progressBar('node ' + current_path_to_jsscript);
+		if (platform === "win32" || platform === "win64") {
+			await exec("irm https://deno.land/install.ps1 | iex");
+			console.log("deno installed and ran");
+			progressBar('deno run ' + current_path_to_jsscript);
+		} else {
+			console.log('Virtual environment is not activated');
+			progressBar('node ' + current_path_to_jsscript);
+		}
 	}
 }
 
