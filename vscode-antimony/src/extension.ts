@@ -744,7 +744,7 @@ async function installEnv() {
 					  return;
 					}
 					const nodePath = stdout.trim();
-					if (nodePath === '') {
+					if (nodePath === '' || nodePath === 'C:\\Program Files\\nodejs\\') {
 						const nodePath = "C:\\Program Files\\nodejs";
 						console.log(`Node.js path: ${nodePath}`);
 					}
@@ -762,7 +762,7 @@ async function installEnv() {
 				  return;
 				}
 				const nodePath = stdout.trim();
-				if (nodePath === '') {
+				if (nodePath === '' || nodePath === 'C:\\Program Files\\nodejs\\') {
 					const nodePath = "C:\\Program Files\\nodejs";
 					console.log(`Node.js path: ${nodePath}`);
 				}
