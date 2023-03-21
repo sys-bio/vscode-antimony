@@ -738,12 +738,21 @@ async function installEnv() {
 			});
 		} else {
 			if (platform === "win32" || platform === "win64") {
-				await exec("irm https://deno.land/install.ps1 | iex");
-				console.log("deno installed and ran");
-				progressBar('deno run ' + current_path_to_jsscript);
-			} else {
-				progressBar('node ' + current_path_to_jsscript);
+				exec("where node", (error, stdout, stderr) => {
+					if (error) {
+					  console.error(`exec error: ${error}`);
+					  return;
+					}
+					const nodePath = stdout.trim();
+					if (nodePath === '') {
+						const nodePath = "C:\\Program Files\\nodejs";
+						console.log(`Node.js path: ${nodePath}`);
+					}
+					process.env.PATH += `;${nodePath}`;
+					console.log(`Node.js path: ${nodePath}`);
+				 });
 			}
+			progressBar('node ' + current_path_to_jsscript);
 		}
 	} else {
 		if (platform === "win32" || platform === "win64") {
