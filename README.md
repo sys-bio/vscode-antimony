@@ -32,7 +32,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 
 ### Steps below apply for all 3 Operating Systems
 * **_This extension requires [NodeJS](https://nodejs.org/en/download/) to be installed before use regardless of operating system used. Restart Visual Studio Code after installation of NodeJS._** <br/><br/>
-* **_This extension also needs [Git](https://git-scm.com/downloads) to be installed before use regardless of operating system used. Restart Visual Studio Code after installation of Git._**<br/><br/>
+* **_This extension also needs [Git](https://git-scm.com/downloads) to be installed before use regardless of operating system used. Make sure to add Git to PATH when installing. Restart Visual Studio Code after installation of Git._**<br/><br/>
 * **_If there are any non VSCode Antimony associated virtual environments activated, please deactivate them before setting up VSCode Antimony._**<br/><br/>
 * Install [VSCode](https://code.visualstudio.com/download) for your specific operating system (Mac, Windows, or Linux)
 * Once you open VSCode, download the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) from the Visual Studio Code Extension Marketplace and install. Follow the numbered points in the figure below.
