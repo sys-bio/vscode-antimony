@@ -722,7 +722,6 @@ async function installEnv() {
 	const current_path_to_jsscript = path.join(__dirname, '..', 'src', 'server', 'runshell.js');
 
 	if (process.env.VIRTUAL_ENV) {
-		console.log('Virtual environment is activated');
 		const virtualEnvPath = process.env.VIRTUAL_ENV;
 		if (virtualEnvPath !== path.normalize(os.homedir() + "/vscode_antimony_virtual_env")) {
 
@@ -746,10 +745,8 @@ async function installEnv() {
 					const nodePath = stdout.trim();
 					if (nodePath === '' || nodePath === 'C:\\Program Files\\nodejs\\') {
 						const nodePath = "C:\\Program Files\\nodejs";
-						console.log(`Node.js path: ${nodePath}`);
 					}
 					process.env.PATH += `;${nodePath}`;
-					console.log(`Node.js path: ${nodePath}`);
 				 });
 			}
 			progressBar('node ' + current_path_to_jsscript);
@@ -764,13 +761,10 @@ async function installEnv() {
 				const nodePath = stdout.trim();
 				if (nodePath === '' || nodePath === 'C:\\Program Files\\nodejs\\') {
 					const nodePath = "C:\\Program Files\\nodejs";
-					console.log(`Node.js path: ${nodePath}`);
 				}
 				process.env.PATH += `;${nodePath}`;
-				console.log(`Node.js path: ${nodePath}`);
 			 });
 		}
-		console.log('Virtual environment is not activated');
 		progressBar('node ' + current_path_to_jsscript);
 	}
 }
