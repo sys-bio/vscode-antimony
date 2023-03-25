@@ -739,7 +739,6 @@ async function installEnv() {
 			if (platform === "win32" || platform === "win64") {
 				exec("where node", (error, stdout, stderr) => {
 					if (error) {
-					  console.error(`exec error: ${error}`);
 					  return;
 					}
 					const nodePath = stdout.trim();
@@ -755,7 +754,6 @@ async function installEnv() {
 		if (platform === "win32" || platform === "win64") {
 			exec("where node", (error, stdout, stderr) => {
 				if (error) {
-				  console.error(`exec error: ${error}`);
 				  return;
 				}
 				const nodePath = stdout.trim();
