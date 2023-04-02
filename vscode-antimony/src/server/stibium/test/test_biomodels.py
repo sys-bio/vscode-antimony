@@ -6,20 +6,20 @@ from stibium import api
 from main import get_model
 import os
 from pygls.workspace import Document
+import pytest
+
+f = open('biomodels_list.json')
+models = json.load(f)
 
 
 # TODO add more tests as more syntax features are added
+@pytest.mark.parametrize('models', [models])
 def test_all_biomodels():
-    f = open('biomodels_list.json')
-    models = json.load(f)
-    for model in enumerate(models['models']):
+    for model in models:
         debug.log(model)
         get_model(model)
         f = os.path.join(model + '.ant')
         doc = Document(os.path.abspath(f))
         ant_file = api.AntFile(doc.path, doc.source)
         l_issues = ant_file.get_issues()
-        if l_issues.__len__ > 0:
-            assert(False)
-        else:
-            assert(True)
+        assert l_issues == []
