@@ -19,6 +19,7 @@ def test_all_biomodels():
         doc = Document(os.path.abspath(f))
         ant_file = api.AntFile(doc.path, doc.source)
         l_issues = ant_file.get_issues()
-        error_count = 0
-        for issue in l_issues:
+        if l_issues.__len__ > 0:
             assert(False)
+        else:
+            assert(True)
