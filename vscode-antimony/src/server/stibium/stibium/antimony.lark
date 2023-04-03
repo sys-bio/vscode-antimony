@@ -49,7 +49,8 @@ AEQ : ":="
 apostrophe : "'"
 rate_rule : NAME apostrophe "=" sum
 
-annotation : var_name ANNOT_KEYWORD ESCAPED_STRING (new_annot)*
+annotation : var_name ANNOT_KEYWORD ESCAPED_STRING [annot_list]
+annot_list : (new_annot)+
 new_annot : "," NEWLINE ESCAPED_STRING
 ANNOT_KEYWORD: "identity"
     | "hasPart"

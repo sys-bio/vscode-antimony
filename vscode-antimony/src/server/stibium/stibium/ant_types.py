@@ -732,8 +732,14 @@ class NewAnnotation(TrunkNode):
         return self.children[2]
 
 @dataclass
+class AnnotationList(TrunkNode):
+
+    def get_all_annotations(self) -> List[NewAnnotation]:
+        return cast(List[NewAnnotation], self.children[::2])
+
+@dataclass
 class Annotation(TrunkNode):
-    children: Tuple[VarName, Keyword, StringLiteral, Optional[List[NewAnnotation]]]
+    children: Tuple[VarName, Keyword, StringLiteral, Optional[AnnotationList]] = field(repr=False)
 
     def get_var_name(self):
         return self.children[0]
@@ -746,12 +752,13 @@ class Annotation(TrunkNode):
 
     def get_uri(self):
         alist = self.children[3]
-        if alist:
-            #for annot in alist:
-            vscode_logger.info(alist.get_uri())
-        vscode_logger.info("this is: ")
-        vscode_logger.info(alist)
-        return self.children[2].get_str()
+        uris = list()
+        if alist is not None:
+            for annot in alist.get_all_annotations():
+                uris.append(annot.get_uri())
+        uris.append(self.children[2])
+        return uris
+        # return self.children[2].get_str()
 
 
     
