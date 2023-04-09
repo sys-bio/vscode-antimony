@@ -250,7 +250,6 @@ class Symbol:
             for annotation in self.annotations:
                 uris = annotation.get_uri()
                 for uri in uris:
-                    uri = uri.text
                     ret += '\n***\n{}\n'.format(uri)
                     if uri[0:4] != 'http':
                         continue

@@ -990,11 +990,10 @@ class AntTreeAnalyzer:
         if symbol:
             uris = annotation.get_uri()
             for uri in uris:
-                uri = uri.text
                 if uri[0:4] != HTTP:
-                    return
+                    continue
                 if uri in symbol[0].queried_annotations.keys():
-                    return
+                    continue
                 uri_split = uri.split(SLASH)
                 website = uri_split[2]
                 if uri_split.__len__() != 5:
@@ -1010,7 +1009,7 @@ class AntTreeAnalyzer:
                         queried = '\n{}\n\n{}\n'.format(name, definition)
                         symbol[0].queried_annotations[uri] = queried
                     else:
-                        return
+                        continue
                         # uniport = UniProt()
                 elif website == RHEA_URL:
                     rhea = Rhea()
