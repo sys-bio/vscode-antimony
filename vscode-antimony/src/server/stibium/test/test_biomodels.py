@@ -9,6 +9,7 @@ import os
 from pygls.workspace import Document
 from os import listdir
 
+# Change path later
 path="/Users/evaliu/Documents/vscode-antimony/vscode-antimony/src/server/stibium/test/biomodels"
 bio_list = os.listdir(path)
 
