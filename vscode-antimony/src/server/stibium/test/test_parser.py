@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from types import NoneType
 from typing import List, NamedTuple, Optional, Tuple, Union
 from lark.tree import Tree
 from stibium.ant_types import Annotation, ArithmeticExpr, Assignment, DeclItem, DeclModifiers, Declaration, FileNode, InComp, Keyword, Name, NameMaybeIn, Number, Operator, Reaction, ReactionName, SimpleStmt, Species, SpeciesList, StringLiteral, VarName
@@ -319,15 +320,16 @@ def test_annotation(code: str, name: str, keyword: str, uri: str):
 
     # structural assertions
     assert isinstance(annotation, Annotation)
-    assert len(annotation.children) == 3
+    assert len(annotation.children) == 4
     assert isinstance(annotation.children[0], VarName)
     assert isinstance(annotation.children[1], Keyword)
     assert isinstance(annotation.children[2], StringLiteral)
+    assert isinstance(annotation.children[3], NoneType)
 
     # interface assertions
     assert annotation.get_name_text() == name
     assert annotation.get_keyword() == keyword
-    assert annotation.get_uri() == uri
+    assert annotation.get_uri()[0] == uri
 
 
 # test multiple statements separated by semicolon or newline
