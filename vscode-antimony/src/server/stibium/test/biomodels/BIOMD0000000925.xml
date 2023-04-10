@@ -1,0 +1,894 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model id="Dunster2016___Nondimensional_Coagulation_Model" metaid="COPASI0" name="Dunster2016 - Nondimensional Coagulation Model">
+    <notes>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+     <p>Nondimensional mathematical model of blood coagulation based on Willems et al. 1991 model.</p>
+  </body>
+    </notes>
+    <annotation>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+        <rdf:Description rdf:about="#COPASI0">
+	<dc:creator>
+	<rdf:Bag>
+	<rdf:li rdf:parseType="Resource">
+	<vCard:N rdf:parseType="Resource">
+	<vCard:Family>Roberts</vCard:Family>
+	<vCard:Given>Matthew Grant</vCard:Given>
+	</vCard:N>
+	<vCard:EMAIL>mroberts@ebi.ac.uk</vCard:EMAIL>
+	<vCard:ORG rdf:parseType="Resource">
+	<vCard:Orgname>EMBL-EBI</vCard:Orgname>
+	</vCard:ORG>
+	</rdf:li>
+	</rdf:Bag>
+	</dc:creator>
+	<dcterms:created rdf:parseType="Resource">
+	<dcterms:W3CDTF>2018-08-14T10:05:20Z</dcterms:W3CDTF>
+	</dcterms:created>
+	<dcterms:modified rdf:parseType="Resource">
+	<dcterms:W3CDTF>2018-08-14T10:05:20Z</dcterms:W3CDTF>
+	</dcterms:modified>
+	<bqbiol:isVersionOf>
+	<rdf:Bag>
+	<rdf:li rdf:resource="http://identifiers.org/go/GO:0007596"/>
+	</rdf:Bag>
+	</bqbiol:isVersionOf>
+	<bqbiol:isDescribedBy>
+	<rdf:Bag>
+	<rdf:li rdf:resource="http://identifiers.org/doi/10.1093/imamat/hxw007"/>
+	</rdf:Bag>
+	</bqbiol:isDescribedBy>
+	</rdf:Description>
+	
+      </rdf:RDF>
+      <COPASI xmlns="http://www.copasi.org/static/sbml">
+        <rdf:RDF xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#">
+          <rdf:Description rdf:about="#COPASI0">
+            <dcterms:bibliographicCitation>
+              <rdf:Description>
+                <CopasiMT:isDescribedBy rdf:resource="urn:miriam:doi:10.1093/imamat/hxw007"/>
+              </rdf:Description>
+            </dcterms:bibliographicCitation>
+            <dcterms:created>
+              <rdf:Description>
+                <dcterms:W3CDTF>2018-08-14T10:05:20Z</dcterms:W3CDTF>
+              </rdf:Description>
+            </dcterms:created>
+            <dcterms:creator>
+              <rdf:Description>
+                <vCard:EMAIL>mroberts@ebi.ac.uk</vCard:EMAIL>
+                <vCard:N>
+                  <rdf:Description>
+                    <vCard:Family>Roberts</vCard:Family>
+                    <vCard:Given>Matthew Grant</vCard:Given>
+                  </rdf:Description>
+                </vCard:N>
+                <vCard:ORG>
+                  <rdf:Description>
+                    <vCard:Orgname>EMBL-EBI</vCard:Orgname>
+                  </rdf:Description>
+                </vCard:ORG>
+              </rdf:Description>
+            </dcterms:creator>
+            <CopasiMT:isVersionOf rdf:resource="urn:miriam:go:GO:0007596"/>
+          </rdf:Description>
+        </rdf:RDF>
+      </COPASI>
+    </annotation>
+      <listOfUnitDefinitions>
+      <unitDefinition id="volume" name="volume">
+        <listOfUnits>
+          <unit exponent="1" kind="litre" multiplier="1" scale="-3" metaid="unit0000"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="substance" name="substance">
+        <listOfUnits>
+          <unit exponent="1" kind="mole" multiplier="1" scale="-3" metaid="unit0001"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment constant="true" id="compartment" name="compartment" size="1" spatialDimensions="3" metaid="compartment0000"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="Fibrinogen" initialConcentration="5" metaid="COPASI1" name="Fibrinogen">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI1">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T10:14:22Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="Fibrin" initialConcentration="0" metaid="COPASI2" name="Fibrin">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI2">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T10:17:29Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="PC" initialConcentration="92" metaid="COPASI3" name="PC">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI3">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T10:17:55Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="APC" initialConcentration="0" metaid="COPASI4" name="APC">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI4">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T10:18:16Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="APC_inactive" initialConcentration="0" metaid="COPASI5" name="APC_inactive">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI5">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T10:18:47Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="Xa" initialConcentration="0" metaid="COPASI6" name="Xa">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI6">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T10:19:15Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="Va" initialConcentration="0" metaid="COPASI7" name="Va">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI7">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T11:50:37Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="Va_Xa" initialConcentration="0" metaid="COPASI8" name="Va:Xa">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI8">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T11:54:00Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="IIa" initialConcentration="0" metaid="COPASI9" name="IIa">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI9">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T12:00:46Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="V" initialConcentration="3" metaid="COPASI10" name="V">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI10">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T12:04:04Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="II" initialConcentration="17" metaid="COPASI11" name="II">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI11">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T12:06:02Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="Xa_L" initialConcentration="0" metaid="COPASI12" name="Xa:L">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI12">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T12:08:24Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="Va_Xa_L" initialConcentration="0" metaid="COPASI13" name="Va:Xa:L">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI13">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T12:00:41Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="Xa_ATIII" initialConcentration="0" metaid="COPASI14" name="Xa:ATIII">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI14">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T12:12:07Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="Va_inactive" initialConcentration="0" metaid="COPASI15" name="Va_inactive">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI15">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T12:12:06Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="compartment" constant="false" id="IIa_ATIII" initialConcentration="0" metaid="COPASI16" name="IIa:ATIII">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI16">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T12:15:13Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter constant="true" id="k_tilde_1a" name="k_tilde_1a" value="150" metaid="parameter0000"/>
+      <parameter constant="true" id="k_tilde_1b" name="k_tilde_1b" value="0.19" metaid="parameter0001"/>
+      <parameter constant="true" id="k_tilde_2a" name="k_tilde_2a" value="2" metaid="parameter0002"/>
+      <parameter constant="true" id="k_tilde_2am" name="k_tilde_2am" value="7.2" metaid="parameter0003"/>
+      <parameter constant="true" id="k_tilde_2b" name="k_tilde_2b" value="0.013" metaid="parameter0004"/>
+      <parameter constant="true" id="k_tilde_3a" name="k_tilde_3a" value="150" metaid="parameter0005"/>
+      <parameter constant="true" id="q_tilde_3a" name="q_tilde_3a" value="1" metaid="parameter0006"/>
+      <parameter constant="true" id="k_tilde_3b" name="k_tilde_3b" value="0.038" metaid="parameter0007"/>
+      <parameter constant="true" id="k_tilde_3c" name="k_tilde_3c" value="1" metaid="parameter0008"/>
+      <parameter constant="true" id="k_tilde_4a" name="k_tilde_4a" value="0.12" metaid="parameter0009"/>
+      <parameter constant="true" id="q_tilde_4a" name="q_tilde_4a" value="0.004" metaid="parameter0010"/>
+      <parameter constant="true" id="k_tilde_4b" name="k_tilde_4b" value="530" metaid="parameter0011"/>
+      <parameter constant="true" id="k_tilde_4bm" name="k_tilde_4bm" value="3.6" metaid="parameter0012"/>
+      <parameter constant="true" id="k_tilde_5a" name="k_tilde_5a" value="0.0011" metaid="parameter0013"/>
+      <parameter constant="true" id="k_tilde_5b" name="k_tilde_5b" value="0.27" metaid="parameter0014"/>
+      <parameter constant="true" id="k_tilde_6" name="k_tilde_6" value="1500" metaid="parameter0015"/>
+      <parameter constant="true" id="k_tilde_x" name="k_tilde_x" value="385" metaid="parameter0016"/>
+      <parameter constant="true" id="k_tilde_b" name="k_tilde_b" value="0.0005" metaid="parameter0017"/>
+      <parameter constant="true" id="l_tilde_x" name="l_tilde_x" value="7.69" metaid="parameter0018"/>
+      <parameter constant="true" id="l_tilde_b" name="l_tilde_b" value="0.05" metaid="parameter0019"/>
+      <parameter constant="true" id="gamma_tilde_1a" name="gamma_tilde_1a" value="0.77" metaid="parameter0020"/>
+      <parameter constant="false" id="log_time" metaid="COPASI17" name="log_time" value="-INF">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI17">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-08-14T13:40:06Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+            </parameter>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="Xa_L">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <times/>
+            <cn> 0.5 </cn>
+            <apply>
+              <minus/>
+              <apply>
+                <plus/>
+                <ci> k_tilde_x </ci>
+                <ci> l_tilde_x </ci>
+                <ci> Xa </ci>
+              </apply>
+              <apply>
+                <root/>
+                <degree>
+                  <cn type="integer"> 2 </cn>
+                </degree>
+                <apply>
+                  <minus/>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <plus/>
+                      <ci> k_tilde_x </ci>
+                      <ci> l_tilde_x </ci>
+                      <ci> Xa </ci>
+                    </apply>
+                    <cn> 2 </cn>
+                  </apply>
+                  <apply>
+                    <times/>
+                    <cn> 4 </cn>
+                    <ci> l_tilde_x </ci>
+                    <ci> Xa </ci>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+            </assignmentRule>
+      <assignmentRule variable="Va_Xa_L">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <times/>
+            <cn> 0.5 </cn>
+            <apply>
+              <minus/>
+              <apply>
+                <plus/>
+                <ci> k_tilde_b </ci>
+                <ci> l_tilde_b </ci>
+                <ci> Va_Xa </ci>
+              </apply>
+              <apply>
+                <root/>
+                <degree>
+                  <cn type="integer"> 2 </cn>
+                </degree>
+                <apply>
+                  <minus/>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <plus/>
+                      <ci> k_tilde_b </ci>
+                      <ci> l_tilde_b </ci>
+                      <ci> Va_Xa </ci>
+                    </apply>
+                    <cn> 2 </cn>
+                  </apply>
+                  <apply>
+                    <times/>
+                    <cn> 4 </cn>
+                    <ci> l_tilde_b </ci>
+                    <ci> Va_Xa </ci>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+            </assignmentRule>
+      <assignmentRule variable="log_time">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <log/>
+            <logbase>
+              <cn type="integer"> 10 </cn>
+            </logbase>
+            <csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time"> time </csymbol>
+          </apply>
+        </math>
+            </assignmentRule>
+      <rateRule variable="Fibrinogen">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <times/>
+            <apply>
+              <minus/>
+              <ci> k_tilde_6 </ci>
+            </apply>
+            <ci> Fibrinogen </ci>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="Fibrin">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <times/>
+            <ci> k_tilde_6 </ci>
+            <ci> Fibrinogen </ci>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="PC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <times/>
+            <apply>
+              <minus/>
+              <ci> k_tilde_5a </ci>
+            </apply>
+            <ci> PC </ci>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="APC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <minus/>
+            <apply>
+              <times/>
+              <ci> k_tilde_5a </ci>
+              <ci> PC </ci>
+            </apply>
+            <apply>
+              <times/>
+              <ci> k_tilde_5b </ci>
+              <ci> APC </ci>
+            </apply>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="APC_inactive">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <times/>
+            <ci> k_tilde_5b </ci>
+            <ci> APC </ci>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="Xa">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <minus/>
+            <apply>
+              <minus/>
+              <apply>
+                <plus/>
+                <apply>
+                  <times/>
+                  <ci> k_tilde_1a </ci>
+                  <ci> gamma_tilde_1a </ci>
+                  <apply>
+                    <exp/>
+                    <apply>
+                      <times/>
+                      <apply>
+                        <minus/>
+                        <ci> gamma_tilde_1a </ci>
+                      </apply>
+                      <csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time"> time </csymbol>
+                    </apply>
+                  </apply>
+                </apply>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <ci> k_tilde_3c </ci>
+                    <ci> k_tilde_3a </ci>
+                    <ci> APC </ci>
+                    <ci> Va_Xa </ci>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <ci> Va_Xa </ci>
+                    <cn> 1 </cn>
+                  </apply>
+                </apply>
+              </apply>
+              <apply>
+                <times/>
+                <ci> k_tilde_1b </ci>
+                <ci> Xa </ci>
+              </apply>
+            </apply>
+            <apply>
+              <times/>
+              <ci> k_tilde_3a </ci>
+              <ci> Xa </ci>
+              <ci> Va </ci>
+            </apply>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="Va">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <minus/>
+            <apply>
+              <minus/>
+              <apply>
+                <plus/>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <ci> IIa </ci>
+                    <ci> V </ci>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <ci> V </ci>
+                    <apply>
+                      <times/>
+                      <ci> k_tilde_2am </ci>
+                      <apply>
+                        <plus/>
+                        <cn> 1 </cn>
+                        <ci> Fibrinogen </ci>
+                      </apply>
+                    </apply>
+                  </apply>
+                </apply>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <ci> k_tilde_2b </ci>
+                    <ci> Xa </ci>
+                    <ci> V </ci>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <ci> V </ci>
+                    <cn> 1 </cn>
+                    <ci> II </ci>
+                  </apply>
+                </apply>
+                <apply>
+                  <times/>
+                  <apply>
+                    <divide/>
+                    <ci> k_tilde_3b </ci>
+                    <ci> q_tilde_3a </ci>
+                  </apply>
+                  <ci> Va_Xa </ci>
+                </apply>
+              </apply>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> APC </ci>
+                  <ci> Va </ci>
+                </apply>
+                <apply>
+                  <plus/>
+                  <ci> Va </ci>
+                  <cn> 1 </cn>
+                </apply>
+              </apply>
+            </apply>
+            <apply>
+              <times/>
+              <ci> Xa </ci>
+              <ci> Va </ci>
+            </apply>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="Va_Xa">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <minus/>
+            <apply>
+              <minus/>
+              <apply>
+                <times/>
+                <ci> q_tilde_3a </ci>
+                <ci> Xa </ci>
+                <ci> Va </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> k_tilde_3b </ci>
+                <ci> Va_Xa </ci>
+              </apply>
+            </apply>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> k_tilde_3c </ci>
+                <ci> q_tilde_3a </ci>
+                <ci> APC </ci>
+                <ci> Va_Xa </ci>
+              </apply>
+              <apply>
+                <plus/>
+                <ci> Va_Xa </ci>
+                <cn> 1 </cn>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="IIa">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <minus/>
+            <apply>
+              <plus/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> k_tilde_4a </ci>
+                  <ci> Xa_L </ci>
+                  <ci> II </ci>
+                </apply>
+                <apply>
+                  <plus/>
+                  <ci> V </ci>
+                  <cn> 1 </cn>
+                  <ci> II </ci>
+                </apply>
+              </apply>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> k_tilde_4a </ci>
+                  <ci> k_tilde_4b </ci>
+                  <ci> Va_Xa_L </ci>
+                  <ci> II </ci>
+                </apply>
+                <apply>
+                  <times/>
+                  <ci> q_tilde_4a </ci>
+                  <apply>
+                    <plus/>
+                    <ci> II </ci>
+                    <ci> k_tilde_4bm </ci>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+            <ci> IIa </ci>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="V">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <minus/>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <apply>
+                  <minus/>
+                  <ci> k_tilde_2a </ci>
+                </apply>
+                <ci> IIa </ci>
+                <ci> V </ci>
+              </apply>
+              <apply>
+                <plus/>
+                <ci> V </ci>
+                <apply>
+                  <times/>
+                  <ci> k_tilde_2am </ci>
+                  <apply>
+                    <plus/>
+                    <cn> 1 </cn>
+                    <ci> Fibrinogen </ci>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> k_tilde_2a </ci>
+                <ci> k_tilde_2b </ci>
+                <ci> Xa </ci>
+                <ci> V </ci>
+              </apply>
+              <apply>
+                <plus/>
+                <ci> V </ci>
+                <cn> 1 </cn>
+                <ci> II </ci>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="II">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <minus/>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <apply>
+                  <minus/>
+                  <ci> q_tilde_4a </ci>
+                </apply>
+                <ci> Xa_L </ci>
+                <ci> II </ci>
+              </apply>
+              <apply>
+                <plus/>
+                <ci> V </ci>
+                <cn> 1 </cn>
+                <ci> II </ci>
+              </apply>
+            </apply>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> k_tilde_4b </ci>
+                <ci> Va_Xa_L </ci>
+                <ci> II </ci>
+              </apply>
+              <apply>
+                <plus/>
+                <ci> II </ci>
+                <ci> k_tilde_4bm </ci>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="Xa_ATIII">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <plus/>
+            <apply>
+              <times/>
+              <ci> k_tilde_1b </ci>
+              <ci> Xa </ci>
+            </apply>
+            <apply>
+              <times/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> k_tilde_3a </ci>
+                  <ci> k_tilde_3b </ci>
+                </apply>
+                <ci> q_tilde_3a </ci>
+              </apply>
+              <ci> Va_Xa </ci>
+            </apply>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="Va_inactive">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <plus/>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> APC </ci>
+                <ci> Va </ci>
+              </apply>
+              <apply>
+                <plus/>
+                <ci> Va </ci>
+                <cn> 1 </cn>
+              </apply>
+            </apply>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> k_tilde_3c </ci>
+                <ci> APC </ci>
+                <ci> Va_Xa </ci>
+              </apply>
+              <apply>
+                <plus/>
+                <ci> Va_Xa </ci>
+                <cn> 1 </cn>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule variable="IIa_ATIII">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <ci> IIa </ci>
+        </math>
+            </rateRule>
+    </listOfRules>
+  </model>
+</sbml>
