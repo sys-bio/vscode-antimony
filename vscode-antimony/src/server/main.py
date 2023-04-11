@@ -170,7 +170,7 @@ def get_type(ls: LanguageServer, args) -> dict[str, str]:
     symbols= antfile_cache.symbols_at(position)[0]
     
     symbol = symbols[0].type.__str__()
-    vscode_logger.info("symbol: " + symbol)
+    # vscode_logger.info("symbol: " + symbol)
     return {
         'symbol': symbol
     }
@@ -198,7 +198,7 @@ def query_species(ls: LanguageServer, args):
     try:
         database = args[0]
         query = args[1]
-        vscode_logger.info("Recieved search request for: " + database + " " + query)
+        # vscode_logger.info("Recieved search request for: " + database + " " + query)
         start = time.time()
         if database == 'chebi':
             results = services.annot_search_chebi(query)
@@ -222,8 +222,8 @@ def query_species(ls: LanguageServer, args):
             # This is not supposed to happen
             raise SystemError("Unknown database '{}'".format(database))
         end = time.time()
-        vscode_logger.debug("Search request completed")
-        vscode_logger.debug("--- %s seconds ---" % (end - start))
+        # vscode_logger.debug("Search request completed")
+        # vscode_logger.debug("--- %s seconds ---" % (end - start))
         return {
             'query': query,
             'items': results,
