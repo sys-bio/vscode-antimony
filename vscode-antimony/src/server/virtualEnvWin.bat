@@ -4,7 +4,7 @@ echo "script runs"
 
 setlocal
 set py=%1
-if "%py%"=="" set py=C:\Users\%USERPROFILE%\Downloads\python-3.11.2-embed-amd64\python
+if "%py%"=="" set py=C:\Users\%USERPROFILE%\Downloads\VSCode-Antimony-Dependency-Installer\python
 set venv=vscode_antimony_virtual_env
 
 echo "running install virtual env"
