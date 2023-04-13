@@ -13,7 +13,7 @@ rem If not already in virtualenv
 rem %VIRTUAL_ENV% is being set from %venv%\Scripts\activate.bat script
 echo Creating and activating virtual environment %venv%
 echo "%USERPROFILE%\%venv%"
-%py% -m venv "%USERPROFILE%\%venv%" --system-site-package
+%py% -m virtualenv "%USERPROFILE%\%venv%" --system-site-package
 echo Upgrading pip
 %py% -m pip install --upgrade pip
 (echo appdirs==1.4.4
