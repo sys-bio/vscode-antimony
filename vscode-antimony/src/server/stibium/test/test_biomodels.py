@@ -1,19 +1,13 @@
 'Tests concerning checking for errors in models from biomodels feature.'
-
-import json
-from logging import debug
-
 import pytest
 from stibium import api
 import os
 from pygls.workspace import Document
-from os import listdir
 import antimony
 import tempfile
 
-# Change path later
-path="/Users/evaliu02/Documents/vscode-antimony/vscode-antimony/src/server/stibium/test/biomodels"
-bio_list = os.listdir(path)
+directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'biomodels')
+model_list = os.listdir(directory)
 
 def _get_antimony_str(sbml):
     if sbml is None:
@@ -43,15 +37,20 @@ def _get_antimony_str(sbml):
             'error': 'Not a valid file'
         }
 
-# TODO add more tests as more syntax features are added
-@pytest.mark.parametrize('models', bio_list)
+@pytest.mark.parametrize('models', model_list)
 def test_all_biomodels(models):
     # store the data in a temp file or get the extracted SBML file and convert it to Antimony
-    f = os.path.join(path + "/" + models)
+    f = os.path.join(directory + "/" + models)
     ant_str = _get_antimony_str(os.path.abspath(f))
-    temp_ant_file = tempfile.TemporaryFile(mode='w+t', delete=True)
+    temp_ant_file = tempfile.TemporaryFile(mode='w+t', delete=True, encoding='utf-8')
+    assert ant_str.get("ant_str") is not None, "There was an error converting the SBML file to Antimony"
     temp_ant_file.write(ant_str.get('ant_str'))
-    # xml_file = api.AntFile(doc.path, doc.source)
-    l_issues = temp_ant_file.get_issues()
+    doc = Document(temp_ant_file.name, temp_ant_file.read())
+    ant_file = api.AntFile(doc.path, doc.source)
+    l_issues = ant_file.get_issues()
+    error_count = 0
+    for issue in l_issues:
+        if str(issue.severity.__str__()) == 'IssueSeverity.Error':
+            error_count += 1
     temp_ant_file.close()
-    assert l_issues == []
+    assert error_count == 0, "There were errors in the Antimony file"

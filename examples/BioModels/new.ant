@@ -1,0 +1,457 @@
+import "1.ant"
+// Created by libAntimony v2.13.2
+model *Bruck2008_Glycolysis()
+
+  // Compartments and Species:
+  compartment cell, extracellular;
+  species GLCi in cell, G6P in cell, F6P in cell, F16P in cell, TRIO in cell;
+  species NADH in cell, NAD in cell, BPG in cell, P3G in cell, P2G in cell;
+  species PEP in cell, PYR in cell, ACE in cell, $GLCo in extracellular, GLY in cell;
+  species $ETOH in cell, $CO2 in cell, ATP in cell, ADP in cell, AMP in cell;
+  species $F26BP in cell, $GLYout in extracellular;
+
+  // Reactions:
+  vGLT: $GLCo -> GLCi; cell*(vGLT_VmGLT*(GLCo - GLCi/vGLT_KeqGLT)/(vGLT_KmGLTGLCo*(1 + GLCo/vGLT_KmGLTGLCo + GLCi/vGLT_KmGLTGLCi + 0.91*GLCo*GLCi/(vGLT_KmGLTGLCi*vGLT_KmGLTGLCo))));
+  vGLK: GLCi + ATP -> G6P + ADP; cell*(vGLK_VmGLK*(-(G6P*ADP/vGLK_KeqGLK) + GLCi*ATP)/(vGLK_KmGLKATP*vGLK_KmGLKGLCi*(1 + G6P/vGLK_KmGLKG6P + GLCi/vGLK_KmGLKGLCi)*(1 + ADP/vGLK_KmGLKADP + ATP/vGLK_KmGLKATP)));
+  vPGI: G6P -> F6P; cell*((vPGI_VmPGI/vPGI_KmPGIG6P)*(G6P - F6P/vPGI_KeqPGI)/(1 + G6P/vPGI_KmPGIG6P + F6P/vPGI_KmPGIF6P));
+  vGLYCO: ATP + G6P -> ADP; cell*vGLYCO_KGLYCOGEN*G6P*ATP;
+  vAdKin: ATP + AMP -> 2 ADP; cell*(vAdKin_VmAK*ATP*AMP - (vAdKin_VmAK/vAdKin_KeqAK)*ADP*ADP);
+  vPFK: F6P + ATP -> F16P + ADP; cell*(vPFK_VmPFK*vPFK_gR*(F6P/vPFK_KmPFKF6P)*(ATP/vPFK_KmPFKATP)*(1 + (F6P/vPFK_KmPFKF6P)*(ATP/vPFK_KmPFKATP) + vPFK_gR*(F6P/vPFK_KmPFKF6P)*(ATP/vPFK_KmPFKATP))/((1 + (F6P/vPFK_KmPFKF6P)*(ATP/vPFK_KmPFKATP) + vPFK_gR*(F6P/vPFK_KmPFKF6P)*(ATP/vPFK_KmPFKATP))^2 + vPFK_L0*((1 + vPFK_CiPFKATP*ATP/vPFK_KiPFKATP)/(1 + ATP/vPFK_KiPFKATP))^2*((1 + vPFK_CPFKAMP*AMP/vPFK_KPFKAMP)/(1 + AMP/vPFK_KPFKAMP))^2*((1 + vPFK_CPFKF26BP*F26BP/vPFK_KPFKF26BP + vPFK_CPFKF16BP*F16P/vPFK_KPFKF16BP)/(1 + F26BP/vPFK_KPFKF26BP + F16P/vPFK_KPFKF16BP))*(1 + vPFK_CPFKATP*(ATP/vPFK_KmPFKATP))^2));
+  vALD: F16P -> 2 TRIO; cell*(vALD_VmALD*(F16P - KeqTPI*TRIO^2/(vALD_KeqALD*(1 + KeqTPI)^2))/(vALD_KmALDF16P*(1 + F16P/vALD_KmALDF16P + TRIO/((1 + KeqTPI)*vALD_KmALDDHAP) + KeqTPI*TRIO/((1 + KeqTPI)*vALD_KmALDGAP) + KeqTPI*F16P*TRIO/((1 + KeqTPI)*vALD_KmALDF16P*vALD_KmALDGAPi) + KeqTPI*TRIO^2/((1 + KeqTPI)^2*vALD_KmALDDHAP*vALD_KmALDGAP))));
+  vG3PDH: NADH + TRIO -> NAD + GLY; cell*(vG3PDH_VmG3PDH*(-(GLY*NAD/vG3PDH_KeqG3PDH) + NADH*TRIO/(1 + KeqTPI))/(vG3PDH_KmG3PDHDHAP*vG3PDH_KmG3PDHNADH*(1 + NAD/vG3PDH_KmG3PDHNAD + NADH/vG3PDH_KmG3PDHNADH)*(1 + GLY/vG3PDH_KmG3PDHGLY + TRIO/((1 + KeqTPI)*vG3PDH_KmG3PDHDHAP))));
+  vGAPDH: NAD + TRIO -> NADH + BPG; cell*(vGAPDH_VmGAPDHall*(vGAPDH_VmGAPDHf*KeqTPI*NAD*TRIO/((1 + KeqTPI)*vGAPDH_KmGAPDHGAP*vGAPDH_KmGAPDHNAD) - vGAPDH_VmGAPDHr*BPG*NADH/(vGAPDH_KmGAPDHBPG*vGAPDH_KmGAPDHNADH))/((1 + NAD/vGAPDH_KmGAPDHNAD + NADH/vGAPDH_KmGAPDHNADH)*(1 + BPG/vGAPDH_KmGAPDHBPG + KeqTPI*TRIO/((1 + KeqTPI)*vGAPDH_KmGAPDHGAP))));
+  vPGK: BPG + ADP -> P3G + ATP; cell*(vPGK_VmPGK*(vPGK_KeqPGK*BPG*ADP - ATP*P3G)/(vPGK_KmPGKATP*vPGK_KmPGKP3G*(1 + ADP/vPGK_KmPGKADP + ATP/vPGK_KmPGKATP)*(1 + BPG/vPGK_KmPGKBPG + P3G/vPGK_KmPGKP3G)));
+  vPGM: P3G -> P2G; cell*((vPGM_VmPGM/vPGM_KmPGMP3G)*(P3G - P2G/vPGM_KeqPGM)/(1 + P3G/vPGM_KmPGMP3G + P2G/vPGM_KmPGMP2G));
+  vENO: P2G -> PEP; cell*((vENO_VmENO/vENO_KmENOP2G)*(P2G - PEP/vENO_KeqENO)/(1 + P2G/vENO_KmENOP2G + PEP/vENO_KmENOPEP));
+  vPYK: PEP + ADP -> PYR + ATP; cell*((vPYK_VmPYK/(vPYK_KmPYKPEP*vPYK_KmPYKADP))*(PEP*ADP - PYR*ATP/vPYK_KeqPYK)/((1 + PEP/vPYK_KmPYKPEP + PYR/vPYK_KmPYKPYR)*(1 + ATP/vPYK_KmPYKATP + ADP/vPYK_KmPYKADP)));
+  vPDC: PYR -> ACE + $CO2; cell*(vPDC_VmPDC*(PYR^vPDC_nPDC/vPDC_KmPDCPYR^vPDC_nPDC - ACE^vPDC_nPDC/vPDC_KmPDCACE^vPDC_nPDC)/(1 + PYR^vPDC_nPDC/vPDC_KmPDCPYR^vPDC_nPDC + ACE^vPDC_nPDC/vPDC_KmPDCACE^vPDC_nPDC));
+  vTCA: ACE + 4 NAD + ADP -> 4 NADH + ATP + 2 $CO2; cell*(vTCA_VmTCA*ACE*NAD*ADP - (vTCA_VmTCA/vTCA_KeqTCA)*NADH*ATP);
+  vADH: ACE + NADH -> $ETOH + NAD; cell*-((vADH_VmADH/(vADH_KiADHNAD*vADH_KmADHETOH))*(NAD*ETOH - NADH*ACE/vADH_KeqADH)/(1 + NAD/vADH_KiADHNAD + vADH_KmADHNAD*ETOH/(vADH_KiADHNAD*vADH_KmADHETOH) + vADH_KmADHNADH*ACE/(vADH_KiADHNADH*vADH_KmADHACE) + NADH/vADH_KiADHNADH + NAD*ETOH/(vADH_KiADHNAD*vADH_KmADHETOH) + vADH_KmADHNADH*NAD*ACE/(vADH_KiADHNAD*vADH_KiADHNADH*vADH_KmADHACE) + vADH_KmADHNAD*ETOH*NADH/(vADH_KiADHNAD*vADH_KmADHETOH*vADH_KiADHNADH) + NADH*ACE/(vADH_KiADHNADH*vADH_KmADHACE) + NAD*ETOH*ACE/(vADH_KiADHNAD*vADH_KmADHETOH*vADH_KiADHACE) + ETOH*NADH*ACE/(vADH_KiADHETOH*vADH_KiADHNADH*vADH_KmADHACE)));
+  vATP: ATP -> ADP; cell*vATP_KATPASE*ATP;
+  vRESP: NADH + 2.5 ADP => NAD + 2.5 ATP; cell*(vRESP_VmRESP*NADH*ADP - (vRESP_VmRESP/vRESP_KeqRESP)*NAD*ATP);
+  GLYtrs: GLY => $GLYout; cell*(GLYtrs_VmGLY*GLY - (GLYtrs_VmGLY/GLYtrs_KeqGLY)*GLYout);
+  vFBP: F16P => F6P; cell*vFBP_VmFBP*F16P;
+
+  // Species initializations:
+  GLCi = 0.087;
+  G6P = 1.39;
+  F6P = 0.28;
+  F16P = 0.1;
+  TRIO = 5.17;
+  NADH = 0.39;
+  NAD = 1.2;
+  BPG = 0;
+  P3G = 0.1;
+  P2G = 0.1;
+  PEP = 0.1;
+  PYR = 3.36;
+  ACE = 0.04;
+  GLCo = 50;
+  GLY = 0.15;
+  ETOH = 50;
+  CO2 = 1;
+  ATP = 1.6616;
+  ADP = 1.6769;
+  AMP = 0.76156;
+  F26BP = 0.02;
+  GLYout = 8.67;
+  BLL = 1;
+
+  // Compartment initializations:
+  cell = 1;
+  extracellular = 1;
+
+  // Variable initializations:
+  KeqTPI = 0.045;
+  KeqTPI has dimensionless;
+  vGLT_VmGLT = 97.264;
+  vGLT_VmGLT has mM_per_min;
+  vGLT_KeqGLT = 1;
+  vGLT_KeqGLT has dimensionless;
+  vGLT_KmGLTGLCo = 1.1918;
+  vGLT_KmGLTGLCo has mM;
+  vGLT_KmGLTGLCi = 1.1918;
+  vGLT_KmGLTGLCi has mM;
+  vGLK_VmGLK = 226.452;
+  vGLK_VmGLK has mM_per_min;
+  vGLK_KeqGLK = 3800;
+  vGLK_KeqGLK has dimensionless;
+  vGLK_KmGLKATP = 0.15;
+  vGLK_KmGLKATP has mM;
+  vGLK_KmGLKGLCi = 0.08;
+  vGLK_KmGLKGLCi has mM;
+  vGLK_KmGLKG6P = 30;
+  vGLK_KmGLKG6P has mM;
+  vGLK_KmGLKADP = 0.23;
+  vGLK_KmGLKADP has mM;
+  vPGI_VmPGI = 339.677;
+  vPGI_VmPGI has mM_per_min;
+  vPGI_KmPGIG6P = 1.4;
+  vPGI_KmPGIG6P has mM;
+  vPGI_KeqPGI = 0.314;
+  vPGI_KeqPGI has dimensionless;
+  vPGI_KmPGIF6P = 0.3;
+  vPGI_KmPGIF6P has mM;
+  vGLYCO_KGLYCOGEN = 6;
+  vGLYCO_KGLYCOGEN has per_mM_per_min;
+  vAdKin_VmAK = 1;
+  vAdKin_VmAK has per_mM_per_min;
+  vAdKin_KeqAK = 0.45;
+  vAdKin_KeqAK has dimensionless;
+  vPFK_gR = 5.12;
+  vPFK_gR has dimensionless;
+  vPFK_VmPFK = 182.903;
+  vPFK_VmPFK has mM_per_min;
+  vPFK_KmPFKF6P = 0.1;
+  vPFK_KmPFKF6P has mM;
+  vPFK_KmPFKATP = 0.71;
+  vPFK_KmPFKATP has mM;
+  vPFK_L0 = 0.66;
+  vPFK_L0 has dimensionless;
+  vPFK_CPFKF26BP = 0.0174;
+  vPFK_CPFKF26BP has dimensionless;
+  vPFK_KPFKF26BP = 0.000682;
+  vPFK_KPFKF26BP has mM;
+  vPFK_CPFKF16BP = 0.397;
+  vPFK_CPFKF16BP has dimensionless;
+  vPFK_KPFKF16BP = 0.111;
+  vPFK_KPFKF16BP has mM;
+  vPFK_CPFKAMP = 0.0845;
+  vPFK_CPFKAMP has dimensionless;
+  vPFK_KPFKAMP = 0.0995;
+  vPFK_KPFKAMP has mM;
+  vPFK_CiPFKATP = 100;
+  vPFK_CiPFKATP has dimensionless;
+  vPFK_KiPFKATP = 0.65;
+  vPFK_KiPFKATP has mM;
+  vPFK_CPFKATP = 3;
+  vPFK_CPFKATP has dimensionless;
+  vALD_VmALD = 322.258;
+  vALD_VmALD has mM_per_min;
+  vALD_KeqALD = 0.069;
+  vALD_KeqALD has mM;
+  vALD_KmALDF16P = 0.3;
+  vALD_KmALDF16P has mM;
+  vALD_KmALDDHAP = 2.4;
+  vALD_KmALDDHAP has mM;
+  vALD_KmALDGAP = 2;
+  vALD_KmALDGAP has mM;
+  vALD_KmALDGAPi = 10;
+  vALD_KmALDGAPi has mM;
+  vG3PDH_VmG3PDH = 70.15;
+  vG3PDH_VmG3PDH has mM_per_min;
+  vG3PDH_KeqG3PDH = 4300;
+  vG3PDH_KeqG3PDH has dimensionless;
+  vG3PDH_KmG3PDHDHAP = 0.4;
+  vG3PDH_KmG3PDHDHAP has mM;
+  vG3PDH_KmG3PDHNADH = 0.023;
+  vG3PDH_KmG3PDHNADH has mM;
+  vG3PDH_KmG3PDHNAD = 0.93;
+  vG3PDH_KmG3PDHNAD has mM;
+  vG3PDH_KmG3PDHGLY = 1;
+  vG3PDH_KmG3PDHGLY has mM;
+  vGAPDH_VmGAPDHr = 6549.68;
+  vGAPDH_VmGAPDHr has mM_per_min;
+  vGAPDH_KmGAPDHBPG = 0.0098;
+  vGAPDH_KmGAPDHBPG has mM;
+  vGAPDH_KmGAPDHNADH = 0.06;
+  vGAPDH_KmGAPDHNADH has mM;
+  vGAPDH_VmGAPDHf = 1184.52;
+  vGAPDH_VmGAPDHf has mM_per_min;
+  vGAPDH_KmGAPDHGAP = 0.21;
+  vGAPDH_KmGAPDHGAP has mM;
+  vGAPDH_KmGAPDHNAD = 0.09;
+  vGAPDH_KmGAPDHNAD has mM;
+  vGAPDH_VmGAPDHall = 1;
+  vGAPDH_VmGAPDHall has dimensionless;
+  vPGK_VmPGK = 1306.45;
+  vPGK_VmPGK has mM_per_min;
+  vPGK_KeqPGK = 3200;
+  vPGK_KeqPGK has dimensionless;
+  vPGK_KmPGKATP = 0.3;
+  vPGK_KmPGKATP has mM;
+  vPGK_KmPGKP3G = 0.53;
+  vPGK_KmPGKP3G has mM;
+  vPGK_KmPGKADP = 0.2;
+  vPGK_KmPGKADP has mM;
+  vPGK_KmPGKBPG = 0.003;
+  vPGK_KmPGKBPG has mM;
+  vPGM_VmPGM = 2525.81;
+  vPGM_VmPGM has mM_per_min;
+  vPGM_KmPGMP3G = 1.2;
+  vPGM_KmPGMP3G has mM;
+  vPGM_KeqPGM = 0.19;
+  vPGM_KeqPGM has dimensionless;
+  vPGM_KmPGMP2G = 0.08;
+  vPGM_KmPGMP2G has mM;
+  vENO_VmENO = 365.806;
+  vENO_VmENO has mM_per_min;
+  vENO_KmENOP2G = 0.04;
+  vENO_KmENOP2G has mM;
+  vENO_KeqENO = 6.7;
+  vENO_KeqENO has dimensionless;
+  vENO_KmENOPEP = 0.5;
+  vENO_KmENOPEP has mM;
+  vPYK_VmPYK = 1088.71;
+  vPYK_VmPYK has mM_per_min;
+  vPYK_KmPYKPEP = 0.14;
+  vPYK_KmPYKPEP has mM;
+  vPYK_KmPYKADP = 0.53;
+  vPYK_KmPYKADP has mM;
+  vPYK_KeqPYK = 6500;
+  vPYK_KeqPYK has dimensionless;
+  vPYK_KmPYKPYR = 21;
+  vPYK_KmPYKPYR has mM;
+  vPYK_KmPYKATP = 1.5;
+  vPYK_KmPYKATP has mM;
+  vPDC_VmPDC = 174.194;
+  vPDC_VmPDC has mM_per_min;
+  vPDC_nPDC = 1.9;
+  vPDC_nPDC has dimensionless;
+  vPDC_KmPDCPYR = 4.33;
+  vPDC_KmPDCPYR has mM;
+  vPDC_KmPDCACE = 5;
+  vPDC_KmPDCACE has mM;
+  vTCA_VmTCA = 20;
+  vTCA_VmTCA has per_mM_squared_per_min;
+  vTCA_KeqTCA = 1;
+  vTCA_KeqTCA has per_mM;
+  vADH_VmADH = 810;
+  vADH_VmADH has mM_per_min;
+  vADH_KiADHNAD = 0.92;
+  vADH_KiADHNAD has mM;
+  vADH_KmADHETOH = 17;
+  vADH_KmADHETOH has mM;
+  vADH_KeqADH = 6.9e-05;
+  vADH_KeqADH has dimensionless;
+  vADH_KmADHNAD = 0.17;
+  vADH_KmADHNAD has mM;
+  vADH_KmADHNADH = 0.11;
+  vADH_KmADHNADH has mM;
+  vADH_KiADHNADH = 0.031;
+  vADH_KiADHNADH has mM;
+  vADH_KmADHACE = 1.11;
+  vADH_KmADHACE has mM;
+  vADH_KiADHACE = 1.1;
+  vADH_KiADHACE has mM;
+  vADH_KiADHETOH = 90;
+  vADH_KiADHETOH has mM;
+  vATP_KATPASE = 39.5;
+  vATP_KATPASE has per_min;
+  vRESP_VmRESP = 66.6666666666667;
+  vRESP_VmRESP has per_mM_per_min;
+  vRESP_KeqRESP = 1;
+  vRESP_KeqRESP has dimensionless;
+  GLYtrs_VmGLY = 1000;
+  GLYtrs_VmGLY has per_min;
+  GLYtrs_KeqGLY = 2;
+  GLYtrs_KeqGLY has dimensionless;
+  vFBP_VmFBP = 1000;
+  vFBP_VmFBP has per_min;
+
+  // Other declarations:
+  const cell, extracellular, KeqTPI;
+
+  // Unit definitions:
+  unit substance = 1e-3 mole;
+  unit time_unit = 60 second;
+  unit mM = 1e-3 mole / litre;
+  unit mM_per_min = 1e-3 mole / (litre * 60 second);
+  unit per_min = 1 / 60 second;
+  unit per_mM_per_min = 1e1 litre / (1e-3 mole * 60e1 second);
+  unit per_mM_squared_per_min = (1e1 litre)^2 / ((1e-3 mole)^2 * 60e1 second);
+  unit per_mM = 1e1 litre / 1e-3 mole;
+
+  // Display Names:
+  substance is "millimole";
+  time_unit is "minute";
+  mM_per_min is "mM per minute";
+  per_min is "permin";
+  per_mM_per_min is "per mM per minute";
+  per_mM_squared_per_min is "per mM squared per minute";
+  per_mM is "per mM";
+  GLCi is "glucose";
+  G6P is "glucose 6-phosphate";
+  F6P is "fructose 6-phosphate";
+  F16P is "fructose 1,6-bisphosphate";
+  TRIO is "triose-phosphate";
+  BPG is "1,3-bisphosphoglycerate";
+  P3G is "3-phosphoglycerate";
+  P2G is "2-phosphoglycerate";
+  PEP is "phosphoenolpyruvate";
+  PYR is "pyruvate";
+  ACE is "acetaldehyde";
+  GLCo is "glucose";
+  GLY is "glycerol";
+  ETOH is "ethanol";
+  F26BP is "fructose 2,6-bisphosphate";
+  GLYout is "glycerol";
+  vGLT is "glucose transport";
+  vGLK is "hexokinase";
+  vPGI is "phosphoglucose isomerase";
+  vGLYCO is "G6P consumption";
+  vAdKin is "adenylate kinase";
+  vPFK is "phosphofructokinase";
+  vALD is "fructosebisphosphate aldolase";
+  vG3PDH is "glycerol 3-phosphate dehydrogenase";
+  vGAPDH is "glyceraldehyde phosphate dehydrogenase";
+  vPGK is "3-phosphoglycerate kinase";
+  vPGM is "phosphoglyceromutase";
+  vENO is "enolase";
+  vPYK is "pyruvate kinase";
+  vPDC is "pyruvate decarboxylase";
+  vTCA is "TCA";
+  vADH is "alcohol dehydrogenase";
+  vATP is "ATPase";
+  vRESP is "respiration";
+  GLYtrs is "glycerol efflux";
+  vFBP is "fructose 1,6-bisphosphatase";
+
+  // SBO terms:
+  GLCi.sboTerm = 247
+  G6P.sboTerm = 247
+  F6P.sboTerm = 247
+  F16P.sboTerm = 247
+  NADH.sboTerm = 247
+  NAD.sboTerm = 247
+  BPG.sboTerm = 247
+  P3G.sboTerm = 247
+  P2G.sboTerm = 247
+  PEP.sboTerm = 247
+  PYR.sboTerm = 247
+  ACE.sboTerm = 247
+  GLCo.sboTerm = 247
+  GLY.sboTerm = 247
+  ETOH.sboTerm = 247
+  CO2.sboTerm = 247
+  ATP.sboTerm = 247
+  ADP.sboTerm = 247
+  AMP.sboTerm = 247
+  F26BP.sboTerm = 247
+  GLYout.sboTerm = 247
+  vGLT.sboTerm = 185
+  vGLK.sboTerm = 176
+  vPGI.sboTerm = 176
+  vGLYCO.sboTerm = 176
+  vAdKin.sboTerm = 176
+  vPFK.sboTerm = 176
+  vALD.sboTerm = 176
+  vG3PDH.sboTerm = 176
+  vGAPDH.sboTerm = 176
+  vPGK.sboTerm = 176
+  vPGM.sboTerm = 176
+  vENO.sboTerm = 176
+  vPYK.sboTerm = 176
+  vPDC.sboTerm = 176
+  vTCA.sboTerm = 176
+  vADH.sboTerm = 176
+  vATP.sboTerm = 176
+  vRESP.sboTerm = 176
+  GLYtrs.sboTerm = 185
+  vFBP.sboTerm = 176
+
+  // CV terms:
+  cell model_entity_is "http://identifiers.org/obo.go/GO:0005829"
+  extracellular model_entity_is "http://identifiers.org/obo.go/GO:0005576"
+  GLCi identity "http://identifiers.org/chebi/CHEBI:4167",
+                "http://identifiers.org/kegg.compound/C00031"
+  G6P identity "http://identifiers.org/chebi/CHEBI:17665",
+               "http://identifiers.org/kegg.compound/C00668"
+  F6P identity "http://identifiers.org/chebi/CHEBI:16084",
+               "http://identifiers.org/kegg.compound/C05345"
+  F16P identity "http://identifiers.org/chebi/CHEBI:28013",
+                "http://identifiers.org/kegg.compound/C05378"
+  TRIO part "http://identifiers.org/kegg.compound/C00111",
+            "http://identifiers.org/kegg.compound/C00118"
+  TRIO part "http://identifiers.org/chebi/CHEBI:29052",
+            "http://identifiers.org/chebi/CHEBI:16108"
+  NADH identity "http://identifiers.org/chebi/CHEBI:16908",
+                "http://identifiers.org/kegg.compound/C00004"
+  NAD identity "http://identifiers.org/chebi/CHEBI:15846",
+               "http://identifiers.org/kegg.compound/C00003"
+  BPG identity "http://identifiers.org/chebi/CHEBI:16001",
+               "http://identifiers.org/kegg.compound/C00236"
+  P3G identity "http://identifiers.org/chebi/CHEBI:17794",
+               "http://identifiers.org/kegg.compound/C00197"
+  P2G identity "http://identifiers.org/chebi/CHEBI:17835",
+               "http://identifiers.org/kegg.compound/C00631"
+  PEP identity "http://identifiers.org/chebi/CHEBI:18021",
+               "http://identifiers.org/kegg.compound/C00074"
+  PYR identity "http://identifiers.org/chebi/CHEBI:15361",
+               "http://identifiers.org/kegg.compound/C00022"
+  ACE identity "http://identifiers.org/chebi/CHEBI:15343",
+               "http://identifiers.org/kegg.compound/C00084"
+  GLCo identity "http://identifiers.org/chebi/CHEBI:4167",
+                "http://identifiers.org/kegg.compound/C00031"
+  GLY identity "http://identifiers.org/chebi/CHEBI:17754",
+               "http://identifiers.org/kegg.compound/C00116"
+  ETOH identity "http://identifiers.org/chebi/CHEBI:16236",
+                "http://identifiers.org/kegg.compound/C00469"
+  CO2 identity "http://identifiers.org/chebi/CHEBI:16526",
+               "http://identifiers.org/kegg.compound/C00011"
+  ATP identity "http://identifiers.org/chebi/CHEBI:15422",
+               "http://identifiers.org/kegg.compound/C00002"
+  ADP identity "http://identifiers.org/chebi/CHEBI:16761",
+               "http://identifiers.org/kegg.compound/C00008"
+  AMP identity "http://identifiers.org/chebi/CHEBI:16027",
+               "http://identifiers.org/kegg.compound/C00020"
+  F26BP identity "http://identifiers.org/chebi/CHEBI:28602",
+                 "http://identifiers.org/kegg.compound/C00665"
+  GLYout identity "http://identifiers.org/chebi/CHEBI:17754",
+                  "http://identifiers.org/kegg.compound/C00116"
+  vGLT hypernym "http://identifiers.org/obo.go/GO:0015758"
+  vGLK hypernym "http://identifiers.org/ec-code/2.7.1.1",
+                "http://identifiers.org/obo.go/GO:0004396"
+  vGLK identity "http://identifiers.org/kegg.reaction/R02848"
+  vPGI hypernym "http://identifiers.org/ec-code/5.3.1.9",
+                "http://identifiers.org/obo.go/GO:0004347"
+  vPGI identity "http://identifiers.org/kegg.reaction/R00771"
+  vGLYCO part "http://identifiers.org/obo.go/GO:0005978",
+              "http://identifiers.org/obo.go/GO:0005992"
+  vAdKin hypernym "http://identifiers.org/ec-code/2.7.4.3",
+                  "http://identifiers.org/obo.go/GO:0004017"
+  vAdKin identity "http://identifiers.org/kegg.reaction/R00127"
+  vPFK identity "http://identifiers.org/kegg.reaction/R00756"
+  vPFK hypernym "http://identifiers.org/ec-code/2.7.1.11",
+                "http://identifiers.org/obo.go/GO:0003872"
+  vALD hypernym "http://identifiers.org/ec-code/4.1.2.13",
+                "http://identifiers.org/obo.go/GO:0004332"
+  vALD identity "http://identifiers.org/kegg.reaction/R01068"
+  vG3PDH identity "http://identifiers.org/ec-code/1.1.1.94",
+                  "http://identifiers.org/kegg.reaction/R00842"
+  vGAPDH hypernym "http://identifiers.org/ec-code/1.2.1.12",
+                  "http://identifiers.org/obo.go/GO:0004365"
+  vGAPDH identity "http://identifiers.org/kegg.reaction/R01061"
+  vPGK hypernym "http://identifiers.org/ec-code/2.7.2.3",
+                "http://identifiers.org/obo.go/GO:0004618"
+  vPGK identity "http://identifiers.org/kegg.reaction/R01512"
+  vPGM identity "http://identifiers.org/kegg.reaction/R01518"
+  vPGM hypernym "http://identifiers.org/ec-code/5.4.2.1",
+                "http://identifiers.org/obo.go/GO:0004619"
+  vENO hypernym "http://identifiers.org/ec-code/4.2.1.11",
+                "http://identifiers.org/obo.go/GO:0004634"
+  vENO identity "http://identifiers.org/kegg.reaction/R00658"
+  vPYK hypernym "http://identifiers.org/ec-code/2.7.1.40",
+                "http://identifiers.org/obo.go/GO:0004743"
+  vPYK identity "http://identifiers.org/kegg.reaction/R00200"
+  vPDC hypernym "http://identifiers.org/ec-code/4.1.1.1",
+                "http://identifiers.org/obo.go/GO:0004737"
+  vPDC identity "http://identifiers.org/kegg.reaction/R00636"
+  vTCA identity "http://identifiers.org/obo.go/GO:0006099"
+  vADH hypernym "http://identifiers.org/ec-code/1.1.1.1",
+                "http://identifiers.org/obo.go/GO:0004022"
+  vADH identity "http://identifiers.org/kegg.reaction/R00754"
+  vATP hypernym "http://identifiers.org/obo.go/GO:0016887"
+  vRESP identity "http://identifiers.org/obo.go/GO:0045333"
+  GLYtrs hypernym "http://identifiers.org/obo.go/GO:0015793"
+  vFBP identity "http://identifiers.org/ec-code/3.1.3.11",
+                "http://identifiers.org/obo.go/GO:0042132"
+end
+
+Bruck2008_Glycolysis is "Bruck2008_Glycolysis"
+
+Bruck2008_Glycolysis model_entity_is "http://identifiers.org/biomodels.db/MODEL1011010000"
+Bruck2008_Glycolysis description "http://identifiers.org/pubmed/19425118"
+Bruck2008_Glycolysis container "http://identifiers.org/taxonomy/4932"
+# This annotation below is the one that breaks the model
+Bruck2008_Glycolysis hypernym "http://www.geneontology.org/GO:0006096"
