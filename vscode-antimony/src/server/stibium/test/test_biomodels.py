@@ -42,7 +42,7 @@ def test_all_biomodels(models):
     # store the data in a temp file or get the extracted SBML file and convert it to Antimony
     f = os.path.join(directory + "/" + models)
     ant_str = _get_antimony_str(os.path.abspath(f))
-    temp_ant_file = tempfile.TemporaryFile(mode='w+t', delete=True, encoding='utf-8')
+    temp_ant_file = tempfile.TemporaryFile(mode='w+t', encoding='utf-8')
     assert ant_str.get("ant_str") is not None, "There was an error converting the SBML file to Antimony"
     temp_ant_file.write(ant_str.get('ant_str'))
     doc = Document(temp_ant_file.name, temp_ant_file.read())
