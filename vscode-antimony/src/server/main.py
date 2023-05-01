@@ -37,6 +37,7 @@ import time
 from AMAS import recommender, species_annotation
 from bioservices import ChEBI
 import requests
+import tellurium as te
 import zipfile
 import io
 
@@ -139,7 +140,8 @@ def sbml_str_to_ant_str(ls: LanguageServer, args):
 def sbml_file_to_ant_file(ls: LanguageServer, args):
     sbml = args[0].fileName
     output_dir = args[1]
-    ant_str = _get_antimony_str(sbml)
+    rr = te.loads(sbml)
+    ant_str = rr.getAntimonyModel()
     if 'error' in ant_str:
         return ant_str
     else:
@@ -170,7 +172,7 @@ def get_type(ls: LanguageServer, args) -> dict[str, str]:
     symbols= antfile_cache.symbols_at(position)[0]
     
     symbol = symbols[0].type.__str__()
-    vscode_logger.info("symbol: " + symbol)
+    # vscode_logger.info("symbol: " + symbol)
     return {
         'symbol': symbol
     }
@@ -198,7 +200,7 @@ def query_species(ls: LanguageServer, args):
     try:
         database = args[0]
         query = args[1]
-        vscode_logger.info("Recieved search request for: " + database + " " + query)
+        # vscode_logger.info("Recieved search request for: " + database + " " + query)
         start = time.time()
         if database == 'chebi':
             results = services.annot_search_chebi(query)
@@ -222,8 +224,8 @@ def query_species(ls: LanguageServer, args):
             # This is not supposed to happen
             raise SystemError("Unknown database '{}'".format(database))
         end = time.time()
-        vscode_logger.debug("Search request completed")
-        vscode_logger.debug("--- %s seconds ---" % (end - start))
+        # vscode_logger.debug("Search request completed")
+        # vscode_logger.debug("--- %s seconds ---" % (end - start))
         return {
             'query': query,
             'items': results,
