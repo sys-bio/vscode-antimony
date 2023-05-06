@@ -6,6 +6,7 @@ from bioservices import ChEBI, UniProt, Rhea
 from stibium.ant_types import Interaction, UnitAssignment, FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, End, Keyword, Sbo, Annotation, Sboterm, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, RateRules, Reaction, Event, SimpleStmt, TreeNode, TrunkNode, Import, StringLiteral
 from .types import FunctionAlreadyExists, CircularImportFound, DuplicateImportedMModelCall, FileAlreadyImported, GrammarHasIssues, ModelAlreadyExists, NoImportFile, ObscuredEventTrigger, UninitRateLaw, OverridingDisplayName, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition, RateRuleOverRidden, RateRuleNotInReaction
 from .symbols import FuncSymbol, AbstractScope, BaseScope, FunctionScope, MModelSymbol, ModelScope, QName, SymbolTable, ModularModelScope
+import stibium.functions as functions
 
 from dataclasses import dataclass
 from typing import Any, List, Optional, Set, cast
@@ -23,6 +24,7 @@ EQUATION_CAP = "Equation"
 UNDERSCORE = "_"
 ONTOLOGIES_URL = "http://www.ebi.ac.uk/ols/api/ontologies/"
 ONTOLOGIES_URL_SECOND_PART = "/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F"
+vscode_logger = logging.getLogger("vscode-antimony logger")
 
 def get_qname_at_position(root: FileNode, pos: SrcPosition) -> Optional[QName]:
     '''Returns (context, token) the given position. `token` may be None if not found.
@@ -389,8 +391,18 @@ class AntTreeAnalyzer:
                 if len(function) == 0:
                     function = self.import_table.get(QName(BaseScope(), function_name))
                 if len(function) == 0:
+                    function = [functions.is_builtin_func(function_name.text)]
+                if len(function) == 0:
                     self.error.append(UninitFunction(function_name.range, function_name.text))
                 else:
+                    if functions.is_builtin_func(function_name.text) == function[0]:
+                        if leaf.get_params() is None:
+                            params = []
+                        else:
+                            params = leaf.get_params().get_items()
+                        if not functions.has_correct_args(function[0], len(params)):
+                            self.error.append(IncorrectParamNum(leaf.range, functions.get_builtin_func_arg_counts(function[0]), len(params)))
+                        continue
                     call_params = leaf.get_params().get_items() if leaf.get_params() is not None else []
                     if len(function[0].parameters) != len(call_params):
                         self.error.append(IncorrectParamNum(leaf.range, len(function[0].parameters), len(call_params)))
@@ -1328,8 +1340,18 @@ class AntTreeAnalyzer:
         if len(function) == 0:
             function = self.import_table.get(QName(BaseScope(), function_name))
         if len(function) == 0:
+            function = [functions.is_builtin_func(function_name.text)]
+        if len(function) == 0:
             self.error.append(UninitFunction(function_name.range, function_name.text))
         else:
+            if functions.is_builtin_func(function_name.text) == function[0]:
+                if node.get_stmt().get_params() is None:
+                    params = []
+                else:
+                    params = node.get_stmt().get_params().get_items()
+                if not functions.has_correct_args(function[0], len(params)):
+                    self.error.append(IncorrectParamNum(node.range, functions.get_builtin_func_arg_counts(function[0]), len(params)))
+                return
             call_params = node.get_stmt().get_params().get_items() if node.get_stmt().get_params() is not None else []
             if len(function[0].parameters) != len(call_params):
                 self.error.append(IncorrectParamNum(node.range, len(function[0].parameters), len(call_params)))

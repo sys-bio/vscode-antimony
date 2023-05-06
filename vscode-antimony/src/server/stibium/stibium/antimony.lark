@@ -42,7 +42,7 @@ sboterm: var_name ".sboTerm" "=" SBOTERM
 SBOTERM: NUMBER
     | "SBO:" NUMBER
 
-assignment : namemaybein ("=" | AEQ) sum 
+assignment : namemaybein ("=" | AEQ) sum
 
 AEQ : ":="
 
@@ -132,7 +132,7 @@ TYPE_MODIFIER: /\b(species|compartment|formula)\b/
     | "-" atom
     | "+" atom
     | "(" sum ")"
-    | func_call 
+    | func_call
     | "(" bool_exp ")"
 
 func_call : var_name "(" [parameters] ")"
