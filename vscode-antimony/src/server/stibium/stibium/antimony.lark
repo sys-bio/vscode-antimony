@@ -102,7 +102,7 @@ unit_assignment : var_name "has" sum
 // this should not be a reaction name, I'm just being lazy
 mmodel_call : [reaction_name] NAME "(" [parameters] ")"
 
-function_call : namemaybein ("=" | AEQ) NAME "(" [parameters] ")"
+function_call : namemaybein ("=" | AEQ) NAME "(" [call_params] ")"
 
 VAR_MODIFIER: /\b(var|const)\b/
 SUB_MODIFIER: /\b(substanceOnly)\b/
@@ -135,7 +135,7 @@ TYPE_MODIFIER: /\b(species|compartment|formula)\b/
     | func_call
     | "(" bool_exp ")"
 
-func_call : var_name "(" [parameters] ")"
+func_call : var_name "(" [call_params] ")"
 
 // optimizations possible when there are multiple empty lines
 // example: https://docs.python.org/3/reference/grammar.html
@@ -172,6 +172,8 @@ modular_model : "model" ["*"] NAME "(" [parameters] ")" simple_stmt_list END
 function : "function" NAME "(" [parameters] ")" NEWLINE sum [";"] NEWLINE END
 
 parameters : (NAME | NUMBER) ("," (NAME | NUMBER))*
+
+call_params : (bool_exp) ("," (bool_exp))*
 
 variable_in : var_name in_comp
 

@@ -47,7 +47,7 @@ BUILT_IN_FUNCS = {
     "divide": [2],
     "delay": [2],
     "log": [2],
-    "log[1]0": [2],
+    "log10": [2],
     "power": [2],
     "pow": [2],
     "sqr": [2],
