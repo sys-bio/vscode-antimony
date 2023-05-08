@@ -85,6 +85,8 @@ def is_builtin_func(func_name):
     return []
 
 def has_correct_args(func_name, num_args):
+    if isinstance(func_name, list):
+        func_name = func_name[0]
     if func_name in BUILT_IN_FUNCS:
         return num_args in BUILT_IN_FUNCS[func_name]
     elif func_name in NOT_ARG_COUNTS:

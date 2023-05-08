@@ -957,6 +957,8 @@ class AntTreeAnalyzer:
             for leaf in expression.scan_leaves():
                 if isinstance(leaf, Name) and leaf.text not in all_names and leaf.text not in import_names:
                     self.warning.append(VarNotFound(leaf.range, leaf.text))
+                if isinstance(leaf, FuncCall):
+                    continue
                 if leaf.text == "+" or leaf.text == "-" or leaf.text == "*" or leaf.text == "/":
                     rate_rule_string += " " + (leaf.text) + " "
                 else:
@@ -1344,7 +1346,8 @@ class AntTreeAnalyzer:
         if len(function) == 0:
             self.error.append(UninitFunction(function_name.range, function_name.text))
         else:
-            if functions.is_builtin_func(function_name.text) == function[0]:
+            builtin_func = functions.is_builtin_func(function_name.text)
+            if builtin_func and builtin_func[0] == function[0]:
                 if node.get_stmt().get_params() is None:
                     params = []
                 else:
