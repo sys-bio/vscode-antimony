@@ -1340,7 +1340,7 @@ class AntTreeAnalyzer:
         if len(function) == 0:
             function = self.import_table.get(QName(BaseScope(), function_name))
         if len(function) == 0:
-            function = [functions.is_builtin_func(function_name.text)]
+            function = functions.is_builtin_func(function_name.text)
         if len(function) == 0:
             self.error.append(UninitFunction(function_name.range, function_name.text))
         else:
@@ -1351,21 +1351,21 @@ class AntTreeAnalyzer:
                     params = node.get_stmt().get_params().get_items()
                 if not functions.has_correct_args(function[0], len(params)):
                     self.error.append(IncorrectParamNum(node.range, functions.get_builtin_func_arg_counts(function[0]), len(params)))
-                return
-            call_params = node.get_stmt().get_params().get_items() if node.get_stmt().get_params() is not None else []
-            if len(function[0].parameters) != len(call_params):
-                self.error.append(IncorrectParamNum(node.range, len(function[0].parameters), len(call_params)))
             else:
-                for index in range(len(function[0].parameters)):
-                    expec = function[0].parameters[index][0] if len(function[0].parameters[index]) != 0 else None
-                    expec_type = expec.type if expec is not None else None
-                    call = node.get_stmt().get_params().get_items()[index]
-                    call_name = self.table.get(QName(scope, call))
-                    if len(call_name) == 0:
-                        call_name = self.import_table.get(QName(scope, call))
-                    call_type = call_name[0].type if len(call_name) != 0 else None
-                    if not expec_type is None and not call_type is None and not call_type.derives_from(expec_type):
-                        self.error.append(ParamIncorrectType(call.range, expec_type, call_type))
+                call_params = node.get_stmt().get_params().get_items() if node.get_stmt().get_params() is not None else []
+                if len(function[0].parameters) != len(call_params):
+                    self.error.append(IncorrectParamNum(node.range, len(function[0].parameters), len(call_params)))
+                else:
+                    for index in range(len(function[0].parameters)):
+                        expec = function[0].parameters[index][0] if len(function[0].parameters[index]) != 0 else None
+                        expec_type = expec.type if expec is not None else None
+                        call = node.get_stmt().get_params().get_items()[index]
+                        call_name = self.table.get(QName(scope, call))
+                        if len(call_name) == 0:
+                            call_name = self.import_table.get(QName(scope, call))
+                        call_type = call_name[0].type if len(call_name) != 0 else None
+                        if not expec_type is None and not call_type is None and not call_type.derives_from(expec_type):
+                            self.error.append(ParamIncorrectType(call.range, expec_type, call_type))
         self.process_maybein(node, scope)
 
     def process_maybein(self, node, scope):

@@ -411,7 +411,10 @@ class SymbolTable:
 
     def get(self, qname: QName) -> List[Symbol]:
         leaf_table = self._leaf_table(qname.scope)
-        name = qname.name.text
+        if isinstance(qname.name, VarName):
+            name = qname.name.get_name_text()
+        else:
+            name = qname.name.text
         if isinstance(name, str) and name in leaf_table:
             return [leaf_table[name]]
         else:

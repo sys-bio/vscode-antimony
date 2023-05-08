@@ -80,13 +80,11 @@ TWO_ARG_COUNTS = {
 }
 
 def is_builtin_func(func_name):
-    return func_name if func_name in BUILT_IN_FUNCS or NOT_ARG_COUNTS else ""
+    if func_name in BUILT_IN_FUNCS or func_name in NOT_ARG_COUNTS or func_name in ANY_ARG_COUNTS or func_name in TWO_ARG_COUNTS:
+        return [func_name]
+    return []
 
 def has_correct_args(func_name, num_args):
-    if func_name not in BUILT_IN_FUNCS and func_name not in NOT_ARG_COUNTS \
-        and func_name not in ANY_ARG_COUNTS and func_name not in TWO_ARG_COUNTS:
-        return False
-
     if func_name in BUILT_IN_FUNCS:
         return num_args in BUILT_IN_FUNCS[func_name]
     elif func_name in NOT_ARG_COUNTS:
@@ -96,11 +94,7 @@ def has_correct_args(func_name, num_args):
     elif func_name in TWO_ARG_COUNTS:
         return num_args in TWO_ARG_COUNTS[func_name]
 
-def get_builtin_func_arg_counts(func_name):
-    if func_name not in BUILT_IN_FUNCS and func_name not in NOT_ARG_COUNTS \
-        and func_name not in ANY_ARG_COUNTS and func_name not in TWO_ARG_COUNTS:
-        return []
-    
+def get_builtin_func_arg_counts(func_name):    
     if func_name in BUILT_IN_FUNCS:
         return BUILT_IN_FUNCS[func_name][0]
     
