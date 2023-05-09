@@ -362,6 +362,11 @@ class FunctionAlreadyExists(Issue):
         super().__init__(range, IssueSeverity.Error)
         self.message = ("Function '{}' is already defined").format(function)
 
+class ReservedName(Issue):
+    def __init__(self, range, name: str):
+        super().__init__(range, IssueSeverity.Error)
+        self.message = ("Cannot use reserved name '{}'").format(name)
+
 class AntimonySyntaxError(Exception):
     # TODO this is far from complete. To include: filename, possible token choices,
     # and possibly even parser state?

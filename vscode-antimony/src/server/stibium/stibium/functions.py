@@ -79,6 +79,31 @@ TWO_ARG_COUNTS = {
     "root": [1, 2], # can only be 1 or 2
 }
 
+DISTS = {
+    "normal": [2, 4],
+    "uniform": [2],
+    "bernoulli": [1],
+    "binomial": [2, 4],
+    "cauchy": [2, 4],
+    "chisquare": [1, 3],
+    "exponential": [1, 3],
+    "gamma": [2, 4],
+    "laplace": [2, 4],
+    "lognormal": [2, 4],
+    "poisson": [1, 3],
+    "rayleigh": [1, 3],
+}
+
+CONSTS = [
+    "true",
+    "false",
+    "notanumber",
+    "pi",
+    "avogadro",
+    "inf",
+    "exponentiale"
+]
+
 def is_builtin_func(func_name):
     if func_name in BUILT_IN_FUNCS or func_name in NOT_ARG_COUNTS or func_name in ANY_ARG_COUNTS or func_name in TWO_ARG_COUNTS:
         return [func_name]
@@ -107,3 +132,23 @@ def get_builtin_func_arg_counts(func_name):
     
     if func_name in TWO_ARG_COUNTS:
         return "{} or {}".format(TWO_ARG_COUNTS[func_name][0], TWO_ARG_COUNTS[func_name][1])
+
+def is_builtin_dist(dist_name):
+    if dist_name in DISTS:
+        return [dist_name]
+    return []
+
+def has_correct_dist_args(dist_name, num_args):
+    if isinstance(dist_name, list):
+        dist_name = dist_name[0]
+    return num_args in DISTS[dist_name]
+
+def is_const(const_name):
+    if const_name in CONSTS:
+        return [const_name]
+    return []
+
+def is_reserved_name(name):
+    if is_builtin_func(name) or is_builtin_dist(name) or is_const(name):
+        return True
+    return False
