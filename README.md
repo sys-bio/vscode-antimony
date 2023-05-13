@@ -10,32 +10,33 @@ The currently available version 0.2 is a public beta version developed by [Longx
 
 Please note that the current release does not support the complete Antimony grammar. While most grammar has been supported, more will be included in future releases. Flux balance constraints and submodeling are not supported currently.
 
-## Installation (Please follow instructions as given)
+## **Installation (Required)**
 The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) is available on the Visual Studio Code Extensions Tab and the Visual Studio Code Marketplace. (We recommend installing the extension pack directly so you have full access to all of the features.) <br/>
 
 ### Windows
-* **_Windows users must install [Python3.11 (must be version 3.11)](https://www.python.org/ftp/python/3.11.2/python-3.11.2-amd64.exe)._**<br/><br/>
-* **_Check "Add python.exe to PATH" when installing Python 3.11.2_**
-<p align=center>
-<img src="docs/images/path.png" width=75%>
-<br/>
-<em>(Python Installation)</em>
-</p>
-
-* **_Once installed, restart Visual Code Studio._** <br/><br/>
+* Windows users must install the [Vscode Antimony Dependencies Installer](https://www.python.org/ftp/python/3.11.2/python-3.11.2-amd64.exe).
+* Once installed, open the Downloads folder on your device
+* Double click "Vscode-Antimony-Dependencies-Installer" to start the setup process. **(This will not intefer with any other dependencies and programs of your device)**.
+* Once installed, restart Visual Code Studio.
+* **_This extension may require [Git](https://git-scm.com/downloads) to be installed before use. Make sure to add Git to PATH when installing. Restart Visual Studio Code after installation of Git._**<br/>
+[Next Steps Below]()<br/><br/>
 
 ### Mac
-* **_Mac users must install [Python3.9 (must be version 3.9)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg). Once installed, restart Visual Code Studio._** <br/><br/>
+* Mac users must install the [Vscode Antimony Setup Installer](https://github.com/sys-bio/vscode-antimony/blob/install/setup/Vscode_Antimony_Setup.pkg). 
+* Once installed, open the Downloads folder on your device.
+* Double click **Vscode_Antimony_Setup.pkg** to start the setup process, **this will not intefer with any other dependencies and programs of your device**
+* Once installed, you should see a folder named **Vscode_Antimony_Setup** in your Downloads folder. Open the folder and double click **NodeJs**. Proceed with installing **NodeJs**. **(This will not intefer with any other dependencies and programs of your device)**
+* Once installed, restart Visual Code Studio. <br/>
+[Next Steps Below]()<br/><br/>
 
 ### Linux
-* **_Linux users will have to install Python3.10, venv package, and pip before clicking yes. Once installed, restart Visual Studio Code._**<br/><br/>
+* Linux users will have to install Python3.10, venv package, and pip. Once installed, restart Visual Studio Code. <br/>
+[Next Steps Below]()<br/><br/>
 
-### Steps below apply for all 3 Operating Systems
-* **_This extension requires [NodeJS](https://nodejs.org/en/download/) to be installed before use regardless of operating system used. Restart Visual Studio Code after installation of NodeJS._** <br/><br/>
-* **_This extension also needs [Git](https://git-scm.com/downloads) to be installed before use regardless of operating system used. Make sure to add Git to PATH when installing. Restart Visual Studio Code after installation of Git._**<br/><br/>
-* **_If there are any non VSCode Antimony associated virtual environments activated, please deactivate them before setting up VSCode Antimony._**<br/><br/>
+### Steps below apply for all Operating Systems
+* **_If there are any non VSCode Antimony associated virtual environments activated, please deactivate them before setting up VSCode Antimony._**<br/>
 * Install [VSCode](https://code.visualstudio.com/download) for your specific operating system (Mac, Windows, or Linux)
-* Once you open VSCode, download the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) from the Visual Studio Code Extension Marketplace and install. Follow the numbered points in the figure below.
+* Once you open VSCode, download the **Antimony Extension Pack** from the Visual Studio Code Extension Marketplace and install. Follow the numbered points in the figure below.
 <p align=center>
 <img src="docs/images/Step2.png" width=75%>
 <br/>
@@ -49,7 +50,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Pop up for setup)</em>
 </p>
 
-* On the other hand, if a user does not have a SBML or Antimony file, they can open the Command Palette (Ctrl + Shift + P for Windows, Cmd + Shift + P for Mac) and type "Open Antimony Start Page". This will open a simple Antimony page, which will allow for the installation of the virtual environment.
+* On the other hand, if a user does not have a SBML or Antimony file, they can open the Command Palette (Ctrl + Shift + P for Windows, Cmd + Shift + P for Mac) and type **Open Antimony Start Page**. This will open a simple Antimony page, which will allow for the installation of the virtual environment.
 <p align=center>
 <img src="docs/images/startPage.png" width=75%>
 <br/>
@@ -57,7 +58,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 </p>
 
 * Click yes to allow creation of virtual environment and installation of required dependencies
-* Click no to use your own default python interpreter (You can access this in the VSCode Settings. Use (Cmd + ,) for Mac and (Ctrl + ,) for Windows).
+* Click no to use your own default python interpreter (You can change the python interpreter in the VSCode Settings. Use (Cmd + ,) for Mac and (Ctrl + ,) for Windows).
 <br/>
 <p align=center>
 <img src="docs/images/installation.gif" width=75%>
