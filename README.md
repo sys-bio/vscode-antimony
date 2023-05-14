@@ -6,6 +6,8 @@
 
 The Antimony extension adds language support for Antimony to Visual Studio Code for building models in Systems Biology.
 
+## [Installation (Required)](#installation-required)
+
 The currently available version 0.2 is a public beta version developed by [Longxuan Fan](https://www.linkedin.com/in/longxf), [Sai Anish Konanki](https://www.linkedin.com/in/sai-anish-konanki-8b81a575/), [Eva Liu](https://www.linkedin.com/in/evaliu02), [Steve Ma](https://www.linkedin.com/in/steve-ma/), [Gary Geng](https://www.linkedin.com/in/gary-geng-9995a2160/), [Dr. Joseph Hellerstein](https://sites.google.com/uw.edu/joseph-hellerstein/home?authuser=0), and [Dr. Herbert Sauro](https://bioe.uw.edu/portfolio-items/sauro/) at the University of Washington. Dr. Joseph Hellerstein is responsible for future releases, and please feel free to [contact](mailto:joseph.hellerstein@gmail.com) him if you have any questions.
 
 Please note that the current release does not support the complete Antimony grammar. While most grammar has been supported, more will be included in future releases. Flux balance constraints and submodeling are not supported currently.
@@ -19,7 +21,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 * Double click "Vscode-Antimony-Dependencies-Installer" to start the setup process. **(This will not intefer with any other dependencies and programs of your device)**.
 * Once installed, restart Visual Code Studio.
 * **_This extension may require [Git](https://git-scm.com/downloads) to be installed before use. Make sure to add Git to PATH when installing. Restart Visual Studio Code after installation of Git._**<br/>
-[Next Steps Below]()<br/><br/>
+[Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Mac
 * Mac users must install the [Vscode Antimony Setup Installer](https://github.com/sys-bio/vscode-antimony/blob/install/setup/Vscode_Antimony_Setup.pkg). 
@@ -27,11 +29,11 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 * Double click **Vscode_Antimony_Setup.pkg** to start the setup process, **this will not intefer with any other dependencies and programs of your device**
 * Once installed, you should see a folder named **Vscode_Antimony_Setup** in your Downloads folder. Open the folder and double click **NodeJs**. Proceed with installing **NodeJs**. **(This will not intefer with any other dependencies and programs of your device)**
 * Once installed, restart Visual Code Studio. <br/>
-[Next Steps Below]()<br/><br/>
+[Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Linux
 * Linux users will have to install Python3.10, venv package, and pip. Once installed, restart Visual Studio Code. <br/>
-[Next Steps Below]()<br/><br/>
+[Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Steps below apply for all Operating Systems
 * **_If there are any non VSCode Antimony associated virtual environments activated, please deactivate them before setting up VSCode Antimony._**<br/>
