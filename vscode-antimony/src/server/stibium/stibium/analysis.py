@@ -543,6 +543,9 @@ class AntTreeAnalyzer:
 
     def handle_assignment(self, scope: AbstractScope, assignment: Assignment, insert: bool):
         comp = None
+        if functions.is_reserved_name(assignment.get_name_text()):
+            self.table.error.append(ReservedName(assignment.get_name().range, assignment.get_name_text()))
+            return
         if assignment.get_maybein() != None and assignment.get_maybein().is_in_comp():
             comp = assignment.get_maybein().get_comp().get_name_text()
         if insert:
@@ -1203,14 +1206,14 @@ class AntTreeAnalyzer:
                 self.table.insert(qname, SymbolType.Parameter)
     
     def handle_function(self, function, insert: bool):
+        if functions.is_reserved_name(function.get_name_str()):
+            self.table.error.append(ReservedName(function.get_name().range, function.get_name_str()))
+            return
         if function.get_params() is not None:
             params = function.get_params().get_items()
         else:
             params = []
         scope = FunctionScope(str(function.get_name()))
-        if functions.is_reserved_name(function.get_name_str()):
-            self.table.error.append(ReservedName(function.get_name().range, function.get_name_str()))
-            return
         parameters = []
         for name in params:
             # get symbols
@@ -1228,6 +1231,9 @@ class AntTreeAnalyzer:
             self.table.insert_function(QName(FunctionScope(str(function.get_name())), function), SymbolType.Function, parameters)
 
     def handle_mmodel(self, mmodel, insert: bool):
+        if functions.is_reserved_name(mmodel.get_name_str()):
+            self.table.error.append(ReservedName(mmodel.get_name().range, mmodel.get_name_str()))
+            return
         if mmodel.get_params() is not None:
             params = mmodel.get_params().get_items()
         else:
