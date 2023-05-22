@@ -29,4 +29,4 @@ ve() {
     $current_path_to_python -m pip --disable-pip-version-check install -t $HOME/${venv}/lib/python3.9/site-packages --no-cache-dir --upgrade -r $HOME/${venv}/all-requirements.txt && success=1
 }
 
-ve "$@"     
+ve "$@"

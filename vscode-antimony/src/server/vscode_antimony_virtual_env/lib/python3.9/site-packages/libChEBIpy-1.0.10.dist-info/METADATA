@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: libChEBIpy
+Version: 1.0.10
+Summary: libChEBIpy: a Python API for accessing the ChEBI database
+Home-page: http://github.com/synbiochem/libChEBIpy
+Author: Neil Swainston
+Author-email: neil.swainston@manchester.ac.uk
+License: MIT
+Keywords: chemistry cheminformatics ChEBI
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 2.7
+Requires-Dist: requests
+Requires-Dist: six
+
+libChEBIpy: a Python API for accessing the ChEBI database
+
+

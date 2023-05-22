@@ -1,0 +1,2 @@
+[console_scripts]
+bioservices = bioservices.main:main
