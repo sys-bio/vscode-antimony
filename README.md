@@ -45,7 +45,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 
 * When an XML or Antimony model file is opened for the first time, a pop up will show.
 <p align=center>
-<img src="docs/images/Step3.png" width=75%>
+<img src="docs/images/popup.png" width=75%>
 <br/>
 <em>(Pop up for setup)</em>
 </p>
@@ -57,16 +57,15 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Open Antimony Start Page)</em>
 </p>
 
-* Click yes to allow creation of virtual environment and installation of required dependencies
-* Click no to use your own default python interpreter (You can change the python interpreter in the VSCode Settings. Use (Cmd + ,) for Mac and (Ctrl + ,) for Windows).
+* Click yes to allow creation of virtual environment and installation of required dependencies. Click no to use your own default python interpreter (You can change the Vscode-Antimony python interpreter in the VSCode Settings in section Extensions/vscode-antimony. Use (Cmd + ,) for Mac and (Ctrl + ,) for Windows).
 <br/>
 <p align=center>
-<img src="docs/images/installation.gif" width=75%>
+<img src="docs/images/yesno.png" width=75%>
 <br/>
 <em>(Permissions for Virtual Environment Setup)</em>
 </p>
 
-* If there are errors during the installation, cancel and attempt to restart VSCode or your computer before clicking yes to the prompt again. Otherwise, clear the error prompts--if there are any--on the bottom right corner, right click on the ant/xml file and press "Delete Virtual Environment". Then, restart VSCode.
+* If there are errors during/after the installation, clear the error prompts--if there are any--on the bottom right corner, right click on the ant/xml file and press "Delete Virtual Environment". Attempt to restart VSCode or your device before clicking yes to the installation prompt again.
 <br/>
 <p align=center>
 <img src="docs/images/deletevirenv.png" width=75%>
