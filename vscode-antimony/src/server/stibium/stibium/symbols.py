@@ -246,55 +246,59 @@ class Symbol:
         ret += '```'
 
         if self.annotations:
-            # add the first annotation
+            # add all annotations for a variable
             for annotation in self.annotations:
-                uri = annotation.get_uri()
-                ret += '\n***\n{}\n'.format(uri)
-                if uri[0:4] != 'http':
-                    continue
-                if uri in self.queried_annotations.keys():
-                    ret += self.queried_annotations[uri]
-                    continue
-                uri_split = uri.split('/')
-                website = uri_split[2]
-                chebi_id = uri_split[4]
-                if website == 'identifiers.org':
-                    if uri_split[3] == 'chebi':
-                        chebi = ChEBI()
-                        res = chebi.getCompleteEntity(chebiId=chebi_id)
-                        name = res.chebiAsciiName
-                        definition = res.definition
-                        queried = '\n{}\n\n{}\n'.format(name, definition)
-                        ret += queried
+                uris = annotation.get_uri()
+                for uri in uris:
+                    ret += '\n***\n{}\n'.format(uri)
+                    if uri[0:4] != 'http':
+                        continue
+                    if uri in self.queried_annotations.keys():
+                        ret += self.queried_annotations[uri]
+                        continue
+                    uri_split = uri.split('/')
+                    website = uri_split[2]
+                    if uri_split.__len__() != 5:
+                        continue
+                    else:
+                        chebi_id = uri_split[4]
+                    if website == 'identifiers.org':
+                        if uri_split[3] == 'chebi':
+                            chebi = ChEBI()
+                            res = chebi.getCompleteEntity(chebiId=chebi_id)
+                            name = res.chebiAsciiName
+                            definition = res.definition
+                            queried = '\n{}\n\n{}\n'.format(name, definition)
+                            ret += queried
+                            self.queried_annotations[uri] = queried
+                        else:
+                            continue
+                            # uniport = UniProt()
+                    elif website == 'www.rhea-db.org':
+                        rhea = Rhea()
+                        df_res = rhea.query(uri_split[4], columns="equation", limit=10)
+                        equation = df_res['Equation']
+                        queried = '\n{}\n'.format(equation[0])
+                        df_res += queried
                         self.queried_annotations[uri] = queried
                     else:
-                        continue
-                        # uniport = UniProt()
-                elif website == 'www.rhea-db.org':
-                    rhea = Rhea()
-                    df_res = rhea.query(uri_split[4], columns="equation", limit=10)
-                    equation = df_res['Equation']
-                    queried = '\n{}\n'.format(equation[0])
-                    df_res += queried
-                    self.queried_annotations[uri] = queried
-                else:
-                    ontology_name = uri_split[-1].split('_')[0].lower()
-                    iri = uri_split[-1]
-                    response = requests.get('http://www.ebi.ac.uk/ols/api/ontologies/' + ontology_name + '/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F' + iri)
-                    if response.status_code == 406:
-                        continue
-                    response = response.json()
-                    if ontology_name == 'pr' or ontology_name == 'ma' or ontology_name == 'obi' or ontology_name == 'fma':
-                        definition = response['description']
-                    else:
-                        response_annot = response['annotation']
-                        definition = response_annot['definition']
-                    name = response['label']
-                    queried =  '\n{}\n'.format(name)
-                    if definition:
-                        queried += '\n{}\n'.format(definition[0])
-                    ret += queried
-                    self.queried_annotations[uri] = queried
+                        ontology_name = uri_split[-1].split('_')[0].lower()
+                        iri = uri_split[-1]
+                        response = requests.get('http://www.ebi.ac.uk/ols/api/ontologies/' + ontology_name + '/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F' + iri)
+                        if response.status_code == 406:
+                            continue
+                        response = response.json()
+                        if ontology_name == 'pr' or ontology_name == 'ma' or ontology_name == 'obi' or ontology_name == 'fma':
+                            definition = response['description']
+                        else:
+                            response_annot = response['annotation']
+                            definition = response_annot['definition']
+                        name = response['label']
+                        queried =  '\n{}\n'.format(name)
+                        if definition:
+                            queried += '\n{}\n'.format(definition[0])
+                        ret += queried
+                        self.queried_annotations[uri] = queried
         if self.sboterms:
             # add all sboterms
             for sboterm in self.sboterms:

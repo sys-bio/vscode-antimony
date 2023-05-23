@@ -319,15 +319,16 @@ def test_annotation(code: str, name: str, keyword: str, uri: str):
 
     # structural assertions
     assert isinstance(annotation, Annotation)
-    assert len(annotation.children) == 3
+    assert len(annotation.children) == 4
     assert isinstance(annotation.children[0], VarName)
     assert isinstance(annotation.children[1], Keyword)
     assert isinstance(annotation.children[2], StringLiteral)
+    assert isinstance(annotation.children[3], type(None))
 
     # interface assertions
     assert annotation.get_name_text() == name
     assert annotation.get_keyword() == keyword
-    assert annotation.get_uri() == uri
+    assert annotation.get_uri()[0] == uri
 
 
 # test multiple statements separated by semicolon or newline

@@ -649,16 +649,16 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 		let message = '';
 		switch (platform) {
 		case 'linux':
-			message = `[IMPORTANT: Linux users will have to install python3.10, venv python3.10 package, pip, and NodeJS.] 
+			message = `[IMPORTANT: Linux users must install python3.10, venv python3.10 package, pip, and NodeJS beforehand.] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		case 'win32':
 		case 'win64':
-			message = `[IMPORTANT: Windows users MUST install python3.11 (must be version 3.11), and NodeJS.] 
+			message = `[IMPORTANT: Windows users MUST install the Vscode Antimony Dependencies Installer beforehand.] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		case 'darwin':
-			message = `[IMPORTANT: Mac users MUST install python3.9 (must be version 3.9), and NodeJS.] 
+			message = `[IMPORTANT: Mac users MUST install python3.9 (must be version 3.9), and NodeJS beforehand.] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		default:

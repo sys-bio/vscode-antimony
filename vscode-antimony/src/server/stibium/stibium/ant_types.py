@@ -725,8 +725,21 @@ class Declaration(TrunkNode):
 
 # TODO All below
 @dataclass
+class NewAnnotation(TrunkNode):
+    children: Tuple[Operator, Newline, StringLiteral] = field(repr=False)
+
+    def get_uri(self):
+        return self.children[2].get_str()
+
+@dataclass
+class AnnotationList(TrunkNode):
+
+    def get_all_annotations(self) -> List[NewAnnotation]:
+        return cast(List[NewAnnotation], self.children[::2])
+
+@dataclass
 class Annotation(TrunkNode):
-    children: Tuple[VarName, Keyword, StringLiteral]
+    children: Tuple[VarName, Keyword, StringLiteral, Optional[AnnotationList]] = field(repr=False)
 
     def get_var_name(self):
         return self.children[0]
@@ -738,8 +751,14 @@ class Annotation(TrunkNode):
         return self.children[1].text
 
     def get_uri(self):
-        return self.children[2].get_str()
-    
+        alist = self.children[3]
+        uris = list()
+        if alist is not None:
+            for annot in alist.get_all_annotations():
+                uris.append(annot.get_uri())
+        uris.append(self.children[2].get_str())
+        return uris
+
 @dataclass
 class Sboterm(TrunkNode):
     children: Tuple[VarName, Keyword, Operator, Number]

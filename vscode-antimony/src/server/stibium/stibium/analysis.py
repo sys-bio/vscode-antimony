@@ -1010,52 +1010,56 @@ class AntTreeAnalyzer:
         qname = QName(scope, name)
         symbol = self.table.get(qname)
         if symbol:
-            uri = annotation.get_uri()
-            if uri[0:4] != HTTP:
-                return
-            if uri in symbol[0].queried_annotations.keys():
-                return
-            uri_split = uri.split(SLASH)
-            website = uri_split[2]
-            chebi_id = uri_split[4]
-            if website == IDENTIFIERS_ORG:
-                if uri_split[3] == CHEBI_LOWER:
-                    chebi = ChEBI()
-                    res = chebi.getCompleteEntity(chebi_id)
-                    name = res.chebiAsciiName
-                    definition = res.definition
-                    queried = '\n{}\n\n{}\n'.format(name, definition)
+            uris = annotation.get_uri()
+            for uri in uris:
+                if uri[0:4] != HTTP:
+                    continue
+                if uri in symbol[0].queried_annotations.keys():
+                    continue
+                uri_split = uri.split(SLASH)
+                website = uri_split[2]
+                if uri_split.__len__() != 5:
+                    continue
+                else:
+                    chebi_id = uri_split[4]
+                if website == IDENTIFIERS_ORG:
+                    if uri_split[3] == CHEBI_LOWER:
+                        chebi = ChEBI()
+                        res = chebi.getCompleteEntity(chebi_id)
+                        name = res.chebiAsciiName
+                        definition = res.definition
+                        queried = '\n{}\n\n{}\n'.format(name, definition)
+                        symbol[0].queried_annotations[uri] = queried
+                    else:
+                        continue
+                        # uniport = UniProt()
+                elif website == RHEA_URL:
+                    rhea = Rhea()
+                    df_res = rhea.query(uri_split[4], columns=EQUATION_LOWER, limit=10)
+                    equation = df_res[EQUATION_CAP]
+                    queried = '\n{}\n'.format(equation[0])
+                    df_res += queried
                     symbol[0].queried_annotations[uri] = queried
                 else:
-                    return
-                    # uniport = UniProt()
-            elif website == RHEA_URL:
-                rhea = Rhea()
-                df_res = rhea.query(uri_split[4], columns=EQUATION_LOWER, limit=10)
-                equation = df_res[EQUATION_CAP]
-                queried = '\n{}\n'.format(equation[0])
-                df_res += queried
-                symbol[0].queried_annotations[uri] = queried
-            else:
-                ontology_info = uri_split[-1]
-                ontology_info_split = ontology_info.split('_')
-                ontology_name = ontology_info_split[0].lower()
-                iri = uri_split[-1]
-                
-                response = requests.get(ONTOLOGIES_URL + ontology_name + ONTOLOGIES_URL_SECOND_PART + iri)
-                if response.status_code == 406:
-                    return
-                response = response.json()
-                if ontology_name == 'pr' or ontology_name == 'ma' or ontology_name == 'obi' or ontology_name == 'fma':
-                    definition = response['description']
-                else:
-                    response_annot = response['annotation']
-                    definition = response_annot['definition']
-                name = response['label']
-                queried =  '\n{}\n'.format(name)
-                if definition:
-                    queried += '\n{}\n'.format(definition[0])
-                symbol[0].queried_annotations[uri] = queried
+                    ontology_info = uri_split[-1]
+                    ontology_info_split = ontology_info.split('_')
+                    ontology_name = ontology_info_split[0].lower()
+                    iri = uri_split[-1]
+                    
+                    response = requests.get(ONTOLOGIES_URL + ontology_name + ONTOLOGIES_URL_SECOND_PART + iri)
+                    if response.status_code == 406:
+                        return
+                    response = response.json()
+                    if ontology_name == 'pr' or ontology_name == 'ma' or ontology_name == 'obi' or ontology_name == 'fma':
+                        definition = response['description']
+                    else:
+                        response_annot = response['annotation']
+                        definition = response_annot['definition']
+                    name = response['label']
+                    queried =  '\n{}\n'.format(name)
+                    if definition:
+                        queried += '\n{}\n'.format(definition[0])
+                    symbol[0].queried_annotations[uri] = queried
 
     def pre_handle_is_assignment(self, scope: AbstractScope, is_assignment: IsAssignment, insert: bool):
         self.pending_is_assignments.append((scope, is_assignment, insert))
