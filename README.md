@@ -20,14 +20,13 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 * Once installed, open the Downloads folder on your device
 * Double click "Vscode-Antimony-Dependencies-Installer" to start the setup process. **(This will not intefer with any other dependencies and programs of your device)**.
 * Once installed, restart Visual Code Studio.
-* **_This extension may require [Git](https://git-scm.com/downloads) to be installed before use. Make sure to add Git to PATH when installing. Restart Visual Studio Code after installation of Git._**<br/>
+* **_This extension may require [Git](https://git-scm.com/downloads) to be installed before use. Make sure to add Git to PATH when installing. Restart Visual Studio Code after installation of Git._** <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Mac
-* Mac users must install the [Vscode Antimony Setup Installer](https://github.com/sys-bio/vscode-antimony/blob/install/setup/Vscode_Antimony_Setup.pkg). 
-* Once installed, open the Downloads folder on your device.
-* Double click **Vscode_Antimony_Setup.pkg** to start the setup process, **this will not intefer with any other dependencies and programs of your device**
-* Once installed, you should see a folder named **Vscode_Antimony_Setup** in your Downloads folder. Open the folder and double click **NodeJs**. Proceed with installing **NodeJs**. **(This will not intefer with any other dependencies and programs of your device)**
+* Mac users must install [Python3.9 (must be version 3.9)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg).
+* This extension requires [NodeJS](https://nodejs.org/en/download/) to be installed before use regardless of operating system used. Restart Visual Studio Code after installation of NodeJS.
+* **_If there are any non VSCode Antimony associated virtual environments activated, please deactivate them before setting up VSCode Antimony._**
 * Once installed, restart Visual Code Studio. <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
