@@ -37,7 +37,6 @@ import time
 from AMAS import recommender, species_annotation
 from bioservices import ChEBI
 import requests
-import tellurium as te
 import zipfile
 import io
 
@@ -140,8 +139,7 @@ def sbml_str_to_ant_str(ls: LanguageServer, args):
 def sbml_file_to_ant_file(ls: LanguageServer, args):
     sbml = args[0].fileName
     output_dir = args[1]
-    rr = te.loads(sbml)
-    ant_str = rr.getAntimonyModel()
+    ant_str = _get_antimony_str(sbml)
     if 'error' in ant_str:
         return ant_str
     else:

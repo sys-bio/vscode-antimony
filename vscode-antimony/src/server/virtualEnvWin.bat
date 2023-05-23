@@ -30,7 +30,6 @@ echo ptyprocess==0.7.0 ^
 echo pygls==0.9.1 ^ 
 echo requests==2.25.1 ^ 
 echo requests-cache==0.5.2 ^ 
-echo tellurium ^ 
 echo six==1.15.0 ^ 
 echo urllib3==1.26.4 ^ 
 echo antimony ^ 
