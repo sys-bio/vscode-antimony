@@ -101,9 +101,10 @@ unit_declaration : "unit" var_name "=" sum
 unit_assignment : var_name "has" sum
 
 // this should not be a reaction name, I'm just being lazy
-mmodel_call : [reaction_name] NAME "(" [parameters] ")"
+mmodel_call : [reaction_name] NAME "(" [init_params] ")"
 
-function_call : namemaybein ("=" | AEQ) NAME "(" [parameters] ")"
+// now replaced by func_call rule
+// function_call : namemaybein ("=" | AEQ) NAME "(" [parameters] ")"
 
 VAR_MODIFIER: /\b(var|const)\b/
 SUB_MODIFIER: /\b(substanceOnly)\b/
@@ -133,7 +134,7 @@ TYPE_MODIFIER: /\b(species|compartment|formula)\b/
     | "-" atom
     | "+" atom
     | "(" sum ")"
-    | func_call 
+    | func_call
     | "(" bool_exp ")"
 
 func_call : var_name "(" [parameters] ")"
@@ -149,7 +150,7 @@ func_call : var_name "(" [parameters] ")"
     | unit_declaration
     | unit_assignment
     | mmodel_call
-    | function_call
+    // | function_call
     | variable_in
     | is_assignment
     | import
@@ -167,12 +168,14 @@ model : ("model" | "module") NAME simple_stmt_list END
 import : "import" ESCAPED_STRING
 
 // Modular Model
-modular_model : "model" ["*"] NAME "(" [parameters] ")" simple_stmt_list END
+modular_model : "model" ["*"] NAME "(" [init_params] ")" simple_stmt_list END
 
 // Function
-function : "function" NAME "(" [parameters] ")" NEWLINE sum [";"] NEWLINE END
+function : "function" NAME "(" [init_params] ")" NEWLINE sum [";"] NEWLINE END
 
-parameters : (NAME | NUMBER) ("," (NAME | NUMBER))*
+parameters : (bool_exp) ("," (bool_exp))*
+
+init_params : (NAME | NUMBER) ("," (NAME | NUMBER))*
 
 variable_in : var_name in_comp
 

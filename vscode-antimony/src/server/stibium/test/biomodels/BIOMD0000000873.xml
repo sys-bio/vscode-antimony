@@ -1,0 +1,2296 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" xmlns:html="http://www.w3.org/1999/xhtml" level="2" version="1">
+  <annotation>
+Created by The MathWorks, Inc. SimBiology tool, Version 3.3
+</annotation>
+  <model id="mw544bb737_3306_4dd3_8b42_857e3d8a4062" metaid="COPASI0" name="Soni2018 - IL6 induced M2 Phenotype in Leishmania major infected macrophage">
+    <notes>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+     <p>IL-6 has been proposed to favor the development of Th2 responses and play an important role in the communication between cells of multicellular organisms. They are involved in the regulation of complex cellular processes such as proliferation, differentiation and act as key player during inflammation and immune response. Th2 cytokines play an immunoregulatory role in early infection. Literature says in mice infected with L. major, IL-6 may promote the development of both Th1 and Th2 responses. IL-4 is also considered to be the signature cytokine of Th-2 response. IL6 was initially characterized as a Th1 cytokine but later on it was proved to be a pleiotropic cytokine, secreted from different cell types including the macrophages. A major challenge is to understand how these complex non-linear processes are connected and regulated. Systems biology approaches may be used to tackle this challenge in an iterative process of quantitative mathematical analysis. In this study, we created an in silico model of IL6 mediated macrophage activation which suffers from an excessive impact of the negative feedback loop involving SOCS1. The strategy adopted in this framework may help to reduce the complexity of the leishmanial IL6 model analysis and also laydown various physiological or pathological conditions of IL6 signaling in future.</p>
+  </body>
+    </notes>
+    <annotation>
+      <COPASI xmlns="http://www.copasi.org/static/sbml">
+        <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+          <rdf:Description rdf:about="#COPASI0">
+            <dcterms:created>
+              <rdf:Description>
+                <dcterms:W3CDTF>2018-11-30T14:18:28Z</dcterms:W3CDTF>
+              </rdf:Description>
+            </dcterms:created>
+          </rdf:Description>
+        </rdf:RDF>
+      </COPASI>
+    </annotation>
+      <listOfFunctionDefinitions>
+      <functionDefinition id="Function_for_reaction_15b" name="Function for reaction_15b">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw7ff2e94a_ac19_47ed_9127_14d385a1e544 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwb9a40fab_a7c9_4984_805f_045fefc4ff32 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwf8062aeb_69d6_416b_b877_9687ef6fbc80 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> mw7ff2e94a_ac19_47ed_9127_14d385a1e544 </ci>
+                  <ci> mwb9a40fab_a7c9_4984_805f_045fefc4ff32 </ci>
+                  <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                </apply>
+                <apply>
+                  <plus/>
+                  <ci> mwf8062aeb_69d6_416b_b877_9687ef6fbc80 </ci>
+                  <apply>
+                    <times/>
+                    <ci> mwb9a40fab_a7c9_4984_805f_045fefc4ff32 </ci>
+                    <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_22" name="Function for reaction_22">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw3d58864c_79c7_4ff2_98fe_1a85b2ccc43d </ci>
+            </bvar>
+            <bvar>
+              <ci> mw5805aaa6_5a0a_495b_a21b_16e6ba6f39bc </ci>
+            </bvar>
+            <bvar>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> mw5805aaa6_5a0a_495b_a21b_16e6ba6f39bc </ci>
+              <ci> mw3d58864c_79c7_4ff2_98fe_1a85b2ccc43d </ci>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_23" name="Function for reaction_23">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw57b4236e_c789_4799_a4f9_a03437a5593a </ci>
+            </bvar>
+            <bvar>
+              <ci> mw658feef9_67a1_431f_95fa_7358c6b294d2 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw8d03d46b_3832_4fe6_8a6b_467ef38af206 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwacd53f34_4935_4b6a_8267_024f0d966c8c </ci>
+            </bvar>
+            <bvar>
+              <ci> mwf50b6519_aaf9_4cb0_a651_d5a3159d7390 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> mw658feef9_67a1_431f_95fa_7358c6b294d2 </ci>
+                  <ci> mw57b4236e_c789_4799_a4f9_a03437a5593a </ci>
+                  <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                </apply>
+                <apply>
+                  <plus/>
+                  <apply>
+                    <times/>
+                    <ci> mw8d03d46b_3832_4fe6_8a6b_467ef38af206 </ci>
+                    <apply>
+                      <plus/>
+                      <cn type="integer"> 1 </cn>
+                      <apply>
+                        <divide/>
+                        <apply>
+                          <times/>
+                          <ci> mwacd53f34_4935_4b6a_8267_024f0d966c8c </ci>
+                          <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                        </apply>
+                        <ci> mwf50b6519_aaf9_4cb0_a651_d5a3159d7390 </ci>
+                      </apply>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <times/>
+                    <ci> mw57b4236e_c789_4799_a4f9_a03437a5593a </ci>
+                    <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_3" name="Function for reaction_3">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw0930c7cf_99a6_4a20_a33d_02fd90e424bb </ci>
+            </bvar>
+            <bvar>
+              <ci> mwc42127ea_2b78_4381_b230_30e95cd5a9d6 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mw0930c7cf_99a6_4a20_a33d_02fd90e424bb </ci>
+                <ci> mwc42127ea_2b78_4381_b230_30e95cd5a9d6 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_4" name="Function for reaction_4">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw4fd8b902_e2a2_4910_899c_2a7d3425e0e0 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw5b78650d_d92f_4602_bbe9_66d900ff312e </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mw5b78650d_d92f_4602_bbe9_66d900ff312e </ci>
+                <ci> mw4fd8b902_e2a2_4910_899c_2a7d3425e0e0 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_5" name="Function for reaction_5">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mwec4950e3_ecf8_4077_9cd1_b70818e911b9 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwf06c0537_577b_4f13_a9a3_521f9d2217fb </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mwec4950e3_ecf8_4077_9cd1_b70818e911b9 </ci>
+                <ci> mwf06c0537_577b_4f13_a9a3_521f9d2217fb </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_6" name="Function for reaction_6">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw9c4a9937_faff_4853_8a76_d17a084948d9 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwbba20281_3d8b_48c3_8e13_dee78e87dfb8 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mw9c4a9937_faff_4853_8a76_d17a084948d9 </ci>
+                <ci> mwbba20281_3d8b_48c3_8e13_dee78e87dfb8 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_7" name="Function for reaction_7">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw78198c86_4b16_4117_8592_6a95c3953126 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwb8d480f9_5783_4feb_aaf1_2f861b09e009 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mwb8d480f9_5783_4feb_aaf1_2f861b09e009 </ci>
+                <ci> mw78198c86_4b16_4117_8592_6a95c3953126 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_10" name="Function for reaction_10">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw5607cee0_ee75_4065_9368_d07c3abbe18b </ci>
+            </bvar>
+            <bvar>
+              <ci> mw58dfe861_b815_48b4_89e9_6f71cccb561e </ci>
+            </bvar>
+            <bvar>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> mw58dfe861_b815_48b4_89e9_6f71cccb561e </ci>
+              <ci> mw5607cee0_ee75_4065_9368_d07c3abbe18b </ci>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_11" name="Function for reaction_11">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw8675a533_92fb_4fbf_b747_7bca05c5841c </ci>
+            </bvar>
+            <bvar>
+              <ci> mwdf0efe39_4f88_4fc1_930b_55865b8d52f0 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> mwdf0efe39_4f88_4fc1_930b_55865b8d52f0 </ci>
+              <ci> mw8675a533_92fb_4fbf_b747_7bca05c5841c </ci>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_13" name="Function for reaction_13">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw4594ab28_d538_4a72_875a_d878e907020d </ci>
+            </bvar>
+            <bvar>
+              <ci> mw5b252d78_9ab9_438c_8b81_2189b1f76357 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwb167e768_b778_4072_8798_3cf19e96d1d7 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mw4594ab28_d538_4a72_875a_d878e907020d </ci>
+                <ci> mwb167e768_b778_4072_8798_3cf19e96d1d7 </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+                <ci> mw5b252d78_9ab9_438c_8b81_2189b1f76357 </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+              </apply>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_12" name="Function for reaction_12">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw56c26af9_9f4a_4f13_936a_94ae6364342b </ci>
+            </bvar>
+            <bvar>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw7b7a1d20_f258_4e3d_9234_62db60126326 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw9b410665_6c5e_4f37_a7f2_0cb0963b98b1 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mw7b7a1d20_f258_4e3d_9234_62db60126326 </ci>
+                <ci> mw9b410665_6c5e_4f37_a7f2_0cb0963b98b1 </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+                <ci> mw56c26af9_9f4a_4f13_936a_94ae6364342b </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+              </apply>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_15a" name="Function for reaction_15a">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw58370246_a992_4253_8029_12fbb07a417d </ci>
+            </bvar>
+            <bvar>
+              <ci> mw5ea6c681_bf85_4ac5_9aac_536087a97950 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw65a608c7_1026_4108_bb3d_f3358430aaf2 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> mw65a608c7_1026_4108_bb3d_f3358430aaf2 </ci>
+                  <ci> mw58370246_a992_4253_8029_12fbb07a417d </ci>
+                  <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                </apply>
+                <apply>
+                  <plus/>
+                  <ci> mw5ea6c681_bf85_4ac5_9aac_536087a97950 </ci>
+                  <apply>
+                    <times/>
+                    <ci> mw58370246_a992_4253_8029_12fbb07a417d </ci>
+                    <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_14a" name="Function for reaction_14a">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw106608bc_52fb_40e5_babb_cbb58aaaeed4 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwf219928e_abba_4c09_9597_5d6910f7e4d9 </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> mw106608bc_52fb_40e5_babb_cbb58aaaeed4 </ci>
+              <ci> mwf219928e_abba_4c09_9597_5d6910f7e4d9 </ci>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_8" name="Function for reaction_8">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw7938fab7_d0c6_497b_8fb6_75922fcc19d5 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwe0f7b31e_2efc_481e_90d0_e86c3b8d0be4 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> mwe0f7b31e_2efc_481e_90d0_e86c3b8d0be4 </ci>
+              <ci> mw7938fab7_d0c6_497b_8fb6_75922fcc19d5 </ci>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_9" name="Function for reaction_9">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw1981fa4d_c122_41a6_8c85_55a49d408c00 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw340bc412_34ab_498a_bd42_47dd6cf025bd </ci>
+            </bvar>
+            <bvar>
+              <ci> mw6cf7ac60_5bab_4b73_bb47_dc064486f000 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwba110304_bd9a_4fd0_9b4c_b8bfc975e30b </ci>
+            </bvar>
+            <bvar>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> mw1981fa4d_c122_41a6_8c85_55a49d408c00 </ci>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <times/>
+                      <ci> mwba110304_bd9a_4fd0_9b4c_b8bfc975e30b </ci>
+                      <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+                    </apply>
+                    <ci> mw340bc412_34ab_498a_bd42_47dd6cf025bd </ci>
+                  </apply>
+                </apply>
+                <apply>
+                  <plus/>
+                  <ci> mw6cf7ac60_5bab_4b73_bb47_dc064486f000 </ci>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <times/>
+                      <ci> mwba110304_bd9a_4fd0_9b4c_b8bfc975e30b </ci>
+                      <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+                    </apply>
+                    <ci> mw340bc412_34ab_498a_bd42_47dd6cf025bd </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_19" name="Function for reaction_19">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw87e9394c_7eef_4271_85bc_d1b0a96db1f2 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwd5f166e6_df0a_45bf_b662_e87b91b79a27 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mw87e9394c_7eef_4271_85bc_d1b0a96db1f2 </ci>
+                <ci> mwd5f166e6_df0a_45bf_b662_e87b91b79a27 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_20" name="Function for reaction_20">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw9275f30d_c42b_459c_91c5_67b7e08b6486 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwd84cf612_edaf_4dd9_9abd_003cc0569864 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> mwd84cf612_edaf_4dd9_9abd_003cc0569864 </ci>
+              <ci> mw9275f30d_c42b_459c_91c5_67b7e08b6486 </ci>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_21" name="Function for reaction_21">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw051e0a03_1d45_448b_be4a_9d489e1b3ff9 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw322ca6ab_81cf_4f6c_835e_48bb5f8b11de </ci>
+            </bvar>
+            <bvar>
+              <ci> mwbe46ba92_97de_4cc4_970d_2dec54671573 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwf9b630f8_c8a5_4fd0_bef1_92819b1257d2 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> mw051e0a03_1d45_448b_be4a_9d489e1b3ff9 </ci>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <times/>
+                      <ci> mwbe46ba92_97de_4cc4_970d_2dec54671573 </ci>
+                      <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+                    </apply>
+                    <ci> mwf9b630f8_c8a5_4fd0_bef1_92819b1257d2 </ci>
+                  </apply>
+                </apply>
+                <apply>
+                  <plus/>
+                  <ci> mw322ca6ab_81cf_4f6c_835e_48bb5f8b11de </ci>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <times/>
+                      <ci> mwbe46ba92_97de_4cc4_970d_2dec54671573 </ci>
+                      <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+                    </apply>
+                    <ci> mwf9b630f8_c8a5_4fd0_bef1_92819b1257d2 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_16" name="Function for reaction_16">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw869055b5_5d27_4f4a_a390_b3fa48d6780e </ci>
+            </bvar>
+            <bvar>
+              <ci> mwe479dc91_2774_4239_8212_60a330a84a76 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mwe479dc91_2774_4239_8212_60a330a84a76 </ci>
+                <ci> mw869055b5_5d27_4f4a_a390_b3fa48d6780e </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_17" name="Function for reaction_17">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mwc84af692_e3fc_4ede_99b6_b0cce3729bf7 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwf5ba0e23_9a0b_4bf6_b0ea_9fbc91843b5c </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> mwf5ba0e23_9a0b_4bf6_b0ea_9fbc91843b5c </ci>
+              <ci> mwc84af692_e3fc_4ede_99b6_b0cce3729bf7 </ci>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_18" name="Function for reaction_18">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw3bf6abba_fc8d_4254_bc9c_037ec64d3e12 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw4c1174b0_1cba_4d7c_bedb_c29d9f65c10c </ci>
+            </bvar>
+            <bvar>
+              <ci> mw55b6f083_2b28_4a1a_ab90_82a751525d72 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw85474b5d_1b19_4388_bcee_098fbb23f2e0 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> mw3bf6abba_fc8d_4254_bc9c_037ec64d3e12 </ci>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <times/>
+                      <ci> mw55b6f083_2b28_4a1a_ab90_82a751525d72 </ci>
+                      <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+                    </apply>
+                    <ci> mw4c1174b0_1cba_4d7c_bedb_c29d9f65c10c </ci>
+                  </apply>
+                </apply>
+                <apply>
+                  <plus/>
+                  <ci> mw85474b5d_1b19_4388_bcee_098fbb23f2e0 </ci>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <times/>
+                      <ci> mw55b6f083_2b28_4a1a_ab90_82a751525d72 </ci>
+                      <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+                    </apply>
+                    <ci> mw4c1174b0_1cba_4d7c_bedb_c29d9f65c10c </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_14b" name="Function for reaction_14b">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwd01d5494_fdcd_494e_8652_87201fa5b291 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwf219928e_abba_4c09_9597_5d6910f7e4d9 </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> mwd01d5494_fdcd_494e_8652_87201fa5b291 </ci>
+              <ci> mwf219928e_abba_4c09_9597_5d6910f7e4d9 </ci>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_28" name="Function for reaction_28">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw364ca1a4_fc56_4138_8031_16341ac865de </ci>
+            </bvar>
+            <bvar>
+              <ci> mw5b67154e_1851_4ba0_9491_7a14b2064c42 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> mw5b67154e_1851_4ba0_9491_7a14b2064c42 </ci>
+              <ci> mw364ca1a4_fc56_4138_8031_16341ac865de </ci>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_24" name="Function for reaction_24">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw202bb744_d70a_4cf2_b2db_0d9d360bdfb5 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw78198c86_4b16_4117_8592_6a95c3953126 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mw202bb744_d70a_4cf2_b2db_0d9d360bdfb5 </ci>
+                <ci> mw78198c86_4b16_4117_8592_6a95c3953126 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_25" name="Function for reaction_25">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw3288f227_0208_435a_a41c_b1778f50008c </ci>
+            </bvar>
+            <bvar>
+              <ci> mwf26f605f_29e9_4454_834c_7b3edab4bbc2 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mw3288f227_0208_435a_a41c_b1778f50008c </ci>
+                <ci> mwf26f605f_29e9_4454_834c_7b3edab4bbc2 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_26" name="Function for reaction_26">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw10b15557_55f5_4525_b19d_161b056f5791 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwe250484c_acc9_4453_9eb6_49cda54b2f1e </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mwe250484c_acc9_4453_9eb6_49cda54b2f1e </ci>
+                <ci> mw10b15557_55f5_4525_b19d_161b056f5791 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_27" name="Function for reaction_27">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw2ba0a425_a224_4fa1_affc_bcc206027a3e </ci>
+            </bvar>
+            <bvar>
+              <ci> mw58370246_a992_4253_8029_12fbb07a417d </ci>
+            </bvar>
+            <bvar>
+              <ci> mw8f586bdf_8d42_49c1_807a_670a1c49cbd9 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> mw8f586bdf_8d42_49c1_807a_670a1c49cbd9 </ci>
+                  <ci> mw58370246_a992_4253_8029_12fbb07a417d </ci>
+                  <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                </apply>
+                <apply>
+                  <plus/>
+                  <ci> mw2ba0a425_a224_4fa1_affc_bcc206027a3e </ci>
+                  <apply>
+                    <times/>
+                    <ci> mw58370246_a992_4253_8029_12fbb07a417d </ci>
+                    <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_34" name="Function for reaction_34">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw4fc13b75_10cc_41fb_b9f8_1ce95fccae73 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwe808b2da_9ed2_421e_a8d9_3c3534d42ee0 </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> mwe808b2da_9ed2_421e_a8d9_3c3534d42ee0 </ci>
+              <ci> mw4fc13b75_10cc_41fb_b9f8_1ce95fccae73 </ci>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_29" name="Function for reaction_29">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw49322d55_ad63_4e7c_b1eb_42835c9b577a </ci>
+            </bvar>
+            <bvar>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw7246cef3_7a78_43b0_acb7_21533c394daa </ci>
+            </bvar>
+            <bvar>
+              <ci> mw85ae78ed_34f7_460c_b906_1f512a83810c </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mw7246cef3_7a78_43b0_acb7_21533c394daa </ci>
+                <ci> mw85ae78ed_34f7_460c_b906_1f512a83810c </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+                <ci> mw49322d55_ad63_4e7c_b1eb_42835c9b577a </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+              </apply>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_30" name="Function for reaction_30">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw2081c907_9d37_48a0_8581_8b8f3d5f7148 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwd7270399_0429_4c85_920a_de2e0ae74440 </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> mw2081c907_9d37_48a0_8581_8b8f3d5f7148 </ci>
+              <ci> mwd7270399_0429_4c85_920a_de2e0ae74440 </ci>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_31" name="Function for reaction_31">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw7f261959_39d2_4e8b_92b6_4466c2504544 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw91a51f27_e4be_41a6_a967_b6a63c909652 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwd7b0f9fb_1180_47bb_b8c0_be2f89aa1c59 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> mw91a51f27_e4be_41a6_a967_b6a63c909652 </ci>
+                  <ci> mw7f261959_39d2_4e8b_92b6_4466c2504544 </ci>
+                  <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                </apply>
+                <apply>
+                  <plus/>
+                  <ci> mwd7b0f9fb_1180_47bb_b8c0_be2f89aa1c59 </ci>
+                  <apply>
+                    <times/>
+                    <ci> mw7f261959_39d2_4e8b_92b6_4466c2504544 </ci>
+                    <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_32" name="Function for reaction_32">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw2a60d98a_bc06_4e05_b965_c920da8987dc </ci>
+            </bvar>
+            <bvar>
+              <ci> mw3c07a768_8e7a_49bb_8a1d_fdc92192f92b </ci>
+            </bvar>
+            <bvar>
+              <ci> mw7f261959_39d2_4e8b_92b6_4466c2504544 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw9704b67a_2c16_4ac7_a311_2096ab426758 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwacd53f34_4935_4b6a_8267_024f0d966c8c </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> mw3c07a768_8e7a_49bb_8a1d_fdc92192f92b </ci>
+                  <ci> mw7f261959_39d2_4e8b_92b6_4466c2504544 </ci>
+                  <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                </apply>
+                <apply>
+                  <plus/>
+                  <apply>
+                    <times/>
+                    <ci> mw9704b67a_2c16_4ac7_a311_2096ab426758 </ci>
+                    <apply>
+                      <plus/>
+                      <cn type="integer"> 1 </cn>
+                      <apply>
+                        <divide/>
+                        <apply>
+                          <times/>
+                          <ci> mwacd53f34_4935_4b6a_8267_024f0d966c8c </ci>
+                          <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                        </apply>
+                        <ci> mw2a60d98a_bc06_4e05_b965_c920da8987dc </ci>
+                      </apply>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <times/>
+                    <ci> mw7f261959_39d2_4e8b_92b6_4466c2504544 </ci>
+                    <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_33" name="Function for reaction_33">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw9ca6d980_6fbd_4207_9f2c_c05e2b5b0502 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwbe46ba92_97de_4cc4_970d_2dec54671573 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwcffa9e49_67c6_4908_9314_6c16030c8989 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwf32cef57_32ba_4c0f_bbaf_bbc90af4a8aa </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> mwf32cef57_32ba_4c0f_bbaf_bbc90af4a8aa </ci>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <times/>
+                      <ci> mwbe46ba92_97de_4cc4_970d_2dec54671573 </ci>
+                      <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+                    </apply>
+                    <ci> mwcffa9e49_67c6_4908_9314_6c16030c8989 </ci>
+                  </apply>
+                </apply>
+                <apply>
+                  <plus/>
+                  <ci> mw9ca6d980_6fbd_4207_9f2c_c05e2b5b0502 </ci>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <times/>
+                      <ci> mwbe46ba92_97de_4cc4_970d_2dec54671573 </ci>
+                      <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+                    </apply>
+                    <ci> mwcffa9e49_67c6_4908_9314_6c16030c8989 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_35" name="Function for reaction_35">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw287bd1ba_fbc1_43a0_94ab_38a6336bbebb </ci>
+            </bvar>
+            <bvar>
+              <ci> mw2db26dbd_dda3_4770_b923_d2725a80ccba </ci>
+            </bvar>
+            <bvar>
+              <ci> mw55b6f083_2b28_4a1a_ab90_82a751525d72 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwb86b112e_674a_4e98_8ca4_3d0273a134d4 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> mwb86b112e_674a_4e98_8ca4_3d0273a134d4 </ci>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <times/>
+                      <ci> mw55b6f083_2b28_4a1a_ab90_82a751525d72 </ci>
+                      <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+                    </apply>
+                    <ci> mw2db26dbd_dda3_4770_b923_d2725a80ccba </ci>
+                  </apply>
+                </apply>
+                <apply>
+                  <plus/>
+                  <ci> mw287bd1ba_fbc1_43a0_94ab_38a6336bbebb </ci>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <times/>
+                      <ci> mw55b6f083_2b28_4a1a_ab90_82a751525d72 </ci>
+                      <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+                    </apply>
+                    <ci> mw2db26dbd_dda3_4770_b923_d2725a80ccba </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_14" name="Function for reaction_14">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw1aca690a_9ee1_460f_bc28_780fb04c1a32 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwb9a40fab_a7c9_4984_805f_045fefc4ff32 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwf604d18f_ae32_4d08_bfef_f778aae8f24b </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> mwf604d18f_ae32_4d08_bfef_f778aae8f24b </ci>
+                  <ci> mwb9a40fab_a7c9_4984_805f_045fefc4ff32 </ci>
+                  <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                </apply>
+                <apply>
+                  <plus/>
+                  <ci> mw1aca690a_9ee1_460f_bc28_780fb04c1a32 </ci>
+                  <apply>
+                    <times/>
+                    <ci> mwb9a40fab_a7c9_4984_805f_045fefc4ff32 </ci>
+                    <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_1" name="Function for reaction_1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </bvar>
+            <bvar>
+              <ci> mw763cffc8_c121_4004_afdb_97e9de9f0081 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwa244ea2a_3e41_473b_9ae7_d0db512fc366 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwf80a94ba_03ba_44f0_b793_4f60c20fd074 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwfaacd7f7_6aa9_4e6c_a7d8_281f2022ba2f </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> mwf80a94ba_03ba_44f0_b793_4f60c20fd074 </ci>
+                <ci> mwfaacd7f7_6aa9_4e6c_a7d8_281f2022ba2f </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+                <ci> mwa244ea2a_3e41_473b_9ae7_d0db512fc366 </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+                <ci> mw763cffc8_c121_4004_afdb_97e9de9f0081 </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+              </apply>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+      <functionDefinition id="Function_for_reaction_2" name="Function for reaction_2">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <lambda>
+            <bvar>
+              <ci> mw6339814d_af4c_4eee_9455_7e20795f6aeb </ci>
+            </bvar>
+            <bvar>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </bvar>
+            <bvar>
+              <ci> mwce7a28b5_2f60_4228_a88f_ccd3a6213c3e </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> mwce7a28b5_2f60_4228_a88f_ccd3a6213c3e </ci>
+              <ci> mw6339814d_af4c_4eee_9455_7e20795f6aeb </ci>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+            </apply>
+          </lambda>
+        </math>
+            </functionDefinition>
+    </listOfFunctionDefinitions>
+    <listOfUnitDefinitions>
+      <unitDefinition id="MWBUILTINUNIT_molecule" name="molecule">
+        <listOfUnits>
+          <unit kind="mole" multiplier="1.66053872801495E-24" offset="0" metaid="unit0000"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_1__second" name="1/second">
+        <listOfUnits>
+          <unit exponent="-1" kind="second" multiplier="1" offset="0" metaid="unit0001"/>
+          <unit kind="dimensionless" multiplier="1" offset="0" metaid="unit0002"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_1__molecule_second" name="1/(molecule*second)">
+        <listOfUnits>
+          <unit exponent="-1" kind="mole" multiplier="1" offset="0" metaid="unit0003"/>
+          <unit exponent="-1" kind="second" multiplier="1" offset="0" metaid="unit0004"/>
+          <unit kind="dimensionless" multiplier="6.02214199E23" offset="0" metaid="unit0005"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_molecule__second" name="molecule/second">
+        <listOfUnits>
+          <unit kind="mole" multiplier="1" offset="0" metaid="unit0006"/>
+          <unit exponent="-1" kind="second" multiplier="1" offset="0" metaid="unit0007"/>
+          <unit kind="dimensionless" multiplier="1.66053872801495E-24" offset="0" metaid="unit0008"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_1__molecule_molecule_second" name="1/(molecule*molecule*second)">
+        <listOfUnits>
+          <unit exponent="-2" kind="mole" multiplier="1" offset="0" metaid="unit0009"/>
+          <unit exponent="-1" kind="second" multiplier="1" offset="0" metaid="unit0010"/>
+          <unit kind="dimensionless" multiplier="3.62661941477212E47" offset="0" metaid="unit0011"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment constant="true" id="mw664a2e7f_0c35_423c_ac5d_34090e629a69" name="membrane" size="1" spatialDimensions="3" metaid="compartment0000"/>
+      <compartment constant="true" id="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" name="CYTOSOL" size="1" spatialDimensions="3" metaid="compartment0001"/>
+      <compartment constant="true" id="mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9" name="NUCLEUS" outside="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" size="1" spatialDimensions="3" metaid="compartment0002"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species boundaryCondition="true" compartment="mw664a2e7f_0c35_423c_ac5d_34090e629a69" constant="true" id="mwfaacd7f7_6aa9_4e6c_a7d8_281f2022ba2f" initialAmount="1000" name="TLR2" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0000"/>
+      <species boundaryCondition="true" compartment="mw664a2e7f_0c35_423c_ac5d_34090e629a69" constant="true" id="mwa244ea2a_3e41_473b_9ae7_d0db512fc366" initialAmount="1000" name="TLR6/1" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0001"/>
+      <species boundaryCondition="true" compartment="mw664a2e7f_0c35_423c_ac5d_34090e629a69" constant="true" id="mwb167e768_b778_4072_8798_3cf19e96d1d7" initialAmount="1000" name="IL6-IL6R" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0002"/>
+      <species boundaryCondition="true" compartment="mw664a2e7f_0c35_423c_ac5d_34090e629a69" constant="true" id="mw9b410665_6c5e_4f37_a7f2_0cb0963b98b1" initialAmount="100000" name="IL6R" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0003"/>
+      <species boundaryCondition="true" compartment="mw664a2e7f_0c35_423c_ac5d_34090e629a69" constant="true" id="mw56c26af9_9f4a_4f13_936a_94ae6364342b" initialAmount="1000" name="IL6" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0004"/>
+      <species boundaryCondition="true" compartment="mw664a2e7f_0c35_423c_ac5d_34090e629a69" constant="true" id="mw763cffc8_c121_4004_afdb_97e9de9f0081" initialAmount="1000" name="LPG" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0005"/>
+      <species boundaryCondition="false" compartment="mw664a2e7f_0c35_423c_ac5d_34090e629a69" constant="false" id="mwf219928e_abba_4c09_9597_5d6910f7e4d9" initialAmount="1000" name="IL6-IL6R-GP130" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0006"/>
+      <species boundaryCondition="true" compartment="mw664a2e7f_0c35_423c_ac5d_34090e629a69" constant="true" id="mw85ae78ed_34f7_460c_b906_1f512a83810c" initialAmount="200" name="IFN-g" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0007"/>
+      <species boundaryCondition="true" compartment="mw664a2e7f_0c35_423c_ac5d_34090e629a69" constant="true" id="mw49322d55_ad63_4e7c_b1eb_42835c9b577a" initialAmount="150" name="IFN-gR" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0008"/>
+      <species boundaryCondition="false" compartment="mw664a2e7f_0c35_423c_ac5d_34090e629a69" constant="false" id="mwd7270399_0429_4c85_920a_de2e0ae74440" initialAmount="800" name="IFNg-IFNgR" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0009"/>
+      <species boundaryCondition="true" compartment="mw664a2e7f_0c35_423c_ac5d_34090e629a69" constant="true" id="mw5b252d78_9ab9_438c_8b81_2189b1f76357" initialAmount="1000" name="gp130" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0010"/>
+      <species boundaryCondition="false" compartment="mw664a2e7f_0c35_423c_ac5d_34090e629a69" constant="false" id="mw6339814d_af4c_4eee_9455_7e20795f6aeb" initialAmount="900" name="TLR2/6-LPG" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0011"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mwc42127ea_2b78_4381_b230_30e95cd5a9d6" initialAmount="800" name="MyD88" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0012"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mw4fd8b902_e2a2_4910_899c_2a7d3425e0e0" initialAmount="700" name="IRAK1-IRAK4" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0013"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mwf06c0537_577b_4f13_a9a3_521f9d2217fb" initialAmount="600" name="TRAF6" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0014"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mwbba20281_3d8b_48c3_8e13_dee78e87dfb8" initialAmount="500" name="TAK1-TAB1/2" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0015"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mw78198c86_4b16_4117_8592_6a95c3953126" initialAmount="400" name="IKKbeta" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0016"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mw7938fab7_d0c6_497b_8fb6_75922fcc19d5" initialAmount="300" name="NFkB" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0017"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mw8675a533_92fb_4fbf_b747_7bca05c5841c" initialAmount="100" name="IL6" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0018"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mw869055b5_5d27_4f4a_a390_b3fa48d6780e" initialAmount="90000" name="STAT3.P" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0019"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mwd5f166e6_df0a_45bf_b662_e87b91b79a27" initialAmount="0" name="STAT1.P" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0020"/>
+      <species boundaryCondition="true" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="true" id="mwce6e4efd_3187_4379_ad47_104c95e0eb3b" initialAmount="2000" name="JAK1/2" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0021"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mw9275f30d_c42b_459c_91c5_67b7e08b6486" initialAmount="0" name="2.STAT1" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0022"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mwc84af692_e3fc_4ede_99b6_b0cce3729bf7" initialAmount="80000" name="2.STAT3" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0023"/>
+      <species boundaryCondition="true" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="true" id="mw57b4236e_c789_4799_a4f9_a03437a5593a" initialAmount="2000" name="JAK2/1" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0024"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mwacd53f34_4935_4b6a_8267_024f0d966c8c" initialAmount="10000" name="SOCS1" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0025"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mwf26f605f_29e9_4454_834c_7b3edab4bbc2" initialAmount="200" name="TLP2" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0026"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mw10b15557_55f5_4525_b19d_161b056f5791" initialAmount="250" name="MKK1/2" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0027"/>
+      <species boundaryCondition="true" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="true" id="mw6f8ce639_1c28_444f_b6e6_30ff06ab0d6e" initialAmount="100" name="ERK1/ERK2" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0028"/>
+      <species boundaryCondition="true" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="true" id="mw7f261959_39d2_4e8b_92b6_4466c2504544" initialAmount="15000" name="JAK2" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0029"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mwb9a40fab_a7c9_4984_805f_045fefc4ff32" initialAmount="100" name="STAT1" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0030"/>
+      <species boundaryCondition="false" compartment="mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22" constant="false" id="mw58370246_a992_4253_8029_12fbb07a417d" initialAmount="20000" name="STAT3" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0031"/>
+      <species boundaryCondition="false" compartment="mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9" constant="false" id="mwba110304_bd9a_4fd0_9b4c_b8bfc975e30b" initialAmount="200" name="NFkB" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0032"/>
+      <species boundaryCondition="false" compartment="mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9" constant="false" id="mw5607cee0_ee75_4065_9368_d07c3abbe18b" initialAmount="250" name="IL6" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0033"/>
+      <species boundaryCondition="false" compartment="mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9" constant="false" id="mwbe46ba92_97de_4cc4_970d_2dec54671573" initialAmount="0" name="2.STAT1" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0034"/>
+      <species boundaryCondition="false" compartment="mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9" constant="false" id="mw55b6f083_2b28_4a1a_ab90_82a751525d72" initialAmount="9000" name="2.STAT3" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0035"/>
+      <species boundaryCondition="false" compartment="mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9" constant="false" id="mwe3af2471_5087_4796_982a_56fad9a9a972" initialAmount="0" name="SOCS3" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0036"/>
+      <species boundaryCondition="false" compartment="mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9" constant="false" id="mw364ca1a4_fc56_4138_8031_16341ac865de" initialAmount="100" name="STAT1" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0037"/>
+      <species boundaryCondition="false" compartment="mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9" constant="false" id="mw4fc13b75_10cc_41fb_b9f8_1ce95fccae73" initialAmount="100" name="STAT3" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0038"/>
+      <species boundaryCondition="false" compartment="mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9" constant="false" id="mw3d58864c_79c7_4ff2_98fe_1a85b2ccc43d" initialAmount="50000" name="SOCS1" substanceUnits="MWBUILTINUNIT_molecule" metaid="species0039"/>
+      <species boundaryCondition="false" compartment="mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9" constant="false" id="mw6949b379_107d_4822_b13e_680a491d2425" initialAmount="0" name="iNOS" metaid="species0040"/>
+      <species boundaryCondition="false" compartment="mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9" constant="false" id="mwcbadb505_1cfb_4903_9975_0e53de2ba877" initialAmount="0" name="AIF" metaid="species0041"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="mw3e247db2_b375_4e41_9e33_bb760833ee16" name="reaction_3" reversible="false" metaid="reaction0000">
+        <listOfReactants>
+          <speciesReference species="mwc42127ea_2b78_4381_b230_30e95cd5a9d6" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw4fd8b902_e2a2_4910_899c_2a7d3425e0e0" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0000">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_3 </ci>
+                <ci> mw0930c7cf_99a6_4a20_a33d_02fd90e424bb </ci>
+                <ci> mwc42127ea_2b78_4381_b230_30e95cd5a9d6 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw0930c7cf_99a6_4a20_a33d_02fd90e424bb" name="mw0930c7cf_99a6_4a20_a33d_02fd90e424bb" value="0.24" metaid="parameter0000"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwe089edae_0b7c_485a_814d_227b9a9ad5fd" name="reaction_4" reversible="false" metaid="reaction0001">
+        <listOfReactants>
+          <speciesReference species="mw4fd8b902_e2a2_4910_899c_2a7d3425e0e0" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwf06c0537_577b_4f13_a9a3_521f9d2217fb" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0001">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_4 </ci>
+                <ci> mw4fd8b902_e2a2_4910_899c_2a7d3425e0e0 </ci>
+                <ci> mw5b78650d_d92f_4602_bbe9_66d900ff312e </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw5b78650d_d92f_4602_bbe9_66d900ff312e" name="mw5b78650d_d92f_4602_bbe9_66d900ff312e" value="0.22" metaid="parameter0001"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw355d0180_1300_4b22_afd0_dca38ce33afe" name="reaction_5" reversible="false" metaid="reaction0002">
+        <listOfReactants>
+          <speciesReference species="mwf06c0537_577b_4f13_a9a3_521f9d2217fb" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwbba20281_3d8b_48c3_8e13_dee78e87dfb8" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0002">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_5 </ci>
+                <ci> mwec4950e3_ecf8_4077_9cd1_b70818e911b9 </ci>
+                <ci> mwf06c0537_577b_4f13_a9a3_521f9d2217fb </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mwec4950e3_ecf8_4077_9cd1_b70818e911b9" name="mwec4950e3_ecf8_4077_9cd1_b70818e911b9" value="0.19" metaid="parameter0002"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw68476f54_ab4a_403c_af35_355d74054f82" name="reaction_6" reversible="false" metaid="reaction0003">
+        <listOfReactants>
+          <speciesReference species="mwbba20281_3d8b_48c3_8e13_dee78e87dfb8" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw78198c86_4b16_4117_8592_6a95c3953126" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0003">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_6 </ci>
+                <ci> mw9c4a9937_faff_4853_8a76_d17a084948d9 </ci>
+                <ci> mwbba20281_3d8b_48c3_8e13_dee78e87dfb8 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw9c4a9937_faff_4853_8a76_d17a084948d9" name="mw9c4a9937_faff_4853_8a76_d17a084948d9" value="0.16" metaid="parameter0003"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw8248f0e8_00d0_44dc_ae79_b61f77b4c52c" name="reaction_7" reversible="false" metaid="reaction0004">
+        <listOfReactants>
+          <speciesReference species="mw78198c86_4b16_4117_8592_6a95c3953126" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw7938fab7_d0c6_497b_8fb6_75922fcc19d5" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0004">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_7 </ci>
+                <ci> mw78198c86_4b16_4117_8592_6a95c3953126 </ci>
+                <ci> mwb8d480f9_5783_4feb_aaf1_2f861b09e009 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mwb8d480f9_5783_4feb_aaf1_2f861b09e009" name="mwb8d480f9_5783_4feb_aaf1_2f861b09e009" value="0.14" metaid="parameter0004"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw301aee85_afee_49b3_ad89_b1cc5c8567b1" name="reaction_10" reversible="false" metaid="reaction0005">
+        <listOfReactants>
+          <speciesReference species="mw5607cee0_ee75_4065_9368_d07c3abbe18b" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw8675a533_92fb_4fbf_b747_7bca05c5841c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0005">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <ci> Function_for_reaction_10 </ci>
+              <ci> mw5607cee0_ee75_4065_9368_d07c3abbe18b </ci>
+              <ci> mw58dfe861_b815_48b4_89e9_6f71cccb561e </ci>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw58dfe861_b815_48b4_89e9_6f71cccb561e" name="mw58dfe861_b815_48b4_89e9_6f71cccb561e" value="0.095" metaid="parameter0005"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw59a4b107_a52b_43b5_8415_3668e494102e" name="reaction_11" reversible="false" metaid="reaction0006">
+        <listOfReactants>
+          <speciesReference species="mw8675a533_92fb_4fbf_b747_7bca05c5841c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw56c26af9_9f4a_4f13_936a_94ae6364342b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0006">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <ci> Function_for_reaction_11 </ci>
+              <ci> mw8675a533_92fb_4fbf_b747_7bca05c5841c </ci>
+              <ci> mwdf0efe39_4f88_4fc1_930b_55865b8d52f0 </ci>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mwdf0efe39_4f88_4fc1_930b_55865b8d52f0" name="mwdf0efe39_4f88_4fc1_930b_55865b8d52f0" value="0.08" metaid="parameter0006"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw2fe228f0_8489_473b_b52d_da641e63e7cb" name="reaction_13" reversible="false" metaid="reaction0007">
+        <listOfReactants>
+          <speciesReference species="mwb167e768_b778_4072_8798_3cf19e96d1d7" stoichiometry="1"/>
+          <speciesReference species="mw5b252d78_9ab9_438c_8b81_2189b1f76357" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwf219928e_abba_4c09_9597_5d6910f7e4d9" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0007">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+              <apply>
+                <ci> Function_for_reaction_13 </ci>
+                <ci> mw4594ab28_d538_4a72_875a_d878e907020d </ci>
+                <ci> mw5b252d78_9ab9_438c_8b81_2189b1f76357 </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+                <ci> mwb167e768_b778_4072_8798_3cf19e96d1d7 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw4594ab28_d538_4a72_875a_d878e907020d" name="mw4594ab28_d538_4a72_875a_d878e907020d" value="1E-15" metaid="parameter0007"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwc6831066_978e_4f05_b58a_7b138e3ba727" name="reaction_12" reversible="false" metaid="reaction0008">
+        <listOfReactants>
+          <speciesReference species="mw9b410665_6c5e_4f37_a7f2_0cb0963b98b1" stoichiometry="1"/>
+          <speciesReference species="mw56c26af9_9f4a_4f13_936a_94ae6364342b" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwb167e768_b778_4072_8798_3cf19e96d1d7" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0008">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+              <apply>
+                <ci> Function_for_reaction_12 </ci>
+                <ci> mw56c26af9_9f4a_4f13_936a_94ae6364342b </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+                <ci> mw7b7a1d20_f258_4e3d_9234_62db60126326 </ci>
+                <ci> mw9b410665_6c5e_4f37_a7f2_0cb0963b98b1 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw7b7a1d20_f258_4e3d_9234_62db60126326" name="mw7b7a1d20_f258_4e3d_9234_62db60126326" value="6E-5" metaid="parameter0008"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw3ea84261_760d_4fc7_b420_c728b0f6d90d" name="reaction_15a" reversible="false" metaid="reaction0009">
+        <listOfReactants>
+          <speciesReference species="mwce6e4efd_3187_4379_ad47_104c95e0eb3b" stoichiometry="1"/>
+          <speciesReference species="mw58370246_a992_4253_8029_12fbb07a417d" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw869055b5_5d27_4f4a_a390_b3fa48d6780e" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0009">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_15a </ci>
+                <ci> mw58370246_a992_4253_8029_12fbb07a417d </ci>
+                <ci> mw5ea6c681_bf85_4ac5_9aac_536087a97950 </ci>
+                <ci> mw65a608c7_1026_4108_bb3d_f3358430aaf2 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw5ea6c681_bf85_4ac5_9aac_536087a97950" name="mw5ea6c681_bf85_4ac5_9aac_536087a97950" value="1" metaid="parameter0009"/>
+            <parameter id="mw65a608c7_1026_4108_bb3d_f3358430aaf2" name="mw65a608c7_1026_4108_bb3d_f3358430aaf2" value="1" metaid="parameter0010"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw4a4f5084_a8ec_4fd2_a74f_6db84a627a29" name="reaction_14a" reversible="false" metaid="reaction0010">
+        <listOfReactants>
+          <speciesReference species="mwf219928e_abba_4c09_9597_5d6910f7e4d9" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwce6e4efd_3187_4379_ad47_104c95e0eb3b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0010">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <ci> Function_for_reaction_14a </ci>
+              <ci> mw106608bc_52fb_40e5_babb_cbb58aaaeed4 </ci>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+              <ci> mwf219928e_abba_4c09_9597_5d6910f7e4d9 </ci>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw106608bc_52fb_40e5_babb_cbb58aaaeed4" name="mw106608bc_52fb_40e5_babb_cbb58aaaeed4" value="0.24" metaid="parameter0011"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw1eec4037_93c1_4fe1_93d3_7e85a42216f7" name="reaction_8" reversible="false" metaid="reaction0011">
+        <listOfReactants>
+          <speciesReference species="mw7938fab7_d0c6_497b_8fb6_75922fcc19d5" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwba110304_bd9a_4fd0_9b4c_b8bfc975e30b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0011">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <ci> Function_for_reaction_8 </ci>
+              <ci> mw7938fab7_d0c6_497b_8fb6_75922fcc19d5 </ci>
+              <ci> mwe0f7b31e_2efc_481e_90d0_e86c3b8d0be4 </ci>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mwe0f7b31e_2efc_481e_90d0_e86c3b8d0be4" name="mwe0f7b31e_2efc_481e_90d0_e86c3b8d0be4" value="0.125" metaid="parameter0012"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwe737aa62_097e_474c_87d5_7b7eeaadd087" name="reaction_9" reversible="false" metaid="reaction0012">
+        <listOfReactants>
+          <speciesReference species="mwba110304_bd9a_4fd0_9b4c_b8bfc975e30b" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw5607cee0_ee75_4065_9368_d07c3abbe18b" stoichiometry="1"/>
+          <speciesReference species="mw364ca1a4_fc56_4138_8031_16341ac865de" stoichiometry="1"/>
+          <speciesReference species="mw4fc13b75_10cc_41fb_b9f8_1ce95fccae73" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0012">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+              <apply>
+                <ci> Function_for_reaction_9 </ci>
+                <ci> mw1981fa4d_c122_41a6_8c85_55a49d408c00 </ci>
+                <ci> mw340bc412_34ab_498a_bd42_47dd6cf025bd </ci>
+                <ci> mw6cf7ac60_5bab_4b73_bb47_dc064486f000 </ci>
+                <ci> mwba110304_bd9a_4fd0_9b4c_b8bfc975e30b </ci>
+                <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw1981fa4d_c122_41a6_8c85_55a49d408c00" name="mw1981fa4d_c122_41a6_8c85_55a49d408c00" value="400" metaid="parameter0013"/>
+            <parameter id="mw340bc412_34ab_498a_bd42_47dd6cf025bd" name="mw340bc412_34ab_498a_bd42_47dd6cf025bd" value="1" metaid="parameter0014"/>
+            <parameter id="mw6cf7ac60_5bab_4b73_bb47_dc064486f000" name="mw6cf7ac60_5bab_4b73_bb47_dc064486f000" value="2000" metaid="parameter0015"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw5dd08c34_8422_4e63_a58d_a497237b3d46" name="reaction_19" reversible="false" metaid="reaction0013">
+        <listOfReactants>
+          <speciesReference species="mwd5f166e6_df0a_45bf_b662_e87b91b79a27" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw9275f30d_c42b_459c_91c5_67b7e08b6486" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0013">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_19 </ci>
+                <ci> mw87e9394c_7eef_4271_85bc_d1b0a96db1f2 </ci>
+                <ci> mwd5f166e6_df0a_45bf_b662_e87b91b79a27 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw87e9394c_7eef_4271_85bc_d1b0a96db1f2" name="mw87e9394c_7eef_4271_85bc_d1b0a96db1f2" value="0" metaid="parameter0016"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw019a6415_bb9a_40a9_b627_5aa5fccedbc8" name="reaction_20" reversible="false" metaid="reaction0014">
+        <listOfReactants>
+          <speciesReference species="mw9275f30d_c42b_459c_91c5_67b7e08b6486" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwbe46ba92_97de_4cc4_970d_2dec54671573" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0014">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <ci> Function_for_reaction_20 </ci>
+              <ci> mw9275f30d_c42b_459c_91c5_67b7e08b6486 </ci>
+              <ci> mwd84cf612_edaf_4dd9_9abd_003cc0569864 </ci>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mwd84cf612_edaf_4dd9_9abd_003cc0569864" name="mwd84cf612_edaf_4dd9_9abd_003cc0569864" value="0" metaid="parameter0017"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwc2dc1496_a57b_4ea5_ba81_838f3344915c" name="reaction_21" reversible="false" metaid="reaction0015">
+        <listOfReactants>
+          <speciesReference species="mwbe46ba92_97de_4cc4_970d_2dec54671573" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw3d58864c_79c7_4ff2_98fe_1a85b2ccc43d" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0015">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+              <apply>
+                <ci> Function_for_reaction_21 </ci>
+                <ci> mw051e0a03_1d45_448b_be4a_9d489e1b3ff9 </ci>
+                <ci> mw322ca6ab_81cf_4f6c_835e_48bb5f8b11de </ci>
+                <ci> mwbe46ba92_97de_4cc4_970d_2dec54671573 </ci>
+                <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+                <ci> mwf9b630f8_c8a5_4fd0_bef1_92819b1257d2 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw051e0a03_1d45_448b_be4a_9d489e1b3ff9" name="mw051e0a03_1d45_448b_be4a_9d489e1b3ff9" value="0" metaid="parameter0018"/>
+            <parameter id="mw322ca6ab_81cf_4f6c_835e_48bb5f8b11de" name="mw322ca6ab_81cf_4f6c_835e_48bb5f8b11de" value="0" metaid="parameter0019"/>
+            <parameter id="mwf9b630f8_c8a5_4fd0_bef1_92819b1257d2" name="mwf9b630f8_c8a5_4fd0_bef1_92819b1257d2" value="0" metaid="parameter0020"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw35c5dd2a_d94c_4b60_a72d_561cb55f84f0" name="reaction_16" reversible="false" metaid="reaction0016">
+        <listOfReactants>
+          <speciesReference species="mw869055b5_5d27_4f4a_a390_b3fa48d6780e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwc84af692_e3fc_4ede_99b6_b0cce3729bf7" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0016">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_16 </ci>
+                <ci> mw869055b5_5d27_4f4a_a390_b3fa48d6780e </ci>
+                <ci> mwe479dc91_2774_4239_8212_60a330a84a76 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mwe479dc91_2774_4239_8212_60a330a84a76" name="mwe479dc91_2774_4239_8212_60a330a84a76" value="0.86" metaid="parameter0021"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwd4d17665_ea8f_45cd_aeae_c8a3ea8d4115" name="reaction_17" reversible="false" metaid="reaction0017">
+        <listOfReactants>
+          <speciesReference species="mwc84af692_e3fc_4ede_99b6_b0cce3729bf7" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw55b6f083_2b28_4a1a_ab90_82a751525d72" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0017">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <ci> Function_for_reaction_17 </ci>
+              <ci> mwc84af692_e3fc_4ede_99b6_b0cce3729bf7 </ci>
+              <ci> mwf5ba0e23_9a0b_4bf6_b0ea_9fbc91843b5c </ci>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mwf5ba0e23_9a0b_4bf6_b0ea_9fbc91843b5c" name="mwf5ba0e23_9a0b_4bf6_b0ea_9fbc91843b5c" value="0.1" metaid="parameter0022"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw4764870e_b030_4ffe_861a_1660a6d08340" name="reaction_18" reversible="false" metaid="reaction0018">
+        <listOfReactants>
+          <speciesReference species="mw55b6f083_2b28_4a1a_ab90_82a751525d72" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwcbadb505_1cfb_4903_9975_0e53de2ba877" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0018">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+              <apply>
+                <ci> Function_for_reaction_18 </ci>
+                <ci> mw3bf6abba_fc8d_4254_bc9c_037ec64d3e12 </ci>
+                <ci> mw4c1174b0_1cba_4d7c_bedb_c29d9f65c10c </ci>
+                <ci> mw55b6f083_2b28_4a1a_ab90_82a751525d72 </ci>
+                <ci> mw85474b5d_1b19_4388_bcee_098fbb23f2e0 </ci>
+                <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw3bf6abba_fc8d_4254_bc9c_037ec64d3e12" name="mw3bf6abba_fc8d_4254_bc9c_037ec64d3e12" value="1000" metaid="parameter0023"/>
+            <parameter id="mw4c1174b0_1cba_4d7c_bedb_c29d9f65c10c" name="mw4c1174b0_1cba_4d7c_bedb_c29d9f65c10c" value="1" metaid="parameter0024"/>
+            <parameter id="mw85474b5d_1b19_4388_bcee_098fbb23f2e0" name="mw85474b5d_1b19_4388_bcee_098fbb23f2e0" value="700" metaid="parameter0025"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwddce3a0d_4301_48aa_ae63_37a44f2f2088" name="reaction_14b" reversible="false" metaid="reaction0019">
+        <listOfReactants>
+          <speciesReference species="mwf219928e_abba_4c09_9597_5d6910f7e4d9" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw57b4236e_c789_4799_a4f9_a03437a5593a" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0019">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <ci> Function_for_reaction_14b </ci>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+              <ci> mwd01d5494_fdcd_494e_8652_87201fa5b291 </ci>
+              <ci> mwf219928e_abba_4c09_9597_5d6910f7e4d9 </ci>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mwd01d5494_fdcd_494e_8652_87201fa5b291" name="mwd01d5494_fdcd_494e_8652_87201fa5b291" value="0.002" metaid="parameter0026"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwa93a841c_769e_407d_8c81_f1831ca594dd" name="reaction_15b" reversible="false" metaid="reaction0020">
+        <listOfReactants>
+          <speciesReference species="mw57b4236e_c789_4799_a4f9_a03437a5593a" stoichiometry="1"/>
+          <speciesReference species="mwb9a40fab_a7c9_4984_805f_045fefc4ff32" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwd5f166e6_df0a_45bf_b662_e87b91b79a27" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0020">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_15b </ci>
+                <ci> mw7ff2e94a_ac19_47ed_9127_14d385a1e544 </ci>
+                <ci> mwb9a40fab_a7c9_4984_805f_045fefc4ff32 </ci>
+                <ci> mwf8062aeb_69d6_416b_b877_9687ef6fbc80 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw7ff2e94a_ac19_47ed_9127_14d385a1e544" name="mw7ff2e94a_ac19_47ed_9127_14d385a1e544" value="1" metaid="parameter0027"/>
+            <parameter id="mwf8062aeb_69d6_416b_b877_9687ef6fbc80" name="mwf8062aeb_69d6_416b_b877_9687ef6fbc80" value="1" metaid="parameter0028"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwbc1856f9_a538_4023_bce5_09484e8e71cf" name="reaction_22" reversible="false" metaid="reaction0021">
+        <listOfReactants>
+          <speciesReference species="mw3d58864c_79c7_4ff2_98fe_1a85b2ccc43d" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwacd53f34_4935_4b6a_8267_024f0d966c8c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0021">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <ci> Function_for_reaction_22 </ci>
+              <ci> mw3d58864c_79c7_4ff2_98fe_1a85b2ccc43d </ci>
+              <ci> mw5805aaa6_5a0a_495b_a21b_16e6ba6f39bc </ci>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw5805aaa6_5a0a_495b_a21b_16e6ba6f39bc" name="mw5805aaa6_5a0a_495b_a21b_16e6ba6f39bc" value="0.3" metaid="parameter0029"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw1f853efb_fa0c_47b5_8151_210a68961204" name="reaction_23" reversible="false" metaid="reaction0022">
+        <listOfReactants>
+          <speciesReference species="mwacd53f34_4935_4b6a_8267_024f0d966c8c" stoichiometry="1"/>
+          <speciesReference species="mw57b4236e_c789_4799_a4f9_a03437a5593a" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw57b4236e_c789_4799_a4f9_a03437a5593a" stoichiometry="1"/>
+          <speciesReference species="mwacd53f34_4935_4b6a_8267_024f0d966c8c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0022">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_23 </ci>
+                <ci> mw57b4236e_c789_4799_a4f9_a03437a5593a </ci>
+                <ci> mw658feef9_67a1_431f_95fa_7358c6b294d2 </ci>
+                <ci> mw8d03d46b_3832_4fe6_8a6b_467ef38af206 </ci>
+                <ci> mwacd53f34_4935_4b6a_8267_024f0d966c8c </ci>
+                <ci> mwf50b6519_aaf9_4cb0_a651_d5a3159d7390 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw658feef9_67a1_431f_95fa_7358c6b294d2" name="mw658feef9_67a1_431f_95fa_7358c6b294d2" value="1E-15" metaid="parameter0030"/>
+            <parameter id="mw8d03d46b_3832_4fe6_8a6b_467ef38af206" name="mw8d03d46b_3832_4fe6_8a6b_467ef38af206" value="10" metaid="parameter0031"/>
+            <parameter id="mwf50b6519_aaf9_4cb0_a651_d5a3159d7390" name="mwf50b6519_aaf9_4cb0_a651_d5a3159d7390" value="10" metaid="parameter0032"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwfdc768f1_5ae9_47dc_9506_b957dd352582" name="reaction_28" reversible="false" metaid="reaction0023">
+        <listOfReactants>
+          <speciesReference species="mw364ca1a4_fc56_4138_8031_16341ac865de" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwb9a40fab_a7c9_4984_805f_045fefc4ff32" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0023">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <ci> Function_for_reaction_28 </ci>
+              <ci> mw364ca1a4_fc56_4138_8031_16341ac865de </ci>
+              <ci> mw5b67154e_1851_4ba0_9491_7a14b2064c42 </ci>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw5b67154e_1851_4ba0_9491_7a14b2064c42" name="mw5b67154e_1851_4ba0_9491_7a14b2064c42" value="0.06" metaid="parameter0033"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw35593d33_6426_452d_ad36_21f20cb38436" name="reaction_24" reversible="false" metaid="reaction0024">
+        <listOfReactants>
+          <speciesReference species="mw78198c86_4b16_4117_8592_6a95c3953126" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwf26f605f_29e9_4454_834c_7b3edab4bbc2" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0024">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_24 </ci>
+                <ci> mw202bb744_d70a_4cf2_b2db_0d9d360bdfb5 </ci>
+                <ci> mw78198c86_4b16_4117_8592_6a95c3953126 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw202bb744_d70a_4cf2_b2db_0d9d360bdfb5" name="mw202bb744_d70a_4cf2_b2db_0d9d360bdfb5" value="0.1" metaid="parameter0034"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwb77c1134_efd5_47d0_8d36_02c3c68687c6" name="reaction_25" reversible="false" metaid="reaction0025">
+        <listOfReactants>
+          <speciesReference species="mwf26f605f_29e9_4454_834c_7b3edab4bbc2" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw10b15557_55f5_4525_b19d_161b056f5791" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0025">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_25 </ci>
+                <ci> mw3288f227_0208_435a_a41c_b1778f50008c </ci>
+                <ci> mwf26f605f_29e9_4454_834c_7b3edab4bbc2 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw3288f227_0208_435a_a41c_b1778f50008c" name="mw3288f227_0208_435a_a41c_b1778f50008c" value="0.09" metaid="parameter0035"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw9fb7e873_2840_486e_ac59_2329e9e9e45b" name="reaction_26" reversible="false" metaid="reaction0026">
+        <listOfReactants>
+          <speciesReference species="mw10b15557_55f5_4525_b19d_161b056f5791" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw6f8ce639_1c28_444f_b6e6_30ff06ab0d6e" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0026">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_26 </ci>
+                <ci> mw10b15557_55f5_4525_b19d_161b056f5791 </ci>
+                <ci> mwe250484c_acc9_4453_9eb6_49cda54b2f1e </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mwe250484c_acc9_4453_9eb6_49cda54b2f1e" name="mwe250484c_acc9_4453_9eb6_49cda54b2f1e" value="0.3" metaid="parameter0036"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwb582e1ea_d2f2_4bcb_a843_661ce2e430e5" name="reaction_27" reversible="false" metaid="reaction0027">
+        <listOfReactants>
+          <speciesReference species="mw6f8ce639_1c28_444f_b6e6_30ff06ab0d6e" stoichiometry="1"/>
+          <speciesReference species="mw58370246_a992_4253_8029_12fbb07a417d" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw869055b5_5d27_4f4a_a390_b3fa48d6780e" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0027">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_27 </ci>
+                <ci> mw2ba0a425_a224_4fa1_affc_bcc206027a3e </ci>
+                <ci> mw58370246_a992_4253_8029_12fbb07a417d </ci>
+                <ci> mw8f586bdf_8d42_49c1_807a_670a1c49cbd9 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw2ba0a425_a224_4fa1_affc_bcc206027a3e" name="mw2ba0a425_a224_4fa1_affc_bcc206027a3e" value="1" metaid="parameter0037"/>
+            <parameter id="mw8f586bdf_8d42_49c1_807a_670a1c49cbd9" name="mw8f586bdf_8d42_49c1_807a_670a1c49cbd9" value="1" metaid="parameter0038"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwfe6ed8b6_844a_4bfd_bb0a_195c6fb5579e" name="reaction_34" reversible="false" metaid="reaction0028">
+        <listOfReactants>
+          <speciesReference species="mw4fc13b75_10cc_41fb_b9f8_1ce95fccae73" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw58370246_a992_4253_8029_12fbb07a417d" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0028">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <ci> Function_for_reaction_34 </ci>
+              <ci> mw4fc13b75_10cc_41fb_b9f8_1ce95fccae73 </ci>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+              <ci> mwe808b2da_9ed2_421e_a8d9_3c3534d42ee0 </ci>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mwe808b2da_9ed2_421e_a8d9_3c3534d42ee0" name="mwe808b2da_9ed2_421e_a8d9_3c3534d42ee0" value="0.2" metaid="parameter0039"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw666be0bc_42c7_48cd_89b7_87e131f1e724" name="reaction_29" reversible="false" metaid="reaction0029">
+        <listOfReactants>
+          <speciesReference species="mw85ae78ed_34f7_460c_b906_1f512a83810c" stoichiometry="1"/>
+          <speciesReference species="mw49322d55_ad63_4e7c_b1eb_42835c9b577a" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwd7270399_0429_4c85_920a_de2e0ae74440" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0029">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+              <apply>
+                <ci> Function_for_reaction_29 </ci>
+                <ci> mw49322d55_ad63_4e7c_b1eb_42835c9b577a </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+                <ci> mw7246cef3_7a78_43b0_acb7_21533c394daa </ci>
+                <ci> mw85ae78ed_34f7_460c_b906_1f512a83810c </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw7246cef3_7a78_43b0_acb7_21533c394daa" name="mw7246cef3_7a78_43b0_acb7_21533c394daa" value="0.001" metaid="parameter0040"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw1d5d6ab3_4d84_4f27_a13a_c47c38be09de" name="reaction_30" reversible="false" metaid="reaction0030">
+        <listOfReactants>
+          <speciesReference species="mwd7270399_0429_4c85_920a_de2e0ae74440" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw7f261959_39d2_4e8b_92b6_4466c2504544" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0030">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <ci> Function_for_reaction_30 </ci>
+              <ci> mw2081c907_9d37_48a0_8581_8b8f3d5f7148 </ci>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+              <ci> mwd7270399_0429_4c85_920a_de2e0ae74440 </ci>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw2081c907_9d37_48a0_8581_8b8f3d5f7148" name="mw2081c907_9d37_48a0_8581_8b8f3d5f7148" value="0.1" metaid="parameter0041"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw69e4cb2d_f85e_4107_b5cd_a9bafe0827ee" name="reaction_31" reversible="false" metaid="reaction0031">
+        <listOfReactants>
+          <speciesReference species="mw7f261959_39d2_4e8b_92b6_4466c2504544" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwd5f166e6_df0a_45bf_b662_e87b91b79a27" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0031">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_31 </ci>
+                <ci> mw7f261959_39d2_4e8b_92b6_4466c2504544 </ci>
+                <ci> mw91a51f27_e4be_41a6_a967_b6a63c909652 </ci>
+                <ci> mwd7b0f9fb_1180_47bb_b8c0_be2f89aa1c59 </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw91a51f27_e4be_41a6_a967_b6a63c909652" name="mw91a51f27_e4be_41a6_a967_b6a63c909652" value="1" metaid="parameter0042"/>
+            <parameter id="mwd7b0f9fb_1180_47bb_b8c0_be2f89aa1c59" name="mwd7b0f9fb_1180_47bb_b8c0_be2f89aa1c59" value="1" metaid="parameter0043"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw29ed8c78_d683_42b9_90fb_69e2dca364ee" name="reaction_32" reversible="false" metaid="reaction0032">
+        <listOfReactants>
+          <speciesReference species="mwacd53f34_4935_4b6a_8267_024f0d966c8c" stoichiometry="1"/>
+          <speciesReference species="mw7f261959_39d2_4e8b_92b6_4466c2504544" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw7f261959_39d2_4e8b_92b6_4466c2504544" stoichiometry="1"/>
+          <speciesReference species="mwacd53f34_4935_4b6a_8267_024f0d966c8c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0032">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_32 </ci>
+                <ci> mw2a60d98a_bc06_4e05_b965_c920da8987dc </ci>
+                <ci> mw3c07a768_8e7a_49bb_8a1d_fdc92192f92b </ci>
+                <ci> mw7f261959_39d2_4e8b_92b6_4466c2504544 </ci>
+                <ci> mw9704b67a_2c16_4ac7_a311_2096ab426758 </ci>
+                <ci> mwacd53f34_4935_4b6a_8267_024f0d966c8c </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw2a60d98a_bc06_4e05_b965_c920da8987dc" name="mw2a60d98a_bc06_4e05_b965_c920da8987dc" value="10" metaid="parameter0044"/>
+            <parameter id="mw3c07a768_8e7a_49bb_8a1d_fdc92192f92b" name="mw3c07a768_8e7a_49bb_8a1d_fdc92192f92b" value="1E-15" metaid="parameter0045"/>
+            <parameter id="mw9704b67a_2c16_4ac7_a311_2096ab426758" name="mw9704b67a_2c16_4ac7_a311_2096ab426758" value="10" metaid="parameter0046"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwbda33f89_b1c8_45c9_ad37_ec7130e4ba12" name="reaction_33" reversible="false" metaid="reaction0033">
+        <listOfReactants>
+          <speciesReference species="mwbe46ba92_97de_4cc4_970d_2dec54671573" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw6949b379_107d_4822_b13e_680a491d2425" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0033">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+              <apply>
+                <ci> Function_for_reaction_33 </ci>
+                <ci> mw9ca6d980_6fbd_4207_9f2c_c05e2b5b0502 </ci>
+                <ci> mwbe46ba92_97de_4cc4_970d_2dec54671573 </ci>
+                <ci> mwcffa9e49_67c6_4908_9314_6c16030c8989 </ci>
+                <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+                <ci> mwf32cef57_32ba_4c0f_bbaf_bbc90af4a8aa </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw9ca6d980_6fbd_4207_9f2c_c05e2b5b0502" name="mw9ca6d980_6fbd_4207_9f2c_c05e2b5b0502" value="0" metaid="parameter0047"/>
+            <parameter id="mwcffa9e49_67c6_4908_9314_6c16030c8989" name="mwcffa9e49_67c6_4908_9314_6c16030c8989" value="0" metaid="parameter0048"/>
+            <parameter id="mwf32cef57_32ba_4c0f_bbaf_bbc90af4a8aa" name="mwf32cef57_32ba_4c0f_bbaf_bbc90af4a8aa" value="0" metaid="parameter0049"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw0de495aa_28d6_4ae7_8c1a_247b3546ed40" name="reaction_35" reversible="false" metaid="reaction0034">
+        <listOfReactants>
+          <speciesReference species="mw55b6f083_2b28_4a1a_ab90_82a751525d72" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwe3af2471_5087_4796_982a_56fad9a9a972" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0034">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+              <apply>
+                <ci> Function_for_reaction_35 </ci>
+                <ci> mw287bd1ba_fbc1_43a0_94ab_38a6336bbebb </ci>
+                <ci> mw2db26dbd_dda3_4770_b923_d2725a80ccba </ci>
+                <ci> mw55b6f083_2b28_4a1a_ab90_82a751525d72 </ci>
+                <ci> mwb86b112e_674a_4e98_8ca4_3d0273a134d4 </ci>
+                <ci> mwdfcbcdb1_3058_4a8b_9166_5b5e144c52c9 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw287bd1ba_fbc1_43a0_94ab_38a6336bbebb" name="mw287bd1ba_fbc1_43a0_94ab_38a6336bbebb" value="10" metaid="parameter0050"/>
+            <parameter id="mw2db26dbd_dda3_4770_b923_d2725a80ccba" name="mw2db26dbd_dda3_4770_b923_d2725a80ccba" value="1" metaid="parameter0051"/>
+            <parameter id="mwb86b112e_674a_4e98_8ca4_3d0273a134d4" name="mwb86b112e_674a_4e98_8ca4_3d0273a134d4" value="10" metaid="parameter0052"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw152eb150_14a4_40a8_bc56_0d6e3281a206" name="reaction_14" reversible="false" metaid="reaction0035">
+        <listOfReactants>
+          <speciesReference species="mw6f8ce639_1c28_444f_b6e6_30ff06ab0d6e" stoichiometry="1"/>
+          <speciesReference species="mwb9a40fab_a7c9_4984_805f_045fefc4ff32" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwd5f166e6_df0a_45bf_b662_e87b91b79a27" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0035">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              <apply>
+                <ci> Function_for_reaction_14 </ci>
+                <ci> mw1aca690a_9ee1_460f_bc28_780fb04c1a32 </ci>
+                <ci> mwb9a40fab_a7c9_4984_805f_045fefc4ff32 </ci>
+                <ci> mwf604d18f_ae32_4d08_bfef_f778aae8f24b </ci>
+                <ci> mwfef402b9_4b7e_4fbd_bba2_ff8998ab0b22 </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mw1aca690a_9ee1_460f_bc28_780fb04c1a32" name="mw1aca690a_9ee1_460f_bc28_780fb04c1a32" value="1" metaid="parameter0053"/>
+            <parameter id="mwf604d18f_ae32_4d08_bfef_f778aae8f24b" name="mwf604d18f_ae32_4d08_bfef_f778aae8f24b" value="1" metaid="parameter0054"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwdd6b7201_bde8_4631_8e90_e53b986d539d" name="reaction_1" reversible="false" metaid="reaction0036">
+        <listOfReactants>
+          <speciesReference species="mwfaacd7f7_6aa9_4e6c_a7d8_281f2022ba2f" stoichiometry="1"/>
+          <speciesReference species="mwa244ea2a_3e41_473b_9ae7_d0db512fc366" stoichiometry="1"/>
+          <speciesReference species="mw763cffc8_c121_4004_afdb_97e9de9f0081" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw6339814d_af4c_4eee_9455_7e20795f6aeb" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0036">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+              <apply>
+                <ci> Function_for_reaction_1 </ci>
+                <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+                <ci> mw763cffc8_c121_4004_afdb_97e9de9f0081 </ci>
+                <ci> mwa244ea2a_3e41_473b_9ae7_d0db512fc366 </ci>
+                <ci> mwf80a94ba_03ba_44f0_b793_4f60c20fd074 </ci>
+                <ci> mwfaacd7f7_6aa9_4e6c_a7d8_281f2022ba2f </ci>
+              </apply>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mwf80a94ba_03ba_44f0_b793_4f60c20fd074" name="mwf80a94ba_03ba_44f0_b793_4f60c20fd074" value="8E-9" metaid="parameter0055"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw00a624d9_79b2_424c_9362_50e77c3a3d6f" name="reaction_2" reversible="false" metaid="reaction0037">
+        <listOfReactants>
+          <speciesReference species="mw6339814d_af4c_4eee_9455_7e20795f6aeb" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwc42127ea_2b78_4381_b230_30e95cd5a9d6" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw metaid="kineticLaw0037">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <ci> Function_for_reaction_2 </ci>
+              <ci> mw6339814d_af4c_4eee_9455_7e20795f6aeb </ci>
+              <ci> mw664a2e7f_0c35_423c_ac5d_34090e629a69 </ci>
+              <ci> mwce7a28b5_2f60_4228_a88f_ccd3a6213c3e </ci>
+            </apply>
+          </math>
+                  <listOfParameters>
+            <parameter id="mwce7a28b5_2f60_4228_a88f_ccd3a6213c3e" name="mwce7a28b5_2f60_4228_a88f_ccd3a6213c3e" value="0.23" metaid="parameter0056"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

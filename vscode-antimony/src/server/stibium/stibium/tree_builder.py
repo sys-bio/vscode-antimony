@@ -90,6 +90,7 @@ TREE_MAP: Dict[str, Type[TreeNode]] = {
     'is_assignment' : IsAssignment,
     'import' : Import,
     "rate_rule" : RateRules,
+    "init_params" : Parameters,
 }
 
 OPERATORS = {'EQUAL', 'COLON', 'ARROW', 'SEMICOLON', 'LPAR', 'RPAR', 'STAR', 'PLUS', 'MINUS',

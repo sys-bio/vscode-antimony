@@ -197,15 +197,15 @@ def test_func_call():
 
     # Test first function call within base file
     call = ant_file.analyzer.table.get(QName(BaseScope(), name=Name(range=SrcRange(SrcPosition(8, 1), SrcPosition(8, 3)), text='FC')))[0].value_node
-    assert call.get_function_name_str() == "constant"
+    assert call.get_value().get_function_name().get_name_text() == "constant"
 
     # Test second function call from imported file
     call = ant_file.analyzer.table.get(QName(BaseScope(), name=Name(range=SrcRange(SrcPosition(9, 1), SrcPosition(9, 4)), text='FC2')))[0].value_node
-    assert call.get_function_name_str() == "varsum"
+    assert call.get_value().get_function_name().get_name_text() == "varsum"
 
     # Test function call for function in imported file and call in base file
     call = ant_file.analyzer.table.get(QName(BaseScope(), name=Name(range=SrcRange(SrcPosition(10, 1), SrcPosition(10, 4)), text='FC3')))[0].value_node
-    assert call.get_function_name_str() == "varsum"
+    assert call.get_value().get_function_name().get_name_text() == "varsum"
 
 
 def test_annot():

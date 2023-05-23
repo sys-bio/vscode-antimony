@@ -1,0 +1,885 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" metaid="_620c207d-4479-4867-a50a-7a7c5be0146a" version="4">
+  <model id="Wodarz1999_CTL_memory_response_HIV" metaid="COPASI0" name="Wodarz1999 - Cytotoxic T lymphocyte memory response to HIV infection">
+    <notes>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+        <p>This a model from the article:      <br/>
+        <strong>Specific therapy regimes could lead to long-term immunological control of HIV.</strong>
+        <br/>
+          Wodarz D, Nowak MA.      <em>Proc Natl Acad Sci U S A</em>
+          1999 Dec 7;96(25):14464-9      <a href="http://www.ncbi.nlm.nih.gov/pubmed/10588728">10588728</a>
+          ,      <br/>
+        <strong>Abstract:</strong>
+        <br/>
+          We use mathematical models to study the relationship between HIV and the immune
+system during the natural course of infection and in the context of different
+antiviral treatment regimes. The models suggest that an efficient cytotoxic T
+lymphocyte (CTL) memory response is required to control the virus. We define CTL
+memory as long-term persistence of CTL precursors in the absence of antigen.
+Infection and depletion of CD4(+) T helper cells interfere with CTL memory
+generation, resulting in persistent viral replication and disease progression.
+We find that antiviral drug therapy during primary infection can enable the
+development of CTL memory. In chronically infected patients, specific treatment
+schedules, either including deliberate drug holidays or antigenic boosts of the
+immune system, can lead to a re-establishment of CTL memory. Whether such
+treatment regimes would lead to long-term immunologic control deserves
+investigation under carefully controlled conditions.      </p>
+        <p>This model was taken from the      <a href="http://www.cellml.org/models">CellML repository</a>
+          and automatically converted to SBML.      <br/>
+          The original model was:      <a href="http://models.cellml.org/exposure/2ce81f8abff72fcd37f9b8ed21133b99">
+          <strong>Wodarz D, Nowak MA. (1999) - version=1.0</strong>
+        </a>
+        <br/>
+          The original CellML model was created by:      <br/>
+        <strong>Catherine Lloyd</strong>
+        <br/>
+          c.lloyd@auckland.ac.nz      <br/>
+          The University of Auckland      <br/></p>
+        <p>This model originates from BioModels Database: A Database of Annotated Published Models (http://www.ebi.ac.uk/biomodels/). It is copyright (c) 2005-2011 The BioModels.net Team.      <br/>
+          To the extent possible under law, all copyright and related or neighbouring rights to this encoded model have been dedicated to the public domain worldwide. Please refer to      <a href="http://creativecommons.org/publicdomain/zero/1.0/" title="Creative Commons CC0">CC0 Public Domain Dedication</a>
+          for more information.      </p>
+        <p>In summary, you are entitled to use this encoded model in absolutely any manner you deem suitable, verbatim, or with modification, alone or embedded it in a larger context, redistribute it, commercially or not, in a restricted way or not..      <br/>
+        <br/>
+          To cite BioModels Database, please use:      <a href="http://www.ncbi.nlm.nih.gov/pubmed/20587024" target="_blank">Li C, Donizelli M, Rodriguez N, Dharuri H, Endler L, Chelliah V, Li L, He E, Henry A, Stefan MI, Snoep JL, Hucka M, Le Novère N, Laibe C (2010) BioModels Database: An enhanced, curated and annotated resource for published quantitative kinetic models. BMC Syst Biol., 4:92.</a>
+      </p>
+    </body>
+  </notes>
+    <annotation>
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+        <rdf:Description rdf:about="#COPASI0">
+	<dc:creator>
+	<rdf:Bag>
+	<rdf:li rdf:parseType="Resource">
+	<vCard:N rdf:parseType="Resource">
+	<vCard:Family>Lloyd</vCard:Family>
+	<vCard:Given>Catherine</vCard:Given>
+	</vCard:N>
+	<vCard:EMAIL>c.lloyd@auckland.ac.nz</vCard:EMAIL>
+	<vCard:ORG rdf:parseType="Resource">
+	<vCard:Orgname>University of Auckland</vCard:Orgname>
+	</vCard:ORG>
+	</rdf:li>
+	<rdf:li rdf:parseType="Resource">
+	<vCard:N rdf:parseType="Resource">
+	<vCard:Family>Roberts</vCard:Family>
+	<vCard:Given>Matthew Grant</vCard:Given>
+	</vCard:N>
+	<vCard:EMAIL>mroberts@embl.ac.uk</vCard:EMAIL>
+	<vCard:ORG rdf:parseType="Resource">
+	<vCard:Orgname>EMBL-EBI</vCard:Orgname>
+	</vCard:ORG>
+	</rdf:li>
+	</rdf:Bag>
+	</dc:creator>
+	<dcterms:created rdf:parseType="Resource">
+	<dcterms:W3CDTF>2010-06-25T13:23:24Z</dcterms:W3CDTF>
+	</dcterms:created>
+	<dcterms:modified rdf:parseType="Resource">
+	<dcterms:W3CDTF>2018-03-14T09:22:42Z</dcterms:W3CDTF>
+	</dcterms:modified>
+	<bqmodel:is>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:biomodels.db:MODEL1006230062"/>
+	</rdf:Bag>
+	</bqmodel:is>
+	<bqmodel:is>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:biomodels.db:BIOMD0000000683"/>
+	</rdf:Bag>
+	</bqmodel:is>
+	<bqmodel:isDescribedBy>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:pubmed:10588728"/>
+	</rdf:Bag>
+	</bqmodel:isDescribedBy>
+	<bqmodel:is>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:biomodels.db:MODEL1006230062"/>
+	</rdf:Bag>
+	</bqmodel:is>
+	<bqbiol:isVersionOf>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:efo:0000764"/>
+	</rdf:Bag>
+	</bqbiol:isVersionOf>
+	<bqbiol:occursIn>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:bto:BTO%3A0002417"/>
+	</rdf:Bag>
+	</bqbiol:occursIn>
+	<bqbiol:hasTaxon>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:taxonomy:9606"/>
+	</rdf:Bag>
+	</bqbiol:hasTaxon>
+	<bqbiol:isDescribedBy>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:pubmed:10588728"/>
+	</rdf:Bag>
+	</bqbiol:isDescribedBy>
+	<bqbiol:isVersionOf>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:go:GO%3A0046718"/>
+	</rdf:Bag>
+	</bqbiol:isVersionOf>
+	</rdf:Description>
+	
+	
+	
+	
+    </rdf:RDF>
+    <COPASI xmlns="http://www.copasi.org/static/sbml">
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#">
+        <rdf:Description rdf:about="#COPASI0">
+          <bqbiol:hasTaxon>
+            <rdf:Bag>
+              <rdf:li rdf:resource="http://identifiers.org/taxonomy/9606"/>
+            </rdf:Bag>
+          </bqbiol:hasTaxon>
+          <dcterms:bibliographicCitation>
+            <rdf:Bag>
+              <rdf:li>
+                <rdf:Description>
+                  <CopasiMT:isDescribedBy rdf:resource="http://identifiers.org/pubmed/10588728"/>
+                </rdf:Description>
+              </rdf:li>
+            </rdf:Bag>
+          </dcterms:bibliographicCitation>
+          <dcterms:created>
+            <rdf:Description>
+              <dcterms:W3CDTF>2010-06-25T13:23:24Z</dcterms:W3CDTF>
+            </rdf:Description>
+          </dcterms:created>
+          <dcterms:creator>
+            <rdf:Description>
+              <vCard:EMAIL>mroberts@embl.ac.uk</vCard:EMAIL>
+              <vCard:N>
+                <rdf:Description>
+                  <vCard:Family>Roberts</vCard:Family>
+                  <vCard:Given>Matthew Grant</vCard:Given>
+                </rdf:Description>
+              </vCard:N>
+              <vCard:ORG>
+                <rdf:Description>
+                  <vCard:Orgname>EMBL-EBI</vCard:Orgname>
+                </rdf:Description>
+              </vCard:ORG>
+            </rdf:Description>
+          </dcterms:creator>
+          <dcterms:creator>
+            <rdf:Bag>
+              <rdf:li>
+                <rdf:Description>
+                  <vCard:EMAIL>c.lloyd@auckland.ac.nz</vCard:EMAIL>
+                  <vCard:N>
+                    <rdf:Description>
+                      <vCard:Family>Lloyd</vCard:Family>
+                      <vCard:Given>Catherine</vCard:Given>
+                    </rdf:Description>
+                  </vCard:N>
+                  <vCard:ORG>
+                    <rdf:Description>
+                      <vCard:Orgname>University of Auckland</vCard:Orgname>
+                    </rdf:Description>
+                  </vCard:ORG>
+                </rdf:Description>
+              </rdf:li>
+            </rdf:Bag>
+          </dcterms:creator>
+          <dcterms:modified>
+            <rdf:Description>
+              <dcterms:W3CDTF>2010-06-25T13:23:24Z</dcterms:W3CDTF>
+            </rdf:Description>
+          </dcterms:modified>
+          <CopasiMT:is>
+            <rdf:Bag>
+              <rdf:li rdf:resource="http://identifiers.org/biomodels.db/MODEL1006230062"/>
+            </rdf:Bag>
+          </CopasiMT:is>
+          <CopasiMT:isVersionOf>
+            <rdf:Bag>
+              <rdf:li rdf:resource="http://identifiers.org/efo/0000764"/>
+              <rdf:li rdf:resource="http://identifiers.org/go/GO:0046718"/>
+            </rdf:Bag>
+          </CopasiMT:isVersionOf>
+          <CopasiMT:occursIn>
+            <rdf:Bag>
+              <rdf:li rdf:resource="http://identifiers.org/bto/BTO:0002417"/>
+            </rdf:Bag>
+          </CopasiMT:occursIn>
+        </rdf:Description>
+      </rdf:RDF>
+    </COPASI>
+  </annotation>
+          <listOfUnitDefinitions>
+      <unitDefinition id="time" metaid="ecac8c05-2367-4199-bf43-f860e7e799ad" name="time">
+        <listOfUnits>
+          <unit exponent="1" kind="second" metaid="_9b3e1883-0544-44ab-a28e-016adb483b8f" multiplier="86400" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+            <listOfCompartments>
+      <compartment constant="true" id="COMpartment" metaid="COPASI1" name="Patient" size="1" spatialDimensions="3">
+        <annotation>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI1">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T14:42:39Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </compartment>
+    </listOfCompartments>
+        <listOfParameters>
+      <parameter constant="false" id="x" metaid="COPASI2" name="x" value="10">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI2">
+              <bqbiol:isVersionOf>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:ncit:C12537"/>
+	</rdf:Bag>
+	</bqbiol:isVersionOf>
+	
+	<bqbiol:hasProperty>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:efo:0001460"/>
+	</rdf:Bag>
+	</bqbiol:hasProperty>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI2">
+              <bqbiol:hasProperty rdf:resource="urn:miriam:efo:0001460"/>
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T15:08:20Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:isVersionOf rdf:resource="urn:miriam:ncit:C12537"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="true" id="lamda" metaid="COPASI3" name="lamda" value="1">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI3">
+	<bqbiol:isVersionOf>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:sbo:SBO%3A0000610"/>
+	</rdf:Bag>
+	</bqbiol:isVersionOf>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI3">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T14:50:32Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:isVersionOf rdf:resource="urn:miriam:sbo:SBO:0000610"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="true" id="d" metaid="COPASI4" name="d" value="0.1">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI4">
+	<bqbiol:encodes>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:go:GO%3A0008219"/>
+	</rdf:Bag>
+	</bqbiol:encodes>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI4">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T14:50:31Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:encodes rdf:resource="urn:miriam:go:GO:0008219"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="false" id="y" metaid="COPASI5" name="y" value="0.1">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI5">
+              <bqbiol:isVersionOf>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:ncit:C12537"/>
+	</rdf:Bag>
+	</bqbiol:isVersionOf>
+	
+	<bqbiol:hasProperty>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:efo:0000764"/>
+	</rdf:Bag>
+	</bqbiol:hasProperty>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI5">
+              <bqbiol:hasProperty rdf:resource="urn:miriam:efo:0000764"/>
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T14:15:59Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:isVersionOf rdf:resource="urn:miriam:ncit:C12537"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="true" id="a" metaid="COPASI6" name="a" value="0.2">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI6">
+	<bqbiol:encodes>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:sbo:SBO%3A0000179"/>
+	</rdf:Bag>
+	</bqbiol:encodes>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI6">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T14:43:32Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:encodes rdf:resource="urn:miriam:sbo:SBO:0000179"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="false" id="log_y" metaid="COPASI7" name="log_y" value="-1">
+        <annotation>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI7">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T10:29:49Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="false" id="w" metaid="COPASI8" name="w" value="0.001">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI8">
+              <bqbiol:isVersionOf>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:bto:BTO%3A0000289"/>
+	</rdf:Bag>
+	</bqbiol:isVersionOf>
+	
+	<bqbiol:hasProperty>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:efo:0001651"/>
+	</rdf:Bag>
+	</bqbiol:hasProperty>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI8">
+              <bqbiol:hasProperty rdf:resource="urn:miriam:efo:0001651"/>
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T15:06:10Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:isVersionOf rdf:resource="urn:miriam:bto:BTO:0000289"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="true" id="b" metaid="COPASI9" name="b" value="0.01">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI9">
+	<bqbiol:encodes>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:go:GO%3A0008219"/>
+	</rdf:Bag>
+	</bqbiol:encodes>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI9">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T11:24:07Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:encodes rdf:resource="urn:miriam:go:GO:0008219"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="false" id="log_w" metaid="COPASI10" name="log_w" value="-3">
+        <annotation>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI10">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T10:30:16Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="false" id="z" metaid="COPASI11" name="z" value="0">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI11">
+              <bqbiol:isVersionOf>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:bto:BTO%3A0000289"/>
+	</rdf:Bag>
+	</bqbiol:isVersionOf>
+	
+	<bqbiol:isVersionOf>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:cl:CL%3A0000911"/>
+	</rdf:Bag>
+	</bqbiol:isVersionOf>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI11">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T14:16:01Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:isVersionOf rdf:resource="urn:miriam:bto:BTO:0000289"/>
+              <CopasiMT:isVersionOf rdf:resource="urn:miriam:cl:CL:0000911"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="true" id="h" metaid="COPASI12" name="h" value="0.1">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI12">
+	<bqbiol:encodes>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:go:GO%3A0008219"/>
+	</rdf:Bag>
+	</bqbiol:encodes>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI12">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T14:50:32Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:encodes rdf:resource="urn:miriam:go:GO:0008219"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="true" id="beta" metaid="COPASI13" name="beta" value="1.5">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI13">
+	<bqbiol:encodes>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:efo:0000544"/>
+	</rdf:Bag>
+	</bqbiol:encodes>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI13">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T14:17:51Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:encodes rdf:resource="urn:miriam:efo:0000544"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="true" id="p" metaid="COPASI14" name="p" value="1">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI14">
+	<bqbiol:encodes>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:go:GO%3A0001909"/>
+	</rdf:Bag>
+	</bqbiol:encodes>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI14">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T15:01:26Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:encodes rdf:resource="urn:miriam:go:GO:0001909"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="true" id="q" metaid="COPASI15" name="q" value="0.5">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI15">
+	<bqbiol:encodes>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:go:GO%3A0045065"/>
+	</rdf:Bag>
+	</bqbiol:encodes>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI15">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T15:03:20Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:encodes rdf:resource="urn:miriam:go:GO:0045065"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="true" id="c" metaid="COPASI16" name="c" value="0.1">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI16">
+	<bqbiol:encodes>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:go:GO%3A0046651"/>
+	</rdf:Bag>
+	</bqbiol:encodes>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI16">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T14:17:55Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:encodes rdf:resource="urn:miriam:go:GO:0046651"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+      <parameter constant="false" id="s" metaid="COPASI17" name="s" value="1">
+        <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#COPASI17">
+	<bqbiol:encodes>
+	<rdf:Bag>
+	<rdf:li rdf:resource="urn:miriam:go:GO%3A0042493"/>
+	</rdf:Bag>
+	</bqbiol:encodes>
+	</rdf:Description>
+	
+	
+	
+	
+        </rdf:RDF>
+        <COPASI xmlns="http://www.copasi.org/static/sbml">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:CopasiMT="http://www.copasi.org/RDF/MiriamTerms#" xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:about="#COPASI17">
+              <dcterms:created>
+                <rdf:Description>
+                  <dcterms:W3CDTF>2018-03-08T10:24:40Z</dcterms:W3CDTF>
+                </rdf:Description>
+              </dcterms:created>
+              <CopasiMT:encodes rdf:resource="urn:miriam:go:GO:0042493"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </COPASI>
+      </annotation>
+            </parameter>
+    </listOfParameters>
+        <listOfRules>
+      <assignmentRule metaid="f9e2e729-37ec-401a-831d-ae77005e17b3" variable="log_y">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <divide/>
+            <apply>
+              <log/>
+              <logbase>
+                <cn type="integer"> 10 </cn>
+              </logbase>
+              <apply>
+                <times/>
+                <ci> y </ci>
+                <cn> 1 </cn>
+              </apply>
+            </apply>
+            <apply>
+              <log/>
+              <logbase>
+                <cn type="integer"> 10 </cn>
+              </logbase>
+              <cn> 10 </cn>
+            </apply>
+          </apply>
+        </math>
+            </assignmentRule>
+      <assignmentRule metaid="e317678e-3e98-4b13-b918-7c18436a52d0" variable="log_w">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <divide/>
+            <apply>
+              <log/>
+              <logbase>
+                <cn type="integer"> 10 </cn>
+              </logbase>
+              <apply>
+                <times/>
+                <ci> w </ci>
+                <cn> 1 </cn>
+              </apply>
+            </apply>
+            <apply>
+              <log/>
+              <logbase>
+                <cn type="integer"> 10 </cn>
+              </logbase>
+              <cn> 10 </cn>
+            </apply>
+          </apply>
+        </math>
+            </assignmentRule>
+      <assignmentRule metaid="_443aca7c-35b7-49fb-bc9f-a10edb8d6e2f" variable="s">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <piecewise>
+            <piece>
+              <cn> 1 </cn>
+              <apply>
+                <lt/>
+                <csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time"> time </csymbol>
+                <cn> 1 </cn>
+              </apply>
+            </piece>
+            <otherwise>
+              <piecewise>
+                <piece>
+                  <cn> 1 </cn>
+                  <apply>
+                    <gt/>
+                    <csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time"> time </csymbol>
+                    <cn> 15 </cn>
+                  </apply>
+                </piece>
+                <otherwise>
+                  <cn> 0.0042 </cn>
+                </otherwise>
+              </piecewise>
+            </otherwise>
+          </piecewise>
+        </math>
+            </assignmentRule>
+      <rateRule metaid="_1e789e86-4b87-41f0-9471-9e0bf0774976" variable="x">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <minus/>
+            <ci> lamda </ci>
+            <apply>
+              <plus/>
+              <apply>
+                <times/>
+                <ci> d </ci>
+                <ci> x </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> s </ci>
+                <ci> beta </ci>
+                <ci> x </ci>
+                <ci> y </ci>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule metaid="_28532431-c472-427d-8b3e-3404ffe96ad3" variable="y">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <minus/>
+            <apply>
+              <times/>
+              <ci> s </ci>
+              <ci> beta </ci>
+              <ci> x </ci>
+              <ci> y </ci>
+            </apply>
+            <apply>
+              <plus/>
+              <apply>
+                <times/>
+                <ci> a </ci>
+                <ci> y </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p </ci>
+                <ci> y </ci>
+                <ci> z </ci>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule metaid="_3b4abb33-4505-4a7b-91d8-e407b4c34c34" variable="w">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <minus/>
+            <apply>
+              <times/>
+              <ci> c </ci>
+              <ci> x </ci>
+              <ci> y </ci>
+              <ci> w </ci>
+            </apply>
+            <apply>
+              <plus/>
+              <apply>
+                <times/>
+                <ci> c </ci>
+                <ci> q </ci>
+                <ci> y </ci>
+                <ci> w </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> b </ci>
+                <ci> w </ci>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+            </rateRule>
+      <rateRule metaid="_9251edd5-0c43-47f7-96f9-9eda7eeeb889" variable="z">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <minus/>
+            <apply>
+              <times/>
+              <ci> c </ci>
+              <ci> q </ci>
+              <ci> y </ci>
+              <ci> w </ci>
+            </apply>
+            <apply>
+              <times/>
+              <ci> h </ci>
+              <ci> z </ci>
+            </apply>
+          </apply>
+        </math>
+            </rateRule>
+    </listOfRules>
+              </model>
+</sbml>

@@ -4,8 +4,9 @@ import os
 import requests
 from bioservices import ChEBI, UniProt, Rhea
 from stibium.ant_types import Interaction, UnitAssignment, FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, End, Keyword, Sbo, Annotation, Sboterm, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, RateRules, Reaction, Event, SimpleStmt, TreeNode, TrunkNode, Import, StringLiteral
-from .types import FunctionAlreadyExists, CircularImportFound, DuplicateImportedMModelCall, FileAlreadyImported, GrammarHasIssues, ModelAlreadyExists, NoImportFile, ObscuredEventTrigger, UninitRateLaw, OverridingDisplayName, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition, RateRuleOverRidden, RateRuleNotInReaction
+from .types import FunctionAlreadyExists, CircularImportFound, DuplicateImportedMModelCall, FileAlreadyImported, GrammarHasIssues, ModelAlreadyExists, NoImportFile, ObscuredEventTrigger, ReservedName, UninitRateLaw, OverridingDisplayName, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition, RateRuleOverRidden, RateRuleNotInReaction
 from .symbols import FuncSymbol, AbstractScope, BaseScope, FunctionScope, MModelSymbol, ModelScope, QName, SymbolTable, ModularModelScope
+import stibium.functions as functions
 
 from dataclasses import dataclass
 from typing import Any, List, Optional, Set, cast
@@ -295,12 +296,12 @@ class AntTreeAnalyzer:
                     self.process_reaction(node, scope)
                 elif type(node.get_stmt()) == ModularModelCall:
                     self.process_mmodel_call(node, scope)
-                elif type(node.get_stmt()) == FunctionCall:
-                    self.process_function_call(node, scope)
                 elif type(node.get_stmt()) == IsAssignment:
                     self.process_is_assignment(node, scope)
                 elif type(node.get_stmt()) == Assignment:
                     self.process_maybein(node, scope)
+                    if type(node.get_stmt().get_value()) == FuncCall:
+                        self.process_function_call(node, scope)
                 elif type(node.get_stmt()) == Sboterm or type(node.get_stmt()) == Annotation:
                     self.process_annotation(node, scope)
                 elif type(node.get_stmt()) == Event:
@@ -368,12 +369,12 @@ class AntTreeAnalyzer:
                     self.process_reaction(node, scope)
                 elif type(node.get_stmt()) == ModularModelCall:
                     self.process_mmodel_call(node, scope)
-                elif type(node.get_stmt()) == FunctionCall:
-                    self.process_function_call(node, scope)
                 elif type(node.get_stmt()) == IsAssignment:
                     self.process_is_assignment(node, scope)
                 elif type(node.get_stmt()) == Assignment:
                     self.process_maybein(node, scope)
+                    if type(node.get_stmt().get_value()) == FuncCall:
+                        self.process_function_call(node, scope)
                 elif type(node.get_stmt()) == Sboterm or type(node.get_stmt()) == Annotation:
                     self.process_annotation(node, scope)
                 elif type(node.get_stmt()) == Event:
@@ -389,8 +390,18 @@ class AntTreeAnalyzer:
                 if len(function) == 0:
                     function = self.import_table.get(QName(BaseScope(), function_name))
                 if len(function) == 0:
+                    function = [functions.is_builtin_func(function_name.text)]
+                if len(function) == 0:
                     self.error.append(UninitFunction(function_name.range, function_name.text))
                 else:
+                    if functions.is_builtin_func(function_name.text) == function[0]:
+                        if leaf.get_params() is None:
+                            params = []
+                        else:
+                            params = leaf.get_params().get_items()
+                        if not functions.has_correct_args(function[0], len(params)):
+                            self.error.append(IncorrectParamNum(leaf.range, functions.get_builtin_func_arg_counts(function[0]), len(params)))
+                        continue
                     call_params = leaf.get_params().get_items() if leaf.get_params() is not None else []
                     if len(function[0].parameters) != len(call_params):
                         self.error.append(IncorrectParamNum(leaf.range, len(function[0].parameters), len(call_params)))
@@ -399,6 +410,9 @@ class AntTreeAnalyzer:
                             expec = function[0].parameters[index][0] if len(function[0].parameters[index]) != 0 else None
                             expec_type = expec.type if expec is not None else None
                             call = leaf.get_params().get_items()[index]
+                            # parameters can be arithmetic expression
+                            if isinstance(call, ArithmeticExpr):
+                                continue
                             call_name = self.table.get(QName(scope, call))
                             if len(call_name) == 0:
                                 call_name = self.import_table.get(QName(scope, call))
@@ -531,6 +545,12 @@ class AntTreeAnalyzer:
 
     def handle_assignment(self, scope: AbstractScope, assignment: Assignment, insert: bool):
         comp = None
+        if functions.is_reserved_name(assignment.get_name_text()):
+            self.table.error.append(ReservedName(assignment.get_name().range, assignment.get_name_text()))
+            return
+        if type(assignment.get_value()) == FuncCall:
+            self.handle_function_call(scope, assignment, insert)
+            return
         if assignment.get_maybein() != None and assignment.get_maybein().is_in_comp():
             comp = assignment.get_maybein().get_comp().get_name_text()
         if insert:
@@ -945,6 +965,8 @@ class AntTreeAnalyzer:
             for leaf in expression.scan_leaves():
                 if isinstance(leaf, Name) and leaf.text not in all_names and leaf.text not in import_names:
                     self.warning.append(VarNotFound(leaf.range, leaf.text))
+                if isinstance(leaf, FuncCall):
+                    continue
                 if leaf.text == "+" or leaf.text == "-" or leaf.text == "*" or leaf.text == "/":
                     rate_rule_string += " " + (leaf.text) + " "
                 else:
@@ -1024,7 +1046,10 @@ class AntTreeAnalyzer:
                     ontology_name = ontology_info_split[0].lower()
                     iri = uri_split[-1]
                     
-                    response = requests.get(ONTOLOGIES_URL + ontology_name + ONTOLOGIES_URL_SECOND_PART + iri).json()
+                    response = requests.get(ONTOLOGIES_URL + ontology_name + ONTOLOGIES_URL_SECOND_PART + iri)
+                    if response.status_code == 406:
+                        return
+                    response = response.json()
                     if ontology_name == 'pr' or ontology_name == 'ma' or ontology_name == 'obi' or ontology_name == 'fma':
                         definition = response['description']
                     else:
@@ -1193,6 +1218,9 @@ class AntTreeAnalyzer:
                 self.table.insert(qname, SymbolType.Parameter)
     
     def handle_function(self, function, insert: bool):
+        if functions.is_reserved_name(function.get_name_str()):
+            self.table.error.append(ReservedName(function.get_name().range, function.get_name_str()))
+            return
         if function.get_params() is not None:
             params = function.get_params().get_items()
         else:
@@ -1215,6 +1243,9 @@ class AntTreeAnalyzer:
             self.table.insert_function(QName(FunctionScope(str(function.get_name())), function), SymbolType.Function, parameters)
 
     def handle_mmodel(self, mmodel, insert: bool):
+        if functions.is_reserved_name(mmodel.get_name_str()):
+            self.table.error.append(ReservedName(mmodel.get_name().range, mmodel.get_name_str()))
+            return
         if mmodel.get_params() is not None:
             params = mmodel.get_params().get_items()
         else:
@@ -1327,27 +1358,42 @@ class AntTreeAnalyzer:
         self.process_maybein(node, scope)
     
     def process_function_call(self, node, scope):
-        function_name = node.get_stmt().get_function_name()
+        cur_func = node.get_stmt().get_value()
+        function_name = cur_func.get_function_name().get_name()
         function = self.table.get(QName(BaseScope(), function_name))
         if len(function) == 0:
             function = self.import_table.get(QName(BaseScope(), function_name))
         if len(function) == 0:
+            function = functions.is_builtin_func(function_name.text)
+        if len(function) == 0:
             self.error.append(UninitFunction(function_name.range, function_name.text))
         else:
-            call_params = node.get_stmt().get_params().get_items() if node.get_stmt().get_params() is not None else []
-            if len(function[0].parameters) != len(call_params):
-                self.error.append(IncorrectParamNum(node.range, len(function[0].parameters), len(call_params)))
+            builtin_func = functions.is_builtin_func(function_name.text)
+            if builtin_func and builtin_func[0] == function[0]:
+                if cur_func.get_params() is None:
+                    params = []
+                else:
+                    params = cur_func.get_params().get_items()
+                if not functions.has_correct_args(function[0], len(params)):
+                    self.error.append(IncorrectParamNum(node.range, functions.get_builtin_func_arg_counts(function[0]), len(params)))
             else:
-                for index in range(len(function[0].parameters)):
-                    expec = function[0].parameters[index][0] if len(function[0].parameters[index]) != 0 else None
-                    expec_type = expec.type if expec is not None else None
-                    call = node.get_stmt().get_params().get_items()[index]
-                    call_name = self.table.get(QName(scope, call))
-                    if len(call_name) == 0:
-                        call_name = self.import_table.get(QName(scope, call))
-                    call_type = call_name[0].type if len(call_name) != 0 else None
-                    if not expec_type is None and not call_type is None and not call_type.derives_from(expec_type):
-                        self.error.append(ParamIncorrectType(call.range, expec_type, call_type))
+                call_params = cur_func.get_params().get_items() if cur_func.get_params() is not None else []
+                if len(function[0].parameters) != len(call_params):
+                    self.error.append(IncorrectParamNum(node.range, len(function[0].parameters), len(call_params)))
+                else:
+                    for index in range(len(function[0].parameters)):
+                        expec = function[0].parameters[index][0] if len(function[0].parameters[index]) != 0 else None
+                        expec_type = expec.type if expec is not None else None
+                        call = cur_func.get_params().get_items()[index]
+                        # parameter can be arithmetic expression
+                        if isinstance(call, ArithmeticExpr):
+                            continue
+                        call_name = self.table.get(QName(scope, call))
+                        if len(call_name) == 0:
+                            call_name = self.import_table.get(QName(scope, call))
+                        call_type = call_name[0].type if len(call_name) != 0 else None
+                        if not expec_type is None and not call_type is None and not call_type.derives_from(expec_type):
+                            self.error.append(ParamIncorrectType(call.range, expec_type, call_type))
         self.process_maybein(node, scope)
 
     def process_maybein(self, node, scope):

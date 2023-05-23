@@ -1,0 +1,3137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" metaid="_071328" level="2" version="1">
+  <model metaid="_641404" id="MAP" name="Raman2006_MycolicAcid">
+    <notes>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+        <p>This model originates from BioModels Database: A Database of Annotated Published Models (http://www.ebi.ac.uk/biomodels/). It is copyright (c) 2005-2011 The BioModels.net Team.      <br/>
+          To the extent possible under law, all copyright and related or neighbouring rights to this encoded model have been dedicated to the public domain worldwide. Please refer to      <a href="http://creativecommons.org/publicdomain/zero/1.0/" title="Creative Commons CC0">CC0 Public Domain Dedication</a>
+          for more information.      </p>
+      <p>In summary, you are entitled to use this encoded model in absolutely any manner you deem suitable, verbatim, or with modification, alone or embedded it in a larger context, redistribute it, commercially or not, in a restricted way or not..      <br/>
+      <br/>
+          To cite BioModels Database, please use:      <a href="http://www.ncbi.nlm.nih.gov/pubmed/20587024" target="_blank">Li C, Donizelli M, Rodriguez N, Dharuri H, Endler L, Chelliah V, Li L, He E, Henry A, Stefan MI, Snoep JL, Hucka M, Le Novère N, Laibe C (2010) BioModels Database: An enhanced, curated and annotated resource for published quantitative kinetic models. BMC Syst Biol., 4:92.</a>
+  </p>
+</body>
+</notes><annotation>
+  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+    <rdf:Description rdf:about="#_641404">
+      <bqmodel:is>
+        <rdf:Bag>
+          <rdf:li rdf:resource="http://identifiers.org/biomodels.db/MODEL8568434338"/>
+        </rdf:Bag>
+      </bqmodel:is>
+      <bqmodel:isDescribedBy>
+        <rdf:Bag>
+          <rdf:li rdf:resource="http://identifiers.org/pubmed/16261191"/>
+        </rdf:Bag>
+      </bqmodel:isDescribedBy>
+      <bqbiol:hasTaxon>
+        <rdf:Bag>
+          <rdf:li rdf:resource="http://identifiers.org/taxonomy/1773"/>
+        </rdf:Bag>
+      </bqbiol:hasTaxon>
+      <bqbiol:isVersionOf>
+        <rdf:Bag>
+          <rdf:li rdf:resource="http://identifiers.org/go/GO:0071768"/>
+        </rdf:Bag>
+      </bqbiol:isVersionOf>
+    </rdf:Description>
+  </rdf:RDF>
+</annotation><listOfCompartments>
+  <compartment metaid="_641420" id="default" size="1"/>
+</listOfCompartments><listOfSpecies>
+  <species metaid="_641439" id="G001" name="acpS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641440" id="X001" name="coenzyme-A" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641459" id="X002" name="apo-AcpM" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641460" id="X003" name="ADP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641480" id="X004" name="[acyl-carrier-protein]" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641500" id="G002" name="birA" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641519" id="X005" name="AccB" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641520" id="X006" name="biotin" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641539" id="X007" name="ATP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641540" id="X008" name="pyrophosphate" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641560" id="X009" name="AMP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641580" id="X010" name="BCCP-biotin" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641599" id="G003" name="accA3" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641600" id="X011" name="HCO3-" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641619" id="X012" name="phosphate" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641620" id="X013" name="BCCP-biotin-CO2" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641639" id="X014" name="H+" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641640" id="G004" name="accD3" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641659" id="X015" name="acetyl-CoA" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641660" id="X016" name="malonyl-CoA" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641679" id="G005" name="fas" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641680" id="X017" name="ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641699" id="X018" name="C2-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641700" id="X019" name="malonyl-C2-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641719" id="X020" name="beta-keto-C4-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641720" id="X021" name="CO2" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641721" id="X022" name="NADPH" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641739" id="X023" name="D-3-hydroxy-C4-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641740" id="X024" name="NADP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641759" id="X025" name="trans-delta-2-enoyl-C4-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641760" id="X026" name="H2O" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641779" id="X027" name="NADH" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641780" id="X028" name="C4-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641800" id="X029" name="NAD" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641819" id="X030" name="malonyl-C4-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641820" id="X031" name="beta-keto-C6-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641839" id="X032" name="D-3-hydroxy-C6-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641840" id="X033" name="trans-delta-2-enoyl-C6-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641859" id="X034" name="C6-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641860" id="X035" name="malonyl-C6-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641879" id="X036" name="beta-keto-C8-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641880" id="X037" name="D-3-hydroxy-C8-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641899" id="X038" name="trans-delta-2-enoyl-C8-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641900" id="X039" name="C8-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641919" id="X040" name="malonyl-C8-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641920" id="X041" name="beta-keto-C10-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641939" id="X042" name="D-3-hydroxy-C10-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641940" id="X043" name="trans-delta-2-enoyl-C10-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641959" id="X044" name="C10-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641960" id="X045" name="malonyl-C10-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641979" id="X046" name="beta-keto-C12-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641980" id="X047" name="D-3-hydroxy-C12-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_641999" id="X048" name="trans-delta-2-enoyl-C12-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642001" id="X049" name="C12-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642019" id="X050" name="malonyl-C12-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642020" id="X051" name="beta-keto-C14-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642039" id="X052" name="D-3-hydroxy-C14-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642059" id="X053" name="trans-delta-2-enoyl-C14-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642079" id="X054" name="C14-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642099" id="X055" name="malonyl-C14-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642119" id="X056" name="beta-keto-C16-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642139" id="X057" name="D-3-hydroxy-C16-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642159" id="X058" name="trans-delta-2-enoyl-C16-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642179" id="X059" name="C16-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642199" id="X060" name="malonyl-C16-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642219" id="X061" name="beta-keto-C18-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642239" id="X062" name="D-3-hydroxy-C18-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642259" id="X063" name="trans-delta-2-enoyl-C18-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642279" id="X064" name="C18-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642299" id="X065" name="malonyl-C18-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642319" id="X066" name="beta-keto-C20-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642339" id="X067" name="D-3-hydroxy-C20-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642359" id="X068" name="trans-delta-2-enoyl-C20-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642379" id="X069" name="C20-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642399" id="X070" name="malonyl-C20-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642419" id="X071" name="beta-keto-C22-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642439" id="X072" name="D-3-hydroxy-C22-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642440" id="X073" name="trans-delta-2-enoyl-C22-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642459" id="X074" name="C22-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642479" id="X075" name="malonyl-C22-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642499" id="X076" name="beta-keto-C24-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642519" id="X077" name="D-3-hydroxy-C24-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642539" id="X078" name="trans-delta-2-enoyl-C24-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642559" id="X079" name="C24-acyl-ACP-FAS" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642579" id="X080" name="C24-acyl-S-CoA" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642599" id="X081" name="C16-acyl-S-CoA" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642619" id="G006" name="fabD" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642639" id="X082" name="malonyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642659" id="G007" name="fabH" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642679" id="X083" name="beta-keto-C18-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642699" id="G008" name="fabG1/mabA" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642719" id="X084" name="D-3-hydroxy-C18-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642739" id="G009" name="fabG2" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642759" id="G010" name="fabG4" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642779" id="G011" name="UNK1" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642799" id="X085" name="trans-delta-2-enoyl-C18-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642800" id="G012" name="inhA" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642819" id="X086" name="C18-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642839" id="G013" name="kasA" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642859" id="G014" name="kasB" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642879" id="X087" name="beta-keto-C20-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642899" id="X088" name="D-3-hydroxy-C20-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642919" id="X089" name="trans-delta-2-enoyl-C20-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642939" id="X090" name="C20-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642959" id="X091" name="beta-keto-C22-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642979" id="X092" name="D-3-hydroxy-C22-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_642999" id="X093" name="trans-delta-2-enoyl-C22-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643019" id="X094" name="C22-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643023" id="X095" name="beta-keto-C24-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643024" id="X096" name="D-3-hydroxy-C24-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643049" id="X097" name="trans-delta-2-enoyl-C24-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643050" id="X098" name="C24-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643069" id="X099" name="beta-keto-C26-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643070" id="X100" name="D-3-hydroxy-C26-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643090" id="X101" name="trans-delta-2-enoyl-C26-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643109" id="X102" name="C26-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643110" id="X103" name="beta-keto-C28-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643129" id="X104" name="D-3-hydroxy-C28-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643130" id="X105" name="trans-delta-2-enoyl-C28-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643149" id="X106" name="C28-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643150" id="X107" name="beta-keto-C30-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643169" id="X108" name="D-3-hydroxy-C30-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643170" id="X109" name="trans-delta-2-enoyl-C30-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643189" id="X110" name="C30-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643190" id="X111" name="beta-keto-C32-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643209" id="X112" name="D-3-hydroxy-C32-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643210" id="X113" name="trans-delta-2-enoyl-C32-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643229" id="X114" name="C32-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643249" id="X115" name="beta-keto-C34-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643269" id="X116" name="D-3-hydroxy-C34-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643289" id="X117" name="trans-delta-2-enoyl-C34-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643309" id="X118" name="C34-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643329" id="X119" name="beta-keto-C36-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643349" id="X120" name="D-3-hydroxy-C36-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643369" id="X121" name="trans-delta-2-enoyl-C36-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643389" id="X122" name="C36-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643409" id="X123" name="beta-keto-C38-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643429" id="X124" name="D-3-hydroxy-C38-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643449" id="X125" name="trans-delta-2-enoyl-C38-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643469" id="X126" name="C38-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643489" id="X127" name="beta-keto-C40-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643509" id="X128" name="D-3-hydroxy-C40-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643529" id="X129" name="trans-delta-2-enoyl-C40-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643549" id="X130" name="C40-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643569" id="X131" name="beta-keto-C42-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643589" id="X132" name="D-3-hydroxy-C42-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643609" id="X133" name="trans-delta-2-enoyl-C42-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643629" id="X134" name="C42-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643649" id="X135" name="beta-keto-C44-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643669" id="X136" name="D-3-hydroxy-C44-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643689" id="X137" name="trans-delta-2-enoyl-C44-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643709" id="X138" name="C44-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643729" id="X139" name="beta-keto-C46-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643749" id="X140" name="D-3-hydroxy-C46-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643769" id="X141" name="trans-delta-2-enoyl-C46-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643789" id="X142" name="C46-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643809" id="X143" name="beta-keto-C48-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643829" id="X144" name="D-3-hydroxy-C48-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643849" id="X145" name="trans-delta-2-enoyl-C48-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643869" id="X146" name="C48-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643889" id="X147" name="beta-keto-C50-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643909" id="X148" name="D-3-hydroxy-C50-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643929" id="X149" name="trans-delta-2-enoyl-C50-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643949" id="X150" name="C50-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643969" id="X151" name="beta-keto-C52-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_643989" id="X152" name="D-3-hydroxy-C52-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644009" id="X153" name="trans-delta-2-enoyl-C52-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644029" id="X154" name="C52-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644049" id="X155" name="beta-keto-C54-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644069" id="X156" name="D-3-hydroxy-C54-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644089" id="X157" name="trans-delta-2-enoyl-C54-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644109" id="X158" name="C54-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644129" id="X159" name="beta-keto-C56-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644149" id="X160" name="D-3-hydroxy-C56-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644169" id="X161" name="trans-delta-2-enoyl-C56-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644189" id="X162" name="C56-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644209" id="X163" name="beta-keto-C58-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644229" id="X164" name="D-3-hydroxy-C58-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644249" id="X165" name="trans-delta-2-enoyl-C58-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644269" id="X166" name="C58-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644289" id="G015" name="desA1" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644309" id="G016" name="desA2" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644329" id="G017" name="desA3" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644349" id="X167" name="cis-delta-2-19,31-enoyl-C52-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644369" id="X168" name="cis-delta-2-19,37-enoyl-C54-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644389" id="X169" name="cis-delta-2-19,37-enoyl-C58-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644409" id="G018" name="mmaA2" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644429" id="X170" name="S-adenosyl-L-methionine" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644449" id="X171" name="cis-delta-1-31-enoyl-19-cp-C53-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644469" id="X172" name="S-adenosyl-L-homocysteine" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644489" id="G019" name="pcaA" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644509" id="X173" name="19,31-cp-C54-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644529" id="G020" name="fadD32" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644549" id="X174" name="19,31-cp-C54-acyl-ACP-AMP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644569" id="G021" name="accD4" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644589" id="G022" name="accD5" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644609" id="X175" name="2-carboxyl-C24-acyl-CoA" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644629" id="G023" name="pks13" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644649" id="X176" name="alpha-mycolate" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644669" id="G024" name="mmaA4" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644689" id="X177" name="cis-delta-37-methyl-hydroxy-C55-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644709" id="G025" name="mmaA3" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644729" id="X178" name="cis-delta-37-methyl-hydroxymethyl-C56-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644749" id="X179" name="cis-methoxy-C57-meroacyl-cp-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644769" id="G026" name="cmaA2" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644789" id="X180" name="cis-methoxy-C57-meroacyl-cp-ACP-AMP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644809" id="X181" name="cis-methoxy-mycolate" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644829" id="G027" name="mmaA1" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644849" id="X182" name="delta-2-cis-19,trans-37-enoyl-methyl-C55-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644869" id="X183" name="trans-delta-37-methyl-hydroxy-C56-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644889" id="X184" name="trans-delta-37-methyl-hydroxymethyl-C57-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644909" id="X185" name="trans-methoxy-C58-meroacyl-cp-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644929" id="X186" name="trans-methoxy-C58-meroacyl-cp-ACP-AMP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644949" id="X187" name="trans-methoxy-mycolate" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644969" id="X188" name="cis-delta-37-methyl-hydroxy-C59-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_644989" id="G028" name="UNK2" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_645009" id="X189" name="cis-delta-37-methyl-keto-C59-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_645029" id="X190" name="cis-keto-C60-meroacyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_645049" id="X191" name="cis-keto-C60-meroacyl-ACP-AMP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_645069" id="X192" name="cis-keto-mycolate" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_645089" id="X193" name="trans-delta-37-methyl-hydroxy-C60-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_645109" id="X194" name="trans-delta-37-methyl-keto-C60-acyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_645129" id="X195" name="trans-keto-C61-meroacyl-ACP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_645149" id="X196" name="trans-keto-C61-meroacyl-ACP-AMP" compartment="default" initialAmount="0" charge="0"/>
+  <species metaid="_645169" id="X197" name="trans-keto-mycolate" compartment="default" initialAmount="0" charge="0"/>
+</listOfSpecies><listOfReactions>
+  <reaction metaid="_645189" id="J001" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_071340" species="X001"/>
+      <speciesReference metaid="_071352" species="X002"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_071364" species="X003"/>
+      <speciesReference metaid="_071377" species="X004"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_071389" species="G001"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645209" id="J002" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_071401" species="X005"/>
+      <speciesReference metaid="_071413" species="X006"/>
+      <speciesReference metaid="_071425" species="X007"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_071437" species="X008"/>
+      <speciesReference metaid="_071449" species="X009"/>
+      <speciesReference metaid="_071461" species="X010"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_071473" species="G002"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645229" id="J003" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_071485" species="X007"/>
+      <speciesReference metaid="_071497" species="X010"/>
+      <speciesReference metaid="_071510" species="X011"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_071522" species="X003"/>
+      <speciesReference metaid="_071534" species="X012"/>
+      <speciesReference metaid="_071546" species="X013"/>
+      <speciesReference metaid="_071559" species="X014"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_071571" species="G003"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645249" id="J004" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_071583" species="X013"/>
+      <speciesReference metaid="_071595" species="X015"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_071607" species="X016"/>
+      <speciesReference metaid="_071619" species="X010"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_071631" species="G004"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645269" id="J005" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_071643" species="X015"/>
+      <speciesReference metaid="_071655" species="X017"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_071667" species="X018"/>
+      <speciesReference metaid="_071679" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_071692" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645289" id="J006" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_071704" species="X018"/>
+      <speciesReference metaid="_071716" species="X016"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_071728" species="X019"/>
+      <speciesReference metaid="_071740" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_071753" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645309" id="J007" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_071765" species="X019"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_071777" species="X020"/>
+      <speciesReference metaid="_071789" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_071801" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645329" id="J008" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_071814" species="X022"/>
+      <speciesReference metaid="_071826" species="X020"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_071838" species="X023"/>
+      <speciesReference metaid="_071850" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_071862" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645349" id="J009" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_071874" species="X023"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_071886" species="X025"/>
+      <speciesReference metaid="_071898" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_071911" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645369" id="J010" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_071923" species="X027"/>
+      <speciesReference metaid="_071935" species="X025"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_071947" species="X028"/>
+      <speciesReference metaid="_071959" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_071971" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645389" id="J011" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_071983" species="X028"/>
+      <speciesReference metaid="_071995" species="X016"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072007" species="X030"/>
+      <speciesReference metaid="_072019" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072031" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645409" id="J012" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072044" species="X030"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072056" species="X031"/>
+      <speciesReference metaid="_072068" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072080" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645429" id="J013" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072092" species="X022"/>
+      <speciesReference metaid="_072104" species="X031"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072116" species="X032"/>
+      <speciesReference metaid="_072128" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072140" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645449" id="J014" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072152" species="X032"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072165" species="X033"/>
+      <speciesReference metaid="_072177" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072189" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645469" id="J015" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072201" species="X027"/>
+      <speciesReference metaid="_072213" species="X033"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072225" species="X034"/>
+      <speciesReference metaid="_072237" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072249" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645489" id="J016" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072261" species="X034"/>
+      <speciesReference metaid="_072273" species="X016"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072285" species="X035"/>
+      <speciesReference metaid="_072297" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072310" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645509" id="J017" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072322" species="X035"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072334" species="X036"/>
+      <speciesReference metaid="_072346" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072358" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645529" id="J018" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072370" species="X022"/>
+      <speciesReference metaid="_072382" species="X036"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072394" species="X037"/>
+      <speciesReference metaid="_072406" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072418" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645549" id="J019" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072430" species="X037"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072442" species="X038"/>
+      <speciesReference metaid="_072454" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072466" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645569" id="J020" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072479" species="X027"/>
+      <speciesReference metaid="_072491" species="X038"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072503" species="X039"/>
+      <speciesReference metaid="_072515" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072527" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645589" id="J021" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072539" species="X039"/>
+      <speciesReference metaid="_072551" species="X016"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072563" species="X040"/>
+      <speciesReference metaid="_072575" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072588" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645609" id="J022" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072600" species="X040"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072612" species="X041"/>
+      <speciesReference metaid="_072624" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072636" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645629" id="J023" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072648" species="X022"/>
+      <speciesReference metaid="_072660" species="X041"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072672" species="X042"/>
+      <speciesReference metaid="_072684" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072696" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645649" id="J024" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072708" species="X042"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072720" species="X043"/>
+      <speciesReference metaid="_072732" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072744" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645669" id="J025" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072756" species="X027"/>
+      <speciesReference metaid="_072768" species="X043"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072781" species="X044"/>
+      <speciesReference metaid="_072793" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072805" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645689" id="J026" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072817" species="X044"/>
+      <speciesReference metaid="_072829" species="X016"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072841" species="X045"/>
+      <speciesReference metaid="_072853" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072866" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645709" id="J027" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072879" species="X045"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072892" species="X046"/>
+      <speciesReference metaid="_072905" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072918" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645729" id="J028" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072931" species="X022"/>
+      <speciesReference metaid="_072944" species="X046"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_072957" species="X047"/>
+      <speciesReference metaid="_072970" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_072984" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645749" id="J029" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_072997" species="X047"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073010" species="X048"/>
+      <speciesReference metaid="_073022" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073034" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645769" id="J030" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073046" species="X027"/>
+      <speciesReference metaid="_073058" species="X048"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073070" species="X049"/>
+      <speciesReference metaid="_073082" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073094" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645789" id="J031" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073107" species="X049"/>
+      <speciesReference metaid="_073119" species="X016"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073131" species="X050"/>
+      <speciesReference metaid="_073143" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073155" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645809" id="J032" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073167" species="X050"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073179" species="X051"/>
+      <speciesReference metaid="_073191" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073203" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645829" id="J033" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073215" species="X022"/>
+      <speciesReference metaid="_073227" species="X051"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073239" species="X052"/>
+      <speciesReference metaid="_073251" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073263" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645849" id="J034" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073275" species="X052"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073287" species="X053"/>
+      <speciesReference metaid="_073299" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073311" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645869" id="J035" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073323" species="X027"/>
+      <speciesReference metaid="_073335" species="X053"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073347" species="X054"/>
+      <speciesReference metaid="_073359" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073371" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645889" id="J036" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073383" species="X054"/>
+      <speciesReference metaid="_073395" species="X016"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073407" species="X055"/>
+      <speciesReference metaid="_073419" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073431" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645935" id="J037" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073443" species="X055"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073456" species="X056"/>
+      <speciesReference metaid="_073468" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073481" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645936" id="J038" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073493" species="X022"/>
+      <speciesReference metaid="_073505" species="X056"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073517" species="X057"/>
+      <speciesReference metaid="_073529" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073541" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645949" id="J039" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073553" species="X057"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073565" species="X058"/>
+      <speciesReference metaid="_073577" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073590" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645969" id="J040" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073602" species="X027"/>
+      <speciesReference metaid="_073614" species="X058"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073626" species="X059"/>
+      <speciesReference metaid="_073638" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073650" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_645989" id="J041" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073662" species="X059"/>
+      <speciesReference metaid="_073674" species="X016"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073686" species="X060"/>
+      <speciesReference metaid="_073698" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073710" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646009" id="J042" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073722" species="X060"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073734" species="X061"/>
+      <speciesReference metaid="_073746" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073758" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646029" id="J043" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073770" species="X022"/>
+      <speciesReference metaid="_073782" species="X061"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073794" species="X062"/>
+      <speciesReference metaid="_073806" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073819" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646049" id="J044" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073831" species="X062"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073843" species="X063"/>
+      <speciesReference metaid="_073855" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073867" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646069" id="J045" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073879" species="X027"/>
+      <speciesReference metaid="_073891" species="X063"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073903" species="X064"/>
+      <speciesReference metaid="_073915" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073927" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646089" id="J046" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073939" species="X064"/>
+      <speciesReference metaid="_073951" species="X016"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_073963" species="X065"/>
+      <speciesReference metaid="_073975" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_073987" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646109" id="J047" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_073999" species="X065"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074011" species="X066"/>
+      <speciesReference metaid="_074023" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074035" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646129" id="J048" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074048" species="X022"/>
+      <speciesReference metaid="_074060" species="X066"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074072" species="X067"/>
+      <speciesReference metaid="_074084" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074096" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646149" id="J049" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074108" species="X067"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074120" species="X068"/>
+      <speciesReference metaid="_074132" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074144" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646169" id="J050" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074157" species="X027"/>
+      <speciesReference metaid="_074169" species="X068"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074181" species="X069"/>
+      <speciesReference metaid="_074193" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074205" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646189" id="J051" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074218" species="X069"/>
+      <speciesReference metaid="_074230" species="X016"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074242" species="X070"/>
+      <speciesReference metaid="_074254" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074266" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646209" id="J052" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074278" species="X070"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074290" species="X071"/>
+      <speciesReference metaid="_074303" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074315" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646229" id="J053" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074327" species="X022"/>
+      <speciesReference metaid="_074339" species="X071"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074352" species="X072"/>
+      <speciesReference metaid="_074364" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074376" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646249" id="J054" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074388" species="X072"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074400" species="X073"/>
+      <speciesReference metaid="_074412" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074425" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646269" id="J055" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074437" species="X027"/>
+      <speciesReference metaid="_074449" species="X073"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074461" species="X074"/>
+      <speciesReference metaid="_074473" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074485" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646289" id="J056" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074497" species="X074"/>
+      <speciesReference metaid="_074509" species="X016"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074521" species="X075"/>
+      <speciesReference metaid="_074533" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074545" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646309" id="J057" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074557" species="X075"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074570" species="X076"/>
+      <speciesReference metaid="_074582" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074594" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646329" id="J058" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074606" species="X022"/>
+      <speciesReference metaid="_074619" species="X076"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074632" species="X077"/>
+      <speciesReference metaid="_074644" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074656" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646349" id="J059" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074668" species="X077"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074680" species="X078"/>
+      <speciesReference metaid="_074693" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074705" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646369" id="J060" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074717" species="X027"/>
+      <speciesReference metaid="_074729" species="X078"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074741" species="X079"/>
+      <speciesReference metaid="_074753" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074765" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646389" id="J061" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074777" species="X079"/>
+      <speciesReference metaid="_074789" species="X001"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074801" species="X080"/>
+      <speciesReference metaid="_074813" species="X017"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074825" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646409" id="J062" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074837" species="X059"/>
+      <speciesReference metaid="_074849" species="X001"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074861" species="X081"/>
+      <speciesReference metaid="_074873" species="X017"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074886" species="G005"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646429" id="J063" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074898" species="X004"/>
+      <speciesReference metaid="_074910" species="X016"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074922" species="X082"/>
+      <speciesReference metaid="_074934" species="X001"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_074946" species="G006"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646449" id="J064" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_074958" species="X081"/>
+      <speciesReference metaid="_074970" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_074982" species="X001"/>
+      <speciesReference metaid="_074994" species="X083"/>
+      <speciesReference metaid="_075006" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075018" species="G007"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646469" id="J065" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075030" species="X022"/>
+      <speciesReference metaid="_075042" species="X083"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075054" species="X084"/>
+      <speciesReference metaid="_075067" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075079" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646489" id="J066" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075091" species="X022"/>
+      <speciesReference metaid="_075103" species="X083"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075115" species="X084"/>
+      <speciesReference metaid="_075127" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075139" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646509" id="J067" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075151" species="X022"/>
+      <speciesReference metaid="_075163" species="X083"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075175" species="X084"/>
+      <speciesReference metaid="_075187" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075199" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646529" id="J068" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075211" species="X084"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075224" species="X085"/>
+      <speciesReference metaid="_075236" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075248" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646549" id="J069" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075261" species="X027"/>
+      <speciesReference metaid="_075273" species="X085"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075285" species="X086"/>
+      <speciesReference metaid="_075297" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075309" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646569" id="J070" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075322" species="X086"/>
+      <speciesReference metaid="_075334" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075347" species="X004"/>
+      <speciesReference metaid="_075359" species="X087"/>
+      <speciesReference metaid="_075372" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075384" species="G013"/>
+      <modifierSpeciesReference metaid="_075396" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646589" id="J071" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075409" species="X022"/>
+      <speciesReference metaid="_075421" species="X087"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075433" species="X088"/>
+      <speciesReference metaid="_075445" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075457" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646609" id="J072" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075470" species="X022"/>
+      <speciesReference metaid="_075482" species="X087"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075494" species="X088"/>
+      <speciesReference metaid="_075506" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075518" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646629" id="J073" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075530" species="X022"/>
+      <speciesReference metaid="_075542" species="X087"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075554" species="X088"/>
+      <speciesReference metaid="_075567" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075579" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646649" id="J074" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075592" species="X088"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075604" species="X089"/>
+      <speciesReference metaid="_075616" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075628" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646669" id="J075" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075640" species="X027"/>
+      <speciesReference metaid="_075652" species="X089"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075664" species="X090"/>
+      <speciesReference metaid="_075676" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075688" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646772" id="J076" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075700" species="X090"/>
+      <speciesReference metaid="_075712" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075724" species="X004"/>
+      <speciesReference metaid="_075736" species="X091"/>
+      <speciesReference metaid="_075748" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075760" species="G013"/>
+      <modifierSpeciesReference metaid="_075772" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646800" id="J077" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075784" species="X022"/>
+      <speciesReference metaid="_075796" species="X091"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075808" species="X092"/>
+      <speciesReference metaid="_075821" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075833" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646819" id="J078" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075845" species="X022"/>
+      <speciesReference metaid="_075857" species="X091"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075869" species="X092"/>
+      <speciesReference metaid="_075881" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075893" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646839" id="J079" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075905" species="X022"/>
+      <speciesReference metaid="_075917" species="X091"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075929" species="X092"/>
+      <speciesReference metaid="_075941" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_075953" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646859" id="J080" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_075965" species="X092"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_075977" species="X093"/>
+      <speciesReference metaid="_075989" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076001" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646879" id="J081" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076013" species="X027"/>
+      <speciesReference metaid="_076025" species="X093"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076038" species="X094"/>
+      <speciesReference metaid="_076050" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076062" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646899" id="J082" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076074" species="X094"/>
+      <speciesReference metaid="_076086" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076098" species="X004"/>
+      <speciesReference metaid="_076110" species="X095"/>
+      <speciesReference metaid="_076122" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076134" species="G013"/>
+      <modifierSpeciesReference metaid="_076146" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646919" id="J083" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076158" species="X022"/>
+      <speciesReference metaid="_076170" species="X095"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076182" species="X096"/>
+      <speciesReference metaid="_076194" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076206" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646939" id="J084" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076219" species="X022"/>
+      <speciesReference metaid="_076232" species="X095"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076244" species="X096"/>
+      <speciesReference metaid="_076256" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076268" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646959" id="J085" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076280" species="X022"/>
+      <speciesReference metaid="_076293" species="X095"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076305" species="X096"/>
+      <speciesReference metaid="_076317" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076330" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646979" id="J086" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076343" species="X096"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076355" species="X097"/>
+      <speciesReference metaid="_076367" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076379" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_646999" id="J087" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076391" species="X027"/>
+      <speciesReference metaid="_076403" species="X097"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076415" species="X098"/>
+      <speciesReference metaid="_076427" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076439" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647019" id="J088" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076451" species="X098"/>
+      <speciesReference metaid="_076463" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076475" species="X004"/>
+      <speciesReference metaid="_076487" species="X099"/>
+      <speciesReference metaid="_076499" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076511" species="G013"/>
+      <modifierSpeciesReference metaid="_076523" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647039" id="J089" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076535" species="X022"/>
+      <speciesReference metaid="_076547" species="X099"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076559" species="X100"/>
+      <speciesReference metaid="_076571" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076583" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647059" id="J090" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076595" species="X022"/>
+      <speciesReference metaid="_076607" species="X099"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076619" species="X100"/>
+      <speciesReference metaid="_076631" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076643" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647079" id="J091" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076655" species="X022"/>
+      <speciesReference metaid="_076668" species="X099"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076680" species="X100"/>
+      <speciesReference metaid="_076692" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076704" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647099" id="J092" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076716" species="X100"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076728" species="X101"/>
+      <speciesReference metaid="_076740" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076752" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647119" id="J093" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076764" species="X027"/>
+      <speciesReference metaid="_076776" species="X101"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076788" species="X102"/>
+      <speciesReference metaid="_076800" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076813" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647139" id="J094" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076825" species="X102"/>
+      <speciesReference metaid="_076837" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076849" species="X004"/>
+      <speciesReference metaid="_076861" species="X103"/>
+      <speciesReference metaid="_076874" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076886" species="G013"/>
+      <modifierSpeciesReference metaid="_076898" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647159" id="J095" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076910" species="X022"/>
+      <speciesReference metaid="_076923" species="X103"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076935" species="X104"/>
+      <speciesReference metaid="_076947" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_076959" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647179" id="J096" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_076971" species="X022"/>
+      <speciesReference metaid="_076983" species="X103"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_076995" species="X104"/>
+      <speciesReference metaid="_077007" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077019" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647199" id="J097" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077031" species="X022"/>
+      <speciesReference metaid="_077043" species="X103"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077055" species="X104"/>
+      <speciesReference metaid="_077067" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077079" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647219" id="J098" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077091" species="X104"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077103" species="X105"/>
+      <speciesReference metaid="_077115" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077127" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647239" id="J099" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077139" species="X027"/>
+      <speciesReference metaid="_077151" species="X105"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077163" species="X106"/>
+      <speciesReference metaid="_077175" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077187" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647259" id="J100" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077199" species="X106"/>
+      <speciesReference metaid="_077211" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077223" species="X004"/>
+      <speciesReference metaid="_077236" species="X107"/>
+      <speciesReference metaid="_077248" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077260" species="G013"/>
+      <modifierSpeciesReference metaid="_077272" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647279" id="J101" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077284" species="X022"/>
+      <speciesReference metaid="_077296" species="X107"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077309" species="X108"/>
+      <speciesReference metaid="_077321" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077333" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647299" id="J102" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077345" species="X022"/>
+      <speciesReference metaid="_077357" species="X107"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077369" species="X108"/>
+      <speciesReference metaid="_077381" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077393" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647319" id="J103" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077405" species="X022"/>
+      <speciesReference metaid="_077417" species="X107"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077430" species="X108"/>
+      <speciesReference metaid="_077442" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077454" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647339" id="J104" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077466" species="X108"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077479" species="X109"/>
+      <speciesReference metaid="_077491" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077504" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647359" id="J105" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077516" species="X027"/>
+      <speciesReference metaid="_077528" species="X109"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077541" species="X110"/>
+      <speciesReference metaid="_077553" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077565" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647379" id="J106" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077577" species="X110"/>
+      <speciesReference metaid="_077589" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077601" species="X004"/>
+      <speciesReference metaid="_077613" species="X111"/>
+      <speciesReference metaid="_077625" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077637" species="G013"/>
+      <modifierSpeciesReference metaid="_077649" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647399" id="J107" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077661" species="X022"/>
+      <speciesReference metaid="_077674" species="X111"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077686" species="X112"/>
+      <speciesReference metaid="_077698" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077710" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647419" id="J108" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077722" species="X022"/>
+      <speciesReference metaid="_077734" species="X111"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077746" species="X112"/>
+      <speciesReference metaid="_077758" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077770" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647439" id="J109" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077782" species="X022"/>
+      <speciesReference metaid="_077794" species="X111"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077806" species="X112"/>
+      <speciesReference metaid="_077819" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077831" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647440" id="J110" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077843" species="X112"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077855" species="X113"/>
+      <speciesReference metaid="_077867" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077879" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647459" id="J111" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077892" species="X027"/>
+      <speciesReference metaid="_077904" species="X113"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077916" species="X114"/>
+      <speciesReference metaid="_077928" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_077940" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647479" id="J112" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_077953" species="X114"/>
+      <speciesReference metaid="_077965" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_077977" species="X004"/>
+      <speciesReference metaid="_077989" species="X115"/>
+      <speciesReference metaid="_078001" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078013" species="G013"/>
+      <modifierSpeciesReference metaid="_078025" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647499" id="J113" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078037" species="X022"/>
+      <speciesReference metaid="_078049" species="X115"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078061" species="X116"/>
+      <speciesReference metaid="_078073" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078085" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647519" id="J114" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078097" species="X022"/>
+      <speciesReference metaid="_078110" species="X115"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078122" species="X116"/>
+      <speciesReference metaid="_078134" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078146" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647539" id="J115" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078158" species="X022"/>
+      <speciesReference metaid="_078170" species="X115"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078182" species="X116"/>
+      <speciesReference metaid="_078194" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078207" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647559" id="J116" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078219" species="X116"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078231" species="X117"/>
+      <speciesReference metaid="_078243" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078256" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647579" id="J117" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078269" species="X027"/>
+      <speciesReference metaid="_078282" species="X117"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078295" species="X118"/>
+      <speciesReference metaid="_078308" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078321" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647599" id="J118" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078334" species="X118"/>
+      <speciesReference metaid="_078347" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078360" species="X004"/>
+      <speciesReference metaid="_078373" species="X119"/>
+      <speciesReference metaid="_078386" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078398" species="G013"/>
+      <modifierSpeciesReference metaid="_078410" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647619" id="J119" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078422" species="X022"/>
+      <speciesReference metaid="_078434" species="X119"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078447" species="X120"/>
+      <speciesReference metaid="_078459" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078471" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647639" id="J120" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078483" species="X022"/>
+      <speciesReference metaid="_078495" species="X119"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078507" species="X120"/>
+      <speciesReference metaid="_078519" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078531" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647659" id="J121" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078543" species="X022"/>
+      <speciesReference metaid="_078555" species="X119"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078567" species="X120"/>
+      <speciesReference metaid="_078580" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078592" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647679" id="J122" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078604" species="X120"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078616" species="X121"/>
+      <speciesReference metaid="_078628" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078640" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647699" id="J123" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078652" species="X027"/>
+      <speciesReference metaid="_078664" species="X121"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078676" species="X122"/>
+      <speciesReference metaid="_078689" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078701" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647719" id="J124" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078714" species="X122"/>
+      <speciesReference metaid="_078726" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078738" species="X004"/>
+      <speciesReference metaid="_078750" species="X123"/>
+      <speciesReference metaid="_078762" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078774" species="G013"/>
+      <modifierSpeciesReference metaid="_078786" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647739" id="J125" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078798" species="X022"/>
+      <speciesReference metaid="_078810" species="X123"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078822" species="X124"/>
+      <speciesReference metaid="_078834" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078846" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647759" id="J126" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078858" species="X022"/>
+      <speciesReference metaid="_078870" species="X123"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078882" species="X124"/>
+      <speciesReference metaid="_078894" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078906" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647779" id="J127" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078919" species="X022"/>
+      <speciesReference metaid="_078931" species="X123"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078943" species="X124"/>
+      <speciesReference metaid="_078955" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_078967" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647799" id="J128" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_078979" species="X124"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_078991" species="X125"/>
+      <speciesReference metaid="_079003" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079015" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647819" id="J129" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079027" species="X027"/>
+      <speciesReference metaid="_079039" species="X125"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079051" species="X126"/>
+      <speciesReference metaid="_079063" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079075" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647839" id="J130" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079088" species="X126"/>
+      <speciesReference metaid="_079100" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079112" species="X004"/>
+      <speciesReference metaid="_079124" species="X127"/>
+      <speciesReference metaid="_079136" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079148" species="G013"/>
+      <modifierSpeciesReference metaid="_079160" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647859" id="J131" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079173" species="X022"/>
+      <speciesReference metaid="_079185" species="X127"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079197" species="X128"/>
+      <speciesReference metaid="_079209" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079221" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647879" id="J132" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079233" species="X022"/>
+      <speciesReference metaid="_079245" species="X127"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079257" species="X128"/>
+      <speciesReference metaid="_079269" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079281" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647899" id="J133" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079293" species="X022"/>
+      <speciesReference metaid="_079305" species="X127"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079317" species="X128"/>
+      <speciesReference metaid="_079329" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079341" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647919" id="J134" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079353" species="X128"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079365" species="X129"/>
+      <speciesReference metaid="_079377" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079389" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647939" id="J135" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079401" species="X027"/>
+      <speciesReference metaid="_079413" species="X129"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079425" species="X130"/>
+      <speciesReference metaid="_079437" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079449" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647959" id="J136" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079461" species="X130"/>
+      <speciesReference metaid="_079473" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079485" species="X004"/>
+      <speciesReference metaid="_079497" species="X131"/>
+      <speciesReference metaid="_079509" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079521" species="G013"/>
+      <modifierSpeciesReference metaid="_079533" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647979" id="J137" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079546" species="X022"/>
+      <speciesReference metaid="_079558" species="X131"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079570" species="X132"/>
+      <speciesReference metaid="_079582" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079594" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_647999" id="J138" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079606" species="X022"/>
+      <speciesReference metaid="_079618" species="X131"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079630" species="X132"/>
+      <speciesReference metaid="_079642" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079654" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648019" id="J139" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079666" species="X022"/>
+      <speciesReference metaid="_079678" species="X131"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079690" species="X132"/>
+      <speciesReference metaid="_079702" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079714" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648039" id="J140" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079726" species="X132"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079738" species="X133"/>
+      <speciesReference metaid="_079750" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079762" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648059" id="J141" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079775" species="X027"/>
+      <speciesReference metaid="_079787" species="X133"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079800" species="X134"/>
+      <speciesReference metaid="_079813" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079825" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648079" id="J142" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079837" species="X134"/>
+      <speciesReference metaid="_079850" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079862" species="X004"/>
+      <speciesReference metaid="_079875" species="X135"/>
+      <speciesReference metaid="_079887" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079899" species="G013"/>
+      <modifierSpeciesReference metaid="_079911" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648099" id="J143" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079923" species="X022"/>
+      <speciesReference metaid="_079935" species="X135"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_079947" species="X136"/>
+      <speciesReference metaid="_079959" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_079971" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648119" id="J144" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_079983" species="X022"/>
+      <speciesReference metaid="_079995" species="X135"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080008" species="X136"/>
+      <speciesReference metaid="_080020" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080032" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648139" id="J145" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080044" species="X022"/>
+      <speciesReference metaid="_080056" species="X135"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080069" species="X136"/>
+      <speciesReference metaid="_080081" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080093" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648159" id="J146" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080105" species="X136"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080117" species="X137"/>
+      <speciesReference metaid="_080129" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080142" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648179" id="J147" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080154" species="X027"/>
+      <speciesReference metaid="_080166" species="X137"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080178" species="X138"/>
+      <speciesReference metaid="_080190" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080202" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648199" id="J148" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080215" species="X138"/>
+      <speciesReference metaid="_080227" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080240" species="X004"/>
+      <speciesReference metaid="_080252" species="X139"/>
+      <speciesReference metaid="_080264" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080276" species="G013"/>
+      <modifierSpeciesReference metaid="_080288" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648219" id="J149" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080301" species="X022"/>
+      <speciesReference metaid="_080313" species="X139"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080325" species="X140"/>
+      <speciesReference metaid="_080337" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080349" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648239" id="J150" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080361" species="X022"/>
+      <speciesReference metaid="_080373" species="X139"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080385" species="X140"/>
+      <speciesReference metaid="_080397" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080409" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648259" id="J151" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080421" species="X022"/>
+      <speciesReference metaid="_080433" species="X139"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080445" species="X140"/>
+      <speciesReference metaid="_080457" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080469" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648279" id="J152" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080481" species="X140"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080494" species="X141"/>
+      <speciesReference metaid="_080506" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080518" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648299" id="J153" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080530" species="X027"/>
+      <speciesReference metaid="_080542" species="X141"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080554" species="X142"/>
+      <speciesReference metaid="_080566" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080578" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648319" id="J154" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080590" species="X142"/>
+      <speciesReference metaid="_080602" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080614" species="X004"/>
+      <speciesReference metaid="_080626" species="X143"/>
+      <speciesReference metaid="_080638" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080650" species="G013"/>
+      <modifierSpeciesReference metaid="_080662" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648339" id="J155" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080674" species="X022"/>
+      <speciesReference metaid="_080687" species="X143"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080700" species="X144"/>
+      <speciesReference metaid="_080712" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080724" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648359" id="J156" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080736" species="X022"/>
+      <speciesReference metaid="_080748" species="X143"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080760" species="X144"/>
+      <speciesReference metaid="_080772" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080784" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648379" id="J157" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080796" species="X022"/>
+      <speciesReference metaid="_080808" species="X143"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080820" species="X144"/>
+      <speciesReference metaid="_080832" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080844" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648399" id="J158" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080856" species="X144"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080868" species="X145"/>
+      <speciesReference metaid="_080880" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080892" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648419" id="J159" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080904" species="X027"/>
+      <speciesReference metaid="_080917" species="X145"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080929" species="X146"/>
+      <speciesReference metaid="_080941" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_080953" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648439" id="J160" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_080965" species="X146"/>
+      <speciesReference metaid="_080977" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_080989" species="X004"/>
+      <speciesReference metaid="_081001" species="X147"/>
+      <speciesReference metaid="_081013" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081025" species="G013"/>
+      <modifierSpeciesReference metaid="_081037" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648459" id="J161" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081049" species="X022"/>
+      <speciesReference metaid="_081061" species="X147"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081073" species="X148"/>
+      <speciesReference metaid="_081085" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081097" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648479" id="J162" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081109" species="X022"/>
+      <speciesReference metaid="_081121" species="X147"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081133" species="X148"/>
+      <speciesReference metaid="_081146" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081159" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648499" id="J163" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081171" species="X022"/>
+      <speciesReference metaid="_081183" species="X147"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081195" species="X148"/>
+      <speciesReference metaid="_081207" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081220" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648500" id="J164" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081232" species="X148"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081244" species="X149"/>
+      <speciesReference metaid="_081256" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081268" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648519" id="J165" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081280" species="X027"/>
+      <speciesReference metaid="_081292" species="X149"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081304" species="X150"/>
+      <speciesReference metaid="_081316" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081328" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648539" id="J166" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081340" species="X150"/>
+      <speciesReference metaid="_081352" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081365" species="X004"/>
+      <speciesReference metaid="_081377" species="X151"/>
+      <speciesReference metaid="_081389" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081401" species="G013"/>
+      <modifierSpeciesReference metaid="_081413" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648559" id="J167" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081425" species="X022"/>
+      <speciesReference metaid="_081437" species="X151"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081449" species="X152"/>
+      <speciesReference metaid="_081461" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081474" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648579" id="J168" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081486" species="X022"/>
+      <speciesReference metaid="_081498" species="X151"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081510" species="X152"/>
+      <speciesReference metaid="_081522" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081534" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648599" id="J169" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081546" species="X022"/>
+      <speciesReference metaid="_081558" species="X151"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081571" species="X152"/>
+      <speciesReference metaid="_081583" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081595" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648619" id="J170" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081607" species="X152"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081619" species="X153"/>
+      <speciesReference metaid="_081631" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081643" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648639" id="J171" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081655" species="X027"/>
+      <speciesReference metaid="_081667" species="X153"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081680" species="X154"/>
+      <speciesReference metaid="_081692" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081704" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648659" id="J172" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081716" species="X154"/>
+      <speciesReference metaid="_081728" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081741" species="X004"/>
+      <speciesReference metaid="_081753" species="X155"/>
+      <speciesReference metaid="_081765" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081777" species="G013"/>
+      <modifierSpeciesReference metaid="_081789" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648679" id="J173" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081801" species="X022"/>
+      <speciesReference metaid="_081813" species="X155"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081825" species="X156"/>
+      <speciesReference metaid="_081837" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081849" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648699" id="J174" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081861" species="X022"/>
+      <speciesReference metaid="_081873" species="X155"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081885" species="X156"/>
+      <speciesReference metaid="_081897" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081909" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648719" id="J175" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081921" species="X022"/>
+      <speciesReference metaid="_081933" species="X155"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081945" species="X156"/>
+      <speciesReference metaid="_081957" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_081969" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648739" id="J176" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_081981" species="X156"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_081993" species="X157"/>
+      <speciesReference metaid="_082005" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082017" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648759" id="J177" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082029" species="X027"/>
+      <speciesReference metaid="_082042" species="X157"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082054" species="X158"/>
+      <speciesReference metaid="_082066" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082078" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648779" id="J178" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082090" species="X158"/>
+      <speciesReference metaid="_082103" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082115" species="X004"/>
+      <speciesReference metaid="_082127" species="X159"/>
+      <speciesReference metaid="_082139" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082151" species="G013"/>
+      <modifierSpeciesReference metaid="_082163" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648799" id="J179" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082175" species="X022"/>
+      <speciesReference metaid="_082187" species="X159"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082199" species="X160"/>
+      <speciesReference metaid="_082211" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082223" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648819" id="J180" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082235" species="X022"/>
+      <speciesReference metaid="_082247" species="X159"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082259" species="X160"/>
+      <speciesReference metaid="_082271" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082283" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648839" id="J181" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082295" species="X022"/>
+      <speciesReference metaid="_082307" species="X159"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082319" species="X160"/>
+      <speciesReference metaid="_082331" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082343" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648843" id="J182" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082355" species="X160"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082367" species="X161"/>
+      <speciesReference metaid="_082379" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082391" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648859" id="J183" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082403" species="X027"/>
+      <speciesReference metaid="_082416" species="X161"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082428" species="X162"/>
+      <speciesReference metaid="_082440" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082452" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648879" id="J184" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082464" species="X162"/>
+      <speciesReference metaid="_082476" species="X082"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082488" species="X004"/>
+      <speciesReference metaid="_082500" species="X163"/>
+      <speciesReference metaid="_082512" species="X021"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082524" species="G013"/>
+      <modifierSpeciesReference metaid="_082536" species="G014"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648899" id="J185" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082548" species="X022"/>
+      <speciesReference metaid="_082560" species="X163"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082572" species="X164"/>
+      <speciesReference metaid="_082584" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082596" species="G008"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648919" id="J186" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082608" species="X022"/>
+      <speciesReference metaid="_082620" species="X163"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082632" species="X164"/>
+      <speciesReference metaid="_082644" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082656" species="G009"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648939" id="J187" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082669" species="X022"/>
+      <speciesReference metaid="_082682" species="X163"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082694" species="X164"/>
+      <speciesReference metaid="_082706" species="X024"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082718" species="G010"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648959" id="J188" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082730" species="X164"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082743" species="X165"/>
+      <speciesReference metaid="_082755" species="X026"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082768" species="G011"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_648979" id="J189" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082780" species="X027"/>
+      <speciesReference metaid="_082792" species="X165"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082804" species="X166"/>
+      <speciesReference metaid="_082816" species="X029"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082828" species="G012"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649006" id="J190" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082840" species="X154"/>
+      <speciesReference metaid="_082853" species="X024"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082865" species="X167"/>
+      <speciesReference metaid="_082877" species="X022"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082889" species="G015"/>
+      <modifierSpeciesReference metaid="_082902" species="G016"/>
+      <modifierSpeciesReference metaid="_082915" species="G017"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649007" id="J191" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_082927" species="X158"/>
+      <speciesReference metaid="_082939" species="X024"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_082951" species="X168"/>
+      <speciesReference metaid="_082963" species="X022"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_082975" species="G015"/>
+      <modifierSpeciesReference metaid="_082987" species="G016"/>
+      <modifierSpeciesReference metaid="_082999" species="G017"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649019" id="J192" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083011" species="X166"/>
+      <speciesReference metaid="_083023" species="X024"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083035" species="X169"/>
+      <speciesReference metaid="_083047" species="X022"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083059" species="G015"/>
+      <modifierSpeciesReference metaid="_083071" species="G016"/>
+      <modifierSpeciesReference metaid="_083083" species="G017"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649039" id="J193" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083095" species="X167"/>
+      <speciesReference metaid="_083107" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083119" species="X171"/>
+      <speciesReference metaid="_083131" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083143" species="G018"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649059" id="J194" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083156" species="X171"/>
+      <speciesReference metaid="_083168" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083180" species="X173"/>
+      <speciesReference metaid="_083192" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083204" species="G019"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649079" id="J195" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083216" species="X173"/>
+      <speciesReference metaid="_083228" species="X007"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083240" species="X174"/>
+      <speciesReference metaid="_083252" species="X008"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083264" species="G020"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649099" id="J196" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083276" species="X080"/>
+      <speciesReference metaid="_083288" species="X021"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083300" species="X175"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083312" species="G021"/>
+      <modifierSpeciesReference metaid="_083324" species="G022"/>
+      <modifierSpeciesReference metaid="_083336" species="G003"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649119" id="J197" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083348" species="X174"/>
+      <speciesReference metaid="_083360" species="X175"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083372" species="X176"/>
+      <speciesReference metaid="_083384" species="X009"/>
+      <speciesReference metaid="_083396" species="X001"/>
+      <speciesReference metaid="_083408" species="X004"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083420" species="G023"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649139" id="J198" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083432" species="X168"/>
+      <speciesReference metaid="_083444" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083456" species="X177"/>
+      <speciesReference metaid="_083468" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083481" species="G024"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649159" id="J199" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083493" species="X177"/>
+      <speciesReference metaid="_083505" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083517" species="X178"/>
+      <speciesReference metaid="_083529" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083541" species="G025"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649179" id="J200" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083553" species="X178"/>
+      <speciesReference metaid="_083565" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083578" species="X179"/>
+      <speciesReference metaid="_083590" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083602" species="G018"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649199" id="J201" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083614" species="X178"/>
+      <speciesReference metaid="_083626" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083638" species="X179"/>
+      <speciesReference metaid="_083650" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083662" species="G026"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649219" id="J202" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083674" species="X179"/>
+      <speciesReference metaid="_083686" species="X007"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083698" species="X180"/>
+      <speciesReference metaid="_083710" species="X008"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083722" species="G020"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649239" id="J203" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083734" species="X180"/>
+      <speciesReference metaid="_083746" species="X175"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083758" species="X181"/>
+      <speciesReference metaid="_083770" species="X009"/>
+      <speciesReference metaid="_083782" species="X001"/>
+      <speciesReference metaid="_083794" species="X004"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083806" species="G023"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649259" id="J204" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083818" species="X168"/>
+      <speciesReference metaid="_083831" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083843" species="X182"/>
+      <speciesReference metaid="_083855" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083867" species="G027"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649279" id="J205" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083879" species="X182"/>
+      <speciesReference metaid="_083892" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083904" species="X183"/>
+      <speciesReference metaid="_083916" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083928" species="G024"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649299" id="J206" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_083940" species="X183"/>
+      <speciesReference metaid="_083952" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_083964" species="X184"/>
+      <speciesReference metaid="_083976" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_083988" species="G025"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649319" id="J207" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084001" species="X184"/>
+      <speciesReference metaid="_084014" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084028" species="X185"/>
+      <speciesReference metaid="_084041" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084054" species="G026"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649339" id="J208" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084067" species="X185"/>
+      <speciesReference metaid="_084080" species="X007"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084093" species="X186"/>
+      <speciesReference metaid="_084105" species="X008"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084117" species="G020"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649359" id="J209" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084129" species="X186"/>
+      <speciesReference metaid="_084141" species="X175"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084153" species="X187"/>
+      <speciesReference metaid="_084165" species="X009"/>
+      <speciesReference metaid="_084177" species="X001"/>
+      <speciesReference metaid="_084189" species="X004"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084201" species="G023"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649379" id="J210" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084213" species="X169"/>
+      <speciesReference metaid="_084225" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084237" species="X188"/>
+      <speciesReference metaid="_084249" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084261" species="G024"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649399" id="J211" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084273" species="X188"/>
+      <speciesReference metaid="_084285" species="X024"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084297" species="X189"/>
+      <speciesReference metaid="_084309" species="X022"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084321" species="G028"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649419" id="J212" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084333" species="X189"/>
+      <speciesReference metaid="_084345" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084357" species="X190"/>
+      <speciesReference metaid="_084369" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084381" species="G018"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649439" id="J213" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084393" species="X190"/>
+      <speciesReference metaid="_084405" species="X007"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084417" species="X191"/>
+      <speciesReference metaid="_084429" species="X008"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084441" species="G020"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649459" id="J214" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084453" species="X191"/>
+      <speciesReference metaid="_084465" species="X175"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084477" species="X192"/>
+      <speciesReference metaid="_084489" species="X009"/>
+      <speciesReference metaid="_084501" species="X001"/>
+      <speciesReference metaid="_084513" species="X004"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084525" species="G023"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649479" id="J215" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084537" species="X188"/>
+      <speciesReference metaid="_084549" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084561" species="X193"/>
+      <speciesReference metaid="_084573" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084585" species="G027"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649499" id="J216" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084597" species="X193"/>
+      <speciesReference metaid="_084609" species="X024"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084621" species="X194"/>
+      <speciesReference metaid="_084633" species="X022"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084645" species="G028"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649519" id="J217" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084657" species="X194"/>
+      <speciesReference metaid="_084669" species="X170"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084681" species="X195"/>
+      <speciesReference metaid="_084694" species="X172"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084706" species="G026"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649539" id="J218" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084719" species="X195"/>
+      <speciesReference metaid="_084731" species="X007"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084743" species="X196"/>
+      <speciesReference metaid="_084755" species="X008"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084768" species="G020"/>
+    </listOfModifiers>
+  </reaction>
+  <reaction metaid="_649559" id="J219" reversible="false" fast="false">
+    <listOfReactants>
+      <speciesReference metaid="_084780" species="X196"/>
+      <speciesReference metaid="_084792" species="X175"/>
+    </listOfReactants>
+    <listOfProducts>
+      <speciesReference metaid="_084804" species="X197"/>
+      <speciesReference metaid="_084816" species="X009"/>
+      <speciesReference metaid="_084828" species="X001"/>
+      <speciesReference metaid="_084840" species="X004"/>
+    </listOfProducts>
+    <listOfModifiers>
+      <modifierSpeciesReference metaid="_084852" species="G023"/>
+    </listOfModifiers>
+  </reaction>
+</listOfReactions>
+</model>
+</sbml>

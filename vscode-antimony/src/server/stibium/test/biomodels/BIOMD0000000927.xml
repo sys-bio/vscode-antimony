@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" metaid="c0b31b68-f23d-46b0-bbde-ea1b08257e10" version="3">
+  <annotation>
+  <mathsbml:AuthorConfiguration xmlns:mathsbml="http://sbml.org/software/mathsbml/ns">
+   <mathsbml:date>2017-06-07T10:42:10</mathsbml:date>
+   <mathsbml:MachineDomain>epfl.ch</mathsbml:MachineDomain>
+   <mathsbml:MachineID>6504-56426-19986</mathsbml:MachineID>
+   <mathsbml:MachineName>gtppc14</mathsbml:MachineName>
+   <mathsbml:MachineType>PC</mathsbml:MachineType>
+   <mathsbml:MathematicaVersion>10.4.1 for Linux x86 (64-bit) (April 11, 2016)</mathsbml:MathematicaVersion>
+   <mathsbml:OperatingSystem>Unix</mathsbml:OperatingSystem>
+   <mathsbml:ProcessorType>x86-64</mathsbml:ProcessorType>
+   <mathsbml:ProductInformation mathsbml:ProductIDName="Mathematica" mathsbml:ProductKernelName="Mathematica 10.4.1 Kernel" mathsbml:ProductVersion="10.4.1 for Linux x86 (64-bit) (April 11, 2016)" mathsbml:ProductVersionNumber="10.4"/>
+   <mathsbml:SoftwareVersion>2.10.1 [11-Feb-2011]</mathsbml:SoftwareVersion>
+   <mathsbml:System>Linux-x86-64</mathsbml:System>
+   <mathsbml:UserName>bravi</mathsbml:UserName>
+  </mathsbml:AuthorConfiguration>
+ </annotation>
+  <model id="MODEL1706070000" metaid="_FLAIR_auxin_2017" name="Grigolon2018 - Feedback Loop in ARF and IAA Response">
+    <notes>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+        <div class="dc:title">Grigolon2018 - Feedback Loop in ARF and IAA
+Response</div>
+<div class="dc:bibliographicCitation">
+  <p>This model is described in the article:</p>
+  <div class="bibo:title">
+    <a href="http://identifiers.org/pubmed/29410878" title="Access to this publication">Responses to auxin signals:
+    an operating principle for dynamical sensitivity yet high
+    resilience.</a>
+  </div>
+  <div class="bibo:authorList">Grigolon S, Bravi B, Martin
+  OC.</div>
+  <div class="bibo:Journal">R Soc Open Sci 2018 Jan; 5(1):
+  172098</div>
+  <p>Abstract:</p>
+  <div class="bibo:abstract">
+    <p>Plants depend on the signalling of the phytohormone auxin
+    for their development and for responding to environmental
+    perturbations. The associated biomolecular signalling network
+    involves a negative feedback on Aux/IAA proteins which mediate
+    the influence of auxin (the signal) on the auxin response
+    factor (ARF) transcription factors (the drivers of the
+    response). To probe the role of this feedback, we consider
+    alternative in silico signalling networks implementing
+    different operating principles. By a comparative analysis, we
+    find that the presence of a negative feedback allows the system
+    to have a far larger sensitivity in its dynamical response to
+    auxin and that this sensitivity does not prevent the system
+    from being highly resilient. Given this insight, we build a new
+    biomolecular signalling model for quantitatively describing
+    such Aux/IAA and ARF responses.</p>
+  </div>
+</div>
+<div class="dc:publisher">
+  <p>This model is hosted on 
+  <a href="http://www.ebi.ac.uk/biomodels/">BioModels Database</a>
+  and identified by: 
+  <a href="http://identifiers.org/biomodels.db/MODEL1706070000">MODEL1706070000</a>.</p>
+  <p>To cite BioModels Database, please use: 
+  <a href="http://identifiers.org/pubmed/25414348" target="_blank">Chelliah V et al. BioModels: ten-year
+  anniversary. Nucl. Acids Res. 2015, 43(Database
+  issue):D542-8</a>.</p>
+</div>
+<div class="dc:license">
+  <p>To the extent possible under law, all copyright and related or
+  neighbouring rights to this encoded model have been dedicated to
+  the public domain worldwide. Please refer to 
+  <a href="http://creativecommons.org/publicdomain/zero/1.0/" title="Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication">CC0
+  Public Domain Dedication</a> for more information.</p>
+</div>
+</body>
+    </notes>
+    <annotation>
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+    <rdf:Description rdf:about="#_FLAIR_auxin_2017">
+     <dc:creator rdf:ParseType="Resource">
+	<rdf:Bag>
+	<rdf:li rdf:parseType="Resource">
+	<vCard:N rdf:parseType="Resource">
+	<vCard:Family>Grigolon</vCard:Family>
+	<vCard:Given>Silvia</vCard:Given>
+	</vCard:N>
+	<vCard:EMAIL>silvia.grigolon@gmail.com</vCard:EMAIL>
+	<vCard:ORG rdf:parseType="Resource">
+	<vCard:Orgname>The Francis Crick Institute, London</vCard:Orgname>
+	</vCard:ORG>
+	</rdf:li>
+	
+	<rdf:li rdf:parseType="Resource">
+	<vCard:N rdf:parseType="Resource">
+	<vCard:Family>Bravi</vCard:Family>
+	<vCard:Given>Barbara</vCard:Given>
+	</vCard:N>
+	<vCard:EMAIL>barbara.bravi@epfl.ch</vCard:EMAIL>
+	<vCard:ORG rdf:parseType="Resource">
+	<vCard:Orgname>Institute of Theoretical Physics, École Polytechnique Fédérale de Lausanne</vCard:Orgname>
+	</vCard:ORG>
+	</rdf:li>
+	<rdf:li rdf:parseType="Resource">
+	<vCard:N rdf:parseType="Resource">
+	<vCard:Family>Martin</vCard:Family>
+	<vCard:Given>Olivier</vCard:Given>
+	</vCard:N>
+	<vCard:EMAIL>olivier.martin@moulon.inra.fr</vCard:EMAIL>
+	<vCard:ORG rdf:parseType="Resource">
+	<vCard:Orgname>GQE-Le Moulon, INRA, Univ. Paris-Sud, CNRS, AgroParisTech, Université Paris-Saclay</vCard:Orgname>
+	</vCard:ORG>
+	</rdf:li>
+	</rdf:Bag>
+	</dc:creator>
+	<dcterms:created rdf:parseType="Resource">
+	<dcterms:W3CDTF>2017-06-07T10:42:10Z</dcterms:W3CDTF>
+	</dcterms:created>
+	<bqmodel:is>
+	<rdf:Bag>
+	<rdf:li rdf:resource="http://identifiers.org/biomodels.db/MODEL1706070000"/>
+	</rdf:Bag>
+	</bqmodel:is>
+	</rdf:Description>
+   </rdf:RDF>
+  </annotation>
+      <listOfCompartments>
+      <compartment id="Cell" metaid="e6138458-cd1e-4c8a-b8bd-874ff9b6fee0" name="Cell" size="1" spatialDimensions="3" units="volume"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species boundaryCondition="false" compartment="Cell" constant="false" hasOnlySubstanceUnits="false" id="aux" initialConcentration="0" metaid="_9dfb56cb-f77f-4b33-a9e0-0320e261ac25" name="aux" substanceUnits="substance"/>
+      <species boundaryCondition="false" compartment="Cell" constant="false" hasOnlySubstanceUnits="false" id="IAAm" initialConcentration="0" metaid="fe8b57fb-494f-4ee6-ac75-eba609378d0b" name="IAAm" substanceUnits="substance"/>
+      <species boundaryCondition="false" compartment="Cell" constant="false" hasOnlySubstanceUnits="false" id="IAAp" initialConcentration="0" metaid="_9d0489b1-67b5-4248-aa48-d8ca39288363" name="IAAp" substanceUnits="substance"/>
+      <species boundaryCondition="false" compartment="Cell" constant="false" hasOnlySubstanceUnits="false" id="ARF" initialConcentration="10" metaid="f4019f16-14f2-43e4-9c9d-32bd5d332bf3" name="ARF" substanceUnits="substance"/>
+      <species boundaryCondition="true" compartment="Cell" constant="true" hasOnlySubstanceUnits="false" id="null" initialConcentration="0" metaid="bdae61ad-44aa-4f3b-bd47-129988da7180" name="null" substanceUnits="substance"/>
+      <species boundaryCondition="false" compartment="Cell" constant="false" hasOnlySubstanceUnits="false" id="ARFIAA" initialConcentration="0" metaid="_46826627-4556-4223-aab8-6539502b0497" name="ARFIAA" substanceUnits="substance"/>
+      <species boundaryCondition="false" compartment="Cell" constant="false" hasOnlySubstanceUnits="false" id="ARF2" initialConcentration="0" metaid="_4e2c2706-d811-4c9c-bd73-f8abf81fe0dd" name="ARF2" substanceUnits="substance"/>
+      <species boundaryCondition="false" compartment="Cell" constant="false" hasOnlySubstanceUnits="false" id="auxTIR1" initialConcentration="0" metaid="_94b96e8e-57b4-4cbb-a7e9-194aba4c953f" name="auxTIR1" substanceUnits="substance"/>
+      <species boundaryCondition="false" compartment="Cell" constant="false" hasOnlySubstanceUnits="false" id="auxTIR1IAA" initialConcentration="0" metaid="_7934aa88-5ea1-4c85-befd-9df46e6742c4" name="auxTIR1IAA" substanceUnits="substance"/>
+      <species boundaryCondition="false" compartment="Cell" constant="false" hasOnlySubstanceUnits="false" id="TIR1" initialConcentration="18.51" metaid="_13124ba4-e945-4dbd-8d34-dbc6fe6abf48" name="TIR1" substanceUnits="substance"/>
+      <species boundaryCondition="false" compartment="Cell" constant="false" hasOnlySubstanceUnits="false" id="IAAstar" initialConcentration="0" metaid="_8f654e51-1cba-4e86-aa3f-8268984ca422" name="IAAstar" substanceUnits="substance"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="Sauxin" metaid="d421aff5-2896-4188-816e-aaaef34b0bb6" name="Sauxin" value="0.02"/>
+      <parameter id="muaux" metaid="f0feee81-cdbe-414e-b7fd-e95e4dfd5c93" name="muaux" value="0.1"/>
+      <parameter id="lambda1" metaid="_3b0473cf-80a8-4b1e-88ce-56cbb6916b57" name="lambda1" value="0.48"/>
+      <parameter id="thetaARF" metaid="_89662efd-c9e6-4edc-8217-01410b9c0cd8" name="thetaARF" value="100"/>
+      <parameter id="thetaARF2" metaid="_7f0e7d64-6466-4e01-ad51-efd3e2fcf06c" name="thetaARF2" value="100"/>
+      <parameter id="thetaARFIAA" metaid="_229ae433-d048-4580-80fa-38062bb6d619" name="thetaARFIAA" value="100"/>
+      <parameter id="muIAAm" metaid="_262a0db2-3395-4402-ba5d-e273cbe3ba22" name="muIAAm" value="0.003"/>
+      <parameter id="muIAA" metaid="c57888c6-5405-4b52-84b8-24ac81183a7c" name="muIAA" value="0.003"/>
+      <parameter id="delta" metaid="_40df4113-f89f-4bad-98e9-3e232bd2b36b" name="delta" value="4"/>
+      <parameter id="qa" metaid="_90e006ea-da17-4fdf-9b03-30d777ba8a9a" name="qa" value="0.5"/>
+      <parameter id="qd" metaid="f223fcfb-2cf7-4c18-af9f-74a212507077" name="qd" value="0.44"/>
+      <parameter id="pa" metaid="_63a7d49e-6652-4826-ab86-c3ad95e9cd9f" name="pa" value="1"/>
+      <parameter id="pd" metaid="_6ab8e3ac-5e4d-4537-9657-fff4fd7d8a48" name="pd" value="0.072"/>
+      <parameter id="ka" metaid="_95cca869-da4d-4e75-b564-d8f9aef7df22" name="ka" value="0.00082"/>
+      <parameter id="kd" metaid="a3dbc561-a956-4d2c-b86e-b0b6d3cd5ce0" name="kd" value="0.33"/>
+      <parameter id="la" metaid="f20acefe-1bed-4f8a-a2d8-da9f8c6f74df" name="la" value="5.75"/>
+      <parameter id="ld" metaid="f9b800a8-6071-49c3-9f75-3e1af83310ad" name="ld" value="0.045"/>
+      <parameter id="lm" metaid="fa596597-cb50-41af-8f35-3805c58bc7b8" name="lm" value="0.9"/>
+      <parameter id="muIAAstar" metaid="fd8c6d61-1640-412d-ae7d-b28a3b6a450e" name="muIAAstar" value="0.1"/>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction fast="false" id="auxin_production" metaid="_5f098aeb-ca96-4b23-8679-4410f03f5d89" name="auxin_production" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="_8086553a-798e-4e3c-9e7c-1e8e9c455e6d" species="null"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="ff72f6e0-b6d6-4f46-bf97-fa623dd2d4c2" species="aux"/>
+        </listOfProducts>
+        <kineticLaw metaid="eaa5090d-08e5-4310-a0fe-5e4f5ec6bedd">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <ci> Sauxin </ci>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="auxin_degradation" metaid="_47a55649-280d-47e2-88ec-09c88ea500a5" name="auxin_degradation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="f3fec45a-cd28-4964-8e96-7c9eac2eb585" species="aux"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="d91be73e-c706-4bde-9377-daafc10e18ce" species="null"/>
+        </listOfProducts>
+        <kineticLaw metaid="f9f55228-aeaa-4c81-8fa6-904c01176a5f">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> aux </ci>
+              <ci> muaux </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="mRNA_production" metaid="_688ef3a0-6046-4f82-98d8-38405efe1487" name="mRNA_production" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="_413b09ea-2ffb-40c0-9b46-0e782fb9e8bb" species="null"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="_3ec574d5-eb32-4c6d-abfc-39467ca453cd" species="IAAm"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference metaid="_4ee99323-ab10-4209-bd9b-8f44c7e94255" species="ARF"/>
+          <modifierSpeciesReference metaid="_9a25161a-4c02-43a5-b05f-5732d356eea8" species="ARF2"/>
+          <modifierSpeciesReference metaid="a1a337e7-9ecc-4e8f-9482-9947fe1ed2eb" species="ARFIAA"/>
+        </listOfModifiers>
+        <kineticLaw metaid="b6da5d36-89e7-4a24-b395-e2a605a191ba">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> ARF </ci>
+              <ci> lambda1 </ci>
+              <apply>
+                <power/>
+                <apply>
+                  <times/>
+                  <ci> thetaARF </ci>
+                  <apply>
+                    <plus/>
+                    <apply>
+                      <times/>
+                      <ci> ARF </ci>
+                      <apply>
+                        <power/>
+                        <ci> thetaARF </ci>
+                        <cn type="integer"> -1 </cn>
+                      </apply>
+                    </apply>
+                    <apply>
+                      <times/>
+                      <ci> ARF2 </ci>
+                      <apply>
+                        <power/>
+                        <ci> thetaARF2 </ci>
+                        <cn type="integer"> -1 </cn>
+                      </apply>
+                    </apply>
+                    <apply>
+                      <times/>
+                      <ci> ARFIAA </ci>
+                      <apply>
+                        <power/>
+                        <ci> thetaARFIAA </ci>
+                        <cn type="integer"> -1 </cn>
+                      </apply>
+                    </apply>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                </apply>
+                <cn type="integer"> -1 </cn>
+              </apply>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="mRNA_degradation" metaid="_4b5f6b2c-bef9-4684-b3c5-501ffdfcece2" name="mRNA_degradation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="f6b27b10-ddc6-4851-9d97-270f3e552c66" species="IAAm"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="a96d95ca-0329-4860-9ab9-383f6cf45751" species="null"/>
+        </listOfProducts>
+        <kineticLaw metaid="_16476226-dbdb-4692-8b89-459c55c6409c">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> IAAm </ci>
+              <ci> muIAAm </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="IAA_degradation" metaid="b5018eaa-6d33-4561-adbf-90dbbb399dac" name="IAA_degradation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="_08db36b0-cd0e-4d81-a608-e8cfcfa0d313" species="IAAp"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="e214d55e-21bc-44d7-b0e2-1b35ef2c403c" species="null"/>
+        </listOfProducts>
+        <kineticLaw metaid="_9461d530-68f8-4817-8c35-ac90ee0d80b6">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> IAAp </ci>
+              <ci> muIAA </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="mRNA_translation" metaid="_3cf12367-3e84-4f50-b440-1732f7c3af98" name="mRNA_translation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="f8855ab9-cb44-4ea2-9438-f1867478e439" species="IAAm"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="_4757873c-ac34-45b3-b28c-16628c4563b3" species="IAAm"/>
+          <speciesReference metaid="fcf03b2c-e301-4938-bbb5-c23f2c466d93" species="IAAp"/>
+        </listOfProducts>
+        <kineticLaw metaid="_87e7d563-d3e2-4eea-a517-a97c31f2c073">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> delta </ci>
+              <ci> IAAm </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="ARF2_formation" metaid="bcb8528e-ce14-440f-9a96-87ea48d65f5a" name="ARF2_formation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="c5806cdc-b1db-48ca-93d2-c8a8015d4d47" species="ARF" stoichiometry="2"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="b0e5879c-e6b1-47b7-9dfc-bf8f34b1964d" species="ARF2"/>
+        </listOfProducts>
+        <kineticLaw metaid="_6d9868de-b8d4-4285-80e0-3f1159a9ddfe">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <apply>
+                <power/>
+                <ci> ARF </ci>
+                <cn type="integer"> 2 </cn>
+              </apply>
+              <ci> qa </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="ARF2_dissociation" metaid="_006d295f-af84-4d2d-ac08-f9ea6e9ff7f8" name="ARF2_dissociation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="_03321d5a-3e48-4150-b242-47dc3d1b53d1" species="ARF2"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="_19555769-939e-4fa5-8882-d7f6e2e097e9" species="ARF" stoichiometry="2"/>
+        </listOfProducts>
+        <kineticLaw metaid="e601912b-60c7-4448-adab-0113da520ed6">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> ARF2 </ci>
+              <ci> qd </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="ARFIAA_formation" metaid="a6d3a5c6-bf19-4bec-8285-1f312a3236d6" name="ARFIAA_formation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="ea63690f-5ed2-4646-8a97-dbfe010f6969" species="ARF"/>
+          <speciesReference metaid="_57ea9c6c-b99f-4516-abdf-9081ac8187f3" species="IAAp"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="_236919dd-3f85-4d05-9fc2-302e985fb868" species="ARFIAA"/>
+        </listOfProducts>
+        <kineticLaw metaid="_92c7d200-6212-4bf9-8102-b191d25e45eb">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> ARF </ci>
+              <ci> IAAp </ci>
+              <ci> pa </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="ARFIAA_dissociation" metaid="_00e3d5d0-f615-40a8-9e8f-5868c9ae1621" name="ARFIAA_dissociation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="daedfd3f-87be-42bd-b3a9-05d8a394268b" species="ARFIAA"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="e98e78b1-1910-4aa3-aa33-d15a9a453f14" species="ARF"/>
+          <speciesReference metaid="cac3f733-f506-4f50-a645-1cc3a85ccb20" species="IAAp"/>
+        </listOfProducts>
+        <kineticLaw metaid="_61786bbe-0c39-4460-b215-283a2b93e410">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> ARFIAA </ci>
+              <ci> pd </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="auxTIR1_formation" metaid="c332d33d-748d-4aae-9f9e-0714c250ac75" name="auxTIR1_formation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="_5cbdb878-68b7-41a2-94c0-43464206b2ca" species="aux"/>
+          <speciesReference metaid="ee66e860-f593-487b-aa99-2d761e063eb8" species="TIR1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="ff632304-ae15-4d9d-a411-f31b51b01b93" species="auxTIR1"/>
+        </listOfProducts>
+        <kineticLaw metaid="ba8a64c6-51ef-4e1a-98c3-d13818b3897f">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> aux </ci>
+              <ci> ka </ci>
+              <ci> TIR1 </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="auxTIR1_dissociation" metaid="bc8877c0-52a3-43b3-b71d-d36b3622df78" name="auxTIR1_dissociation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="_4afd5ae1-0bf8-4071-ab65-595829ea603f" species="auxTIR1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="c7bcaf69-7225-4ee7-9940-37784f36c7dc" species="aux"/>
+          <speciesReference metaid="_027147e2-e1a1-477e-97ba-797f6a40414e" species="TIR1"/>
+        </listOfProducts>
+        <kineticLaw metaid="a0e8a099-f450-4628-99a3-4c1c11d14bdd">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> auxTIR1 </ci>
+              <ci> kd </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="auxTIR1IAA_formation" metaid="e680b1e4-ccb6-4c3a-bc42-b5eeb1f06221" name="auxTIR1IAA_formation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="e2bd1bf6-bdd9-4a02-b292-5b811efb4e51" species="auxTIR1"/>
+          <speciesReference metaid="db9cfebc-6ceb-4eaa-90dd-ac660166581e" species="IAAp"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="b4ffcb18-37a1-4b71-bb3c-11dad021b506" species="auxTIR1IAA"/>
+        </listOfProducts>
+        <kineticLaw metaid="be4c99fb-bd1c-4a38-9152-bc45d1fb3281">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> auxTIR1 </ci>
+              <ci> IAAp </ci>
+              <ci> la </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="auxTIR1IAA_dissociation" metaid="a7c2a49a-050b-40eb-9ad5-2323e36e44b3" name="auxTIR1IAA_dissociation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="_6134bfb1-c3b9-49f4-ae1b-dc34a452bd67" species="auxTIR1IAA"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="_3d4c74bd-822d-44b0-be6d-340963d6ddb3" species="auxTIR1"/>
+          <speciesReference metaid="_38fff799-5c54-4730-b76e-b5b8e0861c02" species="IAAp"/>
+        </listOfProducts>
+        <kineticLaw metaid="b1573f2b-fcb8-4833-970e-e9bee64a86a9">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> auxTIR1IAA </ci>
+              <ci> ld </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="IAA_ubiquitination" metaid="e0d5dc05-9157-4f71-a75b-b64d19b1d737" name="IAA_ubiquitination" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="_78522891-315f-4ba0-a911-ed4f74aa5d78" species="auxTIR1IAA"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="ecb1c3b5-d6c9-41f3-88af-426bb7c55cb6" species="auxTIR1"/>
+          <speciesReference metaid="_2968d5c9-a3f7-4dad-9ee9-49796c7ced6f" species="IAAstar"/>
+        </listOfProducts>
+        <kineticLaw metaid="_739760f0-634c-40d1-804b-e1e706a798fa">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> auxTIR1IAA </ci>
+              <ci> lm </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="IAAstar_degradation" metaid="_71e28bc0-a9b2-4702-bdf5-24dfc56d9a4c" name="IAAstar_degradation" reversible="true">
+        <listOfReactants>
+          <speciesReference metaid="_0a76d55b-4e1a-4d2e-b569-2b0173eada27" species="IAAstar"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference metaid="_4a98ff73-cbb3-4501-a90a-b18d5d93d520" species="null"/>
+        </listOfProducts>
+        <kineticLaw metaid="d1ff25a7-d972-444a-9e5a-1e6cbea8764a">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> IAAstar </ci>
+              <ci> muIAAstar </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

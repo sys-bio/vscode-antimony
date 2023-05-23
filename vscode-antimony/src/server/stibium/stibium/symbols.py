@@ -284,7 +284,10 @@ class Symbol:
                     else:
                         ontology_name = uri_split[-1].split('_')[0].lower()
                         iri = uri_split[-1]
-                        response = requests.get('http://www.ebi.ac.uk/ols/api/ontologies/' + ontology_name + '/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F' + iri).json()
+                        response = requests.get('http://www.ebi.ac.uk/ols/api/ontologies/' + ontology_name + '/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F' + iri)
+                        if response.status_code == 406:
+                            continue
+                        response = response.json()
                         if ontology_name == 'pr' or ontology_name == 'ma' or ontology_name == 'obi' or ontology_name == 'fma':
                             definition = response['description']
                         else:
@@ -415,7 +418,10 @@ class SymbolTable:
 
     def get(self, qname: QName) -> List[Symbol]:
         leaf_table = self._leaf_table(qname.scope)
-        name = qname.name.text
+        if isinstance(qname.name, VarName):
+            name = qname.name.get_name().text
+        else:
+            name = qname.name.text
         if isinstance(name, str) and name in leaf_table:
             return [leaf_table[name]]
         else:
