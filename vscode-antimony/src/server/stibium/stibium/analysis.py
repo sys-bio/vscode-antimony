@@ -411,6 +411,9 @@ class AntTreeAnalyzer:
                             expec = function[0].parameters[index][0] if len(function[0].parameters[index]) != 0 else None
                             expec_type = expec.type if expec is not None else None
                             call = leaf.get_params().get_items()[index]
+                            # parameters can be arithmetic expression
+                            if isinstance(call, ArithmeticExpr):
+                                continue
                             call_name = self.table.get(QName(scope, call))
                             if len(call_name) == 0:
                                 call_name = self.import_table.get(QName(scope, call))
@@ -1376,6 +1379,9 @@ class AntTreeAnalyzer:
                         expec = function[0].parameters[index][0] if len(function[0].parameters[index]) != 0 else None
                         expec_type = expec.type if expec is not None else None
                         call = cur_func.get_params().get_items()[index]
+                        # parameter can be arithmetic expression
+                        if isinstance(call, ArithmeticExpr):
+                            continue
                         call_name = self.table.get(QName(scope, call))
                         if len(call_name) == 0:
                             call_name = self.import_table.get(QName(scope, call))
