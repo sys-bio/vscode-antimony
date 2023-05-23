@@ -148,7 +148,7 @@ func_call : var_name "(" [parameters] ")"
     | unit_declaration
     | unit_assignment
     | mmodel_call
-    | function_call
+    // | function_call
     | variable_in
     | is_assignment
     | import
@@ -168,8 +168,8 @@ import : "import" ESCAPED_STRING
 // Modular Model
 modular_model : "model" ["*"] NAME "(" [init_params] ")" simple_stmt_list END
 
-// Function
-function : "function" NAME "(" [init_params] ")" NEWLINE sum [";"] NEWLINE END
+// Function: now replaced by func_call
+// function : "function" NAME "(" [init_params] ")" NEWLINE sum [";"] NEWLINE END
 
 parameters : (bool_exp) ("," (bool_exp))*
 
