@@ -16,22 +16,21 @@ Please note that the current release does not support the complete Antimony gram
 The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) is available on the Visual Studio Code Extensions Tab and the Visual Studio Code Marketplace. (We recommend installing the extension pack directly so you have full access to all of the features.) <br/>
 
 ### Windows
-* Windows users must install the [Vscode Antimony Dependencies Installer](https://www.python.org/ftp/python/3.11.2/python-3.11.2-amd64.exe).
+* This extension requires [Vscode Antimony Dependencies Installer](https://www.python.org/ftp/python/3.11.2/python-3.11.2-amd64.exe) to be installed.
 * Once installed, open the Downloads folder on your device
 * Double click "Vscode-Antimony-Dependencies-Installer" to start the setup process. **(This will not intefer with any other dependencies and programs of your device)**.
 * Once installed, restart Visual Code Studio.
-* **_This extension may require [Git](https://git-scm.com/downloads) to be installed before use. Make sure to add Git to PATH when installing. Restart Visual Studio Code after installation of Git._** <br/>
+* _This extension may require [Git](https://git-scm.com/downloads) to be installed before use. Make sure to add Git to PATH when installing. Restart Visual Studio Code after installation of Git._ <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Mac
-* Mac users must install [Python3.9 (must be version 3.9)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg).
-* This extension requires [NodeJS](https://nodejs.org/en/download/) to be installed before use regardless of operating system used. Restart Visual Studio Code after installation of NodeJS.
-* **_If there are any non VSCode Antimony associated virtual environments activated, please deactivate them before setting up VSCode Antimony._**
+* This extension requires [Python3.9 (must be version 3.9)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg) and [NodeJS](https://nodejs.org/en/download/) to be installed before use.
 * Once installed, restart Visual Code Studio. <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Linux
-* Linux users will have to install Python3.10, venv package, and pip. Once installed, restart Visual Studio Code. <br/>
+* Linux users will have to install Python3.10, NodeJS, venv package, and pip. 
+* Once installed, restart Visual Studio Code. <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Steps below apply for all Operating Systems
