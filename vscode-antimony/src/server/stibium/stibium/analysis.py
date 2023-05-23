@@ -1043,7 +1043,10 @@ class AntTreeAnalyzer:
                 ontology_name = ontology_info_split[0].lower()
                 iri = uri_split[-1]
                 
-                response = requests.get(ONTOLOGIES_URL + ontology_name + ONTOLOGIES_URL_SECOND_PART + iri).json()
+                response = requests.get(ONTOLOGIES_URL + ontology_name + ONTOLOGIES_URL_SECOND_PART + iri)
+                if response.status_code == 406:
+                    return
+                response = response.json()
                 if ontology_name == 'pr' or ontology_name == 'ma' or ontology_name == 'obi' or ontology_name == 'fma':
                     definition = response['description']
                 else:
