@@ -23,6 +23,10 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <br/>
 <em>(Press Keep)</em>
 </p>
+
+* Once installed, open the Downloads folder on your device
+* Double click "Vscode-Antimony-Dependencies-Installer" to start the setup process. If there is a warning pop up from Windows, click more info and then click run anyway. **(This will not intefer with any other dependencies and programs of your device)**.
+
 <p align=center>
 <img src="docs/images/moreinfo.png" width=75%>
 <br/>
@@ -34,8 +38,6 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Press run anyway)</em>
 </p>
 
-* Once installed, open the Downloads folder on your device
-* Double click "Vscode-Antimony-Dependencies-Installer" to start the setup process. **(This will not intefer with any other dependencies and programs of your device)**.
 * Once installed, restart Visual Code Studio.
 * _This extension may require [Git](https://git-scm.com/downloads) to be installed before use. Make sure to add Git to PATH when installing. Restart Visual Studio Code after installation of Git._ <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
