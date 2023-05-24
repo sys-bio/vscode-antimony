@@ -4,7 +4,7 @@ echo "script runs"
 
 setlocal
 set py=%1
-if "%py%"=="" set py=%USERPROFILE%\Documents\VSCode-Antimony-Dependency-Installer\python\python
+if "%py%"=="" set py=%USERPROFILE%\Downloads\VSCode-Antimony-Dependency-Installer\python\python
 set venv=vscode_antimony_virtual_env
 
 echo "running install virtual env"
@@ -13,7 +13,8 @@ rem If not already in virtualenv
 rem %VIRTUAL_ENV% is being set from %venv%\Scripts\activate.bat script
 echo Creating and activating virtual environment %venv%
 echo %USERPROFILE%\%venv%
-%py% -m venv %USERPROFILE%\%venv%
+%py% -m pip install virtualenv
+%py% -m virtualenv %USERPROFILE%\%venv%
 (echo appdirs==1.4.4
 echo certifi==2020.12.5
 echo chardet==4.0.0 ^ 
