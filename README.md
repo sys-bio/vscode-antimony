@@ -33,6 +33,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <br/>
 <em>(Press run anyway)</em>
 </p>
+
 * Once installed, open the Downloads folder on your device
 * Double click "Vscode-Antimony-Dependencies-Installer" to start the setup process. **(This will not intefer with any other dependencies and programs of your device)**.
 * Once installed, restart Visual Code Studio.

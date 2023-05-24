@@ -13,7 +13,7 @@ Packaging and publishing to VSCode Marketplace: <br/>
     <li>Step 3: run "cd <extension_file>",
     <li>Step 4: Comment out logger code for production in main.py (MUST DO BEFORE PUBLISHING)
     <li>Step 5: run "vsce package"
-    <li>Step 6: run "vsce publish <version_of_extension>"
+    <li>Step 6: run "vsce publish <version_of_extension> --target win32-x64"
 
 Set up a symlink (On Windows cmd): <br/>
     <li>run "git config core.symlinks true" to allow for symlinks
