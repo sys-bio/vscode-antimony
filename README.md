@@ -17,6 +17,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 
 ### Windows
 * This extension requires [Vscode Antimony Dependencies Installer](https://github.com/sys-bio/vscode-antimony/raw/374cc51450a29b6d047bde57b9e845e7fef030c7/setup/VSCode-Antimony-Dependency-Installer.exe) to be installed.
+* Your web browser may warn that this isn't a commonly installed software, allow the browser to keep the download.
 * Once installed, open the Downloads folder on your device
 * Double click "Vscode-Antimony-Dependencies-Installer" to start the setup process. **(This will not intefer with any other dependencies and programs of your device)**.
 * Once installed, restart Visual Code Studio.
