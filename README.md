@@ -21,17 +21,17 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <p align=center>
 <img src="docs/images/warning.png" width=75%>
 <br/>
-<em>(Download Antimony Extension)</em>
+<em>(Press Keep)</em>
 </p>
 <p align=center>
 <img src="docs/images/moreinfo.png" width=75%>
 <br/>
-<em>(Download Antimony Extension)</em>
+<em>(Press more info)</em>
 </p>
 <p align=center>
 <img src="docs/images/runanyway.png" width=75%>
 <br/>
-<em>(Download Antimony Extension)</em>
+<em>(Press run anyway)</em>
 </p>
 * Once installed, open the Downloads folder on your device
 * Double click "Vscode-Antimony-Dependencies-Installer" to start the setup process. **(This will not intefer with any other dependencies and programs of your device)**.
