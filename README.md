@@ -16,7 +16,7 @@ Please note that the current release does not support the complete Antimony gram
 The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) is available on the Visual Studio Code Extensions Tab and the Visual Studio Code Marketplace. (We recommend installing the extension pack directly so you have full access to all of the features.) <br/>
 
 ### Windows
-* This extension requires [Vscode Antimony Dependencies Installer](https://github.com/sys-bio/vscode-antimony/blob/master/setup/VSCode-Antimony-Dependency-Installer.exe) to be installed.
+* This extension requires [Vscode Antimony Dependencies Installer](setup\VSCode-Antimony-Dependency-Installer.exe) to be installed.
 * Once installed, open the Downloads folder on your device
 * Double click "Vscode-Antimony-Dependencies-Installer" to start the setup process. **(This will not intefer with any other dependencies and programs of your device)**.
 * Once installed, restart Visual Code Studio.
