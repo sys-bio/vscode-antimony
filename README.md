@@ -43,9 +43,23 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Mac
-* This extension requires [Vscode_Antimony_Setup](https://github.com/sys-bio/vscode-antimony/blob/macinstall/setup/Vscode_Antimony_Setup.pkg) and [NodeJS](https://nodejs.org/en/download/) to be installed before use **(This will not intefer with any other dependencies and programs of your device)**.
+* This extension requires [Vscode_Antimony_Setup (For M1 Macbooks)](https://github.com/sys-bio/vscode-antimony/raw/macinstall/setup/Vscode_Antimony_Setup.pkg) and [NodeJS](https://nodejs.org/en/download/) to be installed before use **(This will not intefer with any other dependencies and programs of your device)**.
 * When installing Vscode_Antimony_Setup.pkg, right click on the pkg file and press open.
+
+<p align=center>
+<img src="docs/images/open.png" width=75%>
+<br/>
+<em>(Right click, then press open)</em>
+</p>
+
 * Click open when the pop up appears.
+
+<p align=center>
+<img src="docs/images/macpopup.png" width=75%>
+<br/>
+<em>(Click open)</em>
+</p>
+
 * Once installed, restart Visual Code Studio. <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
