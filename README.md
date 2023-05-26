@@ -43,7 +43,9 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Mac
-* This extension requires [Python3.9 (must be version 3.9)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg) and [NodeJS](https://nodejs.org/en/download/) to be installed before use.
+* This extension requires [Vscode_Antimony_Setup](https://github.com/sys-bio/vscode-antimony/blob/macinstall/setup/Vscode_Antimony_Setup.pkg) and [NodeJS](https://nodejs.org/en/download/) to be installed before use **(This will not intefer with any other dependencies and programs of your device)**.
+* When installing Vscode_Antimony_Setup.pkg, right click on the pkg file and press open.
+* Click open when the pop up appears.
 * Once installed, restart Visual Code Studio. <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
