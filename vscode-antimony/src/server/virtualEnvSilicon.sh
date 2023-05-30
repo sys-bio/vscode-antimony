@@ -3,6 +3,7 @@
 echo "script runs"
 
 ve() {
+    cpu_type=$(sysctl -n machdep.cpu.brand_string)
     if [[ $cpu_type == *"Apple"* ]]; then
         echo "Device has an Apple Silicon CPU"
     else
