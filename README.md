@@ -43,7 +43,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Mac
-* This extension requires [Vscode_Antimony_Setup (For M1 Macbooks)](https://github.com/sys-bio/vscode-antimony/raw/macinstall/setup/Vscode_Antimony_Setup.pkg) and [NodeJS](https://nodejs.org/en/download/) to be installed before use **(This will not intefer with any other dependencies and programs of your device)**.
+* This extension requires [Vscode_Antimony_Setup (Silicon CPU Macbooks)](https://github.com/sys-bio/vscode-antimony/raw/macinstall/setup/Vscode_Antimony_Setup.pkg) or [Python 3.9.13 (Intel Macbooks)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg)and [NodeJS](https://nodejs.org/en/download/) to be installed before use.
 * When installing Vscode_Antimony_Setup.pkg, right click on the pkg file and press open.
 
 <p align=center>
@@ -60,11 +60,13 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Click open)</em>
 </p>
 
+* When installing Python 3.9.13 and NodeJS, proceed with the installations as is. No changes are needed to be made.
+
 * Once installed, restart Visual Code Studio. <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Linux
-* Linux users will have to install Python3.10, NodeJS, venv package, and pip. 
+* Linux users will have to install Python3.10, NodeJS, venv python package, and pip. 
 * Once installed, restart Visual Studio Code. <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
