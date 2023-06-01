@@ -19,14 +19,14 @@ export async function annotationMultiStepInput(context: ExtensionContext, initia
     if (selectedType === 'compartment') {
         databases = [
             { label: 'Gene Ontology*', id: 'gontology'},
-            { label: 'Cell Type Ontology*', id: 'contology'},
+            { label: 'Cell Type Ontology*', id: 'contology'}, //no
             { label: 'Mouse Adult Gross Anatomy*', id: 'montology'},
-            { label: 'Ontology for Biomedical Investigations*', id: 'bontology'},
+            { label: 'Ontology for Biomedical Investigations*', id: 'bontology'}, //no
             { label: 'Foundational Model of Anatomy*', id: 'fontology'},
-            { label: 'ChEBI', id: 'chebi' },
-            { label: 'Protein Ontology', id: 'pontology'},
-            { label: 'UniProt', id: 'uniprot'},
-            { label: 'RHEA', id: 'rhea'}];
+            { label: 'ChEBI', id: 'chebi' }, //no
+            { label: 'Protein Ontology', id: 'pontology'}, //no
+            { label: 'UniProt', id: 'uniprot'}, //no
+            { label: 'RHEA', id: 'rhea'}]; //no
     } else if (selectedType === 'species') {
         databases = [
             { label: 'ChEBI*', id: 'chebi' },
@@ -42,13 +42,13 @@ export async function annotationMultiStepInput(context: ExtensionContext, initia
         databases = [
             { label: 'Gene Ontology*', id: 'gontology'},
             { label: 'RHEA*', id: 'rhea'},
-            { label: 'ChEBI', id: 'chebi' },
-            { label: 'Protein Ontology', id: 'pontology'},
-            { label: 'UniProt', id: 'uniprot'},
-            { label: 'Cell Type Ontology', id: 'contology'},
-            { label: 'Mouse Adult Gross Anatomy', id: 'montology'},
-            { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
-            { label: 'Foundational Model of Anatomy', id: 'fontology'}];
+            { label: 'ChEBI', id: 'chebi' }, //no
+            { label: 'Protein Ontology', id: 'pontology'}, //no
+            { label: 'UniProt', id: 'uniprot'}, //no
+            { label: 'Cell Type Ontology', id: 'contology'}, //no
+            { label: 'Mouse Adult Gross Anatomy', id: 'montology'}, //no
+            { label: 'Ontology for Biomedical Investigations', id: 'bontology'}, //no
+            { label: 'Foundational Model of Anatomy', id: 'fontology'}]; //no
     } else {
         databases = [
             { label: 'ChEBI', id: 'chebi' },
