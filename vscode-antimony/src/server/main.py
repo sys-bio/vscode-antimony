@@ -151,29 +151,6 @@ def sbml_file_to_ant_file(ls: LanguageServer, args):
             'msg': 'Antimony has been exported to {}'.format(output_dir),
             'file': full_path_name
         }
-
-@server.thread()
-@server.command('antimony.sendType')
-def get_type(ls: LanguageServer, args) -> dict[str, str]:
-    ''' get the symbol type of a symbol at given line, character and file uri
-    
-        return a dictionary with the value of 'symbol' as the symbol type in string
-    '''
-    global antfile_cache
-    global uri
-    line = args[0]
-    character = args[1]
-    uri = args[2]
-    doc = server.workspace.get_document(uri)
-    antfile_cache = get_antfile(doc)
-    position  = SrcPosition(int(line) + 1, int(character) + 1)
-    symbols= antfile_cache.symbols_at(position)[0]
-    
-    symbol = symbols[0].type.__str__()
-    # vscode_logger.info("symbol: " + symbol)
-    return {
-        'symbol': symbol
-    }
     
 @server.thread()
 @server.command('antimony.getAnnotation')

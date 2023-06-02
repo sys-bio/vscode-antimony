@@ -377,11 +377,9 @@ async function createAnnotationDialog(context: vscode.ExtensionContext, args: an
 	} else {
 		initialQuery = selectedText;
 	}
-	vscode.commands.executeCommand('antimony.sendType', lineStr, charStr, uri).then(async (result) => {
-		const selectedType = await getResult(result);
-		const selectedItem = await annotationMultiStepInput(context, initialQuery, selectedType);
-		await insertAnnotation(selectedItem, initialEntity, line);
-	});
+
+	const selectedItem = await annotationMultiStepInput(context, initialQuery);
+	await insertAnnotation(selectedItem, initialEntity, line);
 }
 
 async function recommendAnnotationDialog(context: vscode.ExtensionContext, args: any[]) {

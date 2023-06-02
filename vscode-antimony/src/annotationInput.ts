@@ -13,55 +13,18 @@ import { ProgressLocation } from 'vscode'
  * 
  * This first part uses the helper class `MultiStepInput` that wraps the API for the multi-step case.
  */
-export async function annotationMultiStepInput(context: ExtensionContext, initialEntity: string = null, selectedType: string = null) {
-    console.log("selected type: " + selectedType);
+export async function annotationMultiStepInput(context: ExtensionContext, initialEntity: string = null) {
     var databases;
-    if (selectedType === 'compartment') {
-        databases = [
-            { label: 'Gene Ontology*', id: 'gontology'},
-            { label: 'Cell Type Ontology*', id: 'contology'}, //no
-            { label: 'Mouse Adult Gross Anatomy*', id: 'montology'},
-            { label: 'Ontology for Biomedical Investigations*', id: 'bontology'}, //no
-            { label: 'Foundational Model of Anatomy*', id: 'fontology'},
-            { label: 'ChEBI', id: 'chebi' }, //no
-            { label: 'Protein Ontology', id: 'pontology'}, //no
-            { label: 'UniProt', id: 'uniprot'}, //no
-            { label: 'RHEA', id: 'rhea'}]; //no
-    } else if (selectedType === 'species') {
-        databases = [
-            { label: 'ChEBI*', id: 'chebi' },
-            { label: 'Protein Ontology*', id: 'pontology'},
-            { label: 'UniProt*', id: 'uniprot'},
-            { label: 'RHEA', id: 'rhea'},
-            { label: 'Gene Ontology', id: 'gontology'},
-            { label: 'Cell Type Ontology', id: 'contology'},
-            { label: 'Mouse Adult Gross Anatomy', id: 'montology'},
-            { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
-            { label: 'Foundational Model of Anatomy', id: 'fontology'}];
-    } else if (selectedType === 'reaction') {
-        databases = [
-            { label: 'Gene Ontology*', id: 'gontology'},
-            { label: 'RHEA*', id: 'rhea'},
-            { label: 'ChEBI', id: 'chebi' }, //no
-            { label: 'Protein Ontology', id: 'pontology'}, //no
-            { label: 'UniProt', id: 'uniprot'}, //no
-            { label: 'Cell Type Ontology', id: 'contology'}, //no
-            { label: 'Mouse Adult Gross Anatomy', id: 'montology'}, //no
-            { label: 'Ontology for Biomedical Investigations', id: 'bontology'}, //no
-            { label: 'Foundational Model of Anatomy', id: 'fontology'}]; //no
-    } else {
-        databases = [
-            { label: 'ChEBI', id: 'chebi' },
-            { label: 'UniProt', id: 'uniprot'},
-            { label: 'RHEA', id: 'rhea'},
-            { label: 'Gene Ontology', id: 'gontology'},
-            { label: 'Cell Type Ontology', id: 'contology'},
-            { label: 'Protein Ontology', id: 'pontology'},
-            { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
-            { label: 'Foundational Model of Anatomy', id: 'fontology'},
-            { label: 'Mouse Adult Gross Anatomy', id: 'montology'}];
-    }
-
+    databases = [
+        { label: 'ChEBI', id: 'chebi' },
+        { label: 'UniProt', id: 'uniprot'},
+        { label: 'RHEA', id: 'rhea'},
+        { label: 'Gene Ontology', id: 'gontology'},
+        { label: 'Cell Type Ontology', id: 'contology'},
+        { label: 'Protein Ontology', id: 'pontology'},
+        { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
+        { label: 'Foundational Model of Anatomy', id: 'fontology'},
+        { label: 'Mouse Adult Gross Anatomy', id: 'montology'}];
 
     interface State {
         title: string;
