@@ -41,9 +41,9 @@ import zipfile
 import io
 
 # TODO remove this for production
-# logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
-# vscode_logger = logging.getLogger("vscode-antimony logger")
-# vscode_logger.addHandler(logging.FileHandler('vscode-antimony-ext.log', mode="w"))
+logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
+vscode_logger = logging.getLogger("vscode-antimony logger")
+vscode_logger.addHandler(logging.FileHandler('vscode-antimony-ext.log', mode="w"))
 
 server = LanguageServer()
 services = WebServices()
@@ -278,6 +278,7 @@ def recommend(ls: LanguageServer, args):
     limit = 0
     for annotation in annotations.candidates:
         sorted_chebi = sorted(chebi[annotation[0]], key=len)
+        vscode_logger.debug(sorted_chebi)
         ret.append({
             'label': sorted_chebi[0],
             'id': annotation[0]

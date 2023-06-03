@@ -37,14 +37,10 @@ let roundTripping: boolean | null = null;
 // Activate extension
 export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.openStartPage',
-			(...args: any[]) => openStartPage()));
-
-	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
+		vscode.commands.registerCommand('antimony.openStartPage', (...args: any[]) => openStartPage()));
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.deleteVirtualEnv',
-			(...args: any[]) => venvErrorFix()));
+		vscode.commands.registerCommand('antimony.deleteVirtualEnv', (...args: any[]) => venvErrorFix()));
 
 	await createVirtualEnv(context);
 
@@ -52,6 +48,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// start the language server
 	await startLanguageServer(context);
+
+	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
 
 	vscode.workspace.onDidChangeConfiguration(async (e) => {
 		// restart the language server using the new Python interpreter, if the related
@@ -79,51 +77,41 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// create annotations
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.createAnnotationDialog',
-			(...args: any[]) => createAnnotationDialog(context, args)));
+		vscode.commands.registerCommand('antimony.createAnnotationDialog', (...args: any[]) => createAnnotationDialog(context, args)));
 
 	// create annotations
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.recommendAnnotationDialog',
-			(...args: any[]) => recommendAnnotationDialog(context, args)));
+		vscode.commands.registerCommand('antimony.recommendAnnotationDialog', (...args: any[]) => recommendAnnotationDialog(context, args)));
 
 	// insert rate law
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.insertRateLawDialog',
-			(...args: any[]) => insertRateLawDialog(context, args)));
+		vscode.commands.registerCommand('antimony.insertRateLawDialog', (...args: any[]) => insertRateLawDialog(context, args)));
 
 	// switch visual annotations on
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.switchIndicationOn',
-			(...args: any[]) => switchIndicationOn(context)));
+		vscode.commands.registerCommand('antimony.switchIndicationOn', (...args: any[]) => switchIndicationOn(context)));
 
 	// switch visual annotations off
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.switchIndicationOff',
-			(...args: any[]) => switchIndicationOff(context)));
+		vscode.commands.registerCommand('antimony.switchIndicationOff', (...args: any[]) => switchIndicationOff(context)));
 
 	// convertion
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.convertAntimonyToSBML',
-			(...args: any[]) => convertAntimonyToSBML(context, args)));
+		vscode.commands.registerCommand('antimony.convertAntimonyToSBML', (...args: any[]) => convertAntimonyToSBML(context, args)));
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.convertSBMLToAntimony',
-			(...args: any[]) => convertSBMLToAntimony(context, args)));
+		vscode.commands.registerCommand('antimony.convertSBMLToAntimony', (...args: any[]) => convertSBMLToAntimony(context, args)));
 	
 	// custom editor
 	context.subscriptions.push(await SBMLEditorProvider.register(context, client));
 	context.subscriptions.push(await AntimonyEditorProvider.register(context, client));
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.startSBMLWebview',
-			(...args: any[]) => startSBMLWebview(context, args)));
+		vscode.commands.registerCommand('antimony.startSBMLWebview', (...args: any[]) => startSBMLWebview(context, args)));
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.startAntimonyWebview',
-			(...args: any[]) => startAntimonyWebview(context, args)));
+		vscode.commands.registerCommand('antimony.startAntimonyWebview', (...args: any[]) => startAntimonyWebview(context, args)));
 	
 	// browse biomodels
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.browseBiomodels',
-			(...args: any[]) => browseBioModels(context, args)));
+		vscode.commands.registerCommand('antimony.browseBiomodels', (...args: any[]) => browseBioModels(context, args)));
 
 	// language config for CodeLens
 	const docSelector = {
@@ -178,13 +166,13 @@ export async function activate(context: vscode.ExtensionContext) {
 			triggerSBMLEditor(event, sbmlFileNameToPath);
 		});
 	
-		vscode.workspace.onDidSaveTextDocument((savedDoc) => {
+		vscode.workspace.onDidSaveTextDocument(savedDoc => {
 			const fileName = path.basename(savedDoc.fileName, '.git');
 			const pathName = path.dirname(savedDoc.fileName);
 			const fullPath = path.join(pathName, fileName);
 			const pattern = /^(.+?).ant/;
 			if (pattern.test(fileName) && pathName === os.tmpdir()) {
-				vscode.workspace.openTextDocument(fullPath).then((doc) => {
+				vscode.workspace.openTextDocument(fullPath).then(doc => {
 					vscode.commands.executeCommand('antimony.antStrToSBMLStr', doc.getText())
 					.then(async (result: any) => {
 						if (result.error) {
@@ -192,7 +180,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						} else {
 							const match = pattern.exec(fileName)[1];
 							const sbmlFilePath = path.join(sbmlFileNameToPath[fileName], match + '.xml');
-							fs.writeFile(sbmlFilePath, result.sbml_str, (error) => {
+							fs.writeFile(sbmlFilePath, result.sbml_str, error => {
 								if (error) {
 									console.error(error);
 								}
@@ -581,43 +569,38 @@ C = 0`;
  */
 
 // change the annotation decoration of non-annotated variables
-function updateDecorations() {
-	let annVars: string;
-	let regexFromAnnVarsHelp: RegExp;
-	let regexFromAnnVars: RegExp;
-	let config =  vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
-
+async function updateDecorations() {
+	const config = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
+	const activeEditor = vscode.window.activeTextEditor;
+  
+	if (config !== true || !activeEditor) {
+	  return;
+	}
+  
 	const doc = activeEditor.document;
 	const uri = doc.uri.toString();
-
-	if (config === true) {
-		vscode.commands.executeCommand('antimony.getAnnotation', uri).then(async (result: string) => {
-
-			annVars = result;
-			if (annVars == "" || annVars == null || annVars == " "){
-				vscode.workspace.getConfiguration('vscode-antimony').update('annotatedVariableIndicatorOn', false, true);
-				annDecorationType.dispose();
-				return;
-			}
-			regexFromAnnVarsHelp = new RegExp(annVars,'g');
-			regexFromAnnVars = new RegExp('\\b(' + regexFromAnnVarsHelp.source + ')\\b', 'g');
-
-			if (!activeEditor) {
-				return;
-			}
-
-			const text = activeEditor.document.getText();
-			const annotated: vscode.DecorationOptions[] = [];
-			let match;
-			while ((match = regexFromAnnVars.exec(text))) {
-				const startPos = activeEditor.document.positionAt(match.index);
-				const endPos = activeEditor.document.positionAt(match.index + match[0].length);
-				const decoration = { range: new vscode.Range(startPos, endPos) };
-					annotated.push(decoration);
-			}
-			activeEditor.setDecorations(annDecorationType, annotated);
-		});
+	const result = await vscode.commands.executeCommand('antimony.getAnnotation', uri) as string;
+  
+	if (!result || result.trim().length === 0) {
+	  vscode.workspace.getConfiguration('vscode-antimony').update('annotatedVariableIndicatorOn', false, true);
+	  annDecorationType.dispose();
+	  return;
 	}
+  
+	const annVars = result;
+	const regexFromAnnVars = new RegExp('\\b(' + annVars + ')\\b', 'g');
+	const text = doc.getText();
+	const annotated: { [key: string]: vscode.DecorationOptions } = {}; // Hashmap for storing annotations
+  
+	for (const match of text.matchAll(regexFromAnnVars)) {
+	  const startPos = doc.positionAt(match.index);
+	  const endPos = doc.positionAt(match.index + match[0].length);
+	  const decoration = { range: new vscode.Range(startPos, endPos) };
+	  const variableName = match[0]; // Assuming the matched text is the variable name
+	  annotated[variableName] = decoration;
+	}
+  
+	activeEditor.setDecorations(annDecorationType, Object.values(annotated));
 }
 
 /**
