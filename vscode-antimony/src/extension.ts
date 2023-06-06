@@ -16,6 +16,7 @@ import { AntimonyEditorProvider } from './AntimonyEditor';
 import { modelSearchInput } from './modelBrowse';
 import { ProgressLocation, TextDocument, window } from 'vscode';
 import { exec } from 'child_process';
+import { selectSingleStepInput } from './annotationSelect';
 
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
@@ -48,8 +49,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// start the language server
 	await startLanguageServer(context);
-
-	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
 
 	vscode.workspace.onDidChangeConfiguration(async (e) => {
 		// restart the language server using the new Python interpreter, if the related
@@ -127,6 +126,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	// timer for non annotated variable visual indicator
 	let timeout: NodeJS.Timer | undefined = undefined;
 
+	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
+
 	// update the decoration once in a certain time (throttle)
 	function triggerUpdateDecorations(throttle = false) {
 		if (timeout) {
@@ -199,6 +200,8 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<any, any>) {
+	await client.onReady();
+
 	if (path.extname(event.fileName) === '.xml') {
 		// check if the file is sbml, opens up a new file
 		await vscode.window.showTextDocument(event, { preview: true, preserveFocus: false });
@@ -368,6 +371,52 @@ async function createAnnotationDialog(context: vscode.ExtensionContext, args: an
 
 	const selectedItem = await annotationMultiStepInput(context, initialQuery);
 	await insertAnnotation(selectedItem, initialEntity, line);
+}
+
+async function navigateAnnotation(context: vscode.ExtensionContext, args: any[]) {
+	// wait till client is ready, or the Python server might not have started yet.
+	// note: this is necessary for any command that might use the Python language server.
+	if (!client) {
+		utils.pythonInterpreterError();
+		return;
+	}
+	await client.onReady();
+	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+  
+	// dialog for annotation
+	const selection = vscode.window.activeTextEditor.selection;
+  
+	// get the selected text
+	const doc = vscode.window.activeTextEditor.document;
+	const uri = doc.uri.toString();
+	const selectedText = doc.getText(selection);
+  
+	// get the position for insert
+	let line = selection.start.line;
+
+	while (line <= doc.lineCount - 1) {
+		const text = doc.lineAt(line).text;
+		if (text.localeCompare("end", undefined, { sensitivity: 'accent' }) === 0) {
+			line -= 1;
+			break;
+		}
+		line += 1;
+	}
+  
+	const positionAt = selection.anchor;
+	const lineStr = positionAt.line.toString();
+	const charStr = positionAt.character.toString();
+	const initialEntity = selectedText || 'entityName';
+	let initialQuery;
+	// get current file
+	if (args.length === 2) {
+		initialQuery = args[1];
+	} else {
+		initialQuery = selectedText;
+	}
+
+	const selectedItem = await selectSingleStepInput(context, initialQuery); // list existing annotations
+	await insertAnnotation(selectedItem, initialEntity, line); // navigate to selected annotation
 }
 
 async function recommendAnnotationDialog(context: vscode.ExtensionContext, args: any[]) {

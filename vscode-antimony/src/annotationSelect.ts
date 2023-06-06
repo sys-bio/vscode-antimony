@@ -13,10 +13,9 @@ import { ProgressLocation } from 'vscode'
  * 
  * This first part uses the helper class `MultiStepInput` that wraps the API for the multi-step case.
  */
-export async function recSingleStepInput(context: ExtensionContext, line: number, lineStr: string, charStr: string, uri: string, initialQuery: string = null, initialEntity: string = null) {
-    let databases = [];
-    let recommendations;
-    let annotations;
+export async function selectSingleStepInput(context: ExtensionContext, uri: string) {
+    let uriAnnotations;
+    let uriAnnotationsPicker = [];
 
     async function progressBar(input: MultiStepInput) {
         window.withProgress({
@@ -24,12 +23,12 @@ export async function recSingleStepInput(context: ExtensionContext, line: number
             title: "Searching for annotations...",
             cancellable: true
         }, (progress, token) => {
-            return commands.executeCommand('antimony.recommender', lineStr, charStr, uri).then(async (result) => {
-                recommendations = result;
-                if (recommendations.error) {
+            return commands.executeCommand('antimony.getAnnotations', uri).then(async (result) => {
+                uriAnnotations = result;
+                if (uriAnnotations.error) {
                     vscode.window
                     .showErrorMessage(
-                        recommendations.error,
+                        uriAnnotations.error,
                     )
                     return;
                 } 
@@ -40,20 +39,21 @@ export async function recSingleStepInput(context: ExtensionContext, line: number
 
     MultiStepInput.run(input => progressBar(input));
 
-	vscode.commands.executeCommand('antimony.recommender', lineStr, charStr, uri).then(async (result) => {
-        recommendations = result;
-        if (recommendations.error) {
+	vscode.commands.executeCommand('antimony.getAnnotations', uri).then(async (result) => {
+        uriAnnotations = result;
+        if (uriAnnotations.error) {
             vscode.window
             .showErrorMessage(
-                recommendations.error,
+                uriAnnotations.error,
             )
             return;
-        } 
-        annotations = recommendations.annotations;
-       
-        for (let i = 0; i < annotations.length; i++) {
-            databases.push({id: annotations[i].id, label: annotations[i].label}); 
+        }        
+        for (let i = 0; i < uriAnnotations.length; i++) {
+            if (uriAnnotations[i].id 
+            uriAnnotationsPicker.push({id: uriAnnotations[i].id, label: uriAnnotations[i].label}); 
         }
+
+
 
         interface State {
             title: string;
