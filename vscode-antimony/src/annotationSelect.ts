@@ -13,7 +13,7 @@ import { ProgressLocation } from 'vscode'
  * 
  * This first part uses the helper class `MultiStepInput` that wraps the API for the multi-step case.
  */
-export async function selectSingleStepInput(context: ExtensionContext, uri: string) {
+export async function selectSingleStepInput(context: ExtensionContext, initialEntity: string, uri: string) {
     let uriAnnotations;
     let uriAnnotationsPicker = [];
 
@@ -49,11 +49,9 @@ export async function selectSingleStepInput(context: ExtensionContext, uri: stri
             return;
         }        
         for (let i = 0; i < uriAnnotations.length; i++) {
-            if (uriAnnotations[i].id 
+            if (uriAnnotations[i].id)
             uriAnnotationsPicker.push({id: uriAnnotations[i].id, label: uriAnnotations[i].label}); 
         }
-
-
 
         interface State {
             title: string;
@@ -70,15 +68,15 @@ export async function selectSingleStepInput(context: ExtensionContext, uri: stri
             return state as State;
         }
 
-        const title = 'Select Annotation';
+        const title = 'Select Annotation to Navigate to';
 
         async function pickDatabase(input: MultiStepInput, state: Partial<State>) {
             const pick = await input.showQuickPick({
                 title,
                 step: 1,
                 totalSteps: 1,
-                placeholder: 'Select Annotation',
-                items: databases,
+                placeholder: 'Select Annotation to Navigate to',
+                items: uriAnnotationsPicker,
                 activeItem: state.database,
                 shouldResume: shouldResume,
                 onInputChanged: null,
@@ -91,17 +89,16 @@ export async function selectSingleStepInput(context: ExtensionContext, uri: stri
             const prefix = annotation.split(':')[0].toLowerCase();
             const id = annotation.split(':')[1]
             var snippetText;
+            let annotationList = [];
             // if (prefix === 'rhea') {
             //     snippetText = `\n\${1:${initialQuery}} identity "https://www.rhea-db.org/rhea/${annotation}"`;
             // } else if (prefix === 'ontology') {
             //     // snippetText = `\n\${1:${initialQuery}} identity "${entity['iri']}"`;
             // } else {
-            snippetText = `\n\${1:${initialQuery}} identity "http://identifiers.org/${prefix}/${annotation}"`;
+            snippetText = `\n\${1:${initialEntity}} identity "http://identifiers.org/${prefix}/${annotation}"`;
             // }
-            const snippetStr = new vscode.SnippetString(snippetText);
-            const doc = vscode.window.activeTextEditor.document;
-            const pos = doc.lineAt(line).range.end;
-            vscode.window.activeTextEditor.insertSnippet(snippetStr, pos);
+            annotationList.push(snippetText)
+            return 
         }
 
         function shouldResume() {

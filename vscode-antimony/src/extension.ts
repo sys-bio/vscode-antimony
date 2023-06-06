@@ -403,19 +403,9 @@ async function navigateAnnotation(context: vscode.ExtensionContext, args: any[])
 		line += 1;
 	}
   
-	const positionAt = selection.anchor;
-	const lineStr = positionAt.line.toString();
-	const charStr = positionAt.character.toString();
 	const initialEntity = selectedText || 'entityName';
-	let initialQuery;
-	// get current file
-	if (args.length === 2) {
-		initialQuery = args[1];
-	} else {
-		initialQuery = selectedText;
-	}
 
-	const selectedItem = await selectSingleStepInput(context, initialQuery); // list existing annotations
+	const selectedItem = await selectSingleStepInput(context, initialEntity, uri); // list existing annotations
 	await insertAnnotation(selectedItem, initialEntity, line); // navigate to selected annotation
 }
 
