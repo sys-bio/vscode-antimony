@@ -8,7 +8,7 @@ import {
 	LanguageClientOptions,
 	ServerOptions
 } from 'vscode-languageclient/node';
-import { singleStepInputRec } from './annotationRecommender';
+import { recSingleStepInput } from './annotationRecommender';
 import { annotationMultiStepInput } from './annotationInput';
 import { rateLawSingleStepInput } from './rateLawInput';
 import { SBMLEditorProvider } from './SBMLEditor';
@@ -457,7 +457,7 @@ async function recommendAnnotationDialog(context: vscode.ExtensionContext, args:
 	}
 
 	await new Promise<void>((resolve, reject) => {
-		const selectedItem = singleStepInputRec(context, line, lineStr, charStr, uri, initialQuery, initialEntity); 
+		const selectedItem = recSingleStepInput(context, line, lineStr, charStr, uri, initialQuery, initialEntity); 
 		resolve()
     });
 }
