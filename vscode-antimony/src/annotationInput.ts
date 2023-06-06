@@ -16,15 +16,15 @@ import { ProgressLocation } from 'vscode'
 export async function annotationMultiStepInput(context: ExtensionContext, initialEntity: string = null) {
     var databases;
     databases = [
-        { label: 'ChEBI', id: 'chebi' },
-        { label: 'UniProt', id: 'uniprot'},
-        { label: 'RHEA', id: 'rhea'},
-        { label: 'Gene Ontology', id: 'gontology'},
-        { label: 'Cell Type Ontology', id: 'contology'},
-        { label: 'Protein Ontology', id: 'pontology'},
-        { label: 'Ontology for Biomedical Investigations', id: 'bontology'},
-        { label: 'Foundational Model of Anatomy', id: 'fontology'},
-        { label: 'Mouse Adult Gross Anatomy', id: 'montology'}];
+        { label: 'ChEBI', id: 'chebi', detail: 'Commonly Used For: Species'},
+        { label: 'UniProt', id: 'uniprot', detail: 'Commonly Used For: Species'},
+        { label: 'RHEA', id: 'rhea', detail: 'Commonly Used For: Reactions'},
+        { label: 'Gene Ontology', id: 'gontology', detail: 'Commonly Used For: Compartments, Reactions'},
+        { label: 'Cell Type Ontology', id: 'contology', detail: 'Commonly Used For: Compartments'},
+        { label: 'Protein Ontology', id: 'pontology', detail: 'Commonly Used For: Species'},
+        { label: 'Ontology for Biomedical Investigations', id: 'bontology', detail: 'Commonly Used For: Compartments'},
+        { label: 'Foundational Model of Anatomy', id: 'fontology', detail: 'Commonly Used For: Compartments'},
+        { label: 'Mouse Adult Gross Anatomy', id: 'montology', detail: 'Commonly Used For: Compartments'}];
 
     interface State {
         title: string;
