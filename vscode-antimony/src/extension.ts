@@ -111,6 +111,10 @@ export async function activate(context: vscode.ExtensionContext) {
 	// browse biomodels
 	context.subscriptions.push(
 		vscode.commands.registerCommand('antimony.browseBiomodels', (...args: any[]) => browseBioModels(context, args)));
+	
+	// navigate to annotation
+	context.subscriptions.push(
+		vscode.commands.registerCommand('antimony.navigateAnnotation', (...args: any[]) => navigateAnnotation(context, args)));
 
 	// language config for CodeLens
 	const docSelector = {
@@ -389,24 +393,38 @@ async function navigateAnnotation(context: vscode.ExtensionContext, args: any[])
 	// get the selected text
 	const doc = vscode.window.activeTextEditor.document;
 	const uri = doc.uri.toString();
-	const selectedText = doc.getText(selection);
+	const text = doc.getText();
+	const ind = text.indexOf("CV terms");
+
+	if (ind !== -1) {
+		const position = doc.positionAt(ind);
+		vscode.window.activeTextEditor.selection = new vscode.Selection(position, position);
+		vscode.window.activeTextEditor.revealRange(new vscode.Range(position, position), vscode.TextEditorRevealType.InCenter);
+	}
+
+	// vscode.commands.executeCommand("workbench.action.showAllSymbols", uri, selection.start).then(() => {
+	// 	console.log("Navigated to annotation")
+	// }, (error) => {
+	// 	// Code navigation failed
+	// 	console.error(error);
+	// });
   
 	// get the position for insert
-	let line = selection.start.line;
+	// let line = selection.start.line;
 
-	while (line <= doc.lineCount - 1) {
-		const text = doc.lineAt(line).text;
-		if (text.localeCompare("end", undefined, { sensitivity: 'accent' }) === 0) {
-			line -= 1;
-			break;
-		}
-		line += 1;
-	}
+	// while (line <= doc.lineCount - 1) {
+	// 	const text = doc.lineAt(line).text;
+	// 	if (text.localeCompare("end", undefined, { sensitivity: 'accent' }) === 0) {
+	// 		line -= 1;
+	// 		break;
+	// 	}
+	// 	line += 1;
+	// }
   
-	const initialEntity = selectedText || 'entityName';
+	// const initialEntity = selectedText || 'entityName';
 
-	const selectedItem = await selectSingleStepInput(context, initialEntity, uri); // list existing annotations
-	await insertAnnotation(selectedItem, initialEntity, line); // navigate to selected annotation
+	// const selectedItem = await selectSingleStepInput(context, initialEntity, uri); // list existing annotations
+	// await insertAnnotation(selectedItem, initialEntity, line); // navigate to selected annotation
 }
 
 async function recommendAnnotationDialog(context: vscode.ExtensionContext, args: any[]) {
