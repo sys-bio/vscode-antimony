@@ -39,7 +39,7 @@ urllib3==1.26.4
 antimony
 bioservices==1.8.3
 # ols_client==0.0.9
-AMAS-sb==0.0.4
+# AMAS-sb==0.0.4
 orjson==3.8.0' > $HOME/${venv}/all-requirements.txt
 
     python3 -m pip --disable-pip-version-check install -t $HOME/${venv}/lib/python3.10/site-packages --no-cache-dir --upgrade -r $HOME/venv_vscode_antimony_virtual_env/all-requirements.txt && success=1
