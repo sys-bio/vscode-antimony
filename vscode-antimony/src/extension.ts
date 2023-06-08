@@ -669,93 +669,117 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 const action = 'Reload';
 
 async function progressBar(filePath: string) {
-    window.withProgress({            
-        location: ProgressLocation.Notification,
-        title: "Running virtual environment installation. Do NOT close VSCode. (Appx 1-5 minutes)",
-        cancellable: true
-    }, ( progress, token ) => {
-        return new Promise<void>(resolve => {
-            exec(`${filePath}`, (error, stdout, stderr) => {
-				if (error) {
-					vscode.window.showInformationMessage('Installation Error. Try again. Error Message: "' + error)
-					return;
-				} else {
-					const interpreterPaths = {
-					  darwin: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python"),
-					  win32: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"),
-					  win64: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"),
-					  linux: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"),
-					};
-					
-					const pythonInterpreterPath = interpreterPaths[platform];
-					
-					vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', pythonInterpreterPath, true);
-				
-					vscode.window
-					.showInformationMessage(
-						`Installation finished. Reload to activate. Right click in the editor after reload to view features.`, {modal: true},
-						action
-					)
-					.then(selectedAction => {
-						if (selectedAction === action) {
-							vscode.commands.executeCommand('workbench.action.reloadWindow');
-						}
-					});
-				}
-                resolve();
-            });
-        });
+  return new Promise<void>(async (resolve) => {
+    const progressOptions: vscode.ProgressOptions = {
+      location: vscode.ProgressLocation.Notification,
+      title: 'Running installation. Do NOT close VSCode. (Approximately 1-5 minutes)',
+      cancellable: true
+    };
+
+    await vscode.window.withProgress(progressOptions, async (progress, token) => {
+      token.onCancellationRequested(() => {
+        console.log('Installation cancelled');
+      });
+
+      const totalSteps = 100;
+      let currentStep = 0;
+
+      const interval = setInterval(() => {
+        if (currentStep >= totalSteps) {
+          clearInterval(interval);
+          resolve();
+        } else {
+          currentStep += 1;
+          progress.report({ message: `Downloading... ${currentStep}%`, increment: 1 });
+        }
+      }, 50);
+
+      try {
+        await executeCommand(filePath);
+      } catch (error) {
+        vscode.window.showInformationMessage(`Installation Error. Try again. Error Message: "${error}"`);
+      }
+
+      clearInterval(interval);
+      resolve();
     });
+  });
 }
 
-// setup virtual environment
+function executeCommand(command: string): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+      } else {
+        const interpreterPaths = {
+          darwin: path.normalize(os.homedir() + '/vscode_antimony_virtual_env/bin/python'),
+          win32: path.normalize(os.homedir() + '/vscode_antimony_virtual_env/Scripts/python'),
+          win64: path.normalize(os.homedir() + '/vscode_antimony_virtual_env/Scripts/python'),
+          linux: path.normalize(os.homedir() + '/vscode_antimony_virtual_env/bin/python3.10'),
+        };
+
+        const pythonInterpreterPath = interpreterPaths[platform];
+
+        vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', pythonInterpreterPath, true);
+
+        vscode.window
+          .showInformationMessage(`Installation finished. Reload to activate. Right click in the editor after reload to view features.`, { modal: true }, action)
+          .then((selectedAction) => {
+            if (selectedAction === action) {
+              vscode.commands.executeCommand('workbench.action.reloadWindow');
+            }
+          });
+
+        resolve();
+      }
+    });
+  });
+}
+
 async function installEnv() {
+  if (process.env.VIRTUAL_ENV) {
+    const virtualEnvPath = process.env.VIRTUAL_ENV;
+    if (virtualEnvPath !== path.normalize(os.homedir() + '/vscode_antimony_virtual_env')) {
+      await vscode.window.showInformationMessage(`Deactivate current active virtual environment before allowing antimony virtual environment installation.`, action).then((selectedAction) => {
+        if (selectedAction === action) {
+          vscode.commands.executeCommand('workbench.action.reloadWindow');
+        }
+      });
+    } else {
+      let shellScriptPath;
 
-	if (process.env.VIRTUAL_ENV) {
-		const virtualEnvPath = process.env.VIRTUAL_ENV;
-		if (virtualEnvPath !== path.normalize(os.homedir() + "/vscode_antimony_virtual_env")) {
+      if (platform === 'darwin') {
+        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
+      } else if (platform === 'win32') {
+        shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
+      } else if (platform === 'linux') {
+        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
+      } else {
+        console.error('Unsupported platform:', platform);
+        return;
+      }
 
-			await vscode.window
-			.showInformationMessage(
-				`Deactivate current active virtual environment before allowing antimony virtual environment installation.`,
-				action
-			)
-			.then(selectedAction => {
-				if (selectedAction === action) {
-					vscode.commands.executeCommand('workbench.action.reloadWindow');
-				}
-			});
-		} else {
-			let shellScriptPath;
+      await progressBar(shellScriptPath);
+    }
+  } else {
+    let shellScriptPath;
 
-			if (platform === 'darwin') {
-			  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
-			} else if (platform === 'win32') {
-			  shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
-			} else if (platform === 'linux') {
-			  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
-			} else {
-			  console.error('Unsupported platform:', platform);
-			  return;
-			}
-			progressBar(shellScriptPath);
-		}
-	} else {
-		let shellScriptPath;
+    if (platform === 'darwin') {
+      shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
+    } else if (platform === 'win32') {
+      shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
+    } else if (platform === 'linux') {
+      shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
+    } else {
+      console.error('Unsupported platform:', platform);
+      return;
+    }
 
-		if (platform === 'darwin') {
-		  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
-		} else if (platform === 'win32') {
-		  shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
-		} else if (platform === 'linux') {
-		  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
-		} else {
-		  console.error('Unsupported platform:', platform);
-		  return;
-		}
-		progressBar(shellScriptPath);
-	}
+    await progressBar(shellScriptPath);
+  }
 }
+
 
 async function venvErrorFix() {
 	const venvPath = path.normalize(os.homedir() + "/vscode_antimony_virtual_env/");
