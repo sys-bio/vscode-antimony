@@ -46,10 +46,12 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	roundTripping = vscode.workspace.getConfiguration('vscode-antimony').get('openSBMLAsAntimony');
 
-	// start the language server
-	await startLanguageServer(context);
-
 	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
+
+	// start the language server
+	if (await startLanguageServer(context) === 0) {
+		return;
+	}
 
 	vscode.workspace.onDidChangeConfiguration(async (e) => {
 		// restart the language server using the new Python interpreter, if the related
@@ -80,8 +82,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('antimony.createAnnotationDialog', (...args: any[]) => createAnnotationDialog(context, args)));
 
 	// create annotations
-	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.recommendAnnotationDialog', (...args: any[]) => recommendAnnotationDialog(context, args)));
+	// context.subscriptions.push(
+	// 	vscode.commands.registerCommand('antimony.recommendAnnotationDialog', (...args: any[]) => recommendAnnotationDialog(context, args)));
 
 	// insert rate law
 	context.subscriptions.push(
@@ -370,52 +372,52 @@ async function createAnnotationDialog(context: vscode.ExtensionContext, args: an
 	await insertAnnotation(selectedItem, initialEntity, line);
 }
 
-async function recommendAnnotationDialog(context: vscode.ExtensionContext, args: any[]) {
-	// wait till client is ready, or the Python server might not have started yet.
-	// note: this is necessary for any command that might use the Python language server.
-	if (!client) {
-		utils.pythonInterpreterError();
-		return;
-	}
-	await client.onReady();
-	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup")
-	// dialog for annotation
-	const selection = vscode.window.activeTextEditor.selection
-	// get the selected text
-	const doc = vscode.window.activeTextEditor.document
-	const uri = doc.uri.toString();
-	const selectedText = doc.getText(selection);
-	// get the position for insert
-	let line = selection.start.line
-	while (line <= doc.lineCount - 1) {
-		const text = doc.lineAt(line).text
-		if (text.localeCompare("end", undefined, { sensitivity: 'accent' }) == 0) {
-			line -= 1;
-			break;
-		}
-		line += 1;
-	}
-	const positionAt = selection.anchor;
-	const lineStr = positionAt.line.toString();
-	const charStr = positionAt.character.toString();
-	const initialEntity = selectedText || 'entityName';
-	let initialQuery;
-	// get current file
-	if (args.length == 2) {
-		initialQuery = args[1];
-	} else {
-		initialQuery = selectedText;
-	}
+// async function recommendAnnotationDialog(context: vscode.ExtensionContext, args: any[]) {
+// 	// wait till client is ready, or the Python server might not have started yet.
+// 	// note: this is necessary for any command that might use the Python language server.
+// 	if (!client) {
+// 		utils.pythonInterpreterError();
+// 		return;
+// 	}
+// 	await client.onReady();
+// 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup")
+// 	// dialog for annotation
+// 	const selection = vscode.window.activeTextEditor.selection
+// 	// get the selected text
+// 	const doc = vscode.window.activeTextEditor.document
+// 	const uri = doc.uri.toString();
+// 	const selectedText = doc.getText(selection);
+// 	// get the position for insert
+// 	let line = selection.start.line
+// 	while (line <= doc.lineCount - 1) {
+// 		const text = doc.lineAt(line).text
+// 		if (text.localeCompare("end", undefined, { sensitivity: 'accent' }) == 0) {
+// 			line -= 1;
+// 			break;
+// 		}
+// 		line += 1;
+// 	}
+// 	const positionAt = selection.anchor;
+// 	const lineStr = positionAt.line.toString();
+// 	const charStr = positionAt.character.toString();
+// 	const initialEntity = selectedText || 'entityName';
+// 	let initialQuery;
+// 	// get current file
+// 	if (args.length == 2) {
+// 		initialQuery = args[1];
+// 	} else {
+// 		initialQuery = selectedText;
+// 	}
 
-	await new Promise<void>((resolve, reject) => {
-		const selectedItem = singleStepInputRec(context, line, lineStr, charStr, uri, initialQuery, initialEntity); 
-		resolve()
-    });
-}
+// 	await new Promise<void>((resolve, reject) => {
+// 		const selectedItem = singleStepInputRec(context, line, lineStr, charStr, uri, initialQuery, initialEntity); 
+// 		resolve()
+//     });
+// }
 
-async function getResult(result) {
-	return result.symbol;
-}
+// async function getResult(result) {
+// 	return result.symbol;
+// }
 
 export function deactivate(): Thenable<void> | undefined {
 	if (!client) {
@@ -469,9 +471,10 @@ export async function switchIndicationOn(context: vscode.ExtensionContext) {
 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 
 	annotatedVariableIndicatorOn = true;
-	vscode.workspace.getConfiguration('vscode-antimony').update('annotatedVariableIndicatorOn', true, true);
+	await vscode.workspace.getConfiguration('vscode-antimony').update('annotatedVariableIndicatorOn', true, true);
 
 	promptToReloadWindow(`Reload window for visual indication change in Antimony to take effect.`);
+
 }
 
 vscode.workspace.onDidChangeConfiguration(async (e) => {
@@ -485,7 +488,9 @@ vscode.workspace.onDidChangeConfiguration(async (e) => {
 	if (!e.affectsConfiguration('vscode-antimony.openSBMLAsAntimony')) {
 		return;
 	}
-	promptToReloadWindow(`Reload window for Open SBML As Antimony change to take effect.`);
+	setTimeout(() => {
+		vscode.commands.executeCommand('workbench.action.reloadWindow');
+	}, 2000);
 });
 
 // insert rate law
@@ -662,11 +667,11 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 }
 
 const action = 'Reload';
-  
+
 async function progressBar(filePath: string) {
     window.withProgress({            
         location: ProgressLocation.Notification,
-        title: "Running virtual environment installation. Will take a few minutes, do not close VSCode",
+        title: "Running virtual environment installation. Do NOT close VSCode. (Appx 1-5 minutes)",
         cancellable: true
     }, ( progress, token ) => {
         return new Promise<void>(resolve => {
@@ -705,7 +710,6 @@ async function progressBar(filePath: string) {
 
 // setup virtual environment
 async function installEnv() {
-	const current_path_to_jsscript = path.join(__dirname, '..', 'src', 'server', 'runshell.js');
 
 	if (process.env.VIRTUAL_ENV) {
 		const virtualEnvPath = process.env.VIRTUAL_ENV;
@@ -722,34 +726,34 @@ async function installEnv() {
 				}
 			});
 		} else {
-			if (platform === "win32" || platform === "win64") {
-				exec("where node", (error, stdout, stderr) => {
-					if (error) {
-					  return;
-					}
-					const nodePath = stdout.trim();
-					if (nodePath === '' || nodePath === 'C:\\Program Files\\nodejs\\') {
-						const nodePath = "C:\\Program Files\\nodejs";
-					}
-					process.env.PATH += `;${nodePath}`;
-				 });
+			let shellScriptPath;
+
+			if (platform === 'darwin') {
+			  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
+			} else if (platform === 'win32') {
+			  shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
+			} else if (platform === 'linux') {
+			  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
+			} else {
+			  console.error('Unsupported platform:', platform);
+			  return;
 			}
-			progressBar('node ' + current_path_to_jsscript);
+			progressBar(shellScriptPath);
 		}
 	} else {
-		if (platform === "win32" || platform === "win64") {
-			exec("where node", (error, stdout, stderr) => {
-				if (error) {
-				  return;
-				}
-				const nodePath = stdout.trim();
-				if (nodePath === '' || nodePath === 'C:\\Program Files\\nodejs\\') {
-					const nodePath = "C:\\Program Files\\nodejs";
-				}
-				process.env.PATH += `;${nodePath}`;
-			 });
+		let shellScriptPath;
+
+		if (platform === 'darwin') {
+		  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
+		} else if (platform === 'win32') {
+		  shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
+		} else if (platform === 'linux') {
+		  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
+		} else {
+		  console.error('Unsupported platform:', platform);
+		  return;
 		}
-		progressBar('node ' + current_path_to_jsscript);
+		progressBar(shellScriptPath);
 	}
 }
 
@@ -762,11 +766,23 @@ async function venvErrorFix() {
 
 	if (fs.existsSync(venvPath)) {
 		if ((platform == 'linux' && !hasPythonLinux) || (isWin && !hasPip) || (platform === 'darwin' && !hasPythonDarwin)) {
-			deleteVirtualEnv(`The incorrect version of python has been installed. 
+			await deleteVirtualEnv(`The incorrect version of python has been installed. 
 			Refer to [VSCode Antimony Extension installation instructions](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) before restarting VSCode and reinstalling virtual environment.
 			Delete installed virtual environment?`)
+				.then(() => {
+					// Delay and then reload Visual Studio Code
+					setTimeout(() => {
+						vscode.commands.executeCommand('workbench.action.reloadWindow');
+					}, 2000);
+				})
 		} else {
-			deleteVirtualEnv(`Delete installed virtual environment?`)
+			await deleteVirtualEnv(`Delete installed virtual environment?`)
+				.then(() => {
+					// Delay and then reload Visual Studio Code
+					setTimeout(() => {
+						vscode.commands.executeCommand('workbench.action.reloadWindow');
+					}, 2000);
+				})
 		}
 	}
 }
@@ -815,7 +831,7 @@ async function startLanguageServer(context: vscode.ExtensionContext) {
 		if (choice === 'Edit in settings') {
 			await vscode.commands.executeCommand('workbench.action.openSettings', 'vscode-antimony.pythonInterpreter');
 		}
-		return;
+		return 0;
 	}
 	// install dependencies
 	// const parentDir = context.asAbsolutePath(path.join(''));
@@ -851,6 +867,7 @@ async function startLanguageServer(context: vscode.ExtensionContext) {
 	// Start the client. This will also launch the server
 	const clientDisposable = client.start();
 	context.subscriptions.push(clientDisposable);
+	return 1;
 }
 
 // getting python interpretor
