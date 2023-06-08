@@ -35,6 +35,5 @@ echo antimony ^
 echo bioservices==1.8.3 ^ 
 echo # ols_client==0.0.9 ^ 
 echo AMAS-sb==0.0.4 ^ 
-echo orjson==3.8.0 ^ 
-echo numpy==1.24.2) > %USERPROFILE%\%venv%\all-requirements.txt
+echo orjson==3.8.0) > %USERPROFILE%\%venv%\all-requirements.txt
 %py% -m pip --disable-pip-version-check install -t %USERPROFILE%\%venv%\Lib\site-packages --no-cache-dir --upgrade -r %USERPROFILE%\%venv%\all-requirements.txt && success=1
