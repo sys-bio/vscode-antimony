@@ -668,43 +668,76 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 
 const action = 'Reload';
 
-async function progressBar(filePath: string) {
-  return new Promise<void>(async (resolve) => {
-    const progressOptions: vscode.ProgressOptions = {
-      location: vscode.ProgressLocation.Notification,
-      title: 'Running installation. Do NOT close VSCode. (Approximately 1-5 minutes)',
-      cancellable: true
-    };
-
-    await vscode.window.withProgress(progressOptions, async (progress, token) => {
-      token.onCancellationRequested(() => {
-        console.log('Installation cancelled');
-      });
-
-      const totalSteps = 100;
-      let currentStep = 0;
-
-      const interval = setInterval(() => {
-        if (currentStep >= totalSteps) {
-          clearInterval(interval);
-          resolve();
-        } else {
-          currentStep += 1;
-          progress.report({ message: `Downloading... ${currentStep}%`, increment: 1 });
-        }
-      }, 50);
-
-      try {
-        await executeCommand(filePath);
-      } catch (error) {
-        vscode.window.showInformationMessage(`Installation Error. Try again. Error Message: "${error}"`);
-      }
-
-      clearInterval(interval);
-      resolve();
-    });
-  });
-}
+async function progressBar(filePath: string, totalSteps: number) {
+	return new Promise<void>(async (resolve) => {
+	  const progressOptions = {
+		location: ProgressLocation.Notification,
+		title: 'Running installation. Do NOT close VSCode. (Appx 1-5 mins)',
+		cancellable: true
+	  };
+  
+	  let currentStep = 0;
+	  let progress;
+  
+	  await window.withProgress(progressOptions, async (progressInstance, token) => {
+		token.onCancellationRequested(() => {
+		  console.log('Installation cancelled');
+		});
+  
+		progress = progressInstance;
+  
+		const interval = setInterval(() => {
+		  const progressData = readProgressFromFile();
+		  if (progressData) {
+			const { step, totalSteps, output } = progressData;
+			currentStep = step;
+			const percentage = Math.floor((currentStep / totalSteps) * 100);
+			progress.report({ message: `Downloading... ${percentage}%\n${output}`, increment: `${percentage}` });
+		  }
+		}, 50);
+  
+		try {
+		  await executeCommand(filePath);
+		} catch (error) {
+		  window.showInformationMessage(`Installation Error. Try again. Error Message: "${error}"`);
+		}
+  
+		clearInterval(interval);
+		resolve();
+	  });
+  
+	  // Update the progress bar to 100% once the command execution is completed
+	  if (progress) {
+		const percentage = Math.floor((currentStep / totalSteps) * 100);
+		progress.report({ message: `Downloading... ${percentage}%`, increment: `${percentage}` });
+	  }
+	});
+  }
+  
+  function readProgressFromFile() {
+	const filePath = '/tmp/progress_output.txt';
+	if (fs.existsSync(filePath)) {
+	  const contents = fs.readFileSync(filePath, 'utf-8');
+	  const lines = contents.split('\n');
+	  let step;
+	  let totalSteps;
+	  let output = '';
+	  for (const line of lines) {
+		const [key, value] = line.split(':');
+		if (key === 'step') {
+		  step = parseInt(value);
+		} else if (key === 'totalSteps') {
+		  totalSteps = parseInt(value);
+		} else if (key === 'output') {
+		  output = value;
+		}
+	  }
+	  fs.unlinkSync(filePath);
+	  return { step, totalSteps, output };
+	}
+	return null;
+  }
+  
 
 function executeCommand(command: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
@@ -760,7 +793,7 @@ async function installEnv() {
         return;
       }
 
-      await progressBar(shellScriptPath);
+      await progressBar(shellScriptPath, 100);
     }
   } else {
     let shellScriptPath;
@@ -776,7 +809,7 @@ async function installEnv() {
       return;
     }
 
-    await progressBar(shellScriptPath);
+    await progressBar(shellScriptPath, 100);
   }
 }
 

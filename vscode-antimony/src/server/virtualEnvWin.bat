@@ -1,11 +1,10 @@
 @echo off
 
-echo "script runs"
-
 setlocal
 set py=%1
 if "%py%"=="" set py=%USERPROFILE%\Downloads\VSCode-Antimony-Dependency-Installer\python\python
 set venv=vscode_antimony_virtual_env
+set TMP_FILE="C:\Temp\progress_output.txt"
 
 echo "running install virtual env"
 
@@ -36,4 +35,27 @@ echo bioservices==1.8.3 ^
 echo # ols_client==0.0.9 ^ 
 echo # AMAS-sb==0.0.4 ^ 
 echo orjson==3.8.0) > %USERPROFILE%\%venv%\all-requirements.txt
-%py% -m pip --disable-pip-version-check install -t %USERPROFILE%\%venv%\Lib\site-packages --no-cache-dir --upgrade -r %USERPROFILE%\%venv%\all-requirements.txt && success=1
+
+
+for /F %%G in ('type %HOME%\%venv%\all-requirements.txt ^| find /C /V ""') do set total_steps=%%G
+set current_step=0
+
+rem Install each dependency one at a time
+for /F "usebackq delims=" %%D in (%HOME%\%venv%\all-requirements.txt) do (
+    set /A current_step+=1
+    echo Installing %%D... (%current_step%/%total_steps%)
+
+    rem Execute the command and capture the output
+    for /F "delims=" %%O in ('%py% -m pip --disable-pip-version-check install -t %USERPROFILE%\%venv%\lib\python3.9\site-packages --no-cache-dir --upgrade %%D 2^>^&1') do set "output=%%O"
+
+    rem Write the progress and output to a temporary file
+    echo step:%current_step% > %TMP_FILE%
+    echo totalSteps:%total_steps% >> %TMP_FILE%
+    echo output:%output% >> %TMP_FILE%
+
+    echo Installed %%D
+)
+
+rem Update the progress to 100% once the command execution is completed
+echo step:%total_steps% > %TMP_FILE%
+echo totalSteps:%total_steps% >> %TMP_FILE%
