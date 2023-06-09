@@ -839,18 +839,14 @@ async function deleteVirtualEnv(message) {
 			if (selection === 'Yes') {
 				if (platform == 'win32' || platform == 'win64') {
 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true, force: true });
-					// Delay and then reload Visual Studio Code
-					setTimeout(() => {
-						vscode.commands.executeCommand('workbench.action.reloadWindow');
-					}, 2000);
 				} else {
 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
-					// Delay and then reload Visual Studio Code
-					setTimeout(() => {
-						vscode.commands.executeCommand('workbench.action.reloadWindow');
-					}, 2000);
 				}
+				// Delay and then reload Visual Studio Code
+				setTimeout(() => {
+					vscode.commands.executeCommand('workbench.action.reloadWindow');
+				}, 2000);
 			} else if (selection === 'No') {
 				vscode.window
 				.showInformationMessage(
