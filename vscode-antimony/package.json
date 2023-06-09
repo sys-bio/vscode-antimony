@@ -2,9 +2,9 @@
 	"name": "vscode-antimony",
 	"displayName": "Antimony",
 	"description": "Extensions for Antimony development in Visual Studio Code.",
-	"author": "Steve Ma, Gary Geng, Joseph Hellerstein, Herbet Sauro",
+	"author": "Longxuan Fan, Sai Anish Konanki, Eva Liu, Steve Ma, Gary Geng, Joseph Hellerstein, Herbet Sauro",
 	"publisher": "stevem",
-	"version": "0.2.14",
+	"version": "0.2.15",
 	"icon": "docs/images/logo.png",
 	"engines": {
 		"vscode": "^1.62.0"
