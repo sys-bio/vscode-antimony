@@ -20,6 +20,7 @@ import { exec } from 'child_process';
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
 let lastChangeInterp = 0;
+const action = 'Reload';
 
 // Decoration type for annotated variables
 const annDecorationType = vscode.window.createTextEditorDecorationType({
@@ -37,21 +38,21 @@ let roundTripping: boolean | null = null;
 // Activate extension
 export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.openStartPage',
-			(...args: any[]) => openStartPage()));
-
-	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
+		vscode.commands.registerCommand('antimony.openStartPage', (...args: any[]) => openStartPage()));
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.deleteVirtualEnv',
-			(...args: any[]) => venvErrorFix()));
+		vscode.commands.registerCommand('antimony.deleteVirtualEnv', (...args: any[]) => venvErrorFix()));
 
 	await createVirtualEnv(context);
 
 	roundTripping = vscode.workspace.getConfiguration('vscode-antimony').get('openSBMLAsAntimony');
 
+	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
+
 	// start the language server
-	await startLanguageServer(context);
+	if (await startLanguageServer(context) === 0) {
+		return;
+	}
 
 	vscode.workspace.onDidChangeConfiguration(async (e) => {
 		// restart the language server using the new Python interpreter, if the related
@@ -79,51 +80,41 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// create annotations
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.createAnnotationDialog',
-			(...args: any[]) => createAnnotationDialog(context, args)));
+		vscode.commands.registerCommand('antimony.createAnnotationDialog', (...args: any[]) => createAnnotationDialog(context, args)));
 
 	// create annotations
-	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.recommendAnnotationDialog',
-			(...args: any[]) => recommendAnnotationDialog(context, args)));
+	// context.subscriptions.push(
+	// 	vscode.commands.registerCommand('antimony.recommendAnnotationDialog', (...args: any[]) => recommendAnnotationDialog(context, args)));
 
 	// insert rate law
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.insertRateLawDialog',
-			(...args: any[]) => insertRateLawDialog(context, args)));
+		vscode.commands.registerCommand('antimony.insertRateLawDialog', (...args: any[]) => insertRateLawDialog(context, args)));
 
 	// switch visual annotations on
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.switchIndicationOn',
-			(...args: any[]) => switchIndicationOn(context)));
+		vscode.commands.registerCommand('antimony.switchIndicationOn', (...args: any[]) => switchIndicationOn(context)));
 
 	// switch visual annotations off
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.switchIndicationOff',
-			(...args: any[]) => switchIndicationOff(context)));
+		vscode.commands.registerCommand('antimony.switchIndicationOff', (...args: any[]) => switchIndicationOff(context)));
 
 	// convertion
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.convertAntimonyToSBML',
-			(...args: any[]) => convertAntimonyToSBML(context, args)));
+		vscode.commands.registerCommand('antimony.convertAntimonyToSBML', (...args: any[]) => convertAntimonyToSBML(context, args)));
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.convertSBMLToAntimony',
-			(...args: any[]) => convertSBMLToAntimony(context, args)));
+		vscode.commands.registerCommand('antimony.convertSBMLToAntimony', (...args: any[]) => convertSBMLToAntimony(context, args)));
 	
 	// custom editor
 	context.subscriptions.push(await SBMLEditorProvider.register(context, client));
 	context.subscriptions.push(await AntimonyEditorProvider.register(context, client));
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.startSBMLWebview',
-			(...args: any[]) => startSBMLWebview(context, args)));
+		vscode.commands.registerCommand('antimony.startSBMLWebview', (...args: any[]) => startSBMLWebview(context, args)));
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.startAntimonyWebview',
-			(...args: any[]) => startAntimonyWebview(context, args)));
+		vscode.commands.registerCommand('antimony.startAntimonyWebview', (...args: any[]) => startAntimonyWebview(context, args)));
 	
 	// browse biomodels
 	context.subscriptions.push(
-		vscode.commands.registerCommand('antimony.browseBiomodels',
-			(...args: any[]) => browseBioModels(context, args)));
+		vscode.commands.registerCommand('antimony.browseBiomodels', (...args: any[]) => browseBioModels(context, args)));
 
 	// language config for CodeLens
 	const docSelector = {
@@ -178,13 +169,13 @@ export async function activate(context: vscode.ExtensionContext) {
 			triggerSBMLEditor(event, sbmlFileNameToPath);
 		});
 	
-		vscode.workspace.onDidSaveTextDocument((savedDoc) => {
+		vscode.workspace.onDidSaveTextDocument(savedDoc => {
 			const fileName = path.basename(savedDoc.fileName, '.git');
 			const pathName = path.dirname(savedDoc.fileName);
 			const fullPath = path.join(pathName, fileName);
 			const pattern = /^(.+?).ant/;
 			if (pattern.test(fileName) && pathName === os.tmpdir()) {
-				vscode.workspace.openTextDocument(fullPath).then((doc) => {
+				vscode.workspace.openTextDocument(fullPath).then(doc => {
 					vscode.commands.executeCommand('antimony.antStrToSBMLStr', doc.getText())
 					.then(async (result: any) => {
 						if (result.error) {
@@ -192,7 +183,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						} else {
 							const match = pattern.exec(fileName)[1];
 							const sbmlFilePath = path.join(sbmlFileNameToPath[fileName], match + '.xml');
-							fs.writeFile(sbmlFilePath, result.sbml_str, (error) => {
+							fs.writeFile(sbmlFilePath, result.sbml_str, error => {
 								if (error) {
 									console.error(error);
 								}
@@ -377,59 +368,57 @@ async function createAnnotationDialog(context: vscode.ExtensionContext, args: an
 	} else {
 		initialQuery = selectedText;
 	}
-	vscode.commands.executeCommand('antimony.sendType', lineStr, charStr, uri).then(async (result) => {
-		const selectedType = await getResult(result);
-		const selectedItem = await annotationMultiStepInput(context, initialQuery, selectedType);
-		await insertAnnotation(selectedItem, initialEntity, line);
-	});
+
+	const selectedItem = await annotationMultiStepInput(context, initialQuery);
+	await insertAnnotation(selectedItem, initialEntity, line);
 }
 
-async function recommendAnnotationDialog(context: vscode.ExtensionContext, args: any[]) {
-	// wait till client is ready, or the Python server might not have started yet.
-	// note: this is necessary for any command that might use the Python language server.
-	if (!client) {
-		utils.pythonInterpreterError();
-		return;
-	}
-	await client.onReady();
-	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup")
-	// dialog for annotation
-	const selection = vscode.window.activeTextEditor.selection
-	// get the selected text
-	const doc = vscode.window.activeTextEditor.document
-	const uri = doc.uri.toString();
-	const selectedText = doc.getText(selection);
-	// get the position for insert
-	let line = selection.start.line
-	while (line <= doc.lineCount - 1) {
-		const text = doc.lineAt(line).text
-		if (text.localeCompare("end", undefined, { sensitivity: 'accent' }) == 0) {
-			line -= 1;
-			break;
-		}
-		line += 1;
-	}
-	const positionAt = selection.anchor;
-	const lineStr = positionAt.line.toString();
-	const charStr = positionAt.character.toString();
-	const initialEntity = selectedText || 'entityName';
-	let initialQuery;
-	// get current file
-	if (args.length == 2) {
-		initialQuery = args[1];
-	} else {
-		initialQuery = selectedText;
-	}
+// async function recommendAnnotationDialog(context: vscode.ExtensionContext, args: any[]) {
+// 	// wait till client is ready, or the Python server might not have started yet.
+// 	// note: this is necessary for any command that might use the Python language server.
+// 	if (!client) {
+// 		utils.pythonInterpreterError();
+// 		return;
+// 	}
+// 	await client.onReady();
+// 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup")
+// 	// dialog for annotation
+// 	const selection = vscode.window.activeTextEditor.selection
+// 	// get the selected text
+// 	const doc = vscode.window.activeTextEditor.document
+// 	const uri = doc.uri.toString();
+// 	const selectedText = doc.getText(selection);
+// 	// get the position for insert
+// 	let line = selection.start.line
+// 	while (line <= doc.lineCount - 1) {
+// 		const text = doc.lineAt(line).text
+// 		if (text.localeCompare("end", undefined, { sensitivity: 'accent' }) == 0) {
+// 			line -= 1;
+// 			break;
+// 		}
+// 		line += 1;
+// 	}
+// 	const positionAt = selection.anchor;
+// 	const lineStr = positionAt.line.toString();
+// 	const charStr = positionAt.character.toString();
+// 	const initialEntity = selectedText || 'entityName';
+// 	let initialQuery;
+// 	// get current file
+// 	if (args.length == 2) {
+// 		initialQuery = args[1];
+// 	} else {
+// 		initialQuery = selectedText;
+// 	}
 
-	await new Promise<void>((resolve, reject) => {
-		const selectedItem = singleStepInputRec(context, line, lineStr, charStr, uri, initialQuery, initialEntity); 
-		resolve()
-    });
-}
+// 	await new Promise<void>((resolve, reject) => {
+// 		const selectedItem = singleStepInputRec(context, line, lineStr, charStr, uri, initialQuery, initialEntity); 
+// 		resolve()
+//     });
+// }
 
-async function getResult(result) {
-	return result.symbol;
-}
+// async function getResult(result) {
+// 	return result.symbol;
+// }
 
 export function deactivate(): Thenable<void> | undefined {
 	if (!client) {
@@ -483,9 +472,11 @@ export async function switchIndicationOn(context: vscode.ExtensionContext) {
 	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 
 	annotatedVariableIndicatorOn = true;
-	vscode.workspace.getConfiguration('vscode-antimony').update('annotatedVariableIndicatorOn', true, true);
+	await vscode.workspace.getConfiguration('vscode-antimony').update('annotatedVariableIndicatorOn', true, true);
 
-	promptToReloadWindow(`Reload window for visual indication change in Antimony to take effect.`);
+	setTimeout(() => {
+		vscode.commands.executeCommand('workbench.action.reloadWindow');
+	}, 2000);
 }
 
 vscode.workspace.onDidChangeConfiguration(async (e) => {
@@ -499,7 +490,9 @@ vscode.workspace.onDidChangeConfiguration(async (e) => {
 	if (!e.affectsConfiguration('vscode-antimony.openSBMLAsAntimony')) {
 		return;
 	}
-	promptToReloadWindow(`Reload window for Open SBML As Antimony change to take effect.`);
+	setTimeout(() => {
+		vscode.commands.executeCommand('workbench.action.reloadWindow');
+	}, 2000);
 });
 
 // insert rate law
@@ -649,16 +642,16 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 		let message = '';
 		switch (platform) {
 		case 'linux':
-			message = `[IMPORTANT: Linux users must install python3.10, venv python3.10 package, pip, and NodeJS beforehand.] 
+			message = `[IMPORTANT Insructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		case 'win32':
 		case 'win64':
-			message = `[IMPORTANT: Windows users MUST install the Vscode Antimony Dependencies Installer beforehand.] 
+			message = `[IMPORTANT Insructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		case 'darwin':
-			message = `[IMPORTANT: Mac users MUST install python3.9 (must be version 3.9), and NodeJS beforehand.] 
+			message = `[IMPORTANT Insructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		default:
@@ -675,97 +668,151 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 	}
 }
 
-const action = 'Reload';
+async function progressBar(filePath: string, totalSteps: number) {
+	return new Promise<void>(async (resolve) => {
+	  const progressOptions = {
+		location: ProgressLocation.Notification,
+		title: 'Running installation. Do NOT close VSCode. (Appx 1-5 mins)',
+		cancellable: true
+	  };
   
-async function progressBar(filePath: string) {
-    window.withProgress({            
-        location: ProgressLocation.Notification,
-        title: "Running virtual environment installation. Will take a few minutes, do not close VSCode",
-        cancellable: true
-    }, ( progress, token ) => {
-        return new Promise<void>(resolve => {
-            exec(`${filePath}`, (error, stdout, stderr) => {
-				if (error) {
-					vscode.window.showInformationMessage('Installation Error. Try again. Error Message: "' + error)
-					return;
-				} else {
-					const interpreterPaths = {
-					  darwin: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python"),
-					  win32: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"),
-					  win64: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"),
-					  linux: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"),
-					};
-					
-					const pythonInterpreterPath = interpreterPaths[platform];
-					
-					vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', pythonInterpreterPath, true);
-				
-					vscode.window
-					.showInformationMessage(
-						`Installation finished. Reload to activate. Right click in the editor after reload to view features.`, {modal: true},
-						action
-					)
-					.then(selectedAction => {
-						if (selectedAction === action) {
-							vscode.commands.executeCommand('workbench.action.reloadWindow');
-						}
-					});
-				}
-                resolve();
-            });
-        });
-    });
-}
-
-// setup virtual environment
-async function installEnv() {
-	const current_path_to_jsscript = path.join(__dirname, '..', 'src', 'server', 'runshell.js');
-
-	if (process.env.VIRTUAL_ENV) {
-		const virtualEnvPath = process.env.VIRTUAL_ENV;
-		if (virtualEnvPath !== path.normalize(os.homedir() + "/vscode_antimony_virtual_env")) {
-
-			await vscode.window
-			.showInformationMessage(
-				`Deactivate current active virtual environment before allowing antimony virtual environment installation.`,
-				action
-			)
-			.then(selectedAction => {
-				if (selectedAction === action) {
-					vscode.commands.executeCommand('workbench.action.reloadWindow');
-				}
-			});
-		} else {
-			if (platform === "win32" || platform === "win64") {
-				exec("where node", (error, stdout, stderr) => {
-					if (error) {
-					  return;
-					}
-					const nodePath = stdout.trim();
-					if (nodePath === '' || nodePath === 'C:\\Program Files\\nodejs\\') {
-						const nodePath = "C:\\Program Files\\nodejs";
-					}
-					process.env.PATH += `;${nodePath}`;
-				 });
-			}
-			progressBar('node ' + current_path_to_jsscript);
+	  let currentStep = 0;
+	  let progress;
+  
+	  await window.withProgress(progressOptions, async (progressInstance, token) => {
+		token.onCancellationRequested(() => {
+		  console.log('Installation cancelled');
+		});
+  
+		progress = progressInstance;
+  
+		const interval = setInterval(() => {
+		  const progressData = readProgressFromFile();
+		  if (progressData) {
+			const { step, totalSteps, output } = progressData;
+			currentStep = step;
+			const percentage = Math.floor((currentStep / totalSteps) * 100);
+			progress.report({ message: `Downloading... ${percentage}%\n${output}`, increment: `${percentage}` });
+		  }
+		}, 50);
+  
+		try {
+		  await executeCommand(filePath);
+		} catch (error) {
+		  window.showInformationMessage(`Installation Error. Try again. Error Message: "${error}"`);
 		}
-	} else {
-		if (platform === "win32" || platform === "win64") {
-			exec("where node", (error, stdout, stderr) => {
-				if (error) {
-				  return;
-				}
-				const nodePath = stdout.trim();
-				if (nodePath === '' || nodePath === 'C:\\Program Files\\nodejs\\') {
-					const nodePath = "C:\\Program Files\\nodejs";
-				}
-				process.env.PATH += `;${nodePath}`;
-			 });
+  
+		clearInterval(interval);
+		resolve();
+	  });
+  
+	  // Update the progress bar to 100% once the command execution is completed
+	  if (progress) {
+		const percentage = Math.floor((currentStep / totalSteps) * 100);
+		progress.report({ message: `Downloading... ${percentage}%`, increment: `${percentage}` });
+	  }
+	});
+  }
+  
+  function readProgressFromFile() {
+	const filePath = '/tmp/progress_output.txt';
+	if (fs.existsSync(filePath)) {
+	  const contents = fs.readFileSync(filePath, 'utf-8');
+	  const lines = contents.split('\n');
+	  let step;
+	  let totalSteps;
+	  let output = '';
+	  for (const line of lines) {
+		const [key, value] = line.split(':');
+		if (key === 'step') {
+		  step = parseInt(value);
+		} else if (key === 'totalSteps') {
+		  totalSteps = parseInt(value);
+		} else if (key === 'output') {
+		  output = value;
 		}
-		progressBar('node ' + current_path_to_jsscript);
+	  }
+	  fs.unlinkSync(filePath);
+	  return { step, totalSteps, output };
 	}
+	return null;
+  }
+  
+
+function executeCommand(command: string): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+      } else {
+        const interpreterPaths = {
+          darwin: path.normalize(os.homedir() + '/vscode_antimony_virtual_env/bin/python'),
+          win32: path.normalize(os.homedir() + '/vscode_antimony_virtual_env/Scripts/python'),
+          win64: path.normalize(os.homedir() + '/vscode_antimony_virtual_env/Scripts/python'),
+          linux: path.normalize(os.homedir() + '/vscode_antimony_virtual_env/bin/python3.10'),
+        };
+
+        const pythonInterpreterPath = interpreterPaths[platform];
+
+        vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', pythonInterpreterPath, true);
+
+        vscode.window
+          .showInformationMessage(`Installation finished. Reload to activate. Right click in the editor after reload to view features.`, { modal: true }, action)
+          .then((selectedAction) => {
+            if (selectedAction === action) {
+              vscode.commands.executeCommand('workbench.action.reloadWindow');
+            }
+          });
+
+        resolve();
+      }
+    });
+  });
 }
+
+async function installEnv() {
+  if (process.env.VIRTUAL_ENV) {
+    const virtualEnvPath = process.env.VIRTUAL_ENV;
+    if (virtualEnvPath !== path.normalize(os.homedir() + '/vscode_antimony_virtual_env')) {
+      await vscode.window.showInformationMessage(`Deactivate current active virtual environment before allowing antimony virtual environment installation.`, action).then((selectedAction) => {
+        if (selectedAction === action) {
+          vscode.commands.executeCommand('workbench.action.reloadWindow');
+        }
+      });
+    } else {
+      let shellScriptPath;
+
+      if (platform === 'darwin') {
+        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
+      } else if (platform === 'win32' || platform === 'win64') {
+        shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
+      } else if (platform === 'linux') {
+        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
+      } else {
+        console.error('Unsupported platform:', platform);
+        return;
+      }
+
+      await progressBar(shellScriptPath, 100);
+    }
+  } else {
+    let shellScriptPath;
+
+    if (platform === 'darwin') {
+      shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
+    } else if (platform === 'win32' || platform === 'win64') {
+      shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
+    } else if (platform === 'linux') {
+      shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
+    } else {
+      console.error('Unsupported platform:', platform);
+      return;
+    }
+
+    await progressBar(shellScriptPath, 100);
+  }
+}
+
 
 async function venvErrorFix() {
 	const venvPath = path.normalize(os.homedir() + "/vscode_antimony_virtual_env/");
@@ -776,11 +823,23 @@ async function venvErrorFix() {
 
 	if (fs.existsSync(venvPath)) {
 		if ((platform == 'linux' && !hasPythonLinux) || (isWin && !hasPip) || (platform === 'darwin' && !hasPythonDarwin)) {
-			deleteVirtualEnv(`The incorrect version of python has been installed. 
+			await deleteVirtualEnv(`The incorrect version of python has been installed. 
 			Refer to [VSCode Antimony Extension installation instructions](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) before restarting VSCode and reinstalling virtual environment.
 			Delete installed virtual environment?`)
+			.then(() => {
+				// Delay and then reload Visual Studio Code
+				setTimeout(() => {
+					vscode.commands.executeCommand('workbench.action.reloadWindow');
+				}, 2000);
+			})
 		} else {
-			deleteVirtualEnv(`Delete installed virtual environment?`)
+			await deleteVirtualEnv(`Delete installed virtual environment?`)
+			.then(() => {
+				// Delay and then reload Visual Studio Code
+				setTimeout(() => {
+					vscode.commands.executeCommand('workbench.action.reloadWindow');
+				}, 2000);
+			})
 		}
 	}
 }
@@ -829,7 +888,7 @@ async function startLanguageServer(context: vscode.ExtensionContext) {
 		if (choice === 'Edit in settings') {
 			await vscode.commands.executeCommand('workbench.action.openSettings', 'vscode-antimony.pythonInterpreter');
 		}
-		return;
+		return 0;
 	}
 	// install dependencies
 	// const parentDir = context.asAbsolutePath(path.join(''));
@@ -865,6 +924,7 @@ async function startLanguageServer(context: vscode.ExtensionContext) {
 	// Start the client. This will also launch the server
 	const clientDisposable = client.start();
 	context.subscriptions.push(clientDisposable);
+	return 1;
 }
 
 // getting python interpretor

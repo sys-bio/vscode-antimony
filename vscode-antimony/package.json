@@ -183,12 +183,6 @@
 					"when": "editorLangId == antimony"
 				},
 				{
-					"command": "antimony.recommendAnnotationDialog",
-					"title": "Annotation Recommender",
-					"group": "1_modification",
-					"when": "editorLangId == antimony"
-				},
-				{
 					"command": "antimony.insertRateLawDialog",
 					"title": "Insert Rate Law",
 					"group": "1_modification",

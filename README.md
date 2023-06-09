@@ -6,7 +6,7 @@
 
 The Antimony extension adds language support for Antimony to Visual Studio Code for building models in Systems Biology.
 
-## [Installation (Required)](#installation-required-1)
+# [Installation (Required)](#installation-required-1)
 
 The currently available version 0.2 is a public beta version developed by [Longxuan Fan](https://www.linkedin.com/in/longxf), [Sai Anish Konanki](https://www.linkedin.com/in/sai-anish-konanki-8b81a575/), [Eva Liu](https://www.linkedin.com/in/evaliu02), [Steve Ma](https://www.linkedin.com/in/steve-ma/), [Gary Geng](https://www.linkedin.com/in/gary-geng-9995a2160/), [Dr. Joseph Hellerstein](https://sites.google.com/uw.edu/joseph-hellerstein/home?authuser=0), and [Dr. Herbert Sauro](https://bioe.uw.edu/portfolio-items/sauro/) at the University of Washington. Dr. Joseph Hellerstein is responsible for future releases, and please feel free to [contact](mailto:joseph.hellerstein@gmail.com) him if you have any questions.
 
@@ -45,7 +45,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Mac
-* This extension requires [Vscode_Antimony_Setup (Silicon CPU Macbooks)](https://github.com/sys-bio/vscode-antimony/raw/macinstall/setup/Vscode_Antimony_Setup.pkg) or [Python 3.9.13 (Intel Macbooks)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg)and [NodeJS](https://nodejs.org/en/download/) to be installed before use.
+* This extension requires [Vscode_Antimony_Setup (Silicon CPU Macbooks)](https://github.com/sys-bio/vscode-antimony/raw/macinstall/setup/Vscode_Antimony_Setup.pkg) or [Python 3.9.13 (Intel Macbooks)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg) to be installed before use.
 * When installing Vscode_Antimony_Setup.pkg, right click on the pkg file and press open.
 
 <p align=center>
@@ -62,13 +62,13 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Click open)</em>
 </p>
 
-* When installing Python 3.9.13 and NodeJS, proceed with the installations as is. No changes are needed to be made.
+* When installing Python 3.9.13, proceed with the installations as is. No changes are needed to be made.
 
 * Once installed, restart Visual Code Studio. <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Linux
-* Linux users will have to install Python3.10, NodeJS, venv python package, and pip. 
+* Linux users will have to install Python3.10, venv python package, and pip. 
 * Once installed, restart Visual Studio Code. <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 

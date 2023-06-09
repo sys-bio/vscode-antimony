@@ -34,7 +34,7 @@ from pygls.types import (CompletionItem, CompletionItemKind, CompletionList, Com
                          TextDocumentContentChangeEvent, TextDocumentPositionParams, Position)
 import threading
 import time
-from AMAS import recommender, species_annotation
+# from AMAS import recommender, species_annotation
 from bioservices import ChEBI
 import requests
 import zipfile
@@ -151,29 +151,6 @@ def sbml_file_to_ant_file(ls: LanguageServer, args):
             'msg': 'Antimony has been exported to {}'.format(output_dir),
             'file': full_path_name
         }
-
-@server.thread()
-@server.command('antimony.sendType')
-def get_type(ls: LanguageServer, args) -> dict[str, str]:
-    ''' get the symbol type of a symbol at given line, character and file uri
-    
-        return a dictionary with the value of 'symbol' as the symbol type in string
-    '''
-    global antfile_cache
-    global uri
-    line = args[0]
-    character = args[1]
-    uri = args[2]
-    doc = server.workspace.get_document(uri)
-    antfile_cache = get_antfile(doc)
-    position  = SrcPosition(int(line) + 1, int(character) + 1)
-    symbols= antfile_cache.symbols_at(position)[0]
-    
-    symbol = symbols[0].type.__str__()
-    # vscode_logger.info("symbol: " + symbol)
-    return {
-        'symbol': symbol
-    }
     
 @server.thread()
 @server.command('antimony.getAnnotation')
@@ -262,55 +239,56 @@ def get_rate_law_dict(ls: LanguageServer, args):
         }
     return reader.relevant_rate_laws
 
-@server.thread()
-@server.command('antimony.recommender')
-def recommend(ls: LanguageServer, args):
-    '''
-    get a list of recommended annotations, user has to select a symbol.
-    params:
-    {
-        args[0]: string of line number,
-        args[1]: string of character number where the symbol starts,
-        args[2]: doc uri
-    }
-    '''
-    line = args[0]
-    character = args[1]
-    uri = args[2]
-    doc = server.workspace.get_document(uri)
-    antfile_cache = get_antfile(doc)
-    position  = SrcPosition(int(line) + 1, int(character) + 1)
-    symbols = antfile_cache.symbols_at(position)[0]
-    if not symbols:
-        return {
-            'error': "Did not select a symbol"
-        }
-    symbol = symbols[0]
-    if symbol.type != SymbolType.Species:
-        return {
-            'error': "Did not select species"
-        }
-    recom = recommender.Recommender()
-    display_name = symbol.display_name
-    if display_name is not None:
-        annotations = recom.getSpeciesAnnotation(pred_str=display_name.replace("\"", ""))
-    else:
-        annotations = recom.getSpeciesAnnotation(pred_str=symbol.name)
-    chebi = species_annotation.chebi_low_synonyms
-    ret = list()
-    limit = 0
-    for annotation in annotations.candidates:
-        sorted_chebi = sorted(chebi[annotation[0]], key=len)
-        ret.append({
-            'label': sorted_chebi[0],
-            'id': annotation[0]
-        })
-        limit += 1
-        if limit >= 10:
-            break
-    return {
-        'annotations': ret
-    }
+# @server.thread()
+# @server.command('antimony.recommender')
+# def recommend(ls: LanguageServer, args):
+#     '''
+#     get a list of recommended annotations, user has to select a symbol.
+#     params:
+#     {
+#         args[0]: string of line number,
+#         args[1]: string of character number where the symbol starts,
+#         args[2]: doc uri
+#     }
+#     '''
+#     line = args[0]
+#     character = args[1]
+#     uri = args[2]
+#     doc = server.workspace.get_document(uri)
+#     antfile_cache = get_antfile(doc)
+#     position  = SrcPosition(int(line) + 1, int(character) + 1)
+#     symbols = antfile_cache.symbols_at(position)[0]
+#     if not symbols:
+#         return {
+#             'error': "Did not select a symbol"
+#         }
+#     symbol = symbols[0]
+#     if symbol.type != SymbolType.Species:
+#         return {
+#             'error': "Did not select species"
+#         }
+#     recom = recommender.Recommender()
+#     display_name = symbol.display_name
+#     if display_name is not None:
+#         annotations = recom.getSpeciesAnnotation(pred_str=display_name.replace("\"", ""))
+#     else:
+#         annotations = recom.getSpeciesAnnotation(pred_str=symbol.name)
+#     chebi = species_annotation.chebi_low_synonyms
+#     ret = list()
+#     limit = 0
+#     for annotation in annotations.candidates:
+#         sorted_chebi = sorted(chebi[annotation[0]], key=len)
+#         vscode_logger.debug(sorted_chebi)
+#         ret.append({
+#             'label': sorted_chebi[0],
+#             'id': annotation[0]
+#         })
+#         limit += 1
+#         if limit >= 10:
+#             break
+#     return {
+#         'annotations': ret
+#     }
 
 @server.thread()
 @server.command('antimony.searchModel')
