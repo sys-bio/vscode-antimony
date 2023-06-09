@@ -686,13 +686,13 @@ async function progressBar(filePath: string, totalSteps: number) {
   
 		progress = progressInstance;
   
-		const interval = setInterval(async () => {
-		  const progressData = await readProgressFromFile();
+		const interval = setInterval(() => {
+		  const progressData = readProgressFromFile();
 		  if (progressData) {
 			const { step, totalSteps, output } = progressData;
 			currentStep = step;
 			const percentage = Math.floor((currentStep / totalSteps) * 100);
-			progress.report({ message: `Downloading... ${percentage}%\n${output}`, increment: percentage });
+			progress.report({ message: `Downloading... ${percentage}%\n${output}`, increment: `${percentage}` });
 		  }
 		}, 50);
   
@@ -709,76 +709,35 @@ async function progressBar(filePath: string, totalSteps: number) {
 	  // Update the progress bar to 100% once the command execution is completed
 	  if (progress) {
 		const percentage = Math.floor((currentStep / totalSteps) * 100);
-		progress.report({ message: `Downloading... ${percentage}%`, increment: percentage });
+		progress.report({ message: `Downloading... ${percentage}%`, increment: `${percentage}` });
 	  }
 	});
-}
+  }
   
-async function readProgressFromFile() {
-	let filePath;
-	if (platform === 'win32' || platform === 'win64') {
-	  filePath = '%TEMP%\\progress_output.txt';
-	  return new Promise((resolve, reject) => {
-		fs.readFile(filePath, 'utf-8', (err, contents) => {
-		  if (err) {
-			if (err.code === 'ENOENT') {
-			  resolve(null);
-			} else {
-			  console.error('Error reading progress file:', err);
-			  resolve(null);
-			}
-			return;
-		  }
-  
-		  const lines = contents.split('\n');
-		  let step;
-		  let totalSteps;
-		  let output = '';
-  
-		  for (const line of lines) {
-			const [key, value] = line.split(':');
-			if (key === 'step') {
-			  step = parseInt(value);
-			} else if (key === 'totalSteps') {
-			  totalSteps = parseInt(value);
-			} else if (key === 'output') {
-			  output = value;
-			}
-		  }
-  
-		  fs.unlink(filePath, (unlinkErr) => {
-			if (unlinkErr) {
-			  console.error('Error deleting progress file:', unlinkErr);
-			}
-			resolve({ step, totalSteps, output });
-		  });
-		  return { step, totalSteps, output };
-		});
-	  });
-	} else {
-	  filePath = '/tmp/progress_output.txt';
-	  if (fs.existsSync(filePath)) {
-		const contents = fs.readFileSync(filePath, 'utf-8');
-		const lines = contents.split('\n');
-		let step;
-		let totalSteps;
-		let output = '';
-		for (const line of lines) {
-		  const [key, value] = line.split(':');
-		  if (key === 'step') {
-			step = parseInt(value);
-		  } else if (key === 'totalSteps') {
-			totalSteps = parseInt(value);
-		  } else if (key === 'output') {
-			output = value;
-		  }
+  function readProgressFromFile() {
+	const filePath = '/tmp/progress_output.txt';
+	if (fs.existsSync(filePath)) {
+	  const contents = fs.readFileSync(filePath, 'utf-8');
+	  const lines = contents.split('\n');
+	  let step;
+	  let totalSteps;
+	  let output = '';
+	  for (const line of lines) {
+		const [key, value] = line.split(':');
+		if (key === 'step') {
+		  step = parseInt(value);
+		} else if (key === 'totalSteps') {
+		  totalSteps = parseInt(value);
+		} else if (key === 'output') {
+		  output = value;
 		}
-		fs.unlinkSync(filePath);
-		return { step, totalSteps, output };
 	  }
+	  fs.unlinkSync(filePath);
+	  return { step, totalSteps, output };
 	}
 	return null;
-}
+  }
+  
 
 function executeCommand(command: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
@@ -821,36 +780,36 @@ async function installEnv() {
         }
       });
     } else {
-      let scriptPath;
+      let shellScriptPath;
 
       if (platform === 'darwin') {
-        scriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
-      } else if (platform === 'win32' || platform === 'win64') {
-        scriptPath = path.normalize(path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat');
+        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
+      } else if (platform === 'win32') {
+        shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
       } else if (platform === 'linux') {
-        scriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
+        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
       } else {
         console.error('Unsupported platform:', platform);
         return;
       }
 
-      await progressBar(scriptPath, 100);
+      await progressBar(shellScriptPath, 100);
     }
   } else {
-    let scriptPath;
+    let shellScriptPath;
 
     if (platform === 'darwin') {
-		scriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
-    } else if (platform === 'win32' || platform === 'win64') {
-		scriptPath = path.normalize(path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat');
+      shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
+    } else if (platform === 'win32') {
+      shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
     } else if (platform === 'linux') {
-		scriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
+      shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
     } else {
       console.error('Unsupported platform:', platform);
       return;
     }
 
-    await progressBar(scriptPath, 100);
+    await progressBar(shellScriptPath, 100);
   }
 }
 
@@ -867,8 +826,20 @@ async function venvErrorFix() {
 			await deleteVirtualEnv(`The incorrect version of python has been installed. 
 			Refer to [VSCode Antimony Extension installation instructions](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) before restarting VSCode and reinstalling virtual environment.
 			Delete installed virtual environment?`)
+				.then(() => {
+					// Delay and then reload Visual Studio Code
+					setTimeout(() => {
+						vscode.commands.executeCommand('workbench.action.reloadWindow');
+					}, 2000);
+				})
 		} else {
 			await deleteVirtualEnv(`Delete installed virtual environment?`)
+				.then(() => {
+					// Delay and then reload Visual Studio Code
+					setTimeout(() => {
+						vscode.commands.executeCommand('workbench.action.reloadWindow');
+					}, 2000);
+				})
 		}
 	}
 }
@@ -884,10 +855,6 @@ async function deleteVirtualEnv(message) {
 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
 				}
-				// Delay and then reload Visual Studio Code
-				setTimeout(() => {
-					vscode.commands.executeCommand('workbench.action.reloadWindow');
-				}, 2000);
 			} else if (selection === 'No') {
 				vscode.window
 				.showInformationMessage(
