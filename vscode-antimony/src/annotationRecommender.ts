@@ -13,10 +13,10 @@ import { ProgressLocation } from 'vscode'
  * 
  * This first part uses the helper class `MultiStepInput` that wraps the API for the multi-step case.
  */
-export async function singleStepInputRec(context: ExtensionContext, line: number, lineStr: string, charStr: string, uri: string, initialQuery: string = null, initialEntity: string = null) {
+export async function recSingleStepInput(context: ExtensionContext, line: number, lineStr: string, charStr: string, uri: string, initialQuery: string = null, initialEntity: string = null) {
     let databases = [];
     let recommendations;
-    let annotations
+    let annotations;
 
     async function progressBar(input: MultiStepInput) {
         window.withProgress({

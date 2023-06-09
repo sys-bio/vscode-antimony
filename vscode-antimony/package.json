@@ -36,7 +36,8 @@
 		"onCommand:antimony.browseBiomodels",
 		"onCustomEditor:antimony.sbmlEditor",
 		"onCustomEditor:antimony.antimonyEditor",
-		"onCommand:antimony.deleteVirtualEnv"
+		"onCommand:antimony.deleteVirtualEnv",
+		"onCommand:antimony.navigateAnnotation"
 	],
 	"main": "./dist/extension.js",
 	"bugs": {
@@ -115,6 +116,10 @@
 				"title": "Create Annotation"
 			},
 			{
+				"command": "antimony.navigateAnnotation",
+				"title": "Navigate to Annotations"
+			},
+			{
 				"command": "antimony.recommendAnnotationDialog",
 				"title": "Annotation Recommender"
 			},
@@ -179,6 +184,12 @@
 				{
 					"command": "antimony.createAnnotationDialog",
 					"title": "Create Annotation",
+					"group": "1_modification",
+					"when": "editorLangId == antimony"
+				},
+				{
+					"command": "antimony.navigateAnnotation",
+					"title": "Navigate to Annotations",
 					"group": "1_modification",
 					"when": "editorLangId == antimony"
 				},

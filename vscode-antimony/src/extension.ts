@@ -8,7 +8,7 @@ import {
 	LanguageClientOptions,
 	ServerOptions
 } from 'vscode-languageclient/node';
-import { singleStepInputRec } from './annotationRecommender';
+import { recSingleStepInput } from './annotationRecommender';
 import { annotationMultiStepInput } from './annotationInput';
 import { rateLawSingleStepInput } from './rateLawInput';
 import { SBMLEditorProvider } from './SBMLEditor';
@@ -46,8 +46,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	await createVirtualEnv(context);
 
 	roundTripping = vscode.workspace.getConfiguration('vscode-antimony').get('openSBMLAsAntimony');
-
-	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
 
 	// start the language server
 	if (await startLanguageServer(context) === 0) {
@@ -115,6 +113,10 @@ export async function activate(context: vscode.ExtensionContext) {
 	// browse biomodels
 	context.subscriptions.push(
 		vscode.commands.registerCommand('antimony.browseBiomodels', (...args: any[]) => browseBioModels(context, args)));
+	
+	// navigate to annotation
+	context.subscriptions.push(
+		vscode.commands.registerCommand('antimony.navigateAnnotation', (...args: any[]) => navigateAnnotation(context, args)));
 
 	// language config for CodeLens
 	const docSelector = {
@@ -129,6 +131,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// timer for non annotated variable visual indicator
 	let timeout: NodeJS.Timer | undefined = undefined;
+
+	annotatedVariableIndicatorOn = vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
 
 	// update the decoration once in a certain time (throttle)
 	function triggerUpdateDecorations(throttle = false) {
@@ -202,6 +206,8 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<any, any>) {
+	await client.onReady();
+
 	if (path.extname(event.fileName) === '.xml') {
 		// check if the file is sbml, opens up a new file
 		await vscode.window.showTextDocument(event, { preview: true, preserveFocus: false });
@@ -371,6 +377,32 @@ async function createAnnotationDialog(context: vscode.ExtensionContext, args: an
 
 	const selectedItem = await annotationMultiStepInput(context, initialQuery);
 	await insertAnnotation(selectedItem, initialEntity, line);
+}
+
+async function navigateAnnotation(context: vscode.ExtensionContext, args: any[]) {
+	// wait till client is ready, or the Python server might not have started yet.
+	// note: this is necessary for any command that might use the Python language server.
+	if (!client) {
+		utils.pythonInterpreterError();
+		return;
+	}
+	await client.onReady();
+	await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+  
+	// dialog for annotation
+	const selection = vscode.window.activeTextEditor.selection;
+  
+	// get the selected text
+	const doc = vscode.window.activeTextEditor.document;
+	const uri = doc.uri.toString();
+	const text = doc.getText();
+	const ind = text.indexOf("CV terms");
+
+	if (ind !== -1) {
+		const position = doc.positionAt(ind);
+		vscode.window.activeTextEditor.selection = new vscode.Selection(position, position);
+		vscode.window.activeTextEditor.revealRange(new vscode.Range(position, position), vscode.TextEditorRevealType.InCenter);
+	}
 }
 
 // async function recommendAnnotationDialog(context: vscode.ExtensionContext, args: any[]) {
