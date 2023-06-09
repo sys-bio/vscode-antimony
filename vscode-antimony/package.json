@@ -117,7 +117,7 @@
 			},
 			{
 				"command": "antimony.navigateAnnotation",
-				"title": "Navigate to Annotation"
+				"title": "Navigate to Annotations"
 			},
 			{
 				"command": "antimony.recommendAnnotationDialog",

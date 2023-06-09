@@ -16,7 +16,6 @@ import { AntimonyEditorProvider } from './AntimonyEditor';
 import { modelSearchInput } from './modelBrowse';
 import { ProgressLocation, TextDocument, window } from 'vscode';
 import { exec } from 'child_process';
-import { selectSingleStepInput } from './annotationSelect';
 
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
@@ -401,30 +400,6 @@ async function navigateAnnotation(context: vscode.ExtensionContext, args: any[])
 		vscode.window.activeTextEditor.selection = new vscode.Selection(position, position);
 		vscode.window.activeTextEditor.revealRange(new vscode.Range(position, position), vscode.TextEditorRevealType.InCenter);
 	}
-
-	// vscode.commands.executeCommand("workbench.action.showAllSymbols", uri, selection.start).then(() => {
-	// 	console.log("Navigated to annotation")
-	// }, (error) => {
-	// 	// Code navigation failed
-	// 	console.error(error);
-	// });
-  
-	// get the position for insert
-	// let line = selection.start.line;
-
-	// while (line <= doc.lineCount - 1) {
-	// 	const text = doc.lineAt(line).text;
-	// 	if (text.localeCompare("end", undefined, { sensitivity: 'accent' }) === 0) {
-	// 		line -= 1;
-	// 		break;
-	// 	}
-	// 	line += 1;
-	// }
-  
-	// const initialEntity = selectedText || 'entityName';
-
-	// const selectedItem = await selectSingleStepInput(context, initialEntity, uri); // list existing annotations
-	// await insertAnnotation(selectedItem, initialEntity, line); // navigate to selected annotation
 }
 
 async function recommendAnnotationDialog(context: vscode.ExtensionContext, args: any[]) {
