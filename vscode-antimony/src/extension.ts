@@ -826,8 +826,20 @@ async function venvErrorFix() {
 			await deleteVirtualEnv(`The incorrect version of python has been installed. 
 			Refer to [VSCode Antimony Extension installation instructions](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) before restarting VSCode and reinstalling virtual environment.
 			Delete installed virtual environment?`)
+			.then(() => {
+				// Delay and then reload Visual Studio Code
+				setTimeout(() => {
+					vscode.commands.executeCommand('workbench.action.reloadWindow');
+				}, 2000);
+			})
 		} else {
 			await deleteVirtualEnv(`Delete installed virtual environment?`)
+			.then(() => {
+				// Delay and then reload Visual Studio Code
+				setTimeout(() => {
+					vscode.commands.executeCommand('workbench.action.reloadWindow');
+				}, 2000);
+			})
 		}
 	}
 }
@@ -843,10 +855,6 @@ async function deleteVirtualEnv(message) {
 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
 					fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true })
 				}
-				// Delay and then reload Visual Studio Code
-				setTimeout(() => {
-					vscode.commands.executeCommand('workbench.action.reloadWindow');
-				}, 2000);
 			} else if (selection === 'No') {
 				vscode.window
 				.showInformationMessage(
