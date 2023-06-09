@@ -474,8 +474,9 @@ export async function switchIndicationOn(context: vscode.ExtensionContext) {
 	annotatedVariableIndicatorOn = true;
 	await vscode.workspace.getConfiguration('vscode-antimony').update('annotatedVariableIndicatorOn', true, true);
 
-	promptToReloadWindow(`Reload window for visual indication change in Antimony to take effect.`);
-
+	setTimeout(() => {
+		vscode.commands.executeCommand('workbench.action.reloadWindow');
+	}, 2000);
 }
 
 vscode.workspace.onDidChangeConfiguration(async (e) => {
