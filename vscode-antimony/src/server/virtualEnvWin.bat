@@ -11,10 +11,12 @@ echo "running install virtual env"
 
 rem If not already in virtualenv
 rem %VIRTUAL_ENV% is being set from %venv%\Scripts\activate.bat script
-echo Creating and activating virtual environment %venv%
+
+echo Creating and activating environment %venv%
 echo %USERPROFILE%\%venv%
-%py% -m pip install virtualenv
+
 %py% -m virtualenv %USERPROFILE%\%venv%
+
 (echo appdirs==1.4.4
 echo certifi==2020.12.5
 echo chardet==4.0.0 ^ 
@@ -37,4 +39,19 @@ echo # ols_client==0.0.9 ^
 echo AMAS-sb==0.0.4 ^ 
 echo orjson==3.8.0 ^ 
 echo numpy==1.24.2) > %USERPROFILE%\%venv%\all-requirements.txt
-%py% -m pip --disable-pip-version-check install -t %USERPROFILE%\%venv%\Lib\site-packages --no-cache-dir --upgrade -r %USERPROFILE%\%venv%\all-requirements.txt && success=1
+
+(echo step:1
+echo totalSteps:2
+echo output:Installing dependencies...) > %TEMP%\progress_output.txt
+
+%py% -m pip --disable-pip-version-check install -t %USERPROFILE%\%venv%\Lib\site-packages --no-cache-dir --upgrade -r %USERPROFILE%\%venv%\all-requirements.txt && (
+  (echo step:2
+  echo totalSteps:2
+  echo output:Installation finished successfully.) > %TEMP%\progress_output.txt
+  exit /b 0
+) || (
+  (echo step:2
+  echo totalSteps:2
+  echo output:Installation encountered an error.) > %TEMP%\progress_output.txt
+  exit /b 1
+)
