@@ -783,7 +783,7 @@ async function installEnv() {
 
       if (platform === 'darwin') {
         shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
-      } else if (platform === 'win32') {
+      } else if (platform === 'win32' || platform === 'win64') {
         shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
       } else if (platform === 'linux') {
         shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
@@ -799,7 +799,7 @@ async function installEnv() {
 
     if (platform === 'darwin') {
       shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
-    } else if (platform === 'win32') {
+    } else if (platform === 'win32' || platform === 'win64') {
       shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
     } else if (platform === 'linux') {
       shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
