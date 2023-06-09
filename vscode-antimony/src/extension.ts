@@ -401,7 +401,7 @@ async function navigateAnnotation(context: vscode.ExtensionContext, args: any[])
 	const doc = vscode.window.activeTextEditor.document;
 	const uri = doc.uri.toString();
 	const text = doc.getText();
-	const ind = text.indexOf("CV terms");
+	const ind = text.indexOf("http");
 
 	if (ind !== -1) {
 		const position = doc.positionAt(ind);
