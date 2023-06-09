@@ -189,7 +189,7 @@
 				},
 				{
 					"command": "antimony.navigateAnnotation",
-					"title": "Navigate to Annotation",
+					"title": "Navigate to Annotations",
 					"group": "1_modification",
 					"when": "editorLangId == antimony"
 				},
