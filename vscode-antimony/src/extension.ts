@@ -642,16 +642,16 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 		let message = '';
 		switch (platform) {
 		case 'linux':
-			message = `[IMPORTANT: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
+			message = `[IMPORTANT Insructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		case 'win32':
 		case 'win64':
-			message = `[IMPORTANT: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
+			message = `[IMPORTANT Insructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		case 'darwin':
-			message = `[IMPORTANT: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
+			message = `[IMPORTANT Insructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		default:
