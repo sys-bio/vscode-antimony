@@ -350,6 +350,11 @@ async function createAnnotationDialog(context: vscode.ExtensionContext, args: an
 	const doc = vscode.window.activeTextEditor.document;
 	const uri = doc.uri.toString();
 	const selectedText = doc.getText(selection);
+
+	if (selectedText === "") {
+		vscode.window.showErrorMessage("Please select a variable to annotate.");
+		return;
+	}
   
 	// get the position for insert
 	let line = selection.start.line;
