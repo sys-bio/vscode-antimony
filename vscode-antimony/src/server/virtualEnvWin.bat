@@ -15,6 +15,7 @@ rem %VIRTUAL_ENV% is being set from %venv%\Scripts\activate.bat script
 echo Creating and activating environment %venv%
 echo %USERPROFILE%\%venv%
 
+%py% -m pip install virtualenv
 %py% -m virtualenv %USERPROFILE%\%venv%
 
 (echo appdirs==1.4.4
