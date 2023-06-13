@@ -19,6 +19,7 @@ temp
 **/tsconfig.base.json
 .travis.yml
 .gitignore
+src/server/stibium/test/biomodels
  
 # Venvs
 py36
