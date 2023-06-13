@@ -26,8 +26,8 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Press Keep)</em>
 </p>
 
-* Once installed, open the Downloads folder on your device
-* Double click "Vscode-Antimony-Dependencies-Installer" to start the setup process. If there is a warning pop up from Windows, click more info and then click run anyway. **(This will not intefer with any other dependencies and programs of your device)**.
+* Once [Vscode Antimony Dependencies Installer](https://github.com/sys-bio/vscode-antimony/raw/master/setup/Vscode%20Antimony%20Setup%20Installer.exe) is installed, open the Downloads folder on your device
+* Double click "Vscode Antimony Dependencies Installer" to start the setup process. If there is a warning pop up from Windows, click more info and then click run anyway. **(This will not intefer with any other dependencies and programs of your device)**.
 
 <p align=center>
 <img src="docs/images/moreinfo.png" width=75%>
@@ -40,7 +40,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Press run anyway)</em>
 </p>
 
-* Once installed, restart Visual Code Studio.
+* Once installed, restart Visual Studio Code if you have Visual Studio Code already installed. Otherwise, proceed.
 * _This extension may require [Git](https://git-scm.com/downloads) to be installed before use. Make sure to add Git to PATH when installing. Restart Visual Studio Code after installation of Git._ <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
@@ -64,32 +64,31 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 
 * When installing Python 3.9.13, proceed with the installations as is. No changes are needed to be made.
 
-* Once installed, restart Visual Code Studio. <br/>
+* Once installed, restart Visual Studio Code if you have Visual Studio Code already installed. Otherwise, proceed. <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Linux
 * Linux users will have to install Python3.10, venv python package, and pip. 
-* Once installed, restart Visual Studio Code. <br/>
+* Once installed, restart Visual Studio Code if you have Visual Studio Code already installed. Otherwise, proceed. <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Steps below apply for all Operating Systems
 * **_If there are any non VSCode Antimony associated virtual environments activated, please deactivate them before setting up VSCode Antimony._**<br/>
 * Install [VSCode](https://code.visualstudio.com/download) for your specific operating system (Mac, Windows, or Linux)
-* Once you open VSCode, download the **Antimony Extension Pack** from the Visual Studio Code Extension Marketplace and install. Follow the numbered points in the figure below.
+* Once you open VSCode, download the **Antimony Extension Pack** from the Visual Studio Code Extension Marketplace and install. This should install Antimony and Antimony Syntax. Follow the numbered points in the figure below.
 <p align=center>
 <img src="docs/images/Step2.png" width=75%>
 <br/>
 <em>(Download Antimony Extension)</em>
 </p>
 
-* When an XML or Antimony model file is opened for the first time, a pop up will show.
+* When an XML or Antimony model file is opened for the first time, a pop up will show. On the other hand, if a user does not have a SBML or Antimony file, they can open the Command Palette (Ctrl + Shift + P for Windows, Cmd + Shift + P for Mac) and type **Open Antimony Start Page**. This will open a simple Antimony page, which will allow for the installation of the virtual environment.
 <p align=center>
 <img src="docs/images/popup.png" width=75%>
 <br/>
 <em>(Pop up for setup)</em>
 </p>
 
-* On the other hand, if a user does not have a SBML or Antimony file, they can open the Command Palette (Ctrl + Shift + P for Windows, Cmd + Shift + P for Mac) and type **Open Antimony Start Page**. This will open a simple Antimony page, which will allow for the installation of the virtual environment.
 <p align=center>
 <img src="docs/images/startPage.png" width=75%>
 <br/>
@@ -104,7 +103,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Permissions for Virtual Environment Setup)</em>
 </p>
 
-* If there are errors during/after the installation, clear the error prompts--if there are any--on the bottom right corner, right click on the ant/xml file and press "Delete Virtual Environment". Attempt to restart VSCode or your device before clicking yes to the installation prompt again.
+* If there are errors during/after the installation, clear the error prompts--if there are any--on the bottom right corner, right click on the ant/xml file and press "Delete Virtual Environment". Attempt to restart VSCode or your device before clicking yes to the installation prompt again. If errors still occur, it is advices to press "Delete Virtual Environment" a second time.
 <br/>
 <p align=center>
 <img src="docs/images/deletevirenv.png" width=75%>
