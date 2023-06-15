@@ -117,7 +117,7 @@
 			},
 			{
 				"command": "antimony.navigateAnnotation",
-				"title": "Navigate to Annotations"
+				"title": "Navigate to Edit Annotations"
 			},
 			{
 				"command": "antimony.recommendAnnotationDialog",
@@ -163,7 +163,7 @@
 			},
 			{
 				"command": "antimony.deleteVirtualEnv",
-				"title": "Delete Virtual Environment"
+				"title": "Delete Virtual Environment to Fix Vscode-Antimony"
 			}
 		],
 		"languages": [
@@ -189,7 +189,7 @@
 				},
 				{
 					"command": "antimony.navigateAnnotation",
-					"title": "Navigate to Annotations",
+					"title": "Navigate to Edit Annotations",
 					"group": "1_modification",
 					"when": "editorLangId == antimony"
 				},
@@ -231,8 +231,8 @@
 				},
 				{
 					"command": "antimony.deleteVirtualEnv",
-					"title": "Delete Virtual Environment",
-					"group": "1_modification",
+					"title": "Delete Virtual Environment to Fix Vscode-Antimony",
+					"group": "2_modification",
 					"when": "editorLangId == antimony || editorLangId == xml"
 				}
 			],
