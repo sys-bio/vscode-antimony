@@ -41,7 +41,7 @@ async function checkFileExtension() {
 	const uri = doc.uri.toString();
 	const fileExtension = path.extname(uri);
 	if (fileExtension === '.txt') {
-		vscode.window.showErrorMessage('Please save the file as .ant', {modal: true});
+		vscode.window.showErrorMessage('Please save the file as .ant to use Vscode-Antimony', {modal: true});
 		return;
 	}
 }
