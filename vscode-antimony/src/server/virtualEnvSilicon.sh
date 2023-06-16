@@ -42,6 +42,11 @@ ve() {
     success=1
   fi
 
+  script_directory=$(dirname "$0")
+
+  pkgFile=$script_directory/VscodeAntimonySetup.tar.gz
+  tar -xf "$pkgFile"
+
   local venv="vscode_antimony_virtual_env"
   echo "Creating and activating virtual environment ${venv}"
 
