@@ -35,6 +35,17 @@ let activeEditor = vscode.window.activeTextEditor;
 // RoundTripping SBML to Antimony
 let roundTripping: boolean | null = null;
 
+// Check if the current file is .txt
+async function checkFileExtension() {
+	const doc = vscode.window.activeTextEditor.document;
+	const uri = doc.uri.toString();
+	const fileExtension = path.extname(uri);
+	if (fileExtension === '.txt') {
+		vscode.window.showErrorMessage('Please save the file as .ant', {modal: true});
+		return;
+	}
+}
+
 // Activate extension
 export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -44,6 +55,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('antimony.deleteVirtualEnv', (...args: any[]) => venvErrorFix()));
 
 	await createVirtualEnv(context);
+
+	await checkFileExtension();
 
 	roundTripping = vscode.workspace.getConfiguration('vscode-antimony').get('openSBMLAsAntimony');
 

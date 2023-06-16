@@ -23,6 +23,7 @@
 	"activationEvents": [
 		"onLanguage:antimony",
 		"onLanguage:xml",
+		"onLanguage:plaintext",
 		"onCommand:antimony.openStartPage",
 		"onCommand:antimony.createAnnotationDialog",
 		"onCommand:antimony.recommendAnnotationDialog",
