@@ -14,18 +14,8 @@ rem %VIRTUAL_ENV% is being set from %venv%\Scripts\activate.bat script
 
 echo Creating and activating environment %venv%
 
-@REM set current_directory=%CD%
-
-@REM cd ..
-@REM cd ..
-@REM cd ..
-
-@REM set new_directory="%CD%\setup\Vscode Antimony Setup Installer.exe"
-
-@REM start "" "%new_directory%"
-
-%py% -m pip install virtualenv
-%py% -m virtualenv "%USERPROFILE%\%venv%"
+"%py%" -m pip install virtualenv
+"%py%" -m virtualenv "%USERPROFILE%\%venv%"
 
 (echo appdirs==1.4.4
 echo certifi==2020.12.5
@@ -54,7 +44,7 @@ echo numpy==1.24.2) > "%USERPROFILE%\%venv%\all-requirements.txt"
 echo totalSteps:2
 echo output:Installing dependencies...) > %TEMP%\progress_output.txt
 
-%py% -m pip --disable-pip-version-check install -t "%USERPROFILE%\%venv%\Lib\site-packages" --no-cache-dir --upgrade -r "%USERPROFILE%\%venv%\all-requirements.txt" && (
+"%py%" -m pip --disable-pip-version-check install -t "%USERPROFILE%\%venv%\Lib\site-packages" --no-cache-dir --upgrade -r "%USERPROFILE%\%venv%\all-requirements.txt" && (
   (echo step:2
   echo totalSteps:2
   echo output:Installation finished successfully.) > %TEMP%\progress_output.txt
