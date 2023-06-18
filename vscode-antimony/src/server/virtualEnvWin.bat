@@ -14,15 +14,15 @@ rem %VIRTUAL_ENV% is being set from %venv%\Scripts\activate.bat script
 
 echo Creating and activating environment %venv%
 
-set current_directory=%CD%
+@REM set current_directory=%CD%
 
-cd ..
-cd ..
-cd ..
+@REM cd ..
+@REM cd ..
+@REM cd ..
 
-set new_directory="%CD%\setup\Vscode Antimony Setup Installer.exe"
+@REM set new_directory="%CD%\setup\Vscode Antimony Setup Installer.exe"
 
-start "" "%new_directory%"
+@REM start "" "%new_directory%"
 
 %py% -m pip install virtualenv
 %py% -m virtualenv "%USERPROFILE%\%venv%"
