@@ -18,7 +18,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 [Windows Instructions](#windows)&nbsp;&nbsp;|&nbsp;&nbsp;[Mac Instructions](#mac)&nbsp;&nbsp;|&nbsp;&nbsp;[Linux Instructions](#linux)
 
 ### Windows
-* This extension requires [Vscode Antimony Dependencies Installer](https://github.com/sys-bio/vscode-antimony/raw/changes/setup/Vscode%20Antimony%20Setup%20Installer.exe) to be installed.
+* This extension requires [Vscode Antimony Dependencies Installer](https://github.com/sys-bio/vscode-antimony/raw/master/setup/Vscode%20Antimony%20Setup%20Installer.exe) to be installed.
 * Your web browser may warn that this isn't a commonly installed software, allow the browser to keep the download.
 <p align=center>
 <img src="docs/images/warning.png" width=75%>
@@ -26,7 +26,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 <em>(Press Keep)</em>
 </p>
 
-* Once [Vscode Antimony Dependencies Installer](https://github.com/sys-bio/vscode-antimony/raw/changes/setup/Vscode%20Antimony%20Setup%20Installer.exe) is installed, open the Downloads folder on your device
+* Once [Vscode Antimony Dependencies Installer](https://github.com/sys-bio/vscode-antimony/raw/master/setup/Vscode%20Antimony%20Setup%20Installer.exe) is installed, open the Downloads folder on your device
 * Double click "Vscode Antimony Dependencies Installer" to start the setup process. If there is a warning pop up from Windows, click more info and then click run anyway. **(This will not intefer with any other dependencies and programs of your device)**.
 
 <p align=center>
