@@ -41,7 +41,6 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 </p>
 
 * Once installed, restart Visual Studio Code if you have Visual Studio Code already installed. Otherwise, proceed.
-* _This extension may require [Git](https://git-scm.com/downloads) to be installed before use. Make sure to add Git to PATH when installing. Restart Visual Studio Code after installation of Git._ <br/>
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Mac
@@ -74,6 +73,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 
 ### Steps below apply for all Operating Systems
 * **_If there are any non VSCode Antimony associated virtual environments activated, please deactivate them before setting up VSCode Antimony._**<br/>
+* Install [Git](https://git-scm.com/downloads). Make sure to add Git to PATH when installing if the option shows. Restart Visual Studio Code if already installed after installation of Git. <br/>
 * Install [VSCode](https://code.visualstudio.com/download) for your specific operating system (Mac, Windows, or Linux)
 * Once you open VSCode, download the **Antimony Extension Pack** from the Visual Studio Code Extension Marketplace and install. This should install Antimony and Antimony Syntax. Follow the numbered points in the figure below.
 <p align=center>
