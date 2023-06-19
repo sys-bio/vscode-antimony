@@ -3,9 +3,25 @@
 echo "script runs"
 
 setlocal
-set py=%1
-if "%py%"=="" set py="%USERPROFILE%\Downloads\VSCode-Antimony-Dependency-Installer\python\python"
-set venv=vscode_antimony_virtual_env
+set "py=%USERPROFILE%\Downloads\VSCode-Antimony-Dependency-Installer\python\python"
+set "venv=vscode_antimony_virtual_env"
+set "spacePath=%USERPROFILE%\%venv%"
+set "hasSpace=0"
+set "reqs=%spacePath%\all-requirements.txt"
+set "sitePacks=%spacePath%\Lib\site-packages"
+
+for /f "delims=" %%A in ('powershell -Command "Get-WmiObject -Class Win32_UserAccount | Where-Object { $_.Name -like '* *' } | Select-Object -ExpandProperty Name"') do (
+    set "hasSpace=1"
+    goto :found
+)
+
+:found
+if %hasSpace% equ 1 (
+    set py="%USERPROFILE%\Downloads\VSCode-Antimony-Dependency-Installer\python\python"
+    set reqs="%spacePath%\all-requirements.txt"
+    set sitePacks="%spacePath%\Lib\site-packages"
+    set spacePath="%USERPROFILE%\%venv%"
+)
 
 echo "running install virtual env"
 
@@ -14,8 +30,8 @@ rem %VIRTUAL_ENV% is being set from %venv%\Scripts\activate.bat script
 
 echo Creating and activating environment %venv%
 
-"%py%" -m pip install virtualenv
-"%py%" -m virtualenv "%USERPROFILE%\%venv%"
+%py% -m pip install virtualenv
+%py% -m virtualenv %spacePath%
 
 (echo appdirs==1.4.4
 echo certifi==2020.12.5
@@ -38,13 +54,13 @@ echo bioservices==1.8.3 ^
 echo # ols_client==0.0.9 ^ 
 echo AMAS-sb==0.0.4 ^ 
 echo orjson==3.8.0 ^ 
-echo numpy==1.24.2) > "%USERPROFILE%\%venv%\all-requirements.txt"
+echo numpy==1.24.2) > %reqs%
 
 (echo step:1
 echo totalSteps:2
 echo output:Installing dependencies...) > %TEMP%\progress_output.txt
 
-"%py%" -m pip --disable-pip-version-check install -t "%USERPROFILE%\%venv%\Lib\site-packages" --no-cache-dir --upgrade -r "%USERPROFILE%\%venv%\all-requirements.txt" && (
+%py% -m pip --disable-pip-version-check install -t %sitePacks% --no-cache-dir --upgrade -r %reqs% && (
   (echo step:2
   echo totalSteps:2
   echo output:Installation finished successfully.) > %TEMP%\progress_output.txt
