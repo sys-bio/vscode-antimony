@@ -420,6 +420,8 @@ async function navigateAnnotation(context: vscode.ExtensionContext, args: any[])
 		const position = doc.positionAt(ind);
 		vscode.window.activeTextEditor.selection = new vscode.Selection(position, position);
 		vscode.window.activeTextEditor.revealRange(new vscode.Range(position, position), vscode.TextEditorRevealType.InCenter);
+	} else {
+		vscode.window.showErrorMessage("No annotations found.");
 	}
 }
 
