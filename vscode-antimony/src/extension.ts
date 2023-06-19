@@ -843,7 +843,12 @@ async function installEnv() {
         return;
       }
 
-      await progressBar(shellScriptPath, 100);
+      const userIsSpaced = os.userInfo().username.includes(' ');
+	  if (userIsSpaced) {
+		await progressBar(`"${shellScriptPath}"`, 100);
+	  } else {
+		await progressBar(shellScriptPath, 100);
+	  }
     }
   } else {
     let shellScriptPath;

@@ -8,12 +8,12 @@ set "hasSpace=0"
 set "reqs=%spacePath%\all-requirements.txt"
 set "sitePacks=%spacePath%\Lib\site-packages"
 
-set "USERPROFILE=%USERPROFILE%"
-set "USERNAME=%USERPROFILE:*\=%"
-
-echo %USERNAME% | find " " >nul
-
-if not errorlevel 0 (
+setlocal enabledelayedexpansion
+set "modified=!USERNAME: =!"
+echo %USERNAME%
+echo %modified%
+if not "%USERNAME%"=="%modified%" (
+    echo "We have a space in the username"
     set py="%USERPROFILE%\Downloads\VSCode-Antimony-Dependency-Installer\python\python"
     set reqs="%spacePath%\all-requirements.txt"
     set sitePacks="%spacePath%\Lib\site-packages"
