@@ -692,16 +692,16 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 		let message = '';
 		switch (platform) {
 		case 'linux':
-			message = `[IMPORTANT Insructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
+			message = `[IMPORTANT Instructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		case 'win32':
 		case 'win64':
-			message = `[IMPORTANT Insructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
+			message = `[IMPORTANT Instructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		case 'darwin':
-			message = `[IMPORTANT Insructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
+			message = `[IMPORTANT Instructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		default:
@@ -859,7 +859,12 @@ async function installEnv() {
       return;
     }
 
-    await progressBar(shellScriptPath, 100);
+	const userIsSpaced = os.userInfo().username.includes(' ');
+	if (userIsSpaced) {
+		await progressBar(`"${shellScriptPath}"`, 100);
+	} else {
+	    await progressBar(shellScriptPath, 100);
+	}
   }
 }
 
