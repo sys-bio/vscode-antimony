@@ -1,19 +1,16 @@
 @echo off
 
 setlocal
+setlocal enabledelayedexpansion
 set "py=%USERPROFILE%\Downloads\VSCode-Antimony-Dependency-Installer\python\python"
 set "venv=vscode_antimony_virtual_env"
 set "spacePath=%USERPROFILE%\%venv%"
 set "hasSpace=0"
 set "reqs=%spacePath%\all-requirements.txt"
 set "sitePacks=%spacePath%\Lib\site-packages"
-
-setlocal enabledelayedexpansion
 set "modified=!USERNAME: =!"
-echo %USERNAME%
-echo %modified%
+
 if not "%USERNAME%"=="%modified%" (
-    echo "We have a space in the username"
     set py="%USERPROFILE%\Downloads\VSCode-Antimony-Dependency-Installer\python\python"
     set reqs="%spacePath%\all-requirements.txt"
     set sitePacks="%spacePath%\Lib\site-packages"
