@@ -1,7 +1,5 @@
 @echo off
 
-echo "script runs"
-
 setlocal
 set "py=%USERPROFILE%\Downloads\VSCode-Antimony-Dependency-Installer\python\python"
 set "venv=vscode_antimony_virtual_env"
@@ -10,20 +8,19 @@ set "hasSpace=0"
 set "reqs=%spacePath%\all-requirements.txt"
 set "sitePacks=%spacePath%\Lib\site-packages"
 
-for /f "delims=" %%A in ('powershell -Command "Get-WmiObject -Class Win32_UserAccount | Where-Object { $_.Name -like '* *' } | Select-Object -ExpandProperty Name"') do (
-    set "hasSpace=1"
-    goto :found
-)
+set "USERPROFILE=%USERPROFILE%"
+set "USERNAME=%USERPROFILE:*\=%"
 
-:found
-if %hasSpace% equ 1 (
+echo %USERNAME% | find " " >nul
+
+if not errorlevel 0 (
     set py="%USERPROFILE%\Downloads\VSCode-Antimony-Dependency-Installer\python\python"
     set reqs="%spacePath%\all-requirements.txt"
     set sitePacks="%spacePath%\Lib\site-packages"
     set spacePath="%USERPROFILE%\%venv%"
 )
 
-echo "running install virtual env"
+echo running install virtual env
 
 rem If not already in virtualenv
 rem %VIRTUAL_ENV% is being set from %venv%\Scripts\activate.bat script
