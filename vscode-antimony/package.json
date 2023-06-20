@@ -4,7 +4,7 @@
 	"description": "Extensions for Antimony development in Visual Studio Code.",
 	"author": "Longxuan Fan, Sai Anish Konanki, Eva Liu, Steve Ma, Gary Geng, Joseph Hellerstein, Herbet Sauro",
 	"publisher": "stevem",
-	"version": "0.2.17",
+	"version": "0.2.18",
 	"icon": "docs/images/logo.png",
 	"engines": {
 		"vscode": "^1.62.0"
@@ -23,6 +23,7 @@
 	"activationEvents": [
 		"onLanguage:antimony",
 		"onLanguage:xml",
+		"onLanguage:plaintext",
 		"onCommand:antimony.openStartPage",
 		"onCommand:antimony.createAnnotationDialog",
 		"onCommand:antimony.recommendAnnotationDialog",
@@ -117,7 +118,7 @@
 			},
 			{
 				"command": "antimony.navigateAnnotation",
-				"title": "Navigate to Annotations"
+				"title": "Navigate to Edit Annotations"
 			},
 			{
 				"command": "antimony.recommendAnnotationDialog",
@@ -163,7 +164,7 @@
 			},
 			{
 				"command": "antimony.deleteVirtualEnv",
-				"title": "Delete Virtual Environment"
+				"title": "Delete Virtual Environment to Fix Vscode-Antimony"
 			}
 		],
 		"languages": [
@@ -189,7 +190,7 @@
 				},
 				{
 					"command": "antimony.navigateAnnotation",
-					"title": "Navigate to Annotations",
+					"title": "Navigate to Edit Annotations",
 					"group": "1_modification",
 					"when": "editorLangId == antimony"
 				},
@@ -231,8 +232,8 @@
 				},
 				{
 					"command": "antimony.deleteVirtualEnv",
-					"title": "Delete Virtual Environment",
-					"group": "1_modification",
+					"title": "Delete Virtual Environment to Fix Vscode-Antimony",
+					"group": "2_modification",
 					"when": "editorLangId == antimony || editorLangId == xml"
 				}
 			],

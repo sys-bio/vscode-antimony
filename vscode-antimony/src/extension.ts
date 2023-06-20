@@ -35,6 +35,17 @@ let activeEditor = vscode.window.activeTextEditor;
 // RoundTripping SBML to Antimony
 let roundTripping: boolean | null = null;
 
+// Check if the current file is .txt
+async function checkFileExtension() {
+	const doc = vscode.window.activeTextEditor.document;
+	const uri = doc.uri.toString();
+	const fileExtension = path.extname(uri);
+	if (fileExtension === '.txt') {
+		vscode.window.showInformationMessage('Please save the file as .ant to use VSCode-Antimony, otherwise ignore');
+		return;
+	}
+}
+
 // Activate extension
 export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -44,6 +55,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('antimony.deleteVirtualEnv', (...args: any[]) => venvErrorFix()));
 
 	await createVirtualEnv(context);
+
+	await checkFileExtension();
 
 	roundTripping = vscode.workspace.getConfiguration('vscode-antimony').get('openSBMLAsAntimony');
 
@@ -407,6 +420,8 @@ async function navigateAnnotation(context: vscode.ExtensionContext, args: any[])
 		const position = doc.positionAt(ind);
 		vscode.window.activeTextEditor.selection = new vscode.Selection(position, position);
 		vscode.window.activeTextEditor.revealRange(new vscode.Range(position, position), vscode.TextEditorRevealType.InCenter);
+	} else {
+		vscode.window.showWarningMessage("No annotations found.");
 	}
 }
 
@@ -679,16 +694,16 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 		let message = '';
 		switch (platform) {
 		case 'linux':
-			message = `[IMPORTANT Insructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
+			message = `[IMPORTANT Instructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		case 'win32':
 		case 'win64':
-			message = `[IMPORTANT Insructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
+			message = `[IMPORTANT Instructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		case 'darwin':
-			message = `[IMPORTANT Insructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
+			message = `[IMPORTANT Instructions: https://github.com/sys-bio/vscode-antimony#installation-required-1] 
 			To install dependencies so the extension works properly, allow installation of virtual environment`;
 			break;
 		default:
@@ -830,7 +845,12 @@ async function installEnv() {
         return;
       }
 
-      await progressBar(shellScriptPath, 100);
+      const userIsSpaced = os.userInfo().username.includes(' ');
+	  if (userIsSpaced) {
+		await progressBar(`"${shellScriptPath}"`, 100);
+	  } else {
+		await progressBar(shellScriptPath, 100);
+	  }
     }
   } else {
     let shellScriptPath;
@@ -846,7 +866,12 @@ async function installEnv() {
       return;
     }
 
-    await progressBar(shellScriptPath, 100);
+	const userIsSpaced = os.userInfo().username.includes(' ');
+	if (userIsSpaced) {
+		await progressBar(`"${shellScriptPath}"`, 100);
+	} else {
+	    await progressBar(shellScriptPath, 100);
+	}
   }
 }
 
