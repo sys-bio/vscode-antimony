@@ -41,7 +41,7 @@ async function checkFileExtension() {
 	const uri = doc.uri.toString();
 	const fileExtension = path.extname(uri);
 	if (fileExtension === '.txt') {
-		vscode.window.showErrorMessage('Please save the file as .ant to use Vscode-Antimony', {modal: true});
+		vscode.window.showInformationMessage('Please save the file as .ant to use VSCode-Antimony, otherwise ignore');
 		return;
 	}
 }
@@ -421,7 +421,7 @@ async function navigateAnnotation(context: vscode.ExtensionContext, args: any[])
 		vscode.window.activeTextEditor.selection = new vscode.Selection(position, position);
 		vscode.window.activeTextEditor.revealRange(new vscode.Range(position, position), vscode.TextEditorRevealType.InCenter);
 	} else {
-		vscode.window.showErrorMessage("No annotations found.");
+		vscode.window.showWarningMessage("No annotations found.");
 	}
 }
 
