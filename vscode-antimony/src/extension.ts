@@ -724,6 +724,15 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 async function executeProgressBar(filePath: string) {
   try {
     await progressBar(filePath);
+    vscode.window.showInformationMessage(
+      `Installation finished. Reload to activate. Right click in the editor after reload to view features.`,
+      { modal: true },
+      action
+      ).then(selectedAction => {
+      if (selectedAction === action) {
+        vscode.commands.executeCommand('workbench.action.reloadWindow');
+      }
+      });
   } catch (error) {
     const isAppleSilicon = process.arch === 'arm64';
 		if (isAppleSilicon) {
@@ -734,6 +743,15 @@ async function executeProgressBar(filePath: string) {
         let shellScriptPath: string;
         shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvIntelMac.sh');
         await progressBar(shellScriptPath);
+        vscode.window.showInformationMessage(
+          `Installation finished. Reload to activate. Right click in the editor after reload to view features.`,
+          { modal: true },
+          action
+          ).then(selectedAction => {
+          if (selectedAction === action) {
+            vscode.commands.executeCommand('workbench.action.reloadWindow');
+          }
+          });
       });
     } else {
       await vscode.window.showErrorMessage(
@@ -779,16 +797,6 @@ async function progressBar(filePath: string) {
             const pythonInterpreterPath = interpreterPaths[platform];
 
             vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', pythonInterpreterPath, true);
-
-            vscode.window.showInformationMessage(
-              `Installation finished. Reload to activate. Right click in the editor after reload to view features.`,
-              { modal: true },
-              action
-              ).then(selectedAction => {
-              if (selectedAction === action) {
-                vscode.commands.executeCommand('workbench.action.reloadWindow');
-              }
-              });
 
             resolve();
           }
