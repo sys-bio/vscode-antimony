@@ -78,6 +78,10 @@ export async function modelSearchInput(context: ExtensionContext, initialEntity:
     async function processFile(xmlName: string) {
         var tempPath
         vscode.commands.executeCommand('antimony.sbmlStrToAntStr', xmlData).then(async (result: any) => {
+            if (result["error"]) {
+                window.showErrorMessage(`Could not convert SBML to Antimony: ${result["error"]}`);
+                return;
+            }
             const fileName = path.basename(xmlName, ".xml")
             const tempDir = os.tmpdir()
             var tempFile = `${fileName}.ant`
