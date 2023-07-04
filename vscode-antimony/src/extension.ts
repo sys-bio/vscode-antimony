@@ -869,10 +869,13 @@ async function deleteVirtualEnv(message) {
         }
         if (platform == 'win32' || platform == 'win64') {
           fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"));
+          promptToReloadWindow("Reload")
         } else if (platform == "darwin") {
           fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9"));
+          promptToReloadWindow("Reload")
         } else {
-          fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"))
+          fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"));
+          promptToReloadWindow("Reload")
         }
       } else if (selection === 'No') {
         vscode.window.showInformationMessage(`The extension will not work without deleting and reinstalling the virtual environment.`, action)
