@@ -813,7 +813,7 @@ async function progressBar(filePath: string) {
     {
       location: vscode.ProgressLocation.Notification,
       title: "Running installation... Do NOT close VSCode. (Appx 5 minutes)",
-      cancellable: true
+      cancellable: false
     },
     async (progress, token) => {
       await new Promise<void>((resolve, reject) => {
