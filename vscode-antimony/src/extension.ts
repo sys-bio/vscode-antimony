@@ -868,10 +868,11 @@ async function deleteVirtualEnv(message) {
           vscode.env.openExternal(vscode.Uri.parse("https://github.com/sys-bio/vscode-antimony#installation-required-1"));
         }
         if (platform == 'win32' || platform == 'win64') {
-          fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true, force: true });
+          fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"));
+        } else if (platform == "darwin") {
+          fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9"));
         } else {
-          fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true });
-          fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/"), { recursive: true });
+          fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"))
         }
       } else if (selection === 'No') {
         vscode.window.showInformationMessage(`The extension will not work without deleting and reinstalling the virtual environment.`, action)
