@@ -817,10 +817,6 @@ async function progressBar(filePath: string) {
     },
     async (progress, token) => {
       await new Promise<void>((resolve, reject) => {
-        token.onCancellationRequested(() => {
-          reject(new Error("Installation cancelled."));
-        });
-
         shell.exec(`${filePath}`, (err, stdout, stderr) => {
           if (err) {
             // Handle the error from the shell script execution
