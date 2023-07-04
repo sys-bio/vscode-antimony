@@ -879,10 +879,10 @@ async function deleteVirtualEnv(message) {
           promptToReloadWindow("Reload for changes to take effect.")
         }
       } else if (selection === 'No') {
-        vscode.window.showInformationMessage(`The extension will not work without deleting and reinstalling the virtual environment.`, action)
+        vscode.env.openExternal(vscode.Uri.parse("https://github.com/sys-bio/vscode-antimony#installation-required-1"));
+        vscode.window.showWarningMessage(`The extension will not work without deleting and reinstalling the virtual environment.`, {modal: true}, action)
           .then(selectedAction => {
             if (selectedAction === action) {
-              vscode.env.openExternal(vscode.Uri.parse("https://github.com/sys-bio/vscode-antimony#installation-required-1"));
               vscode.commands.executeCommand('workbench.action.reloadWindow');
             }
           });
