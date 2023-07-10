@@ -823,7 +823,7 @@ async function progressBar(filePath: string) {
           if (err) {
             // Handle the error from the shell script execution
             reject(err);
-            return;
+			return err;
           } else {
             // Continue with the progress if no error occurred
             const interpreterPaths = {
