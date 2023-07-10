@@ -820,7 +820,7 @@ async function progressBar(filePath: string) {
     async (progress, token) => {
       await new Promise<void>((resolve, reject) => {
         shell.exec(`${filePath}`, (err, stdout, stderr) => {
-          if (err) {
+          if (err || stderr) {
             // Handle the error from the shell script execution
             reject(err);
 			return err;
