@@ -399,13 +399,6 @@ async function createAnnotationDialog(context: vscode.ExtensionContext, args: an
 }
 
 async function navigateAnnotation(context: vscode.ExtensionContext, args: any[]) {
-  // wait till client is ready, or the Python server might not have started yet.
-  // note: this is necessary for any command that might use the Python language server.
-  if (!client) {
-    utils.pythonInterpreterError();
-    return;
-  }
-  await client.onReady();
   await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 
   // dialog for annotation
@@ -630,7 +623,7 @@ C = 0`;
  */
 
 // change the annotation decoration of non-annotated variables
-function updateDecorations() {
+async function updateDecorations() {
   let annVars: string;
   let regexFromAnnVarsHelp: RegExp;
   let regexFromAnnVars: RegExp;
@@ -638,6 +631,14 @@ function updateDecorations() {
 
   const doc = activeEditor.document;
   const uri = doc.uri.toString();
+
+  // wait till client is ready, or the Python server might not have started yet.
+  // note: this is necessary for any command that might use the Python language server.
+  if (!client) {
+    utils.pythonInterpreterError();
+    return;
+  }
+  await client.onReady();
 
   if (config === true) {
     vscode.commands.executeCommand('antimony.getAnnotation', uri).then(async (result: string) => {
