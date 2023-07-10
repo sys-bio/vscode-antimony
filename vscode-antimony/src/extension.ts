@@ -588,9 +588,7 @@ async function browseBioModels(context: vscode.ExtensionContext, args: any[]) {
   });
 }
 
-/**
- * Open Start Page Function
- */
+// open start page
 async function openStartPage() {
   const openStartPage = vscode.workspace.getConfiguration('vscode-antimony').get('openStartPage');
   const startPageStr = `A -> B; k1*A
@@ -618,11 +616,9 @@ C = 0`;
   }
 }
 
-/**
- * Visual Indication Functions
- */
+// ****** visual indication functions ******
 
-// change the annotation decoration of non-annotated variables
+// change the highlight of non-annotated variables
 async function updateDecorations() {
   let annVars: string;
   let regexFromAnnVarsHelp: RegExp;
@@ -670,9 +666,7 @@ async function updateDecorations() {
   }
 }
 
-/**
- * Virtual Env Functions
- */
+// ****** virtual environment functions ******
 
 const platform = os.platform().toString();
 
