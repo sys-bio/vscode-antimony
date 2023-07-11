@@ -729,6 +729,7 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
       vscode.window.showInformationMessage(message, { modal: true }, ...['Yes', 'No'])
         .then(async selection => {
           if (selection === 'Yes') {
+            vscode.env.openExternal(vscode.Uri.parse("https://github.com/sys-bio/vscode-antimony#installation-required-1"));
             installEnv();
           } else if (selection === 'No') {
             vscode.window.showInformationMessage('The default python interpreter will be used.');
