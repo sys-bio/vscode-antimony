@@ -671,7 +671,7 @@ async function updateDecorations() {
 const platform = os.platform().toString();
 
 function activateVirtualEnv(pythonPath) {
-  if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== pythonPath) {
+  if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter').toString() !== pythonPath.toString()) {
     vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', pythonPath, true);
     vscode.window.showInformationMessage('Virtual environment exists, it is activated now.');
   }
