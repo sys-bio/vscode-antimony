@@ -684,12 +684,13 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
   await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 
   const venvPaths = {
-    darwin: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python"),
-    win32: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"),
-    win64: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"),
+    darwin: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9"),
+    win32: path.normalize(os.homedir() + "\\vscode_antimony_virtual_env\\Scripts\\python.exe"),
+    win64: path.normalize(os.homedir() + "\\vscode_antimony_virtual_env\\Scripts\\python.exe"),
     linux: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"),
   };
 
+  console.log(venvPaths[platform])
   if (fs.existsSync(venvPaths[platform])) {
     activateVirtualEnv(venvPaths[platform]);
   } else {
