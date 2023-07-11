@@ -690,9 +690,16 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
     linux: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"),
   };
 
+  const interpPaths = {
+    darwin: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9"),
+    win32: path.normalize(os.homedir() + "\\vscode_antimony_virtual_env\\Scripts\\python"),
+    win64: path.normalize(os.homedir() + "\\vscode_antimony_virtual_env\\Scripts\\python"),
+    linux: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"),
+  };
+
   console.log(venvPaths[platform])
   if (fs.existsSync(venvPaths[platform])) {
-    activateVirtualEnv(venvPaths[platform]);
+    activateVirtualEnv(interpPaths[platform]);
   } else {
     let message = `To install dependencies so the extension works properly, allow installation of virtual environment`;
 
