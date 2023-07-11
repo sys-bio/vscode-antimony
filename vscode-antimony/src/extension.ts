@@ -747,12 +747,12 @@ function showInstallPackageMessage(link: string) {
       if (selection === 'Yes') {
         vscode.env.openExternal(vscode.Uri.parse(link));
         const action = 'Reload';
-        vscode.window.showInformationMessage("Once the installation package is downloaded, press Yes to restart window", { modal: true }, "Yes")
+        vscode.window.showInformationMessage("Once python3.9 is downloaded, press Yes to restart window", { modal: true }, "Yes")
           .then(() => {
             vscode.commands.executeCommand('workbench.action.reloadWindow');
           });
       } else if (selection === 'No') {
-        vscode.window.showInformationMessage('Vscode-Antimony will not install without the required installation package.');
+        vscode.window.showInformationMessage('Vscode-Antimony will not install without python3.9.');
       }
     });
   } else {
