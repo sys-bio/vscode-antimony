@@ -17,6 +17,7 @@ import { modelSearchInput } from './modelBrowse';
 import { ProgressLocation, TextDocument, window } from 'vscode';
 // import { exec } from 'child_process';
 import * as shell from 'shelljs'
+import * as child_process from 'child_process';
 
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
@@ -669,6 +670,22 @@ async function updateDecorations() {
 // ****** virtual environment functions ******
 
 const platform = os.platform().toString();
+const isAppleSilicon = process.arch === 'arm64';
+
+function checkPython39Exists(): Promise<boolean> {
+  return new Promise<boolean>((resolve, reject) => {
+    // Execute the `python3.9 --version` command to check if Python 3.9 is installed
+    child_process.exec('python3.9 --version', (error, stdout, stderr) => {
+      if (error) {
+        // The command failed, indicating that Python 3.9 is not installed
+        resolve(false);
+      } else {
+        // The command succeeded, indicating that Python 3.9 is installed
+        resolve(true);
+      }
+    });
+  });
+}
 
 function activateVirtualEnv(pythonPath) {
   if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter').toString() !== pythonPath.toString()) {
@@ -679,8 +696,6 @@ function activateVirtualEnv(pythonPath) {
 
 // setup virtual environment
 export async function createVirtualEnv(context: vscode.ExtensionContext) {
-  const isAppleSilicon = process.arch === 'arm64';
-
   await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 
   const venvPaths = {
@@ -710,6 +725,8 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
       showInstallPackageMessage("https://github.com/sys-bio/vscode-antimony#installation-required-1");
     } else if (!fs.existsSync(darwinPackagePath) && platform === 'darwin' && isAppleSilicon) {
       showInstallPackageMessage("https://github.com/sys-bio/vscode-antimony#installation-required-1");
+    } else if (platform === 'darwin' && !isAppleSilicon && !checkPython39Exists()) {
+      showInstallPackageMessage("https://github.com/sys-bio/vscode-antimony#installation-required-1");
     } else {
       vscode.window.showInformationMessage(message, { modal: true }, ...['Yes', 'No'])
         .then(async selection => {
@@ -724,7 +741,8 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 }
 
 function showInstallPackageMessage(link: string) {
-  vscode.window.showInformationMessage("The required installation package has not been downloaded. Open link to installation instructions?", { modal: true }, ...['Yes', 'No'])
+  if (platform === 'darwin' && !isAppleSilicon ) {
+    vscode.window.showInformationMessage("The python3.9 has not been downloaded from python.org. Open link to installation instructions?", { modal: true }, ...['Yes', 'No'])
     .then(async selection => {
       if (selection === 'Yes') {
         vscode.env.openExternal(vscode.Uri.parse(link));
@@ -737,6 +755,21 @@ function showInstallPackageMessage(link: string) {
         vscode.window.showInformationMessage('Vscode-Antimony will not install without the required installation package.');
       }
     });
+  } else {
+    vscode.window.showInformationMessage("The required installation package has not been downloaded. Open link to installation instructions?", { modal: true }, ...['Yes', 'No'])
+    .then(async selection => {
+      if (selection === 'Yes') {
+        vscode.env.openExternal(vscode.Uri.parse(link));
+        const action = 'Reload';
+        vscode.window.showInformationMessage("Once the installation package is downloaded, press Yes to restart window", { modal: true }, "Yes")
+          .then(() => {
+            vscode.commands.executeCommand('workbench.action.reloadWindow');
+          });
+      } else if (selection === 'No') {
+        vscode.window.showInformationMessage('Vscode-Antimony will not install without the required installation package.');
+      }
+    });
+  }
 }
 
 async function installEnv() {
