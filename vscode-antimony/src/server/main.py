@@ -325,10 +325,15 @@ def get_model(ls: LanguageServer, args):
     )
     response = requests.get(model_download_url, stream=True)
     extract = zipfile.ZipFile(io.BytesIO(response.content))
+    file_name = extract.namelist()[0]
+    if file_name.lower().endswith(".omex"):
+        return {
+            'error': 'Cannot open COMBINE archive file'
+        }
     data = io.TextIOWrapper(extract.open(extract.namelist()[0]), encoding="utf-8", newline="").read()
     extract.close()
     return {
-        "filename": extract.namelist()[0],
+        "filename": file_name,
         "data": data
     }
 

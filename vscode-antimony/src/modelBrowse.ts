@@ -68,6 +68,10 @@ export async function modelSearchInput(context: ExtensionContext, initialEntity:
 			cancellable: true
 		}, (progress, token) => {
             return commands.executeCommand('antimony.getModel', query).then(async (result) => {
+                if (result["error"]) {
+                    window.showErrorMessage(result["error"])
+                    return
+                }
                 xmlData = result["data"]
                 xmlName = result["filename"]
                 await processFile(xmlName)
