@@ -15,7 +15,6 @@ import { AntimonyEditorProvider } from './AntimonyEditor';
 import { browseBioModels } from './modelBrowse';
 import { TextDocument } from 'vscode';
 import { createVirtualEnv, venvErrorFix } from './installation';
-import { switchIndicationOff, switchIndicationOn, triggerUpdateDecorations } from './annotationHighlight';
 
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
@@ -496,5 +495,112 @@ class AntCodeLensProvider implements vscode.CodeLensProvider {
       return [codeLens];
     }
     return [];
+  }
+}
+
+// ****** annotation decoration helper functions ******
+
+// timer for non annotated variable visual indicator
+let timeout: NodeJS.Timer | undefined = undefined;
+
+// User Setting Configuration for Switching Annotations On/Off
+
+// Decoration type for annotated variables
+const annDecorationType = vscode.window.createTextEditorDecorationType({
+  backgroundColor: vscode.workspace.getConfiguration('vscode-antimony').get('highlightColor'),
+});
+
+export async function switchIndicationOff(context: vscode.ExtensionContext) {
+  // wait till client is ready, or the Python server might not have started yet.
+  // note: this is necessary for any command that might use the Python language server.
+  if (!client) {
+    utils.pythonInterpreterError();
+    return;
+  }
+  await client.onReady();
+
+  await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+
+  annDecorationType.dispose();
+
+  vscode.workspace.getConfiguration('vscode-antimony').update('annotatedVariableIndicatorOn', false, true);
+}
+
+export async function switchIndicationOn(context: vscode.ExtensionContext) {
+  // wait till client is ready, or the Python server might not have started yet.
+  // note: this is necessary for any command that might use the Python language server.
+  if (!client) {
+    utils.pythonInterpreterError();
+    return;
+  }
+  await client.onReady();
+
+  await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+
+  await vscode.workspace.getConfiguration('vscode-antimony').update('annotatedVariableIndicatorOn', true, true);
+
+  setTimeout(() => {
+    vscode.commands.executeCommand('workbench.action.reloadWindow');
+  }, 2000);
+}
+
+// change the highlight of non-annotated variables
+async function updateDecorations() {
+  let annVars: string;
+  let regexFromAnnVarsHelp: RegExp;
+  let regexFromAnnVars: RegExp;
+  let config =  vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
+
+  const doc = activeEditor.document;
+  const uri = doc.uri.toString();
+
+  // wait till client is ready, or the Python server might not have started yet.
+  // note: this is necessary for any command that might use the Python language server.
+  if (!client) {
+      utils.pythonInterpreterError();
+      return;
+  }
+  await client.onReady();
+
+  if (config === true) {
+      vscode.commands.executeCommand('antimony.getAnnotation', uri).then(async (result: string) => {
+
+      annVars = result;
+      if (annVars == "" || annVars == null || annVars == " "){
+          vscode.workspace.getConfiguration('vscode-antimony').update('annotatedVariableIndicatorOn', false, true);
+          annDecorationType.dispose();
+          return;
+      }
+      regexFromAnnVarsHelp = new RegExp(annVars,'g');
+      regexFromAnnVars = new RegExp('\\b(' + regexFromAnnVarsHelp.source + ')\\b', 'g');
+
+      if (!activeEditor) {
+          return;
+      }
+
+      const text = activeEditor.document.getText();
+      const annotated: vscode.DecorationOptions[] = [];
+      let match;
+      while ((match = regexFromAnnVars.exec(text))) {
+          const startPos = activeEditor.document.positionAt(match.index);
+          const endPos = activeEditor.document.positionAt(match.index + match[0].length);
+          const decoration = { range: new vscode.Range(startPos, endPos) };
+          annotated.push(decoration);
+      }
+      activeEditor.setDecorations(annDecorationType, annotated);
+      });
+  }
+}
+
+// update the decoration once in a certain time (throttle)
+export function triggerUpdateDecorations(throttle = false) {
+  if (timeout) {
+    clearTimeout(timeout);
+    timeout = undefined;
+  }
+  if (throttle) {
+    timeout = setTimeout(updateDecorations, 500);
+  } else {
+    updateDecorations();
   }
 }
