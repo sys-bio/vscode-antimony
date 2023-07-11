@@ -477,9 +477,8 @@ export function deactivate(): Thenable<void> | undefined {
 function promptToReloadWindow(message: string) {
 	const action = 'Reload';
   
-	vscode.window
-	  .showInformationMessage(
-		message,
+	vscode.window.showInformationMessage(
+	  message,
     {modal: true},
 		action)
 	  .then(selectedAction => {
@@ -640,32 +639,31 @@ async function updateDecorations() {
   await client.onReady();
 
 	if (config === true) {
-		vscode.commands.executeCommand('antimony.getAnnotation', uri).then(async (result: string) => {
-
-			annVars = result;
-			if (annVars == "" || annVars == null || annVars == " "){
-				vscode.workspace.getConfiguration('vscode-antimony').update('annotatedVariableIndicatorOn', false, true);
-				annDecorationType.dispose();
-				return;
-			}
-			regexFromAnnVarsHelp = new RegExp(annVars,'g');
-			regexFromAnnVars = new RegExp('\\b(' + regexFromAnnVarsHelp.source + ')\\b', 'g');
-
-			if (!activeEditor) {
-				return;
-			}
-
-			const text = activeEditor.document.getText();
-			const annotated: vscode.DecorationOptions[] = [];
-			let match;
-			while ((match = regexFromAnnVars.exec(text))) {
-				const startPos = activeEditor.document.positionAt(match.index);
-				const endPos = activeEditor.document.positionAt(match.index + match[0].length);
-				const decoration = { range: new vscode.Range(startPos, endPos) };
-					annotated.push(decoration);
-			}
-			activeEditor.setDecorations(annDecorationType, annotated);
-		});
+	  vscode.commands.executeCommand('antimony.getAnnotation', uri).then(async (result: string) => {
+      annVars = result;
+      if (annVars == "" || annVars == null || annVars == " "){
+        vscode.workspace.getConfiguration('vscode-antimony').update('annotatedVariableIndicatorOn', false, true);
+        annDecorationType.dispose();
+        return;
+      }
+      regexFromAnnVarsHelp = new RegExp(annVars,'g');
+      regexFromAnnVars = new RegExp('\\b(' + regexFromAnnVarsHelp.source + ')\\b', 'g');
+  
+      if (!activeEditor) {
+        return;
+      }
+  
+      const text = activeEditor.document.getText();
+      const annotated: vscode.DecorationOptions[] = [];
+      let match;
+      while ((match = regexFromAnnVars.exec(text))) {
+        const startPos = activeEditor.document.positionAt(match.index);
+        const endPos = activeEditor.document.positionAt(match.index + match[0].length);
+        const decoration = { range: new vscode.Range(startPos, endPos) };
+        annotated.push(decoration);
+      }
+      activeEditor.setDecorations(annDecorationType, annotated);
+    });
 	}
 }
 
@@ -715,9 +713,9 @@ async function executeProgressBar(filePath: string) {
       { modal: true },
       action
       ).then(selectedAction => {
-      if (selectedAction === action) {
-        vscode.commands.executeCommand('workbench.action.reloadWindow');
-      }
+        if (selectedAction === action) {
+          vscode.commands.executeCommand('workbench.action.reloadWindow');
+        }
       });
   } catch (error) {
     const isAppleSilicon = process.arch === 'arm64';
@@ -743,8 +741,8 @@ async function executeProgressBar(filePath: string) {
       await vscode.window.showErrorMessage(
         "Once window is reloaded, right click and press 'Delete Virtual Environment'. Installation Error. Try again.",
         { modal: true }, "Reload window"
-      ).then(() => {
-        vscode.commands.executeCommand('workbench.action.reloadWindow');
+        ).then(() => {
+          vscode.commands.executeCommand('workbench.action.reloadWindow');
       });
     }
   }
@@ -759,13 +757,6 @@ async function progressBar(filePath: string) {
     },
     async (progress, token) => {
       await new Promise<void>((resolve, reject) => {
-        token.onCancellationRequested(() => {
-          // Handle cancellation here, e.g., stop the execution of the shell script
-          // You can add code to cleanup or handle cancellation gracefully
-          // For example, you can kill the child process or remove temporary files
-          reject(new Error("Installation cancelled."));
-        });
-
         shell.exec(`${filePath}`, (err, stdout, stderr) => {
           if (err) {
             // Handle the error from the shell script execution
@@ -794,65 +785,65 @@ async function progressBar(filePath: string) {
 
 async function installEnv() {
   if (process.env.VIRTUAL_ENV) {
-	const virtualEnvPath = process.env.VIRTUAL_ENV;
-	if (virtualEnvPath !== path.normalize(os.homedir() + '/vscode_antimony_virtual_env')) {
-	  await vscode.window.showInformationMessage(`Deactivate current active virtual environment before allowing antimony virtual environment installation.`, action).then((selectedAction) => {
-		if (selectedAction === action) {
-		  vscode.commands.executeCommand('workbench.action.reloadWindow');
-		}
-	  });
-	} else {
-	  let shellScriptPath;
-
-	  if (platform === 'darwin') {
-		  const isAppleSilicon = process.arch === 'arm64';
-      if (isAppleSilicon) {
-        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
-      } else {
-        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvIntelMac.sh');
-      }
-	  } else if (platform === 'win32' || platform === 'win64') {
-		  shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
-	  } else if (platform === 'linux') {
-		  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
+  	const virtualEnvPath = process.env.VIRTUAL_ENV;
+  	if (virtualEnvPath !== path.normalize(os.homedir() + '/vscode_antimony_virtual_env')) {
+  	  await vscode.window.showInformationMessage(`Deactivate current active virtual environment before allowing antimony virtual environment installation.`, action).then((selectedAction) => {
+  		if (selectedAction === action) {
+  		  vscode.commands.executeCommand('workbench.action.reloadWindow');
+  		}
+  	  });
 	  } else {
-		  console.error('Unsupported platform:', platform);
-		  return;
-	  }
+	    let shellScriptPath;
 
-	  const userIsSpaced = os.userInfo().username.includes(' ');
-	  if (userIsSpaced) {
-		  await executeProgressBar(`"${shellScriptPath}"`);
-	  } else {
-		  await executeProgressBar(shellScriptPath);
+  	  if (platform === 'darwin') {
+  		  const isAppleSilicon = process.arch === 'arm64';
+        if (isAppleSilicon) {
+          shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
+        } else {
+          shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvIntelMac.sh');
+        }
+  	  } else if (platform === 'win32' || platform === 'win64') {
+  		  shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
+  	  } else if (platform === 'linux') {
+  		  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
+  	  } else {
+  		  console.error('Unsupported platform:', platform);
+  		  return;
+  	  }
+
+	    const userIsSpaced = os.userInfo().username.includes(' ');
+  	  if (userIsSpaced) {
+  		  await executeProgressBar(`"${shellScriptPath}"`);
+  	  } else {
+  		  await executeProgressBar(shellScriptPath);
+  	  }
 	  }
-	}
   } else {
-	let shellScriptPath;
-
-	if (platform === 'darwin') {
-	  const isAppleSilicon = process.arch === 'arm64';
-
-	  if (isAppleSilicon) {
-		  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
-	  } else {
-		  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvIntelMac.sh');
-	  }
-	} else if (platform === 'win32' || platform === 'win64') {
-	  shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
-	} else if (platform === 'linux') {
-	  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
-	} else {
-	  console.error('Unsupported platform:', platform);
-	  return;
-	}
-
-	const userIsSpaced = os.userInfo().username.includes(' ');
-	if (userIsSpaced) {
-		await executeProgressBar(`"${shellScriptPath}"`);
-	} else {
-		await executeProgressBar(shellScriptPath);
-	}
+  	let shellScriptPath;
+  
+  	if (platform === 'darwin') {
+  	  const isAppleSilicon = process.arch === 'arm64';
+  
+  	  if (isAppleSilicon) {
+  		  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
+  	  } else {
+  		  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvIntelMac.sh');
+  	  }
+  	} else if (platform === 'win32' || platform === 'win64') {
+  	  shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
+  	} else if (platform === 'linux') {
+  	  shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
+  	} else {
+  	  console.error('Unsupported platform:', platform);
+  	  return;
+  	}
+  
+  	const userIsSpaced = os.userInfo().username.includes(' ');
+  	if (userIsSpaced) {
+  		await executeProgressBar(`"${shellScriptPath}"`);
+  	} else {
+  		await executeProgressBar(shellScriptPath);
+  	}
   }
 }
 
