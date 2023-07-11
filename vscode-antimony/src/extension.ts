@@ -679,6 +679,8 @@ function activateVirtualEnv(pythonPath) {
 
 // setup virtual environment
 export async function createVirtualEnv(context: vscode.ExtensionContext) {
+  const isAppleSilicon = process.arch === 'arm64';
+
   await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 
   const venvPaths = {
@@ -698,7 +700,7 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 
     if (!fs.existsSync(win32Win64PackagePath) && (platform === 'win32' || platform === 'win64')) {
       showInstallPackageMessage("https://github.com/sys-bio/vscode-antimony#installation-required-1");
-    } else if (!fs.existsSync(darwinPackagePath) && platform === 'darwin') {
+    } else if (!fs.existsSync(darwinPackagePath) && platform === 'darwin' && isAppleSilicon) {
       showInstallPackageMessage("https://github.com/sys-bio/vscode-antimony#installation-required-1");
     } else {
       vscode.window.showInformationMessage(message, { modal: true }, ...['Yes', 'No'])
