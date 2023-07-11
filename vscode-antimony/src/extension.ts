@@ -479,7 +479,7 @@ function promptToReloadWindow(message: string) {
   
 	vscode.window.showInformationMessage(
 	  message,
-    {modal: true},
+    {modal: true}, 
 		action)
 	  .then(selectedAction => {
 		  if (selectedAction === action) {
