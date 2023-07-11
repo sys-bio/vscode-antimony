@@ -5,6 +5,12 @@ import * as vscode from 'vscode'
 import * as path from 'path'
 import * as fs from 'fs';
 import * as os from 'os';
+import {
+    LanguageClient
+  } from 'vscode-languageclient/node';
+  import * as utils from './utils/utils';
+  
+  let client: LanguageClient | null = null;
 
 export async function modelSearchInput(context: ExtensionContext, initialEntity: string = null, selectedType: string = null) {
     var xmlData;
@@ -324,4 +330,22 @@ export class MultiStepInput {
             disposables.forEach(d => d.dispose());
         }
     }
+}
+
+// search for biomodels
+export async function browseBioModels(context: vscode.ExtensionContext, args: any[]) {
+  // wait till client is ready, or the Python server might not have started yet.
+  // note: this is necessary for any command that might use the Python language server.
+  if (!client) {
+    utils.pythonInterpreterError();
+    return;
+  }
+  await client.onReady();
+  await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+
+  // not await null, change it after adding a function to parse search input
+  await new Promise<void>((resolve, reject) => {
+    modelSearchInput(context);
+    resolve()
+  });
 }

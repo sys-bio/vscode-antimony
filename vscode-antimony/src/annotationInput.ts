@@ -7,10 +7,17 @@
 import { QuickPickItem, window, Disposable, QuickInputButton, QuickInput, ExtensionContext, QuickInputButtons, commands, QuickPick } from 'vscode';
 import { sleep } from './utils/utils';
 import { ProgressLocation } from 'vscode'
+import * as vscode from 'vscode';
+import {
+  LanguageClient
+} from 'vscode-languageclient/node';
+import * as utils from './utils/utils';
+
+let client: LanguageClient | null = null;
 
 /**
  * A multi-step input using window.createQuickPick() and window.createInputBox().
- * 
+ *
  * This first part uses the helper class `MultiStepInput` that wraps the API for the multi-step case.
  */
 export async function annotationMultiStepInput(context: ExtensionContext, initialEntity: string = null) {
@@ -85,10 +92,10 @@ export async function annotationMultiStepInput(context: ExtensionContext, initia
             return;
         }
         window.withProgress({
-			location: ProgressLocation.Notification,
-			title: "Searching for annotations...",
-			cancellable: true
-		}, (progress, token) => {
+            location: ProgressLocation.Notification,
+            title: "Searching for annotations...",
+            cancellable: true
+        }, (progress, token) => {
             return commands.executeCommand('antimony.sendQuery', database, query).then(async (result) => {
                 await input.onQueryResults(result);
             });
@@ -331,4 +338,94 @@ export class MultiStepInput {
             disposables.forEach(d => d.dispose());
         }
     }
+}
+
+export async function createAnnotationDialog(context: vscode.ExtensionContext, args: any[]) {
+  // wait till client is ready, or the Python server might not have started yet.
+  // note: this is necessary for any command that might use the Python language server.
+  if (!client) {
+    utils.pythonInterpreterError();
+    return;
+  }
+  await client.onReady();
+  await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+
+  // dialog for annotation
+  const selection = vscode.window.activeTextEditor.selection;
+
+  // get the selected text
+  const doc = vscode.window.activeTextEditor.document;
+  const uri = doc.uri.toString();
+  const selectedText = doc.getText(selection);
+
+  if (selectedText === "") {
+    vscode.window.showErrorMessage("Please select a variable to annotate.");
+    return;
+  }
+
+  // get the position for insert
+  let line = selection.start.line;
+
+  while (line <= doc.lineCount - 1) {
+    const text = doc.lineAt(line).text;
+    if (text.localeCompare("end", undefined, { sensitivity: 'accent' }) === 0) {
+      line -= 1;
+      break;
+    }
+    line += 1;
+  }
+
+  const positionAt = selection.anchor;
+  const lineStr = positionAt.line.toString();
+  const charStr = positionAt.character.toString();
+  const initialEntity = selectedText || 'entityName';
+  let initialQuery;
+  // get current file
+  if (args.length === 2) {
+    initialQuery = args[1];
+  } else {
+    initialQuery = selectedText;
+  }
+
+  const selectedItem = await annotationMultiStepInput(context, initialQuery);
+  await insertAnnotation(selectedItem, initialEntity, line);
+}
+
+export async function insertAnnotation(selectedItem, entityName, line) {
+    const entity = selectedItem.entity;
+    const id = entity['id'];
+    const prefix = entity['prefix'];
+    let snippetText;
+    if (prefix === 'rhea') {
+      snippetText = `\n\${1:${entityName}} identity "https://www.rhea-db.org/rhea/${id}"`;
+    } else if (prefix === 'ontology') {
+      snippetText = `\n\${1:${entityName}} identity "${entity['iri']}"`;
+    } else {
+      snippetText = `\n\${1:${entityName}} identity "http://identifiers.org/${prefix}/${id}"`;
+    }
+    const snippetStr = new vscode.SnippetString(snippetText);
+    const doc = vscode.window.activeTextEditor.document;
+    const pos = doc.lineAt(line).range.end;
+    vscode.window.activeTextEditor.insertSnippet(snippetStr, pos);
+}
+
+export async function navigateAnnotation(context: vscode.ExtensionContext, args: any[]) {
+  await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+
+  // dialog for annotation
+  const selection = vscode.window.activeTextEditor.selection;
+
+  // get the selected text
+  const doc = vscode.window.activeTextEditor.document;
+  const uri = doc.uri.toString();
+  const text = doc.getText();
+  const ind = text.indexOf("http");
+
+  if (ind !== -1) {
+    const position = doc.positionAt(ind);
+    vscode.window.activeTextEditor.selection = new vscode.Selection(position, position);
+    vscode.window.activeTextEditor.revealRange(new vscode.Range(position, position), vscode.TextEditorRevealType.InCenter);
+  } else {
+    vscode.window.showWarningMessage("No annotations found.");
+  }
 }

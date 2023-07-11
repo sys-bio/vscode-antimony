@@ -6,6 +6,13 @@
 
 import * as vscode from 'vscode';
 import { QuickPickItem, window, Disposable, QuickInputButton, QuickInput, ExtensionContext, QuickInputButtons, QuickPick } from 'vscode';
+import {
+    LanguageClient
+  } from 'vscode-languageclient/node';
+import * as utils from './utils/utils';
+
+
+let client: LanguageClient | null = null;
 
 /**
  * A multi-step input using window.createQuickPick() and window.createInputBox().
@@ -286,3 +293,31 @@ export class MultiStepInput {
         }
     }
 }
+
+// insert rate law
+export async function insertRateLawDialog(context: vscode.ExtensionContext, args: any[]) {
+    // wait till client is ready, or the Python server might not have started yet.
+    // note: this is necessary for any command that might use the Python language server.
+    if (!client) {
+      utils.pythonInterpreterError();
+      return;
+    }
+    await client.onReady();
+    await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup")
+  
+    // Get the current focused document
+    const doc = vscode.window.activeTextEditor.document
+  
+    // Obtain line number position of cursor right click
+    const selectionCol = vscode.window.activeTextEditor.selection.active
+    const lineNum = doc.lineAt(selectionCol).lineNumber;
+  
+    // Obtain text of the line number position
+    const selectedLine = doc.lineAt(selectionCol);
+    const selectedText = selectedLine.text;
+  
+    await new Promise<void>((resolve, reject) => {
+      rateLawSingleStepInput(context, lineNum, selectedText);
+      resolve()
+    });
+  }
