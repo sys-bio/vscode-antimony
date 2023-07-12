@@ -6,9 +6,10 @@ import * as fs from 'fs';
 
 const platform = os.platform().toString();
 const action = 'Reload';
+const isAppleSilicon = process.arch === 'arm64';
 
 function activateVirtualEnv(pythonPath) {
-  if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter') !== pythonPath) {
+  if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter').toString() !== pythonPath.toString()) {
     vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', pythonPath, true);
     vscode.window.showInformationMessage('Virtual environment exists, it is activated now.');
   }
@@ -19,14 +20,21 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
   await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 
   const venvPaths = {
-    darwin: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python"),
-    win32: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"),
-    win64: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"),
+    darwin: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9"),
+    win32: path.normalize(os.homedir() + "\\vscode_antimony_virtual_env\\Scripts\\python.exe"),
+    win64: path.normalize(os.homedir() + "\\vscode_antimony_virtual_env\\Scripts\\python.exe"),
+    linux: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"),
+  };
+
+  const interpPaths = {
+    darwin: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9"),
+    win32: path.normalize(os.homedir() + "\\vscode_antimony_virtual_env\\Scripts\\python"),
+    win64: path.normalize(os.homedir() + "\\vscode_antimony_virtual_env\\Scripts\\python"),
     linux: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"),
   };
 
   if (fs.existsSync(venvPaths[platform])) {
-    activateVirtualEnv(venvPaths[platform]);
+    activateVirtualEnv(interpPaths[platform]);
   } else {
     let message = `To install dependencies so the extension works properly, allow installation of virtual environment`;
 
@@ -35,12 +43,13 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
 
     if (!fs.existsSync(win32Win64PackagePath) && (platform === 'win32' || platform === 'win64')) {
       showInstallPackageMessage("https://github.com/sys-bio/vscode-antimony#installation-required-1");
-    } else if (!fs.existsSync(darwinPackagePath) && platform === 'darwin') {
+    } else if (!fs.existsSync(darwinPackagePath) && platform === 'darwin' && isAppleSilicon) {
       showInstallPackageMessage("https://github.com/sys-bio/vscode-antimony#installation-required-1");
     } else {
       vscode.window.showInformationMessage(message, { modal: true }, ...['Yes', 'No'])
         .then(async selection => {
           if (selection === 'Yes') {
+            vscode.env.openExternal(vscode.Uri.parse("https://github.com/sys-bio/vscode-antimony#installation-required-1"));
             installEnv();
           } else if (selection === 'No') {
             vscode.window.showInformationMessage('The default python interpreter will be used.');
@@ -70,7 +79,6 @@ async function installEnv() {
   let shellScriptPath;
 
   if (platform === 'darwin') {
-    const isAppleSilicon = process.arch === 'arm64';
     shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', isAppleSilicon ? 'virtualEnvSilicon.sh' : 'virtualEnvIntelMac.sh');
   } else if (platform === 'win32' || platform === 'win64') {
     shellScriptPath = path.join(__dirname, '..', 'src', 'server', 'virtualEnvWin.bat');
@@ -82,11 +90,11 @@ async function installEnv() {
   }
 
   const virtualEnvPath = process.env.VIRTUAL_ENV;
-  if (virtualEnvPath && virtualEnvPath !== path.normalize(os.homedir() + '/vscode_antimony_virtual_env')) {
+  if (virtualEnvPath && virtualEnvPath !== path.normalize(os.homedir() + '/vscode_antimony_virtual_env').toString()) {
     await vscode.window.showInformationMessage(`Deactivate current active virtual environment before allowing antimony virtual environment installation.`, action).then((selectedAction) => {
-    if (selectedAction === action) {
-      vscode.commands.executeCommand('workbench.action.reloadWindow');
-    }
+      if (selectedAction === action) {
+        vscode.commands.executeCommand('workbench.action.reloadWindow');
+      }
     });
   } else {
     const userIsSpaced = os.userInfo().username.includes(' ');
@@ -99,23 +107,22 @@ async function executeProgressBar(filePath: string) {
     await progressBar(filePath);
     showInstallationFinishedMessage();
   } catch (error) {
-    const isAppleSilicon = process.arch === 'arm64';
-    if (isAppleSilicon) {
+    if (platform === 'darwin') {
     showInstallationErrorMessage(
       `Installation Error. Download Python3.9. Click "Retry" once Python3.9 has been installed. Link: https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg.`,
       () => {
-      console.log(error)
-      let shellScriptPath: string;
-      shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvIntelMac.sh');
-      progressBar(shellScriptPath).then(() => {
-        showInstallationFinishedMessage();
-      });
+        console.log(error)
+        let shellScriptPath: string;
+        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvIntelMac.sh');
+        progressBar(shellScriptPath).then(() => {
+          showInstallationFinishedMessage();
+        });
       }
     );
     } else {
-    showInstallationErrorMessage("Once window is reloaded, right click and press 'Delete Virtual Environment'. Installation Error. Try again.", () => {
-      vscode.commands.executeCommand('workbench.action.reloadWindow');
-    });
+      showInstallationErrorMessage("Once window is reloaded, right click and press 'Delete Virtual Environment'. Installation Error. Try again.", () => {
+        vscode.commands.executeCommand('workbench.action.reloadWindow');
+      });
     }
   }
 }
@@ -135,9 +142,9 @@ function showInstallationFinishedMessage() {
 function showInstallationErrorMessage(message: string, retryCallback: () => void) {
   vscode.window.showErrorMessage(message, { modal: true }, "Retry")
     .then(async selection => {
-    if (selection === 'Retry') {
-      retryCallback();
-    }
+      if (selection === 'Retry') {
+        retryCallback();
+      }
     });
 }
 
@@ -151,10 +158,10 @@ async function progressBar(filePath: string) {
     async (progress, token) => {
       await new Promise<void>((resolve, reject) => {
         shell.exec(`${filePath}`, (err, stdout, stderr) => {
-          if (err || stderr) {
+          if (err) {
             // Handle the error from the shell script execution
             reject(err);
-			return err;
+			      return err;
           } else {
             // Continue with the progress if no error occurred
             const interpreterPaths = {
@@ -192,7 +199,7 @@ export async function venvErrorFix() {
   }
 }
 
- async function deleteVirtualEnv(message) {
+async function deleteVirtualEnv(message) {
   vscode.window.showInformationMessage(message, { modal: true }, ...['Yes', 'No'])
     .then(async selection => {
       // installing virtual env
