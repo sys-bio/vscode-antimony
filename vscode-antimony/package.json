@@ -178,17 +178,6 @@
 					"ant"
 				],
 				"configuration": "./language-configuration.json"
-			},
-			{
-				"id": "plaintext",
-				"extensions": [
-					".txt"
-				],
-				"aliases": [
-					"Text",
-					"text",
-					"txt"
-				]
 			}
 		],
 		"menus": {

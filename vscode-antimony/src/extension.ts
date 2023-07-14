@@ -49,8 +49,11 @@ export async function activate(context: vscode.ExtensionContext) {
   const doc = vscode.window.activeTextEditor.document;
   const uri = doc.uri.toString();
   const fileExtension = path.extname(uri);
-  if (fileExtension === '.txt') {
-    vscode.window.showInformationMessage('Please save the file as .ant to use VSCode-Antimony, otherwise ignore');
+  if (fileExtension !== '.ant' && fileExtension !== '.xml') {
+    if (fileExtension === '.txt') {
+      vscode.window.showInformationMessage('Please save the file as .ant to use VSCode-Antimony, otherwise ignore');
+      return;
+    }
     return;
   }
 
