@@ -52,7 +52,6 @@ export async function activate(context: vscode.ExtensionContext) {
   if (fileExtension !== '.ant' && fileExtension !== '.xml') {
     if (fileExtension === '.txt') {
       vscode.window.showInformationMessage('Please save the file as .ant to use VSCode-Antimony, otherwise ignore');
-      return;
     }
     return;
   }
