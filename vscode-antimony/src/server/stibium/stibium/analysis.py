@@ -25,6 +25,8 @@ UNDERSCORE = "_"
 ONTOLOGIES_URL = "http://www.ebi.ac.uk/ols/api/ontologies/"
 ONTOLOGIES_URL_SECOND_PART = "/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F"
 
+vscode_logger = logging.getLogger("vscode-antimony logger")
+
 def get_qname_at_position(root: FileNode, pos: SrcPosition) -> Optional[QName]:
     '''Returns (context, token) the given position. `token` may be None if not found.
     '''
@@ -330,7 +332,7 @@ class AntTreeAnalyzer:
             elif isinstance(child, VarName):
                 name = child.get_name()
                 used.add(name)
-                if name not in params:
+                if name not in params and not functions.is_reserved_name(name.text):
                     self.error.append(RefUndefined(name.range, name.text))
             elif hasattr(child, 'children') and child.children != None:
                 used = set.union(used, self.check_expr_undefined(params, child))
@@ -473,6 +475,7 @@ class AntTreeAnalyzer:
         else:
             expr = cast(TrunkNode, expr)
             for leaf in expr.scan_leaves():
+                vscode_logger.info(f"leaf: {leaf}")
                 if type(leaf) == Name:
                     leaf = cast(Name, leaf)
                     if insert:

@@ -41,9 +41,9 @@ import zipfile
 import io
 
 # TODO remove this for production
-# logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
-# vscode_logger = logging.getLogger("vscode-antimony logger")
-# vscode_logger.addHandler(logging.FileHandler('vscode-antimony-ext.log', mode="w"))
+logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
+vscode_logger = logging.getLogger("vscode-antimony logger")
+vscode_logger.addHandler(logging.FileHandler('vscode-antimony-ext.log', mode="w"))
 
 server = LanguageServer()
 services = WebServices()
