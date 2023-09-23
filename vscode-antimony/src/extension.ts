@@ -217,7 +217,7 @@ export async function activate(context: vscode.ExtensionContext) {
     triggerSBMLEditor(vscode.window.activeTextEditor.document, sbmlFileNameToPath);
   }
   console.log('check sbml')
-  const bool = await vscode.commands.executeCommand('antimony.checkSbml', doc.getText());
+  const bool = await vscode.commands.executeCommand('antimony.checkSbml', doc.uri.path);
   console.log("checked sbml")
 }
 

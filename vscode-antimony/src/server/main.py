@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.join(EXTENSION_ROOT, "..", "pythonFiles", "lib", "pyt
 
 import antimony
 
-import libsbml
+from libsbml import *
 
 sys.path.append(os.path.join(EXTENSION_ROOT, "server", "stibium"))
 
@@ -244,10 +244,11 @@ def get_rate_law_dict(ls: LanguageServer, args):
 @server.thread()
 @server.command('antimony.checkSbml')
 def check_sbml(ls: LanguageServer, args):
-  sbml = '\n'.join(args[0].split('\n')[1:])
-  sbml_doc = libsbml.readSBMLFromString(sbml)
+#   sbml = '\n'.join(args[0].split('\n')[1:])
+  sbml = args[0]
+  sbml_doc = readSBML(sbml)
   vscode_logger.info('parsed sbml: ')
-  vscode_logger.info(sbml_doc)
+  vscode_logger.info(sbml_doc.getListOfAllElements())
   return True
 
 # @server.thread()
