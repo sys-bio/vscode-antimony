@@ -216,7 +216,11 @@ export async function activate(context: vscode.ExtensionContext) {
   if (path.extname(vscode.window.activeTextEditor.document.fileName) === '.xml' && roundTripping) {
     triggerSBMLEditor(vscode.window.activeTextEditor.document, sbmlFileNameToPath);
   }
+  console.log('check sbml')
+  const bool = await vscode.commands.executeCommand('antimony.checkSbml', doc.getText());
+  console.log("checked sbml")
 }
+
 
 async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<any, any>) {
   await client.onReady();

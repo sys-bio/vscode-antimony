@@ -53,15 +53,6 @@ services = WebServices()
 antfile_cache = None
 uri = None
 
-#### Check sbml files ####
-@server.command('antimony.checkSbml')
-def check_sbml(ls: LanguageServer, args):
-  sbml = '\n'.join(args[0].split('\n')[1:])
-  sbml_doc = libsbml.readSBMLFromString(sbml)
-  vscode_logger.info('parsed sbml: ')
-  vscode_logger.info(sbml_doc)
-  return True
-
 #### Annotations ####
 @server.command('antimony.getAnnotated')
 def get_annotated(ls: LanguageServer, args):
@@ -248,6 +239,16 @@ def get_rate_law_dict(ls: LanguageServer, args):
             'error': 'Rate law already exists.'
         }
     return reader.relevant_rate_laws
+
+#### Check sbml files ####
+@server.thread()
+@server.command('antimony.checkSbml')
+def check_sbml(ls: LanguageServer, args):
+  sbml = '\n'.join(args[0].split('\n')[1:])
+  sbml_doc = libsbml.readSBMLFromString(sbml)
+  vscode_logger.info('parsed sbml: ')
+  vscode_logger.info(sbml_doc)
+  return True
 
 # @server.thread()
 # @server.command('antimony.recommender')
