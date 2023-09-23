@@ -10,6 +10,8 @@ sys.path.insert(0, os.path.join(EXTENSION_ROOT, "..", "pythonFiles", "lib", "pyt
 
 import antimony
 
+import libsbml
+
 sys.path.append(os.path.join(EXTENSION_ROOT, "server", "stibium"))
 
 from stibium.parse import AntimonyParser
@@ -41,9 +43,9 @@ import zipfile
 import io
 
 # TODO remove this for production
-# logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
-# vscode_logger = logging.getLogger("vscode-antimony logger")
-# vscode_logger.addHandler(logging.FileHandler('vscode-antimony-ext.log', mode="w"))
+logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
+vscode_logger = logging.getLogger("vscode-antimony logger")
+vscode_logger.addHandler(logging.FileHandler('vscode-antimony-ext.log', mode="w"))
 
 server = LanguageServer()
 services = WebServices()
@@ -51,6 +53,14 @@ services = WebServices()
 antfile_cache = None
 uri = None
 
+#### Check sbml files ####
+@server.command('antimony.checkSbml')
+def check_sbml(ls: LanguageServer, args):
+  sbml = '\n'.join(args[0].split('\n')[1:])
+  sbml_doc = libsbml.readSBMLFromString(sbml)
+  vscode_logger.info('parsed sbml: ')
+  vscode_logger.info(sbml_doc)
+  return True
 
 #### Annotations ####
 @server.command('antimony.getAnnotated')
