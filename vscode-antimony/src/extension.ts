@@ -216,15 +216,31 @@ export async function activate(context: vscode.ExtensionContext) {
   if (path.extname(vscode.window.activeTextEditor.document.fileName) === '.xml' && roundTripping) {
     triggerSBMLEditor(vscode.window.activeTextEditor.document, sbmlFileNameToPath);
   }
-  console.log('check sbml')
-  await vscode.commands.executeCommand('antimony.checkSbml', doc.uri.path).then((result: any) => {
-    if (result === true) {
-      console.log('checked sbml')
-      vscode.window.showWarningMessage("This SBML file contains notes, model history, algebraic rules and unsupported packages. Proceed conversion to Antimony with caution.")
-    }
-  });
+  if (fileExtension == '.xml') {
+    console.log('check sbml')
+    vscode.commands.executeCommand('antimony.checkSbml', doc.uri.path).then((result: any) => {
+      if (result === true) {
+        console.log('checked sbml')
+        vscode.window.showWarningMessage("This SBML file contains notes, model history, algebraic rules and unsupported packages. Proceed conversion to Antimony with caution.")
+      }
+    });
+  }
 }
 
+vscode.window.onDidChangeActiveTextEditor(() => {
+  const doc = vscode.window.activeTextEditor.document;
+  const uri = doc.uri.toString();
+  const fileExtension = path.extname(uri);
+  if (fileExtension == '.xml') {
+    console.log('check sbml active')
+    vscode.commands.executeCommand('antimony.checkSbml', doc.uri.path).then((result: any) => {
+      if (result === true) {
+        console.log('checked sbml')
+        vscode.window.showWarningMessage("This SBML file contains notes, model history, algebraic rules and unsupported packages. Proceed conversion to Antimony with caution.")
+      }
+    });
+  }
+})
 
 async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<any, any>) {
   await client.onReady();
