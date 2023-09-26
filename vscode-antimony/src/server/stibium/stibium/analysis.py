@@ -322,6 +322,8 @@ class AntTreeAnalyzer:
     def check_expr_undefined(self, params, expr):
         used = set()
         #   1.1 referencing undefined parameters
+        if isinstance(expr, FuncCall):
+            self.handle_function_call(BaseScope(), expr, False)
         for child in expr.children:
             if child is None or isinstance(child, Operator) or isinstance(child, Number):
                 continue
@@ -332,7 +334,8 @@ class AntTreeAnalyzer:
             elif isinstance(child, VarName):
                 name = child.get_name()
                 used.add(name)
-                if name not in params and not functions.is_reserved_name(name.text):
+                is_reserved = functions.is_reserved_name(name.text)
+                if name not in params and not is_reserved:
                     self.error.append(RefUndefined(name.range, name.text))
             elif hasattr(child, 'children') and child.children != None:
                 used = set.union(used, self.check_expr_undefined(params, child))
@@ -475,7 +478,8 @@ class AntTreeAnalyzer:
         else:
             expr = cast(TrunkNode, expr)
             for leaf in expr.scan_leaves():
-                vscode_logger.info(f"leaf: {leaf}")
+                if isinstance(leaf, FuncCall):
+                    vscode_logger.info("handle_arith_expr: %s", expr)
                 if type(leaf) == Name:
                     leaf = cast(Name, leaf)
                     if insert:
@@ -1195,14 +1199,24 @@ class AntTreeAnalyzer:
 
     def handle_function_call(self, scope: AbstractScope, function_call: FunctionCall, insert: bool):
         comp = None
-        if function_call.get_maybein() != None and function_call.get_maybein().is_in_comp():
-            comp = function_call.get_maybein().get_comp().get_name_text()
-        if insert:
-            self.import_table.insert(QName(scope, function_call.get_name()), SymbolType.Parameter,
-                    value_node=function_call, comp=comp)
-        else:
-            self.table.insert(QName(scope, function_call.get_name()), SymbolType.Parameter,
+        func_name = function_call.get_function_name().get_name()
+        if functions.is_reserved_name(func_name.text):
+            if insert:
+                self.import_table.insert(QName(scope, func_name), SymbolType.Function,
                         value_node=function_call, comp=comp)
+            else:
+                self.table.insert(QName(scope, func_name), SymbolType.Function,
+                            value_node=function_call, comp=comp)
+        else:
+            func_name = function_call.get_name()
+            if function_call.get_maybein() != None and function_call.get_maybein().is_in_comp():
+                comp = function_call.get_maybein().get_comp().get_name_text()
+            if insert:
+                self.import_table.insert(QName(scope, func_name), SymbolType.Parameter,
+                        value_node=function_call, comp=comp)
+            else:
+                self.table.insert(QName(scope, func_name), SymbolType.Parameter,
+                            value_node=function_call, comp=comp)
 
     def handle_variable_in(self, scope: AbstractScope, variable_in: VariableIn, insert: bool):
         name = variable_in.get_name().get_name()

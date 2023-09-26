@@ -52,6 +52,10 @@ BUILT_IN_FUNCS = {
     "pow": [2],
     "sqr": [2],
     "neq": [2],
+    "max": [2],
+    "min": [2],
+    "rem": [2],
+    "quotient": [2]
 }
 
 NOT_ARG_COUNTS = {
@@ -71,6 +75,7 @@ ANY_ARG_COUNTS = {
     "and": [], # can have any number of arguments
     "or": [], # can have any number of arguments
     "xor": [], # can have any number of arguments
+    "implies": [], # can have any number of arguments
 }
 
 TWO_ARG_COUNTS = {
@@ -104,10 +109,17 @@ CONSTS = [
     "exponentiale"
 ]
 
-def is_builtin_func(func_name):
-    if func_name in BUILT_IN_FUNCS or func_name in NOT_ARG_COUNTS or func_name in ANY_ARG_COUNTS or func_name in TWO_ARG_COUNTS:
-        return [func_name]
-    return []
+TOKENS = [
+    "cn",
+    "ci",
+    "csymbol",
+    "sep"
+]
+
+def is_reserved_name(name):
+    if is_builtin_func(name) or is_builtin_dist(name) or is_const(name):
+        return True
+    return False
 
 def has_correct_args(func_name, num_args):
     if isinstance(func_name, list):
@@ -120,8 +132,17 @@ def has_correct_args(func_name, num_args):
         return True
     elif func_name in TWO_ARG_COUNTS:
         return num_args in TWO_ARG_COUNTS[func_name]
+    elif func_name in DISTS:
+        return has_correct_dist_args(func_name, num_args)
+    else:    
+        return False
 
-def get_builtin_func_arg_counts(func_name):    
+def is_builtin_func(func_name):
+    if func_name in BUILT_IN_FUNCS or func_name in NOT_ARG_COUNTS or func_name in ANY_ARG_COUNTS or func_name in TWO_ARG_COUNTS:
+        return [func_name]
+    return []
+
+def get_builtin_func_arg_counts(func_name):
     if func_name in BUILT_IN_FUNCS:
         return BUILT_IN_FUNCS[func_name][0]
     
@@ -144,11 +165,6 @@ def has_correct_dist_args(dist_name, num_args):
     return num_args in DISTS[dist_name]
 
 def is_const(const_name):
-    if const_name in CONSTS:
+    if const_name in CONSTS or const_name in TOKENS:
         return [const_name]
     return []
-
-def is_reserved_name(name):
-    if is_builtin_func(name) or is_builtin_dist(name) or is_const(name):
-        return True
-    return False
