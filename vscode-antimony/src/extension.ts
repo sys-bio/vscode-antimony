@@ -217,8 +217,12 @@ export async function activate(context: vscode.ExtensionContext) {
     triggerSBMLEditor(vscode.window.activeTextEditor.document, sbmlFileNameToPath);
   }
   console.log('check sbml')
-  const bool = await vscode.commands.executeCommand('antimony.checkSbml', doc.uri.path);
-  console.log("checked sbml")
+  await vscode.commands.executeCommand('antimony.checkSbml', doc.uri.path).then((result: any) => {
+    if (result === true) {
+      console.log('checked sbml')
+      vscode.window.showWarningMessage("This SBML file contains notes, model history, algebraic rules and unsupported packages. Proceed conversion to Antimony with caution.")
+    }
+  });
 }
 
 
