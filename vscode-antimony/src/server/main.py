@@ -43,9 +43,9 @@ import zipfile
 import io
 
 # TODO remove this for production
-logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
-vscode_logger = logging.getLogger("vscode-antimony logger")
-vscode_logger.addHandler(logging.FileHandler('vscode-antimony-ext.log', mode="w"))
+# logging.basicConfig(filename='vscode-antimony-dep.log', filemode='w', level=logging.DEBUG)
+# vscode_logger = logging.getLogger("vscode-antimony logger")
+# vscode_logger.addHandler(logging.FileHandler('vscode-antimony-ext.log', mode="w"))
 
 server = LanguageServer()
 services = WebServices()
@@ -251,53 +251,53 @@ def check_sbml(ls: LanguageServer, args):
 
   # Check for packages
   if model.isPackageEnabled('comp'):
-    vscode_logger.info('Comp Package is enabled')
+    # vscode_logger.info('Comp Package is enabled')
     feature_exists = True
   elif model.isPackageEnabled('fbc'):
-    vscode_logger.info('FBC Package is enabled')
+    # vscode_logger.info('FBC Package is enabled')
     feature_exists = True
   elif model.isPackageEnabled('distrib'):
-    vscode_logger.info('Distrib Package is enabled')
+    # vscode_logger.info('Distrib Package is enabled')
     feature_exists = True
   elif model.isPackageEnabled('layout'):
-    vscode_logger.info('Layout Package is enabled')
+    # vscode_logger.info('Layout Package is enabled')
     feature_exists = True
   elif model.isPackageEnabled('render'):
-    vscode_logger.info('Render Package is enabled')
+    # vscode_logger.info('Render Package is enabled')
     feature_exists = True
   elif model.isPackageEnabled('spatial'):
-    vscode_logger.info('Spatial Package is enabled')
+    # vscode_logger.info('Spatial Package is enabled')
     feature_exists = True
   elif model.isPackageEnabled('multi'):
-    vscode_logger.info('Multi Package is enabled')
+    # vscode_logger.info('Multi Package is enabled')
     feature_exists = True
   elif model.isPackageEnabled('qual'):
-    vscode_logger.info('Qual Package is enabled')
+    # vscode_logger.info('Qual Package is enabled')
     feature_exists = True
 
   # Check for model history
   if model.isSetModelHistory():
-    vscode_logger.info('Model History is set')
+    # vscode_logger.info('Model History is set')
     feature_exists = True
   
   # Check for Notes
   elementsList = sbml_doc.getListOfAllElements()
-  vscode_logger.info('List of Elements: ')
-  vscode_logger.info(sbml_doc.getListOfAllElements())
-  vscode_logger.info('elementsList')
+  # vscode_logger.info('List of Elements: ')
+  # vscode_logger.info(sbml_doc.getListOfAllElements())
+  # vscode_logger.info('elementsList')
   for x in elementsList:
-      vscode_logger.info(x)
+      # vscode_logger.info(x)
       if (x.isSetNotes()):
-        vscode_logger.info('Notes are set')
+        # vscode_logger.info('Notes are set')
         feature_exists = True
 
   # Check for Algebraic Rules
   for r in range(model.getNumRules()):
     rule = model.getRule(r)
-    vscode_logger.info('Rule Type Code: ')
-    vscode_logger.info(rule.getTypeCode())
+    # vscode_logger.info('Rule Type Code: ')
+    # vscode_logger.info(rule.getTypeCode())
     if rule.getTypeCode() == SBML_ALGEBRAIC_RULE:
-      vscode_logger.info('Algebraic Rule is set')
+      # vscode_logger.info('Algebraic Rule is set')
       feature_exists = True
 
   return feature_exists
