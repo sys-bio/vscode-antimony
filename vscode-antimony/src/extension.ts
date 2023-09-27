@@ -238,7 +238,7 @@ vscode.window.onDidChangeActiveTextEditor(() => {
       vscode.commands.executeCommand('antimony.checkSbml', doc.uri.path).then((result: any) => {
         if (result === true) {
           console.log('checked sbml');
-          vscode.window.showWarningMessage("This SBML file contains notes, model history, algebraic rules, and unsupported packages. Proceed conversion to Antimony with caution.");
+          vscode.window.showWarningMessage("This SBML file contains notes, model history, algebraic rules, and/or unsupported packages. Proceed conversion to Antimony with caution.");
         }
       });
     }
