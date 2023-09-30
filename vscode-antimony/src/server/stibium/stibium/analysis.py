@@ -25,7 +25,7 @@ UNDERSCORE = "_"
 ONTOLOGIES_URL = "http://www.ebi.ac.uk/ols/api/ontologies/"
 ONTOLOGIES_URL_SECOND_PART = "/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F"
 
-vscode_logger = logging.getLogger("vscode-antimony logger")
+# vscode_logger = logging.getLogger("vscode-antimony logger")
 
 def get_qname_at_position(root: FileNode, pos: SrcPosition) -> Optional[QName]:
     '''Returns (context, token) the given position. `token` may be None if not found.
@@ -406,6 +406,8 @@ class AntTreeAnalyzer:
                             params = leaf.get_params().get_items()
                         if not functions.has_correct_args(function[0], len(params)):
                             self.error.append(IncorrectParamNum(leaf.range, functions.get_builtin_func_arg_counts(function[0]), len(params)))
+                        else:
+                            self.table.insert(QName(BaseScope(), function_name), SymbolType.Function, function[0])
                         continue
                     call_params = leaf.get_params().get_items() if leaf.get_params() is not None else []
                     if len(function[0].parameters) != len(call_params):
@@ -478,8 +480,6 @@ class AntTreeAnalyzer:
         else:
             expr = cast(TrunkNode, expr)
             for leaf in expr.scan_leaves():
-                if isinstance(leaf, FuncCall):
-                    vscode_logger.info("handle_arith_expr: %s", expr)
                 if type(leaf) == Name:
                     leaf = cast(Name, leaf)
                     if insert:
