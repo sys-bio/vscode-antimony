@@ -89,6 +89,7 @@ model *BIOMD0000000001()
   const comp1, t2, kr_0, kr_1, kf_2, kr_2, kr_3, kr_4, kf_5, kr_5, kf_6, kr_6;
   const kr_7, kr_8, kf_9, kr_9, kf_10, kr_10, kf_11, kr_11, kr_12, kr_13;
   const kf_14, kr_14, kf_15, kr_15, kf_16, kr_16;
+  unit kf_17 = 1.66057788110262e;
 
   // Display Names:
   comp1 is "compartment1";
