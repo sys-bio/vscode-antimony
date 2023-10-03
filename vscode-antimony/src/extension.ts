@@ -216,7 +216,30 @@ export async function activate(context: vscode.ExtensionContext) {
   if (path.extname(vscode.window.activeTextEditor.document.fileName) === '.xml' && roundTripping) {
     triggerSBMLEditor(vscode.window.activeTextEditor.document, sbmlFileNameToPath);
   }
+  if (fileExtension == '.xml') {
+    vscode.commands.executeCommand('antimony.checkSbml', doc.uri.path).then((result: any) => {
+      if (result === true) {
+        vscode.window.showWarningMessage("This SBML file contains notes, model history, algebraic rules and unsupported packages. Proceed conversion to Antimony with caution.")
+      }
+    });
+  }
 }
+
+vscode.window.onDidChangeActiveTextEditor(() => {
+  const activeTextEditor = vscode.window.activeTextEditor;
+  if (activeTextEditor) {
+    const doc = activeTextEditor.document;
+    const uri = doc.uri.toString();
+    const fileExtension = path.extname(uri);
+    if (fileExtension == '.xml') {
+      vscode.commands.executeCommand('antimony.checkSbml', doc.uri.path).then((result: any) => {
+        if (result === true) {
+          vscode.window.showWarningMessage("This SBML file contains notes, model history, algebraic rules, and/or unsupported packages. Proceed conversion to Antimony with caution.");
+        }
+      });
+    }
+  }
+});
 
 async function triggerSBMLEditor(event: TextDocument, sbmlFileNameToPath: Map<any, any>) {
   await client.onReady();
@@ -696,7 +719,6 @@ export async function createVirtualEnv(context: vscode.ExtensionContext) {
       .then(async selection => {
         if (selection === 'Yes') {
           installEnv();
-          vscode.env.openExternal(vscode.Uri.parse("https://github.com/sys-bio/vscode-antimony#installation-required-1"));
         } else if (selection === 'No') {
           vscode.window.showInformationMessage('The default python interpreter will be used.');
         }
@@ -893,7 +915,6 @@ async function deleteVirtualEnv(message) {
           promptToReloadWindow("Reload for changes to take effect.")
         }
       } else if (selection === 'No') {
-        vscode.env.openExternal(vscode.Uri.parse("https://github.com/sys-bio/vscode-antimony#installation-required-1"));
         vscode.window.showWarningMessage(`The extension will not work without deleting and reinstalling the virtual environment.`, {modal: true}, action)
         .then(selectedAction => {
           if (selectedAction === action) {
