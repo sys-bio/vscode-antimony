@@ -395,17 +395,17 @@ class AntTreeAnalyzer:
                 if len(function) == 0:
                     function = self.import_table.get(QName(BaseScope(), function_name))
                 if len(function) == 0:
-                    function = [functions.is_builtin_func(function_name.text)]
+                    function = functions.is_builtin_func(function_name.text)
                 if len(function) == 0:
                     self.error.append(UninitFunction(function_name.range, function_name.text))
                 else:
-                    if functions.is_builtin_func(function_name.text) == function[0]:
+                    if functions.is_reserved_name(function_name.text):
                         if leaf.get_params() is None:
                             params = []
                         else:
                             params = leaf.get_params().get_items()
-                        if not functions.has_correct_args(function[0], len(params)):
-                            self.error.append(IncorrectParamNum(leaf.range, functions.get_builtin_func_arg_counts(function[0]), len(params)))
+                        if not functions.has_correct_args(function_name.text, len(params)):
+                            self.error.append(IncorrectParamNum(leaf.range, functions.get_builtin_func_arg_counts(function_name.text), len(params)))
                         else:
                             self.table.insert(QName(BaseScope(), function_name), SymbolType.Function, function[0])
                         continue
@@ -427,14 +427,17 @@ class AntTreeAnalyzer:
                             if not expec_type is None and not call_type is None and not call_type.derives_from(expec_type):
                                 self.error.append(ParamIncorrectType(call.range, expec_type, call_type))
             elif isinstance(leaf, Name):
-                text = leaf.text
-                used.add(leaf)
-                sym = self.table.get(QName(scope, leaf))
-                val = sym[0].value_node
-                if val is None and sym[0].type != SymbolType.Species and leaf not in params:
-                    self.error.append(RefUndefined(leaf.range, text))
-                if val is None and sym[0].type == SymbolType.Species:
-                    self.warning.append(SpeciesUndefined(leaf.range, text))
+                if functions.is_non_func_reserved_name(leaf.text):
+                    self.table.insert(QName(scope, leaf), SymbolType.Parameter)
+                else:
+                    text = leaf.text
+                    used.add(leaf)
+                    sym = self.table.get(QName(scope, leaf))
+                    val = sym[0].value_node
+                    if val is None and sym[0].type != SymbolType.Species and leaf not in params:
+                        self.error.append(RefUndefined(leaf.range, text))
+                    if val is None and sym[0].type == SymbolType.Species:
+                        self.warning.append(SpeciesUndefined(leaf.range, text))
         return used
 
     def get_unique_name(self, prefix: str):

@@ -116,10 +116,24 @@ TOKENS = [
     "sep"
 ]
 
+MATHML_ANNOTS = [
+    "annotation",
+    "annotation-xml",
+    "semantics"
+]
+
+QUALIFIERS = [
+    "degree",
+    "bvar",
+    "logbase",
+]
+
 def is_reserved_name(name):
-    if is_builtin_func(name) or is_builtin_dist(name) or is_const(name):
-        return True
-    return False
+    return is_builtin_func(name) or is_builtin_dist(name) or is_const(name) or is_token(name) \
+        or is_mathml_annot(name) or is_qualifier(name)
+
+def is_non_func_reserved_name(name):
+    return is_const(name) or is_token(name) or is_mathml_annot(name) or is_qualifier(name)
 
 def has_correct_args(func_name, num_args):
     if isinstance(func_name, list):
@@ -137,11 +151,6 @@ def has_correct_args(func_name, num_args):
     else:    
         return False
 
-def is_builtin_func(func_name):
-    if func_name in BUILT_IN_FUNCS or func_name in NOT_ARG_COUNTS or func_name in ANY_ARG_COUNTS or func_name in TWO_ARG_COUNTS:
-        return [func_name]
-    return []
-
 def get_builtin_func_arg_counts(func_name):
     if func_name in BUILT_IN_FUNCS:
         return BUILT_IN_FUNCS[func_name][0]
@@ -154,17 +163,26 @@ def get_builtin_func_arg_counts(func_name):
     if func_name in TWO_ARG_COUNTS:
         return "{} or {}".format(TWO_ARG_COUNTS[func_name][0], TWO_ARG_COUNTS[func_name][1])
 
-def is_builtin_dist(dist_name):
-    if dist_name in DISTS:
-        return [dist_name]
-    return []
-
 def has_correct_dist_args(dist_name, num_args):
     if isinstance(dist_name, list):
         dist_name = dist_name[0]
     return num_args in DISTS[dist_name]
 
+def is_builtin_func(func_name):
+    return [func_name] if func_name in BUILT_IN_FUNCS or func_name in NOT_ARG_COUNTS or \
+        func_name in ANY_ARG_COUNTS or func_name in TWO_ARG_COUNTS else []
+
+def is_builtin_dist(dist_name):
+    return [dist_name] if dist_name in DISTS else []
+
 def is_const(const_name):
-    if const_name in CONSTS or const_name in TOKENS:
-        return [const_name]
-    return []
+    return [const_name] if const_name in CONSTS else []
+
+def is_token(token_name):
+    return [token_name] if token_name in TOKENS else []
+
+def is_mathml_annot(annot_name):
+    return [annot_name] if annot_name in MATHML_ANNOTS else []
+
+def is_qualifier(qualifier_name):
+    return [qualifier_name] if qualifier_name in QUALIFIERS else []
