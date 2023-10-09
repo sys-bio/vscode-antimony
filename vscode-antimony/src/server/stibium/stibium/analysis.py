@@ -25,7 +25,7 @@ UNDERSCORE = "_"
 ONTOLOGIES_URL = "http://www.ebi.ac.uk/ols/api/ontologies/"
 ONTOLOGIES_URL_SECOND_PART = "/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F"
 
-# vscode_logger = logging.getLogger("vscode-antimony logger")
+vscode_logger = logging.getLogger("vscode-antimony logger")
 
 def get_qname_at_position(root: FileNode, pos: SrcPosition) -> Optional[QName]:
     '''Returns (context, token) the given position. `token` may be None if not found.
@@ -322,8 +322,9 @@ class AntTreeAnalyzer:
     def check_expr_undefined(self, params, expr):
         used = set()
         #   1.1 referencing undefined parameters
-        if isinstance(expr, FuncCall):
-            self.handle_function_call(BaseScope(), expr, False)
+        if isinstance(expr, FuncCall) and functions.is_builtin_func(expr.get_function_name().get_name().text):
+            if not functions.has_correct_args(expr.get_function_name().get_name().text, len(expr.get_params().get_items())):
+                self.error.append(IncorrectParamNum(expr.range, functions.get_builtin_func_arg_counts(expr.get_function_name().get_name().text), len(expr.get_params().get_items())))
         for child in expr.children:
             if child is None or isinstance(child, Operator) or isinstance(child, Number):
                 continue
@@ -400,14 +401,6 @@ class AntTreeAnalyzer:
                     self.error.append(UninitFunction(function_name.range, function_name.text))
                 else:
                     if functions.is_reserved_name(function_name.text):
-                        if leaf.get_params() is None:
-                            params = []
-                        else:
-                            params = leaf.get_params().get_items()
-                        if not functions.has_correct_args(function_name.text, len(params)):
-                            self.error.append(IncorrectParamNum(leaf.range, functions.get_builtin_func_arg_counts(function_name.text), len(params)))
-                        else:
-                            self.table.insert(QName(BaseScope(), function_name), SymbolType.Function, function[0])
                         continue
                     call_params = leaf.get_params().get_items() if leaf.get_params() is not None else []
                     if len(function[0].parameters) != len(call_params):
@@ -483,6 +476,9 @@ class AntTreeAnalyzer:
         else:
             expr = cast(TrunkNode, expr)
             for leaf in expr.scan_leaves():
+                if isinstance(leaf, FuncCall) and functions.is_builtin_func(leaf.get_function_name().get_name().text):
+                    if not functions.has_correct_args(leaf.get_function_name().get_name().text, len(leaf.get_params().get_items())):
+                        self.table.error.append(IncorrectParamNum(leaf.range, functions.get_builtin_func_arg_counts(leaf.get_function_name().get_name().text), len(leaf.get_params().get_items())))
                 if type(leaf) == Name:
                     leaf = cast(Name, leaf)
                     if insert:
@@ -526,7 +522,6 @@ class AntTreeAnalyzer:
         rate_law = reaction.get_rate_law()
         if rate_law is not None:
             self.handle_arith_expr(scope, rate_law, insert)
-        self.handle_arith_expr(scope, reaction.get_rate_law(), insert)
     
     # Events currently not supported through import    
     def pre_handle_event(self, scope: AbstractScope, event: Event, insert: bool):
@@ -559,7 +554,7 @@ class AntTreeAnalyzer:
             self.table.error.append(ReservedName(assignment.get_name().range, assignment.get_name_text()))
             return
         if type(assignment.get_value()) == FuncCall:
-            self.handle_function_call(scope, assignment, insert)
+            self.handle_function_call(scope, assignment.get_value(), insert)
             return
         if assignment.get_maybein() != None and assignment.get_maybein().is_in_comp():
             comp = assignment.get_maybein().get_comp().get_name_text()
