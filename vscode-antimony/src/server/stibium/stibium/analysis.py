@@ -553,9 +553,6 @@ class AntTreeAnalyzer:
         if functions.is_reserved_name(assignment.get_name_text()):
             self.table.error.append(ReservedName(assignment.get_name().range, assignment.get_name_text()))
             return
-        if type(assignment.get_value()) == FuncCall:
-            self.handle_function_call(scope, assignment.get_value(), insert)
-            return
         if assignment.get_maybein() != None and assignment.get_maybein().is_in_comp():
             comp = assignment.get_maybein().get_comp().get_name_text()
         if insert:
@@ -1197,24 +1194,15 @@ class AntTreeAnalyzer:
 
     def handle_function_call(self, scope: AbstractScope, function_call: FunctionCall, insert: bool):
         comp = None
-        func_name = function_call.get_function_name().get_name()
-        if functions.is_reserved_name(func_name.text):
-            if insert:
-                self.import_table.insert(QName(scope, func_name), SymbolType.Function,
-                        value_node=function_call, comp=comp)
-            else:
-                self.table.insert(QName(scope, func_name), SymbolType.Function,
-                            value_node=function_call, comp=comp)
+        func_name = function_call.get_name()
+        if function_call.get_maybein() != None and function_call.get_maybein().is_in_comp():
+            comp = function_call.get_maybein().get_comp().get_name_text()
+        if insert:
+            self.import_table.insert(QName(scope, func_name), SymbolType.Parameter,
+                    value_node=function_call, comp=comp)
         else:
-            func_name = function_call.get_name()
-            if function_call.get_maybein() != None and function_call.get_maybein().is_in_comp():
-                comp = function_call.get_maybein().get_comp().get_name_text()
-            if insert:
-                self.import_table.insert(QName(scope, func_name), SymbolType.Parameter,
+            self.table.insert(QName(scope, func_name), SymbolType.Parameter,
                         value_node=function_call, comp=comp)
-            else:
-                self.table.insert(QName(scope, func_name), SymbolType.Parameter,
-                            value_node=function_call, comp=comp)
 
     def handle_variable_in(self, scope: AbstractScope, variable_in: VariableIn, insert: bool):
         name = variable_in.get_name().get_name()
