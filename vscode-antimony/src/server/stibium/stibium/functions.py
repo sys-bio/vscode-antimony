@@ -52,6 +52,10 @@ BUILT_IN_FUNCS = {
     "pow": [2],
     "sqr": [2],
     "neq": [2],
+    "max": [2],
+    "min": [2],
+    "rem": [2],
+    "quotient": [2]
 }
 
 NOT_ARG_COUNTS = {
@@ -71,6 +75,7 @@ ANY_ARG_COUNTS = {
     "and": [], # can have any number of arguments
     "or": [], # can have any number of arguments
     "xor": [], # can have any number of arguments
+    "implies": [], # can have any number of arguments
 }
 
 TWO_ARG_COUNTS = {
@@ -104,10 +109,31 @@ CONSTS = [
     "exponentiale"
 ]
 
-def is_builtin_func(func_name):
-    if func_name in BUILT_IN_FUNCS or func_name in NOT_ARG_COUNTS or func_name in ANY_ARG_COUNTS or func_name in TWO_ARG_COUNTS:
-        return [func_name]
-    return []
+TOKENS = [
+    "cn",
+    "ci",
+    "csymbol",
+    "sep"
+]
+
+MATHML_ANNOTS = [
+    "annotation",
+    "annotation-xml",
+    "semantics"
+]
+
+QUALIFIERS = [
+    "degree",
+    "bvar",
+    "logbase",
+]
+
+def is_reserved_name(name):
+    return is_builtin_func(name) or is_builtin_dist(name) or is_const(name) or is_token(name) \
+        or is_mathml_annot(name) or is_qualifier(name)
+
+def is_non_func_reserved_name(name):
+    return is_const(name) or is_token(name) or is_mathml_annot(name) or is_qualifier(name)
 
 def has_correct_args(func_name, num_args):
     if isinstance(func_name, list):
@@ -120,8 +146,12 @@ def has_correct_args(func_name, num_args):
         return True
     elif func_name in TWO_ARG_COUNTS:
         return num_args in TWO_ARG_COUNTS[func_name]
+    elif func_name in DISTS:
+        return has_correct_dist_args(func_name, num_args)
+    else:    
+        return False
 
-def get_builtin_func_arg_counts(func_name):    
+def get_builtin_func_arg_counts(func_name):
     if func_name in BUILT_IN_FUNCS:
         return BUILT_IN_FUNCS[func_name][0]
     
@@ -133,22 +163,26 @@ def get_builtin_func_arg_counts(func_name):
     if func_name in TWO_ARG_COUNTS:
         return "{} or {}".format(TWO_ARG_COUNTS[func_name][0], TWO_ARG_COUNTS[func_name][1])
 
-def is_builtin_dist(dist_name):
-    if dist_name in DISTS:
-        return [dist_name]
-    return []
-
 def has_correct_dist_args(dist_name, num_args):
     if isinstance(dist_name, list):
         dist_name = dist_name[0]
     return num_args in DISTS[dist_name]
 
-def is_const(const_name):
-    if const_name in CONSTS:
-        return [const_name]
-    return []
+def is_builtin_func(func_name):
+    return [func_name] if func_name in BUILT_IN_FUNCS or func_name in NOT_ARG_COUNTS or \
+        func_name in ANY_ARG_COUNTS or func_name in TWO_ARG_COUNTS else []
 
-def is_reserved_name(name):
-    if is_builtin_func(name) or is_builtin_dist(name) or is_const(name):
-        return True
-    return False
+def is_builtin_dist(dist_name):
+    return [dist_name] if dist_name in DISTS else []
+
+def is_const(const_name):
+    return [const_name] if const_name in CONSTS else []
+
+def is_token(token_name):
+    return [token_name] if token_name in TOKENS else []
+
+def is_mathml_annot(annot_name):
+    return [annot_name] if annot_name in MATHML_ANNOTS else []
+
+def is_qualifier(qualifier_name):
+    return [qualifier_name] if qualifier_name in QUALIFIERS else []

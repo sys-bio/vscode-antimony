@@ -282,6 +282,8 @@ async function startSBMLWebview(context: vscode.ExtensionContext, args: any[]) {
   }
   await client.onReady();
 
+  vscode.window.showWarningMessage("Preview SBML only shows the SBML model as text, thus no Antimony features will be available.");
+
   await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 
   vscode.commands.executeCommand("vscode.openWith", 
@@ -294,6 +296,8 @@ async function startAntimonyWebview(context: vscode.ExtensionContext, args: any[
     return;
   }
   await client.onReady();
+
+  vscode.window.showWarningMessage("Preview Antimony only shows the Antimony model as text, thus no Antimony features will be available.");
 
   await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
 
