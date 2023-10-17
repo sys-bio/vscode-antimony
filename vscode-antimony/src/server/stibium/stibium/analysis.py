@@ -25,8 +25,6 @@ UNDERSCORE = "_"
 ONTOLOGIES_URL = "http://www.ebi.ac.uk/ols/api/ontologies/"
 ONTOLOGIES_URL_SECOND_PART = "/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F"
 
-vscode_logger = logging.getLogger("vscode-antimony logger")
-
 def get_qname_at_position(root: FileNode, pos: SrcPosition) -> Optional[QName]:
     '''Returns (context, token) the given position. `token` may be None if not found.
     '''
