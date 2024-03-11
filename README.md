@@ -44,7 +44,7 @@ The [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemNam
 [Next Steps Below](#steps-below-apply-for-all-operating-systems)<br/><br/>
 
 ### Mac
-* This extension requires [Vscode_Antimony_Setup (Silicon CPU Macbooks)](https://github.com/sys-bio/vscode-antimony/raw/macinstall/setup/Vscode_Antimony_Setup.pkg) or [Python 3.9.13 (Intel Macbooks)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg) to be installed before use.
+* This extension requires [Vscode_Antimony_Setup (Silicon CPU Macbooks)](https://github.com/sys-bio/vscode-antimony/raw/master/setup/Vscode_Antimony_Setup.pkg) or [Python 3.9.13 (Intel Macbooks)](https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg) to be installed before use.
 * For Intel CPU Macbooks: When installing Python 3.9.13, proceed with the installations as is. No changes are needed to be made.
 * For Silicon CPU Macbooks: When installing Vscode_Antimony_Setup.pkg, right click on the pkg file and press open.
 
