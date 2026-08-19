@@ -78,6 +78,36 @@ jobs:
           path: dist
           merge-multiple: true
 
+      # Emitted from the release job, after every artifact is collected, so the
+      # values can only ever describe what was actually published. Reading them
+      # from the per-platform build summaries is unsafe: re-running the workflow
+      # rebuilds every tarball, and gzip embeds timestamps, so the hashes change
+      # even when the inputs are identical.
+      - name: Emit paste-ready runtime.ts blocks
+        shell: bash
+        run: |
+          {
+            echo "## Paste into src/runtime.ts"
+            echo
+            echo 'Replace CHECKSUMS and SIZES with these. Do not reuse values from'
+            echo 'an earlier run -- each run produces different bytes.'
+            echo
+            echo '```ts'
+            echo 'const CHECKSUMS: Record<string, string> = {'
+            for f in dist/*.tar.gz.sha256; do
+              base=$(basename "$f" .tar.gz.sha256)
+              plat=${base#antimony-runtime-*-}
+              hash=$(cut -d' ' -f1 "$f")
+              echo "  '$plat': '$hash',"
+            done
+            echo '};'
+            echo
+            echo 'const SIZES: Record<string, BundleSize> = {'
+            cat dist/sizes-*.txt
+            echo '};'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
