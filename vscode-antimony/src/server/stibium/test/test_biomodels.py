@@ -42,10 +42,14 @@ def test_all_biomodels(models):
     # store the data in a temp file or get the extracted SBML file and convert it to Antimony
     f = os.path.join(directory + "/" + models)
     ant_str = _get_antimony_str(os.path.abspath(f))
-    temp_ant_file = tempfile.TemporaryFile(mode='w+t', encoding='utf-8')
-    assert ant_str.get("ant_str") is not None, "There was an error converting the SBML file to Antimony"
-    temp_ant_file.write(ant_str.get('ant_str'))
-    doc = Document(temp_ant_file.name, temp_ant_file.read())
+    # Use an in-memory document (avoid TemporaryFile which may expose numeric .name)
+    ant_text = ant_str.get("ant_str")
+    assert ant_text is not None, "There was an error converting the SBML file to Antimony"
+    # Ensure ant_text is a str (antimony bindings may return bytes)
+    if isinstance(ant_text, bytes):
+        ant_text = ant_text.decode('utf-8', errors='replace')
+    # Give the document a stable path-like name (pygls expects a string URI/path)
+    doc = Document(os.path.abspath(f) + ".ant", ant_text)
     ant_file = api.AntFile(doc.path, doc.source)
     l_issues = ant_file.get_issues()
     error_count = 0
