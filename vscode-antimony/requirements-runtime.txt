@@ -1,0 +1,50 @@
+# Dependencies baked into the prebuilt Antimony runtime.
+#
+# This file is consumed ONLY by scripts/build_runtime.py at CI time.
+# End users never see it and never run pip.
+#
+# NOTE ON PINS: main.py imports `pygls.features` / `pygls.types`, which only
+# exist in pygls 0.9.x. stibium/lark_patch.py imports
+# `lark.parsers.lalr_puppet`, which only exists before lark 1.0 renamed
+# ParserPuppet -> InteractiveParser. Both pins are load-bearing. Do not bump
+# either one without changing the server code first.
+
+pygls==0.9.1
+
+# lark is pinned to a pre-1.0 commit. `git+` is fine here because this file is
+# only ever installed on a CI runner, which already has git.
+lark-parser @ git+https://github.com/lark-parser/lark.git@5b8c04ca83b98f8887a5967f8260d44dec2f7422
+
+# Native libantimony bindings. Ships as py3-none-<platform> wheels, so the
+# wheel is independent of the Python minor version.
+#
+# PLATFORM FLOOR WARNING: antimony 3.1.1+ tags its Intel-Mac wheel
+# macosx_15_0_x86_64, which excludes every Intel Mac below macOS 15.
+# 3.1.0 tags it macosx_13_0_x86_64. build_runtime.py pins the Intel-Mac
+# build to 3.1.0 for that reason; every other platform gets 3.1.3.
+antimony==3.1.3
+
+python-libsbml==5.21.1
+
+# DO NOT BUMP bioservices without also rewriting
+# src/server/bioservices_server/. That directory vendors an old copy of
+# bioservices whose services.py hard-imports requests_cache, suds, and easydev
+# at these exact versions. bioservices 1.16 requires easydev>=0.13.3 and
+# requests-cache>=1.2.1, which the vendored code cannot satisfy -- the resolve
+# fails outright. This pin set is the one that actually installs.
+#
+# Known consequence: ChEBI in 1.8.3 talks to the EBI SOAP endpoint at
+# http://www.ebi.ac.uk/webservices/chebi/2.0/webservice?wsdl, which EBI has
+# retired and which now returns HTTP 500. Hover and parse therefore fail on
+# any model containing a ChEBI annotation. That is a pre-existing bug,
+# unrelated to the runtime, and is deliberately out of scope here.
+bioservices==1.8.3
+requests-cache==0.5.2
+libChEBIpy==1.0.10
+easydev==0.11.0
+orjson==3.10.15
+
+# bioservices still does `import pkg_resources` at module import time, which
+# setuptools 81 removed. Without this the language server dies on startup with
+# ModuleNotFoundError before it ever speaks LSP. Verified failure, not theory.
+setuptools<81

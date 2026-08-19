@@ -1,11 +1,8 @@
-When setting up vscode-antimony repo on a new device, don't forget to install the venv, npm install and npm run webpack.
+When setting up vscode-antimony repo on a new device, npm install and npm run webpack.
 
 Adding new python dependencies:
     When using new python dependencies for vscode-antimony development, don't forget to edit:
-      all-requirements.txt
-       virtualEnvWin.bat
-      virtualEnvLinux.sh 
-      virtualEnvSilicon.sh 
+      requirements-runtime.txt
 
 
 Packaging and publishing to VSCode Marketplace: 

@@ -1,0 +1,93 @@
+name: Build Antimony runtime bundles
+
+# Run this by hand whenever RUNTIME_VERSION or requirements-runtime.txt changes.
+# It builds one self-contained Python bundle per platform on a matching runner,
+# smoke-tests each one, and publishes them to a GitHub Release.
+#
+# After it finishes: copy the four sha256 values from the job summary into
+# CHECKSUMS in src/runtime.ts, then publish the extension.
+
+on:
+  workflow_dispatch:
+    inputs:
+      runtime_version:
+        description: 'Runtime version (must match RUNTIME_VERSION in build_runtime.py and runtime.ts)'
+        required: true
+        default: '1'
+
+permissions:
+  contents: write
+
+# The extension (and therefore scripts/ and requirements-runtime.txt) lives in
+# the vscode-antimony/ subdirectory, not at the repo root.
+defaults:
+  run:
+    working-directory: vscode-antimony
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: win32-x64
+            runner: windows-latest
+          - platform: darwin-x64
+            runner: macos-13      # last Intel runner image
+          - platform: darwin-arm64
+            runner: macos-14
+          - platform: linux-x64
+            runner: ubuntu-22.04  # older glibc = broader compatibility
+
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Only used to run build_runtime.py itself. The bundled interpreter is
+      # downloaded from python-build-standalone, not taken from the runner.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build runtime
+        run: python scripts/build_runtime.py --platform ${{ matrix.platform }}
+
+      - name: Record checksum in job summary
+        shell: bash
+        run: |
+          f=runtime-dist/antimony-runtime-${{ inputs.runtime_version }}-${{ matrix.platform }}.tar.gz
+          echo "### ${{ matrix.platform }}" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat "$f.sha256" >> "$GITHUB_STEP_SUMMARY"
+          cat runtime-dist/sizes-${{ matrix.platform }}.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: runtime-${{ matrix.platform }}
+          path: vscode-antimony/runtime-dist/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .   # no checkout in this job
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: runtime-v${{ inputs.runtime_version }}
+          name: Antimony runtime v${{ inputs.runtime_version }}
+          body: |
+            Prebuilt Python runtimes for the Antimony VS Code extension.
+
+            These are downloaded automatically by the extension on first use.
+            You do not need to download anything here by hand.
+          files: dist/*

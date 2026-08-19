@@ -4,16 +4,27 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			// The extension's "main" is ./dist/extension.js, produced by webpack.
+			// The old default build task ran `tsc -watch`, which writes to out/
+			// and is never loaded -- so F5 silently ran a stale dist/ bundle.
 			"type": "npm",
-			"script": "watch",
-			"problemMatcher": "$tsc-watch",
-			"isBackground": true,
-			"presentation": {
-				"reveal": "never"
-			},
+			"script": "webpack",
+			"problemMatcher": "$ts-webpack",
 			"group": {
 				"kind": "build",
 				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "silent"
+			}
+		},
+		{
+			"type": "npm",
+			"script": "webpack-dev",
+			"problemMatcher": "$ts-webpack-watch",
+			"isBackground": true,
+			"presentation": {
+				"reveal": "never"
 			}
 		}
 	]
