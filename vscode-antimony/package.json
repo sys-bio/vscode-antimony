@@ -4,7 +4,7 @@
 	"description": "Extensions for Antimony development in Visual Studio Code.",
 	"author": "Longxuan Fan, Sai Anish Konanki, Eva Liu, Steve Ma, Gary Geng, Joseph Hellerstein, Herbert Sauro",
 	"publisher": "EvaLiu",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"icon": "docs/images/logo.png",
 	"engines": {
 		"vscode": "^1.62.0"
@@ -21,6 +21,7 @@
 		"Computational Biology"
 	],
 	"activationEvents": [
+		"onStartupFinished",
 		"onLanguage:antimony",
 		"onLanguage:xml",
 		"onLanguage:plaintext",

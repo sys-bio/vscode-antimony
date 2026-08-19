@@ -104,32 +104,98 @@ let activeEditor = vscode.window.activeTextEditor;
 // RoundTripping SBML to Antimony
 let roundTripping: boolean | null = null;
 
+const MODEL_EXTENSIONS = new Set(['.ant', '.xml']);
+
+/** Records that the one-time post-install setup has already been attempted. */
+const PREFETCH_KEY = 'antimony.runtimePrefetchAttempted';
+
+/**
+ * True for documents the extension actually operates on.
+ *
+ * The scheme check comes first on purpose. A git diff, a search preview, or an
+ * output channel can carry an .xml path, and treating those as "the user
+ * opened a model" would kick off a ~95 MB download for a read-only peek.
+ */
+function isModelDocument(doc: vscode.TextDocument | undefined): doc is vscode.TextDocument {
+  if (!doc) {
+    return false;
+  }
+  if (doc.uri.scheme !== 'file' && doc.uri.scheme !== 'untitled') {
+    return false;
+  }
+  return MODEL_EXTENSIONS.has(path.extname(doc.uri.fsPath).toLowerCase());
+}
+
+/** Guards bootstrap() so the triggers below can fire freely. */
+let bootstrapped = false;
+
 // Activate extension
 export async function activate(context: vscode.ExtensionContext) {
+  // Registered unconditionally. These are the only two commands reachable
+  // without a model file open, so they have to survive the case where the rest
+  // of activation is deferred.
   context.subscriptions.push(
     vscode.commands.registerCommand('antimony.openStartPage', (...args: any[]) => openStartPage()));
 
   context.subscriptions.push(
     vscode.commands.registerCommand('antimony.reinstallRuntime', (...args: any[]) => reinstallRuntime(context)));
 
-  // VS Code can restore a window with no editor focused. Dereferencing
-  // activeTextEditor unguarded throws here and aborts activation entirely,
-  // which is why the extension could silently do nothing on startup.
-  const editor = vscode.window.activeTextEditor;
-  if (!editor) {
+  // Trigger 2: the user opens or switches to a model file. Both events are
+  // needed -- onDidOpenTextDocument fires for a newly opened file,
+  // onDidChangeActiveTextEditor for switching to a tab that was already open
+  // in the background. Neither covers the other.
+  //
+  // These are registered before the already-open check so that a bootstrap
+  // that fails (no network, cancelled download) can be retried simply by
+  // opening another model file.
+  const trigger = (doc: vscode.TextDocument | undefined) => {
+    if (isModelDocument(doc)) {
+      void bootstrap(context, doc);
+    }
+  };
+
+  context.subscriptions.push(
+    vscode.workspace.onDidOpenTextDocument(doc => trigger(doc)),
+    vscode.window.onDidChangeActiveTextEditor(editor => trigger(editor?.document))
+  );
+
+  // A model file may already be open: window restore, or the user opened one
+  // before activation finished. Prefer the focused one, since the SBML
+  // handling at the end of bootstrap acts on the document it is given.
+  const active = vscode.window.activeTextEditor?.document;
+  const alreadyOpen = isModelDocument(active)
+    ? active
+    : vscode.workspace.textDocuments.find(isModelDocument);
+  if (alreadyOpen) {
+    await bootstrap(context, alreadyOpen);
     return;
   }
 
-  // Check if the current file is .txt
-  const doc = editor.document;
-  const uri = doc.uri.toString();
-  const fileExtension = path.extname(uri);
-  if (fileExtension !== '.ant' && fileExtension !== '.xml') {
-    if (fileExtension === '.txt') {
-      vscode.window.showInformationMessage('Please save the file as .ant to use VSCode-Antimony, otherwise ignore');
-    }
+  // Trigger 1: right after the extension is installed, so the first model file
+  // the user opens does not stall behind a download. ensureRuntime is a no-op
+  // once the runtime is present, so this costs nothing on later launches.
+  //
+  // The flag is written before the call, not after. If setup fails or the user
+  // cancels, re-prompting on every window launch is worse than waiting for
+  // them to open a file -- the trigger above still installs on demand.
+  if (!context.globalState.get<boolean>(PREFETCH_KEY)) {
+    await context.globalState.update(PREFETCH_KEY, true);
+    void ensureRuntime(context);
+  }
+}
+
+/**
+ * Everything that needs a working Python: the runtime, the language server,
+ * and the editor features built on top of them. Runs at most once per window,
+ * and only once a model file is actually in play.
+ */
+async function bootstrap(context: vscode.ExtensionContext, doc: vscode.TextDocument) {
+  if (bootstrapped) {
     return;
   }
+  bootstrapped = true;
+
+  const fileExtension = path.extname(doc.uri.fsPath).toLowerCase();
 
   // Resolve (and on first run, download) the bundled Python runtime. Returns
   // null if the user cancelled or setup failed, in which case bail out rather
@@ -144,6 +210,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const interpreter = await ensureRuntime(context);
   if (!interpreter) {
+    bootstrapped = false;   // allow a retry when another model file is opened
     serverStartupFinished();
     statusItem?.dispose();
     statusItem = null;
@@ -154,6 +221,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // start the language server
   if (await startLanguageServer(context, interpreter) === 0) {
+    bootstrapped = false;   // allow a retry when another model file is opened
     serverStartupFinished();
     statusItem?.dispose();
     statusItem = null;
