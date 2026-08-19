@@ -19,6 +19,76 @@ import { ensureRuntime, reinstallRuntime } from './runtime';
 
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
+
+// Starting the Python language server takes a beat: process spawn plus the
+// antimony and libsbml native imports. Without an indicator the editor looks
+// like it has simply ignored the file, and users retry or reload -- which
+// makes it slower. A status bar item is the right weight here: visible if you
+// look for it, silent if you do not.
+let statusItem: vscode.StatusBarItem | null = null;
+let resolveServerReady: (() => void) | null = null;
+let escalateTimer: NodeJS.Timeout | null = null;
+
+/**
+ * Escalating startup indicator.
+ *
+ * Starting the server means spawning a Python process and importing native
+ * libantimony and libsbml bindings. On a warm machine that is fast enough that
+ * a notification would be noise; on a cold one it is long enough that silence
+ * looks like the extension ignored the file.
+ *
+ * So: a status bar spinner immediately, plus the status bar progress slot. If
+ * the server still is not ready after ESCALATE_MS, a notification toast opens
+ * as well, because at that point the user deserves an unmissable answer to
+ * "is this doing anything?". Fast starts never show the toast.
+ */
+const ESCALATE_MS = 1500;
+
+function beginStartupIndicator(message: string) {
+  const done = new Promise<void>((resolve) => { resolveServerReady = resolve; });
+
+  showStatus(`$(loading~spin) ${message}`, 'Antimony is starting up');
+
+  // Status bar progress slot, next to the notification bell.
+  vscode.window.withProgress(
+    { location: vscode.ProgressLocation.Window, title: message },
+    () => done
+  );
+
+  escalateTimer = setTimeout(() => {
+    if (!resolveServerReady) { return; }   // already finished
+    vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Notification,
+        title: 'Starting Antimony',
+        cancellable: false,
+      },
+      async (progress) => {
+        progress.report({ message: 'Loading the language server. This only takes a moment.' });
+        await done;
+      }
+    );
+  }, ESCALATE_MS);
+}
+
+/** Ends every startup indicator, once. Safe to call repeatedly. */
+function serverStartupFinished() {
+  if (escalateTimer) {
+    clearTimeout(escalateTimer);
+    escalateTimer = null;
+  }
+  resolveServerReady?.();
+  resolveServerReady = null;
+}
+
+function showStatus(text: string, tooltip: string) {
+  if (!statusItem) {
+    statusItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+  }
+  statusItem.text = text;
+  statusItem.tooltip = tooltip;
+  statusItem.show();
+}
 let lastChangeInterp = 0;
 
 // Decoration type for annotated variables
@@ -64,8 +134,19 @@ export async function activate(context: vscode.ExtensionContext) {
   // Resolve (and on first run, download) the bundled Python runtime. Returns
   // null if the user cancelled or setup failed, in which case bail out rather
   // than starting a language server against an interpreter that isn't there.
+  context.subscriptions.push({
+    dispose: () => { serverStartupFinished(); statusItem?.dispose(); }
+  });
+
+  // Started before ensureRuntime so the indicator covers the whole sequence,
+  // including the runtime check and any migration, not just the server spawn.
+  beginStartupIndicator('Starting Antimony language server');
+
   const interpreter = await ensureRuntime(context);
   if (!interpreter) {
+    serverStartupFinished();
+    statusItem?.dispose();
+    statusItem = null;
     return;
   }
 
@@ -73,8 +154,34 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // start the language server
   if (await startLanguageServer(context, interpreter) === 0) {
+    serverStartupFinished();
+    statusItem?.dispose();
+    statusItem = null;
     return;
   }
+
+  // Flip to ready once the server has finished initialising. Not awaited: the
+  // rest of activation does not depend on it, and blocking here would delay
+  // command registration for no benefit.
+  client?.onReady().then(
+    () => {
+      serverStartupFinished();
+      showStatus('$(check) Antimony', 'Antimony language server is ready');
+    },
+    () => {
+      serverStartupFinished();
+      showStatus('$(warning) Antimony', 'The Antimony language server failed to start');
+    }
+  );
+
+  // Safety net: if onReady never settles, the window progress would spin
+  // forever, which looks worse than no indicator at all.
+  setTimeout(() => {
+    if (resolveServerReady) {
+      serverStartupFinished();
+      showStatus('$(warning) Antimony', 'The Antimony language server is taking longer than expected');
+    }
+  }, 60_000);
 
   vscode.workspace.onDidChangeConfiguration(async (e) => {
     // restart the language server using the new Python interpreter, if the related
@@ -179,6 +286,11 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   vscode.window.onDidChangeActiveTextEditor(editor => {
+    // Focusing the Output panel should not replace the tracked editor, or the
+    // decoration pass starts operating on the log view itself.
+    if (editor && editor.document.uri.scheme !== 'file') {
+      return;
+    }
     activeEditor = editor;
     if (editor) {
       triggerUpdateDecorations();
@@ -243,6 +355,10 @@ vscode.window.onDidChangeActiveTextEditor(() => {
   const activeTextEditor = vscode.window.activeTextEditor;
   if (activeTextEditor) {
     const doc = activeTextEditor.document;
+    // Same reason as updateDecorations: skip anything that is not a real file.
+    if (doc.uri.scheme !== 'file') {
+      return;
+    }
     const uri = doc.uri.toString();
     const fileExtension = path.extname(uri);
     if (fileExtension == '.xml') {
@@ -667,7 +783,22 @@ async function updateDecorations() {
   let regexFromAnnVars: RegExp;
   let config =  vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
 
+  if (!activeEditor) {
+    return;
+  }
+
   const doc = activeEditor.document;
+
+  // The Output panel, diff views, and Git previews are all TextEditors with
+  // non-file schemes (output:, git:, untitled:). Their URIs are not paths, so
+  // sending one to the server produces
+  //   FileNotFoundError: 'extension-output-stevem.vscode-antimony-#2-...'
+  // once per keystroke while that panel has focus. Only real files on disk are
+  // meaningful to the language server.
+  if (doc.uri.scheme !== 'file' || doc.languageId !== 'antimony') {
+    return;
+  }
+
   const uri = doc.uri.toString();
 
   // wait till client is ready, or the Python server might not have started yet.

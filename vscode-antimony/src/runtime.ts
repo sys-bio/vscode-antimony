@@ -38,10 +38,9 @@ const RELEASE_BASE =
  * a new runtime release.
  */
 const CHECKSUMS: Record<string, string> = {
-  'win32-x64': 'REPLACE_WITH_SHA256_FROM_CI',
-  'darwin-x64': 'REPLACE_WITH_SHA256_FROM_CI',
-  'darwin-arm64': 'REPLACE_WITH_SHA256_FROM_CI',
-  'linux-x64': 'REPLACE_WITH_SHA256_FROM_CI',
+  'win32-x64': '7aaafaa839d03bb291d8688845606c34d14d830678ba06c49c8a0d74cee8565f',
+  'darwin-arm64': '810edc5536afb69890a0464b0bde490a9674be87ea7024bf0734585d84d139dd',
+  'linux-x64': 'dae7ffe6238447b53bf1dc414f25507e54f97fe03a22b5f390c140eb50c40b75',
 };
 
 /**
@@ -55,10 +54,9 @@ const CHECKSUMS: Record<string, string> = {
 interface BundleSize { download: number; unpacked: number; }
 
 const SIZES: Record<string, BundleSize> = {
-  'win32-x64': { download: 95_000_000, unpacked: 340_000_000 },
-  'darwin-x64': { download: 95_000_000, unpacked: 340_000_000 },
-  'darwin-arm64': { download: 95_000_000, unpacked: 340_000_000 },
-  'linux-x64': { download: 95_000_000, unpacked: 340_000_000 },
+  'win32-x64': { download: 70361688, unpacked: 248216634 },
+  'darwin-arm64': { download: 58117575, unpacked: 193014056 },
+  'linux-x64': { download: 89419881, unpacked: 305267800 },
 };
 
 /** Extra room left over after install, so we don't fill the user's disk. */
@@ -66,14 +64,41 @@ const HEADROOM_BYTES = 250_000_000;
 
 export class UnsupportedPlatformError extends Error {}
 
+/**
+ * Guards against concurrent installs.
+ *
+ * ensureRuntime has four call sites (activation, the settings listener, the
+ * "Try again" retry, and reinstallRuntime). Two overlapping calls would each
+ * download ~60 MB and then race on renameSync into the same directory, so the
+ * loser can delete a tree the winner's language server is already executing
+ * from. Sharing one promise makes the second caller await the first.
+ */
+let inFlight: Promise<string | null> | null = null;
+
 function platformKey(): string {
   const plat = os.platform();
   const arch = process.arch;
 
   if (plat === 'win32' && arch === 'x64') { return 'win32-x64'; }
-  if (plat === 'darwin' && arch === 'x64') { return 'darwin-x64'; }
   if (plat === 'darwin' && arch === 'arm64') { return 'darwin-arm64'; }
   if (plat === 'linux' && arch === 'x64') { return 'linux-x64'; }
+
+  // Intel Mac is called out separately from the generic case below. It is a
+  // platform we could support and currently do not, so the user deserves a
+  // straight answer rather than a message implying their machine is exotic.
+  //
+  // To add it back: restore the darwin-x64 entry to the CI matrix (see
+  // .github/workflows/build-runtime.yml), add its checksum and size here, and
+  // re-add the branch above. build_runtime.py already pins antimony==3.1.0 for
+  // this platform, because 3.1.1+ tags its Intel wheel macosx_15_0_x86_64 and
+  // would exclude every Intel Mac below macOS 15.
+  if (plat === 'darwin' && arch === 'x64') {
+    throw new UnsupportedPlatformError(
+      'Antimony does not currently ship a bundled Python for Intel Macs. ' +
+      'You can still use the extension by installing Python 3.10 yourself and ' +
+      'setting "vscode-antimony.pythonInterpreter" to its full path in Settings.'
+    );
+  }
 
   throw new UnsupportedPlatformError(
     `Antimony does not ship a prebuilt runtime for ${plat}/${arch}. ` +
@@ -130,11 +155,19 @@ function httpsGet(url: string, redirectsLeft = 5): Promise<http.IncomingMessage>
   });
 }
 
+/**
+ * Download, reporting into the first `weight` percent of the progress bar.
+ *
+ * The bar is shared with extraction, which is a slow, visible phase on a
+ * ~200 MB tree. Giving download the whole bar made it hit 100% and then sit
+ * there for a minute, which reads as a hang.
+ */
 async function downloadWithProgress(
   url: string,
   dest: string,
   progress: vscode.Progress<{ message?: string; increment?: number }>,
-  token: vscode.CancellationToken
+  token: vscode.CancellationToken,
+  weight: number
 ): Promise<string> {
   const res = await httpsGet(url);
   const total = Number(res.headers['content-length'] ?? 0);
@@ -158,11 +191,13 @@ async function downloadWithProgress(
       received += chunk.length;
       hash.update(chunk);
       if (total > 0) {
-        const pct = Math.floor((received / total) * 100);
+        const pct = Math.floor((received / total) * weight);
         if (pct > lastReported) {
+          const mb = (received / 1_048_576).toFixed(0);
+          const totalMb = (total / 1_048_576).toFixed(0);
           progress.report({
             increment: pct - lastReported,
-            message: `Downloading Python components (${pct}%)`,
+            message: `Downloading Python components — ${mb} of ${totalMb} MB`,
           });
           lastReported = pct;
         }
@@ -253,6 +288,75 @@ async function assertEnoughSpace(key: string, tmpDir: string, targetDir: string)
 }
 
 /**
+ * One-time migration off the old virtual-environment install.
+ *
+ * Versions up to 0.2.21 created ~/vscode_antimony_virtual_env and wrote that
+ * interpreter path into the `vscode-antimony.pythonInterpreter` setting with
+ * global scope. That setting survives the extension update, and ensureRuntime
+ * treats any non-empty value as a deliberate user override -- so without this,
+ * every existing user would silently keep running their old, broken Python 3.9
+ * venv and would never see the bundled runtime at all.
+ *
+ * Only clears values that point into the old venv. A path the user chose
+ * themselves is left alone; that is a real override and none of our business.
+ */
+async function migrateLegacyInterpreter(): Promise<void> {
+  const config = vscode.workspace.getConfiguration('vscode-antimony');
+  const current = (config.get<string>('pythonInterpreter', '') || '').trim();
+  if (!current) { return; }
+
+  const legacyVenv = path.normalize(path.join(os.homedir(), 'vscode_antimony_virtual_env'));
+  const normalized = path.normalize(current);
+
+  // "python" was the old manifest default, so it is not a considered choice.
+  const isLegacy =
+    normalized.startsWith(legacyVenv) ||
+    current === 'python' ||
+    current === 'python3';
+
+  if (!isLegacy) { return; }
+
+  console.log(`[antimony] clearing legacy interpreter setting: ${current}`);
+  await config.update('pythonInterpreter', '', vscode.ConfigurationTarget.Global);
+
+  // Also clear a workspace-level copy if one exists; Global alone would leave
+  // it shadowed and the migration would appear not to have worked.
+  const inspected = config.inspect<string>('pythonInterpreter');
+  if (inspected?.workspaceValue) {
+    await config.update('pythonInterpreter', undefined, vscode.ConfigurationTarget.Workspace);
+  }
+
+  vscode.window.showInformationMessage(
+    'Antimony now ships its own Python. Your old setup folder ' +
+    '(~/vscode_antimony_virtual_env) is no longer used and can be deleted.'
+  );
+}
+
+/**
+ * Local development override.
+ *
+ * Set ANTIMONY_RUNTIME_TARBALL to a locally built .tar.gz, or
+ * ANTIMONY_RUNTIME_DIR to an already-unpacked runtime directory (the one
+ * containing `python/`). Either one bypasses the GitHub download entirely, so
+ * you can test the extension before the release exists.
+ *
+ * Launch VS Code with the variable set, e.g.:
+ *   ANTIMONY_RUNTIME_TARBALL=/path/to/antimony-runtime-1-darwin-arm64.tar.gz code .
+ * then press F5.
+ *
+ * Never set these in production. Checksum verification is skipped for local
+ * files, which is fine for a file you built yourself and unacceptable for
+ * anything fetched over a network.
+ */
+function devOverride(): { dir?: string; tarball?: string } | null {
+  const dir = process.env.ANTIMONY_RUNTIME_DIR;
+  const tarball = process.env.ANTIMONY_RUNTIME_TARBALL;
+  if (dir) { return { dir }; }
+  if (tarball) { return { tarball }; }
+  return null;
+}
+
+/**
  * Ensure a usable interpreter exists and return its absolute path.
  *
  * Resolution order:
@@ -261,7 +365,19 @@ async function assertEnoughSpace(key: string, tmpDir: string, targetDir: string)
  *   2. An already-installed bundled runtime.
  *   3. Download and install the bundled runtime.
  */
-export async function ensureRuntime(context: vscode.ExtensionContext): Promise<string | null> {
+export function ensureRuntime(context: vscode.ExtensionContext): Promise<string | null> {
+  if (inFlight) {
+    return inFlight;
+  }
+  inFlight = doEnsureRuntime(context).finally(() => { inFlight = null; });
+  return inFlight;
+}
+
+async function doEnsureRuntime(context: vscode.ExtensionContext): Promise<string | null> {
+  // Must run before the override check below, or a stale legacy value would
+  // be honoured as if the user had chosen it.
+  await migrateLegacyInterpreter();
+
   const override = vscode.workspace
     .getConfiguration('vscode-antimony')
     .get<string>('pythonInterpreter', '')
@@ -269,6 +385,19 @@ export async function ensureRuntime(context: vscode.ExtensionContext): Promise<s
 
   if (override) {
     return override;
+  }
+
+  const dev = devOverride();
+  if (dev?.dir) {
+    const interpreter = interpreterIn(dev.dir);
+    if (!fs.existsSync(interpreter)) {
+      vscode.window.showErrorMessage(
+        `ANTIMONY_RUNTIME_DIR is set to ${dev.dir} but no interpreter was found at ${interpreter}.`
+      );
+      return null;
+    }
+    console.log(`[antimony] using dev runtime directory: ${dev.dir}`);
+    return interpreter;
   }
 
   let key: string;
@@ -280,7 +409,17 @@ export async function ensureRuntime(context: vscode.ExtensionContext): Promise<s
   }
 
   const root = runtimeRoot(context);
+
+  // Always log where we looked. When this resolves somewhere unexpected the
+  // symptom is a download attempt that "should not" happen, and without this
+  // line there is no way to tell that from a genuine cache miss.
+  console.log(
+    `[antimony] runtime root: ${root} ` +
+    `(marker: ${fs.existsSync(markerIn(root))}, interpreter: ${fs.existsSync(interpreterIn(root))})`
+  );
+
   if (isInstalled(root)) {
+    console.log('[antimony] using installed runtime');
     return interpreterIn(root);
   }
 
@@ -306,9 +445,32 @@ export async function ensureRuntime(context: vscode.ExtensionContext): Promise<s
         progress.report({ message: 'Checking available disk space' });
         await assertEnoughSpace(key, os.tmpdir(), path.dirname(root));
 
-        const actual = await downloadWithProgress(url, archive, progress, token);
+        const DOWNLOAD_WEIGHT = 70;   // extraction gets the remaining 30
 
-        if (expected && expected !== 'REPLACE_WITH_SHA256_FROM_CI' && actual !== expected) {
+        let actual: string;
+        if (dev?.tarball) {
+          if (!fs.existsSync(dev.tarball)) {
+            throw new Error(`ANTIMONY_RUNTIME_TARBALL points at ${dev.tarball}, which does not exist.`);
+          }
+          console.log(`[antimony] installing from local tarball: ${dev.tarball}`);
+          fs.copyFileSync(dev.tarball, archive);
+          actual = '';   // local file, nothing to verify against
+        } else {
+          actual = await downloadWithProgress(url, archive, progress, token, DOWNLOAD_WEIGHT);
+        }
+
+        // A missing checksum is a release-process error, not a reason to skip
+        // verification. Failing loudly here is far better than silently
+        // installing ~60 MB of unverified executable code on every user's
+        // machine because someone forgot to paste a hash.
+        if (actual && (!expected || expected === 'REPLACE_WITH_SHA256_FROM_CI')) {
+          throw new Error(
+            `No published checksum for ${key}. This build was packaged incorrectly; ` +
+            `please report it. Nothing was installed.`
+          );
+        }
+
+        if (actual && expected && actual !== expected) {
           throw new Error(
             'The downloaded Antimony components did not match their expected ' +
             'checksum. The download may have been corrupted or interfered with. ' +
@@ -316,14 +478,41 @@ export async function ensureRuntime(context: vscode.ExtensionContext): Promise<s
           );
         }
 
-        progress.report({ message: 'Unpacking' });
+        progress.report({ message: 'Verifying download' });
 
         fs.rmSync(staging, { recursive: true, force: true });
         fs.mkdirSync(staging, { recursive: true });
 
+        // Extraction is the slow phase users actually notice: ~200 MB across
+        // tens of thousands of small files. Report real progress against the
+        // known unpacked size rather than leaving the bar frozen.
+        const expectedBytes = SIZES[key]?.unpacked ?? 0;
+        let extracted = 0;
+        let lastUnpackPct = 0;
+
         // tar (the npm package) preserves the executable bit on the
         // interpreter, which a naive unzip does not.
-        await tar.x({ file: archive, cwd: staging });
+        await tar.x({
+          file: archive,
+          cwd: staging,
+          onentry: (entry: { size?: number }) => {
+            extracted += entry.size ?? 0;
+            if (expectedBytes <= 0) { return; }
+            const pct = Math.min(
+              100 - DOWNLOAD_WEIGHT,
+              Math.floor((extracted / expectedBytes) * (100 - DOWNLOAD_WEIGHT))
+            );
+            if (pct > lastUnpackPct) {
+              progress.report({
+                increment: pct - lastUnpackPct,
+                message: `Unpacking Python components — ${Math.floor((extracted / expectedBytes) * 100)}%`,
+              });
+              lastUnpackPct = pct;
+            }
+          },
+        } as any);
+
+        progress.report({ message: 'Finishing up' });
 
         if (!fs.existsSync(interpreterIn(staging))) {
           throw new Error('The Antimony runtime archive was missing its interpreter.');
@@ -333,7 +522,7 @@ export async function ensureRuntime(context: vscode.ExtensionContext): Promise<s
         // half-unpacked directory that looks valid on the next launch.
         fs.rmSync(root, { recursive: true, force: true });
         fs.renameSync(staging, root);
-        fs.writeFileSync(markerIn(root), `${RUNTIME_VERSION}\n${actual}\n`, 'utf8');
+        fs.writeFileSync(markerIn(root), `${RUNTIME_VERSION}\n${actual || 'local'}\n`, 'utf8');
       }
     );
   } catch (err) {
@@ -350,10 +539,14 @@ export async function ensureRuntime(context: vscode.ExtensionContext): Promise<s
     const choice = await vscode.window.showErrorMessage(
       `Antimony could not finish setting up: ${message}`,
       'Try again',
+      'Install from file...',
       'Open logs'
     );
     if (choice === 'Try again') {
-      return ensureRuntime(context);
+      return doEnsureRuntime(context);
+    }
+    if (choice === 'Install from file...') {
+      return installFromFile(context, key);
     }
     if (choice === 'Open logs') {
       vscode.commands.executeCommand('workbench.action.toggleDevTools');
@@ -362,6 +555,15 @@ export async function ensureRuntime(context: vscode.ExtensionContext): Promise<s
   } finally {
     fs.rmSync(archive, { force: true });
   }
+
+  // Deliberately given a button. A plain information message auto-dismisses
+  // after a few seconds, which is easy to miss after a wait this long -- the
+  // user is often looking elsewhere by then. A button makes it persist until
+  // acknowledged, so setup never looks like it silently stopped.
+  vscode.window.showInformationMessage(
+    'Antimony is ready. Everything it needs is installed — you will not have to do this again.',
+    'Got it'
+  );
 
   return interpreterIn(root);
 }
@@ -374,6 +576,77 @@ async function cleanupOldRuntimes(context: vscode.ExtensionContext): Promise<voi
     if (entry !== RUNTIME_VERSION) {
       fs.rmSync(path.join(base, entry), { recursive: true, force: true });
     }
+  }
+}
+
+/**
+ * Install from a tarball the user downloaded by hand.
+ *
+ * This is the escape hatch for the failure mode we cannot engineer around:
+ * university, hospital, and corporate networks that block GitHub asset
+ * downloads or sit behind an authenticating proxy. Without this, an affected
+ * user is simply stuck, and the extension has no story beyond "ask IT".
+ *
+ * The checksum is still verified, so this is not a hole in the trust model --
+ * the user supplies the bytes, we still confirm they are the published ones.
+ */
+async function installFromFile(
+  context: vscode.ExtensionContext,
+  key: string
+): Promise<string | null> {
+  const url = `${RELEASE_BASE}/antimony-runtime-${RUNTIME_VERSION}-${key}.tar.gz`;
+
+  const proceed = await vscode.window.showInformationMessage(
+    `Download this file, then choose it in the next dialog:\n\n${url}`,
+    { modal: true },
+    'Copy link and choose file'
+  );
+  if (proceed !== 'Copy link and choose file') { return null; }
+
+  await vscode.env.clipboard.writeText(url);
+
+  const picked = await vscode.window.showOpenDialog({
+    canSelectMany: false,
+    openLabel: 'Install',
+    filters: { 'Antimony runtime': ['gz'] },
+  });
+  if (!picked || picked.length === 0) { return null; }
+
+  const root = runtimeRoot(context);
+  const staging = `${root}.tmp-${process.pid}`;
+
+  try {
+    return await vscode.window.withProgress(
+      { location: vscode.ProgressLocation.Notification, title: 'Installing Antimony components' },
+      async () => {
+        const expected = CHECKSUMS[key];
+        const actual = crypto.createHash('sha256')
+          .update(fs.readFileSync(picked[0].fsPath))
+          .digest('hex');
+
+        if (expected && expected !== 'REPLACE_WITH_SHA256_FROM_CI' && actual !== expected) {
+          throw new Error('That file does not match the published checksum for your platform.');
+        }
+
+        fs.mkdirSync(path.dirname(root), { recursive: true });
+        fs.rmSync(staging, { recursive: true, force: true });
+        fs.mkdirSync(staging, { recursive: true });
+        await tar.x({ file: picked[0].fsPath, cwd: staging });
+
+        if (!fs.existsSync(interpreterIn(staging))) {
+          throw new Error('That archive did not contain an Antimony runtime.');
+        }
+
+        fs.rmSync(root, { recursive: true, force: true });
+        fs.renameSync(staging, root);
+        fs.writeFileSync(markerIn(root), `${RUNTIME_VERSION}\n${actual}\n`, 'utf8');
+        return interpreterIn(root);
+      }
+    );
+  } catch (err) {
+    fs.rmSync(staging, { recursive: true, force: true });
+    vscode.window.showErrorMessage(`Could not install from that file: ${(err as Error).message}`);
+    return null;
   }
 }
 

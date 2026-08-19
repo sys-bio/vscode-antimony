@@ -2,10 +2,9 @@ from collections import defaultdict
 import logging
 import os
 import requests
-from bioservices import ChEBI, UniProt, Rhea
 from stibium.ant_types import Interaction, UnitAssignment, FuncCall, IsAssignment, VariableIn, NameMaybeIn, FunctionCall, ModularModelCall, Number, Operator, VarName, DeclItem, UnitDeclaration, Parameters, ModularModel, Function, SimpleStmtList, End, Keyword, Sbo, Annotation, Sboterm, ArithmeticExpr, Assignment, Declaration, ErrorNode, ErrorToken, FileNode, Function, InComp, LeafNode, Model, Name, RateRules, Reaction, Event, SimpleStmt, TreeNode, TrunkNode, Import, StringLiteral
 from .types import FunctionAlreadyExists, CircularImportFound, DuplicateImportedMModelCall, FileAlreadyImported, GrammarHasIssues, ModelAlreadyExists, NoImportFile, ObscuredEventTrigger, ReservedName, UninitRateLaw, OverridingDisplayName, SubError, VarNotFound, SpeciesUndefined, IncorrectParamNum, ParamIncorrectType, UninitFunction, UninitMModel, UninitCompt, UnusedParameter, RefUndefined, ASTNode, Issue, SymbolType, SyntaxErrorIssue, UnexpectedEOFIssue, UnexpectedNewlineIssue, UnexpectedTokenIssue, Variability, SrcPosition, RateRuleOverRidden, RateRuleNotInReaction
-from .symbols import FuncSymbol, AbstractScope, BaseScope, FunctionScope, MModelSymbol, ModelScope, QName, SymbolTable, ModularModelScope
+from .symbols import FuncSymbol, AbstractScope, BaseScope, FunctionScope, MModelSymbol, ModelScope, QName, SymbolTable, ModularModelScope, chebi_description, _rhea
 import stibium.functions as functions
 
 from dataclasses import dataclass
@@ -1003,7 +1002,15 @@ class AntTreeAnalyzer:
 
     def get_annotation_descriptions(self):
         for scope, annotation, insert in self.pending_annotations:
-            self.get_annotation_description(scope, annotation)
+            # Network lookups. A failure used to propagate out of
+            # AntTreeAnalyzer.__init__, so one unreachable service broke every
+            # hover, parse, and symbol lookup. Degrade to no description.
+            try:
+                self.get_annotation_description(scope, annotation)
+            except Exception:
+                logging.getLogger(__name__).debug(
+                    'Could not fetch annotation description', exc_info=True)
+                continue
     
     def get_annotation_description(self, scope: AbstractScope, annotation: Annotation):
         name = annotation.get_var_name().get_name()
@@ -1024,17 +1031,16 @@ class AntTreeAnalyzer:
                     chebi_id = uri_split[4]
                 if website == IDENTIFIERS_ORG:
                     if uri_split[3] == CHEBI_LOWER:
-                        chebi = ChEBI()
-                        res = chebi.getCompleteEntity(chebi_id)
-                        name = res.chebiAsciiName
-                        definition = res.definition
-                        queried = '\n{}\n\n{}\n'.format(name, definition)
+                        chebi_name, definition = chebi_description(chebi_id)
+                        if chebi_name is None:
+                            continue
+                        queried = '\n{}\n\n{}\n'.format(chebi_name, definition or '')
                         symbol[0].queried_annotations[uri] = queried
                     else:
                         continue
                         # uniport = UniProt()
                 elif website == RHEA_URL:
-                    rhea = Rhea()
+                    rhea = _rhea()
                     df_res = rhea.query(uri_split[4], columns=EQUATION_LOWER, limit=10)
                     equation = df_res[EQUATION_CAP]
                     queried = '\n{}\n'.format(equation[0])

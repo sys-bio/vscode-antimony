@@ -7,24 +7,19 @@
 			// The extension's "main" is ./dist/extension.js, produced by webpack.
 			// The old default build task ran `tsc -watch`, which writes to out/
 			// and is never loaded -- so F5 silently ran a stale dist/ bundle.
+			//
+			// problemMatcher is "$tsc" rather than "$ts-webpack": the latter needs
+			// the eamodio.tsl-problem-matcher extension, and an unknown matcher
+			// makes VS Code flag the task and refuse to run it.
 			"type": "npm",
 			"script": "webpack",
-			"problemMatcher": "$ts-webpack",
+			"problemMatcher": "$tsc",
 			"group": {
 				"kind": "build",
 				"isDefault": true
 			},
 			"presentation": {
 				"reveal": "silent"
-			}
-		},
-		{
-			"type": "npm",
-			"script": "webpack-dev",
-			"problemMatcher": "$ts-webpack-watch",
-			"isBackground": true,
-			"presentation": {
-				"reveal": "never"
 			}
 		}
 	]

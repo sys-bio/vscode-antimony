@@ -18,6 +18,7 @@ Platforms: win32-x64, darwin-x64, darwin-arm64, linux-x64
 """
 
 import argparse
+import gzip
 import hashlib
 import os
 import shutil
@@ -106,6 +107,20 @@ def preflight():
             f"    The smoke test imports stibium. Pass --skip-smoke-test to build anyway."
         )
 
+    # RUNTIME_VERSION is duplicated in runtime.ts (the extension has no way to
+    # read this file). If they drift, the extension downloads a URL that does
+    # not exist, or installs into a directory it will never look in again.
+    runtime_ts = ROOT / "src" / "runtime.ts"
+    if runtime_ts.is_file():
+        import re
+        match = re.search(r"RUNTIME_VERSION\s*=\s*['\"]([^'\"]+)['\"]", runtime_ts.read_text())
+        if match and match.group(1) != RUNTIME_VERSION:
+            problems.append(
+                f"RUNTIME_VERSION mismatch: this script says {RUNTIME_VERSION!r}, "
+                f"src/runtime.ts says {match.group(1)!r}.\n"
+                f"    They must match, or the extension will request a bundle that was never built."
+            )
+
     if problems:
         log("cannot start, nothing was downloaded:")
         for problem in problems:
@@ -189,6 +204,12 @@ def smoke_test(py):
         "from pygls.server import LanguageServer\n"
         "from bioservices import ChEBI\n"
         "import orjson\n"
+        # pygls.server.thread_pool builds a multiprocessing ThreadPool lazily,
+        # on the first workspace/executeCommand. Startup and imports both
+        # succeed without it, so only exercising imports lets an over-pruned
+        # stdlib ship and fail later at the first user command.
+        "from multiprocessing.pool import ThreadPool\n"
+        "ThreadPool(2).close()\n"
         "p = AntimonyParser()\n"
         "p.parse('J0: A -> B; k1*A;\\nA = 10; k1 = 0.1;')\n"
         "print('smoke test OK')\n" % str(ROOT)
@@ -207,18 +228,48 @@ def prune(python_root, platform):
         shutil.rmtree(libdir / name, ignore_errors=True)
 
     # pip is only needed at build time.
+    #
+    # Do NOT prune _distutils_hack here. It ships with setuptools, which has to
+    # stay for pkg_resources, and site-packages/distutils-precedence.pth does
+    # `import _distutils_hack` on every interpreter start. Removing one without
+    # the other makes CPython print a traceback at every startup -- harmless,
+    # but it lands in the language server's stderr and reads like a real error.
     site = libdir / "site-packages"
-    for name in ("pip", "pip-*.dist-info", "_distutils_hack"):
+    for name in ("pip", "pip-*.dist-info"):
         for match in site.glob(name):
             shutil.rmtree(match, ignore_errors=True)
 
-    for pycache in python_root.rglob("__pycache__"):
-        shutil.rmtree(pycache, ignore_errors=True)
-    for pyc in python_root.rglob("*.pyc"):
-        pyc.unlink(missing_ok=True)
+    # Defensive: if a .pth's target module is gone for any reason, drop the
+    # .pth too rather than shipping a bundle that errors on every launch.
+    hack_pth = site / "distutils-precedence.pth"
+    if hack_pth.is_file() and not (site / "_distutils_hack").is_dir():
+        hack_pth.unlink()
 
     shutil.rmtree(python_root / "share", ignore_errors=True)
     shutil.rmtree(python_root / "include", ignore_errors=True)
+
+
+def precompile(py, python_root):
+    """Compile every module to bytecode at build time.
+
+    An earlier version of this script deleted __pycache__ to save space. That
+    was a bad trade: importing bioservices from source costs ~5.3s, versus
+    ~0.5s with cached bytecode, and antimony and libsbml add several more.
+    Users paid roughly eight seconds of compilation on first launch to save a
+    fraction of the download.
+
+    Compiling here also makes the bundle work correctly if it ever lands
+    somewhere read-only, where CPython could not write .pyc files at all and
+    every single start would pay the full cost.
+    """
+    log("precompiling bytecode")
+    # Returns non-zero for any file that fails to compile. Some third-party
+    # packages ship intentionally broken or py2-only modules, so a failure here
+    # is not fatal -- those modules simply stay uncompiled.
+    subprocess.run(
+        [str(py), "-m", "compileall", "-q", "-j", "0", str(python_root)],
+        check=False,
+    )
 
 
 def dir_size(root):
@@ -239,10 +290,50 @@ def package(python_root, platform):
     unpacked = dir_size(python_root)
 
     log(f"packaging -> {out.name}")
-    with tarfile.open(out, "w:gz") as tf:
-        tf.add(python_root, arcname="python")
+
+    # Deterministic archive: identical inputs must produce identical bytes.
+    #
+    # By default `tarfile.open(mode="w:gz")` stamps the current time into the
+    # gzip header and records each file's real mtime, uid and gid, so every
+    # rebuild produced a different sha256 even with no source changes. That
+    # meant re-running CI invalidated the checksums committed in runtime.ts and
+    # forced a re-paste every time.
+    #
+    # Zeroing the timestamps and ownership, and walking the tree in sorted
+    # order, makes the hash a function of the contents alone.
+    def normalize(info):
+        info.mtime = 0
+        info.uid = 0
+        info.gid = 0
+        info.uname = ""
+        info.gname = ""
+        return info
+
+    def add_sorted(tf, path, arcname):
+        tf.add(path, arcname=arcname, recursive=False, filter=normalize)
+        if path.is_dir() and not path.is_symlink():
+            for child in sorted(path.iterdir(), key=lambda c: c.name):
+                add_sorted(tf, child, f"{arcname}/{child.name}")
+
+    with open(out, "wb") as raw:
+        # mtime=0 keeps the gzip header stable. filename="" is equally
+        # important and much easier to miss: GzipFile otherwise records the
+        # output file's own name in the header.
+        with gzip.GzipFile(filename="", fileobj=raw, mode="wb", mtime=0) as gz:
+            with tarfile.open(fileobj=gz, mode="w") as tf:
+                add_sorted(tf, python_root, "python")
 
     download = out.stat().st_size
+    # Verify the archive round-trips. A truncated or partial tar is otherwise
+    # indistinguishable from a good one until a user unpacks it.
+    with tarfile.open(out) as tf:
+        names = tf.getnames()
+    expected = ["python/lib", "multiprocessing/queues.py", "site-packages"]
+    for needle in expected:
+        if not any(needle in n for n in names):
+            raise SystemExit(f"archive is missing {needle!r} -- refusing to publish")
+    log(f"archive verified ({len(names)} entries)")
+
     digest = hashlib.sha256(out.read_bytes()).hexdigest()
 
     (DIST / (out.name + ".sha256")).write_text(f"{digest}  {out.name}\n")
@@ -286,6 +377,7 @@ def main():
             raise
 
     prune(python_root, args.platform)
+    precompile(py, python_root)
     package(python_root, args.platform)
     log("done")
 
