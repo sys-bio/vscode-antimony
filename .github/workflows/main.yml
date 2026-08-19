@@ -7,22 +7,17 @@ on:
     branches: [ master ]
 
 jobs:
-  # This is for the frontend unit tests
   frontend-unit-tests:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [15.x]
-
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '20.x'
 
       - name: Install and Run webpack 🔧
         run: |
@@ -30,41 +25,37 @@ jobs:
           npm install
           npm run webpack
 
-      # - name: Test 🚨
-      #   run: npm test
-
-  # This is for the backend unit tests
   backend-unit-tests:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.9"]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+
+      # 3.10 to match the interpreter the extension actually ships. Testing on
+      # a different Python than users run is how version-specific breakage gets
+      # through CI unnoticed.
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.10'
+
+      # The previous version installed pygls, bioservices, and requests
+      # unpinned, so CI silently drifted to whatever was newest on PyPI. That
+      # is why this workflow broke: pygls 1.0 removed pygls.workspace.Document,
+      # which test_grammar.py imports, and bioservices 1.16 pulls an easydev
+      # that conflicts with the vendored bioservices_server copy.
+      #
+      # requirements-runtime.txt is the single source of truth for these pins
+      # and is what gets baked into the shipped runtime, so testing against it
+      # means CI exercises the same stack users get.
       - name: Install dependencies
         run: |
-          python3 -m pip install --upgrade pip
-          pip3 install pytest
           cd vscode-antimony/
-          pip3 install git+https://github.com/lark-parser/lark.git@5b8c04ca83b9#egg=lark_parser
-          python3 -m pip --disable-pip-version-check install -t ./pythonFiles/lib/python --no-cache-dir --upgrade -r ./all-requirements.txt && success=1
-          pip3 install antimony
-          #if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python3 -m pip install --upgrade pip
+          python3 -m pip install pytest
+          python3 -m pip install -r requirements-runtime.txt
+
       - name: Test with pytest
         run: |
-          cd vscode-antimony/src/server/stibium/test/
-          pip3 install requests
-          pip3 install bioservices
-          pip3 install pygls
-          python3 -m pytest test_grammar.py
-          python3 -m pytest test_diagnostics.py
-          python3 -m pytest test_error_recovery.py
-          python3 -m pytest test_parser.py
-          python3 -m pytest test_completion.py
-          cd import-test-data/
-          python3 -m pytest test_import.py
+          cd vscode-antimony/src/server/stibium/
+          python3 -m pytest test/ -v
