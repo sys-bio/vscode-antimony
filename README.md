@@ -20,7 +20,7 @@ Download it from [code.visualstudio.com](https://code.visualstudio.com/download)
 
 **2. Install the Antimony Extension Pack**
 
-Click the Extensions icon in the left sidebar, search for **Antimony**, and click Install. Also install **Antimony Syntax** for color coded grammar.
+Click the Extensions icon in the left sidebar, search for **Antimony**, and click Install. Then install **Antimony Syntax** to enable color-coded grammar.
 
 <p align=center>
 <img width="860" height="447" alt="image" src="https://github.com/user-attachments/assets/3affa68c-db07-4305-ac00-102b7e47fd21" />
