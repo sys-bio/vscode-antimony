@@ -417,7 +417,15 @@ def hover(params: TextDocumentPositionParams):
     
     assert range_ is not None
     sym = symbols[0]
-    text = sym.help_str()
+    # help_str() performs network lookups (ChEBI, Rhea, OLS) to enrich the
+    # tooltip. Guarding here rather than inside the loop keeps the guard in one
+    # place and covers every remote service: a lookup failure should cost the
+    # user a description, not the entire hover.
+    try:
+        text = sym.help_str()
+    except Exception:
+        logging.getLogger(__name__).debug('help_str failed', exc_info=True)
+        return None
     contents = MarkupContent(MarkupKind.Markdown, text)
 
     return Hover(

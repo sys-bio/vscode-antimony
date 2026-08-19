@@ -6,7 +6,7 @@
 
 The Antimony extension adds language support for Antimony to Visual Studio Code for building models in Systems Biology.
 
-The currently available version 0.2 is a public beta version developed by [Longxuan Fan](https://www.linkedin.com/in/longxf), [Sai Anish Konanki](https://www.linkedin.com/in/sai-anish-konanki-8b81a575/), [Eva Liu](https://www.linkedin.com/in/evaliu02), [Steve Ma](https://www.linkedin.com/in/steve-ma/), [Gary Geng](https://www.linkedin.com/in/gary-geng-9995a2160/), [Dr. Joseph Hellerstein](https://sites.google.com/uw.edu/joseph-hellerstein/home?authuser=0), and [Dr. Herbert Sauro](https://bioe.uw.edu/portfolio-items/sauro/) at the University of Washington. Dr. Joseph Hellerstein is responsible for future releases, and please feel free to [contact](mailto:joseph.hellerstein@gmail.com) him if you have any questions.
+The currently available version 0.3 is a public beta version developed by [Longxuan Fan](https://www.linkedin.com/in/longxf), [Sai Anish Konanki](https://www.linkedin.com/in/sai-anish-konanki-8b81a575/), [Eva Liu](https://www.linkedin.com/in/evaliu02), [Steve Ma](https://www.linkedin.com/in/steve-ma/), [Gary Geng](https://www.linkedin.com/in/gary-geng-9995a2160/), [Dr. Joseph Hellerstein](https://sites.google.com/uw.edu/joseph-hellerstein/home?authuser=0), and [Dr. Herbert Sauro](https://bioe.uw.edu/portfolio-items/sauro/) at the University of Washington. Dr. Joseph Hellerstein is responsible for future releases, and please feel free to [contact](mailto:joseph.hellerstein@gmail.com) him if you have any questions.
 
 Please note that the current release does not support the complete Antimony grammar. While most grammar has been supported, more will be included in future releases. Flux balance constraints and submodeling are not supported currently.
 
@@ -20,33 +20,19 @@ Download it from [code.visualstudio.com](https://code.visualstudio.com/download)
 
 **2. Install the Antimony Extension Pack**
 
-Click the Extensions icon in the left sidebar, search for **Antimony**, and click Install. Then install **Antimony Syntax** to enable color-coded grammar.
+Click the Extensions icon in the left sidebar, search for **Antimony Extension Pack**, and click Install. (We recommend installing the extension pack directly so you have full access to all of the features.)
 
 <p align=center>
-<img width="860" height="447" alt="image" src="https://github.com/user-attachments/assets/3affa68c-db07-4305-ac00-102b7e47fd21" />
+<img src="docs/images/Step2.png" width=75%>
 <br/>
 <em>(Download Antimony Extension)</em>
 </p>
 
 **3. Open a model file**
 
-Open any `.ant` or `.xml` model. If you do not have one, open the Command Palette (Ctrl + Shift + P for Windows, Cmd + Shift + P for Mac), type and run **Open Antimony Start Page**.
+Open any `.ant` or `.xml` model. If you do not have one, open the Command Palette (Ctrl + Shift + P for Windows, Cmd + Shift + P for Mac) and type **Open Antimony Start Page**.
 
-The first time you do this, Antimony downloads the components it needs and shows a progress notification. It takes less than a minute, happens only once, and you can keep working in other files while it runs.
-
-<p align=center>
-<img width="462" height="102" alt="image" src="https://github.com/user-attachments/assets/99527755-e9d4-47d5-b230-3583987e02b0" />
-<br/>
-<em>(Install status popup)</em>
-</p>
-
-If you do not see a status popup for installation on the bottom right corner, open the the Command Palette (Ctrl + Shift + P for Windows, Cmd + Shift + P for Mac), type and run **Developer: Reload Window**.
-
-<p align=center>
-<img width="706" height="258" alt="image" src="https://github.com/user-attachments/assets/8f71763d-d7cd-49d4-b89a-83038037e57f" />
-<br/>
-<em>(Reload window install fix)</em>
-</p>
+The first time you do this, Antimony downloads the components it needs and shows a progress notification. It takes a minute or two, happens only once, and you can keep working in other files while it runs.
 
 Now, right clicking anywhere in the .ant file will display a list of features that can be accessed by users.
 
@@ -115,7 +101,7 @@ The extension allows a user to browse for different biomodels from the [BioModel
 <em>(Syntax Highlights)</em>
 </p>
 
-⚠️ Note: the default syntax highlighting for Antimony is provided by a separate extension [Antimony Syntax](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony-syntax).
+⚠️ Note: the default syntax highlighting for Antimony is provided by a separate extension [Antimony Syntax](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony-syntax), and is also available in the [Antimony Extension Pack](https://marketplace.visualstudio.com/items?itemName=stevem.antimony-extension-pack) 
 
 ### 4. Automatic annotation creation with database recommendation
 The extension can recognize different types of variables, and recommend databases based on the [OMEX metadata specification](https://doi.org/10.1515/jib-2021-0020).

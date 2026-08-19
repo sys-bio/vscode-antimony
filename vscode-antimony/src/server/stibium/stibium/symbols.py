@@ -2,10 +2,65 @@
 '''
 import requests
 import logging
-from bioservices import ChEBI, UniProt, Rhea
 from stibium.ant_types import Annotation, Name, Sboterm, TreeNode
 from .types import Issue, ObscuredValueCompartment, RedefinedFunction, OverrodeValue, ObscuredDeclaration, ObscuredValue, SrcRange, SymbolType, IncompatibleType
 from .ant_types import LeafNode, VarName, Declaration, VariableIn, Function, DeclItem, Assignment, ModularModel, Number, ModularModelCall, Event
+
+# EBI retired the ChEBI SOAP/WSDL service that bioservices 1.8.3 uses; it now
+# returns HTTP 500, so ChEBI() raises on construction. This calls the current
+# REST API directly with `requests`, already a dependency here.
+#
+# Upgrading bioservices is not an option: 1.16 requires easydev>=0.13.3 and
+# requests-cache>=1.2.1, which the vendored copy in
+# src/server/bioservices_server/ cannot satisfy.
+#
+# Lives in symbols.py because analysis.py imports symbols and not the reverse,
+# so both ChEBI call sites share one implementation.
+CHEBI_API = 'https://www.ebi.ac.uk/chebi/backend/api/public/compound/{}'
+
+def _rhea():
+    """Import bioservices only when a Rhea annotation is actually encountered.
+
+    `import bioservices` costs ~0.5s warm and ~5.3s cold, because it pulls in
+    pandas, lxml, suds and friends at module scope. It used to be imported for
+    ChEBI, UniProt and Rhea; ChEBI now goes through the REST helper above and
+    UniProt is unused, so Rhea is the only remaining consumer -- and Rhea
+    annotations are rare. Paying that cost on every language-server start, for
+    a code path most files never reach, is the largest avoidable chunk of
+    startup latency in the server.
+    """
+    from bioservices import Rhea
+    return Rhea()
+
+
+
+def chebi_description(chebi_id):
+    """Return (name, definition) for a ChEBI id, or (None, None) on failure.
+
+    Accepts 'CHEBI:27732' or '27732'. Never raises: annotation descriptions
+    are cosmetic and must not be able to take down hover or parsing.
+    """
+    num = str(chebi_id).strip().split(':')[-1]
+    try:
+        # Short timeout: this runs on the LSP request thread, so a hanging
+        # request would freeze hover rather than merely failing it.
+        response = requests.get(CHEBI_API.format(num), timeout=8)
+        if response.status_code != 200:
+            return None, None
+        data = response.json()
+    except Exception:
+        logging.getLogger(__name__).debug('ChEBI lookup failed', exc_info=True)
+        return None, None
+
+    if not isinstance(data, dict):
+        return None, None
+
+    # Read fields defensively so a future API change degrades to a missing
+    # description rather than an exception.
+    name = data.get('ascii_name') or data.get('name')
+    definition = data.get('definition') or data.get('description')
+    return name, definition
+
 
 import abc
 from collections import defaultdict, namedtuple
@@ -264,18 +319,17 @@ class Symbol:
                         chebi_id = uri_split[4]
                     if website == 'identifiers.org':
                         if uri_split[3] == 'chebi':
-                            chebi = ChEBI()
-                            res = chebi.getCompleteEntity(chebiId=chebi_id)
-                            name = res.chebiAsciiName
-                            definition = res.definition
-                            queried = '\n{}\n\n{}\n'.format(name, definition)
+                            chebi_name, definition = chebi_description(chebi_id)
+                            if chebi_name is None:
+                                continue
+                            queried = '\n{}\n\n{}\n'.format(chebi_name, definition or '')
                             ret += queried
                             self.queried_annotations[uri] = queried
                         else:
                             continue
                             # uniport = UniProt()
                     elif website == 'www.rhea-db.org':
-                        rhea = Rhea()
+                        rhea = _rhea()
                         df_res = rhea.query(uri_split[4], columns="equation", limit=10)
                         equation = df_res['Equation']
                         queried = '\n{}\n'.format(equation[0])

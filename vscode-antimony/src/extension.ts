@@ -15,13 +15,81 @@ import { SBMLEditorProvider } from './SBMLEditor';
 import { AntimonyEditorProvider } from './AntimonyEditor';
 import { modelSearchInput } from './modelBrowse';
 import { ProgressLocation, TextDocument, window } from 'vscode';
-// import { exec } from 'child_process';
-import * as shell from 'shelljs'
+import { ensureRuntime, reinstallRuntime } from './runtime';
 
 let client: LanguageClient | null = null;
 let pythonInterpreter: string | null = null;
+
+// Starting the Python language server takes a beat: process spawn plus the
+// antimony and libsbml native imports. Without an indicator the editor looks
+// like it has simply ignored the file, and users retry or reload -- which
+// makes it slower. A status bar item is the right weight here: visible if you
+// look for it, silent if you do not.
+let statusItem: vscode.StatusBarItem | null = null;
+let resolveServerReady: (() => void) | null = null;
+let escalateTimer: NodeJS.Timeout | null = null;
+
+/**
+ * Escalating startup indicator.
+ *
+ * Starting the server means spawning a Python process and importing native
+ * libantimony and libsbml bindings. On a warm machine that is fast enough that
+ * a notification would be noise; on a cold one it is long enough that silence
+ * looks like the extension ignored the file.
+ *
+ * So: a status bar spinner immediately, plus the status bar progress slot. If
+ * the server still is not ready after ESCALATE_MS, a notification toast opens
+ * as well, because at that point the user deserves an unmissable answer to
+ * "is this doing anything?". Fast starts never show the toast.
+ */
+const ESCALATE_MS = 1500;
+
+function beginStartupIndicator(message: string) {
+  const done = new Promise<void>((resolve) => { resolveServerReady = resolve; });
+
+  showStatus(`$(loading~spin) ${message}`, 'Antimony is starting up');
+
+  // Status bar progress slot, next to the notification bell.
+  vscode.window.withProgress(
+    { location: vscode.ProgressLocation.Window, title: message },
+    () => done
+  );
+
+  escalateTimer = setTimeout(() => {
+    if (!resolveServerReady) { return; }   // already finished
+    vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Notification,
+        title: 'Starting Antimony',
+        cancellable: false,
+      },
+      async (progress) => {
+        progress.report({ message: 'Loading the language server. This only takes a moment.' });
+        await done;
+      }
+    );
+  }, ESCALATE_MS);
+}
+
+/** Ends every startup indicator, once. Safe to call repeatedly. */
+function serverStartupFinished() {
+  if (escalateTimer) {
+    clearTimeout(escalateTimer);
+    escalateTimer = null;
+  }
+  resolveServerReady?.();
+  resolveServerReady = null;
+}
+
+function showStatus(text: string, tooltip: string) {
+  if (!statusItem) {
+    statusItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+  }
+  statusItem.text = text;
+  statusItem.tooltip = tooltip;
+  statusItem.show();
+}
 let lastChangeInterp = 0;
-const action = 'Reload';
 
 // Decoration type for annotated variables
 const annDecorationType = vscode.window.createTextEditorDecorationType({
@@ -36,34 +104,152 @@ let activeEditor = vscode.window.activeTextEditor;
 // RoundTripping SBML to Antimony
 let roundTripping: boolean | null = null;
 
+const MODEL_EXTENSIONS = new Set(['.ant', '.xml']);
+
+/** Records that the one-time post-install setup has already been attempted. */
+const PREFETCH_KEY = 'antimony.runtimePrefetchAttempted';
+
+/**
+ * True for documents the extension actually operates on.
+ *
+ * The scheme check comes first on purpose. A git diff, a search preview, or an
+ * output channel can carry an .xml path, and treating those as "the user
+ * opened a model" would kick off a ~95 MB download for a read-only peek.
+ */
+function isModelDocument(doc: vscode.TextDocument | undefined): doc is vscode.TextDocument {
+  if (!doc) {
+    return false;
+  }
+  if (doc.uri.scheme !== 'file' && doc.uri.scheme !== 'untitled') {
+    return false;
+  }
+  return MODEL_EXTENSIONS.has(path.extname(doc.uri.fsPath).toLowerCase());
+}
+
+/** Guards bootstrap() so the triggers below can fire freely. */
+let bootstrapped = false;
+
 // Activate extension
 export async function activate(context: vscode.ExtensionContext) {
+  // Registered unconditionally. These are the only two commands reachable
+  // without a model file open, so they have to survive the case where the rest
+  // of activation is deferred.
   context.subscriptions.push(
     vscode.commands.registerCommand('antimony.openStartPage', (...args: any[]) => openStartPage()));
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('antimony.deleteVirtualEnv', (...args: any[]) => venvErrorFix()));
+    vscode.commands.registerCommand('antimony.reinstallRuntime', (...args: any[]) => reinstallRuntime(context)));
 
-  
-  // Check if the current file is .txt
-  const doc = vscode.window.activeTextEditor.document;
-  const uri = doc.uri.toString();
-  const fileExtension = path.extname(uri);
-  if (fileExtension !== '.ant' && fileExtension !== '.xml') {
-    if (fileExtension === '.txt') {
-      vscode.window.showInformationMessage('Please save the file as .ant to use VSCode-Antimony, otherwise ignore');
+  // Trigger 2: the user opens or switches to a model file. Both events are
+  // needed -- onDidOpenTextDocument fires for a newly opened file,
+  // onDidChangeActiveTextEditor for switching to a tab that was already open
+  // in the background. Neither covers the other.
+  //
+  // These are registered before the already-open check so that a bootstrap
+  // that fails (no network, cancelled download) can be retried simply by
+  // opening another model file.
+  const trigger = (doc: vscode.TextDocument | undefined) => {
+    if (isModelDocument(doc)) {
+      void bootstrap(context, doc);
     }
+  };
+
+  context.subscriptions.push(
+    vscode.workspace.onDidOpenTextDocument(doc => trigger(doc)),
+    vscode.window.onDidChangeActiveTextEditor(editor => trigger(editor?.document))
+  );
+
+  // A model file may already be open: window restore, or the user opened one
+  // before activation finished. Prefer the focused one, since the SBML
+  // handling at the end of bootstrap acts on the document it is given.
+  const active = vscode.window.activeTextEditor?.document;
+  const alreadyOpen = isModelDocument(active)
+    ? active
+    : vscode.workspace.textDocuments.find(isModelDocument);
+  if (alreadyOpen) {
+    await bootstrap(context, alreadyOpen);
     return;
   }
 
-  await createVirtualEnv(context);
+  // Trigger 1: right after the extension is installed, so the first model file
+  // the user opens does not stall behind a download. ensureRuntime is a no-op
+  // once the runtime is present, so this costs nothing on later launches.
+  //
+  // The flag is written before the call, not after. If setup fails or the user
+  // cancels, re-prompting on every window launch is worse than waiting for
+  // them to open a file -- the trigger above still installs on demand.
+  if (!context.globalState.get<boolean>(PREFETCH_KEY)) {
+    await context.globalState.update(PREFETCH_KEY, true);
+    void ensureRuntime(context);
+  }
+}
+
+/**
+ * Everything that needs a working Python: the runtime, the language server,
+ * and the editor features built on top of them. Runs at most once per window,
+ * and only once a model file is actually in play.
+ */
+async function bootstrap(context: vscode.ExtensionContext, doc: vscode.TextDocument) {
+  if (bootstrapped) {
+    return;
+  }
+  bootstrapped = true;
+
+  const fileExtension = path.extname(doc.uri.fsPath).toLowerCase();
+
+  // Resolve (and on first run, download) the bundled Python runtime. Returns
+  // null if the user cancelled or setup failed, in which case bail out rather
+  // than starting a language server against an interpreter that isn't there.
+  context.subscriptions.push({
+    dispose: () => { serverStartupFinished(); statusItem?.dispose(); }
+  });
+
+  // Started before ensureRuntime so the indicator covers the whole sequence,
+  // including the runtime check and any migration, not just the server spawn.
+  beginStartupIndicator('Starting Antimony language server');
+
+  const interpreter = await ensureRuntime(context);
+  if (!interpreter) {
+    bootstrapped = false;   // allow a retry when another model file is opened
+    serverStartupFinished();
+    statusItem?.dispose();
+    statusItem = null;
+    return;
+  }
 
   roundTripping = vscode.workspace.getConfiguration('vscode-antimony').get('openSBMLAsAntimony');
 
   // start the language server
-  if (await startLanguageServer(context) === 0) {
+  if (await startLanguageServer(context, interpreter) === 0) {
+    bootstrapped = false;   // allow a retry when another model file is opened
+    serverStartupFinished();
+    statusItem?.dispose();
+    statusItem = null;
     return;
   }
+
+  // Flip to ready once the server has finished initialising. Not awaited: the
+  // rest of activation does not depend on it, and blocking here would delay
+  // command registration for no benefit.
+  client?.onReady().then(
+    () => {
+      serverStartupFinished();
+      showStatus('$(check) Antimony', 'Antimony language server is ready');
+    },
+    () => {
+      serverStartupFinished();
+      showStatus('$(warning) Antimony', 'The Antimony language server failed to start');
+    }
+  );
+
+  // Safety net: if onReady never settles, the window progress would spin
+  // forever, which looks worse than no indicator at all.
+  setTimeout(() => {
+    if (resolveServerReady) {
+      serverStartupFinished();
+      showStatus('$(warning) Antimony', 'The Antimony language server is taking longer than expected');
+    }
+  }, 60_000);
 
   vscode.workspace.onDidChangeConfiguration(async (e) => {
     // restart the language server using the new Python interpreter, if the related
@@ -84,7 +270,10 @@ export async function activate(context: vscode.ExtensionContext) {
         client.stop();
         client = null;
       }
-      await startLanguageServer(context);
+      const next = await ensureRuntime(context);
+      if (next) {
+        await startLanguageServer(context, next);
+      }
     }, 3000);
 
   });
@@ -165,6 +354,11 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   vscode.window.onDidChangeActiveTextEditor(editor => {
+    // Focusing the Output panel should not replace the tracked editor, or the
+    // decoration pass starts operating on the log view itself.
+    if (editor && editor.document.uri.scheme !== 'file') {
+      return;
+    }
     activeEditor = editor;
     if (editor) {
       triggerUpdateDecorations();
@@ -213,8 +407,8 @@ export async function activate(context: vscode.ExtensionContext) {
     });
   }
 
-  if (path.extname(vscode.window.activeTextEditor.document.fileName) === '.xml' && roundTripping) {
-    triggerSBMLEditor(vscode.window.activeTextEditor.document, sbmlFileNameToPath);
+  if (path.extname(doc.fileName) === '.xml' && roundTripping) {
+    triggerSBMLEditor(doc, sbmlFileNameToPath);
   }
   if (fileExtension == '.xml') {
     vscode.commands.executeCommand('antimony.checkSbml', doc.uri.path).then((result: any) => {
@@ -229,6 +423,10 @@ vscode.window.onDidChangeActiveTextEditor(() => {
   const activeTextEditor = vscode.window.activeTextEditor;
   if (activeTextEditor) {
     const doc = activeTextEditor.document;
+    // Same reason as updateDecorations: skip anything that is not a real file.
+    if (doc.uri.scheme !== 'file') {
+      return;
+    }
     const uri = doc.uri.toString();
     const fileExtension = path.extname(uri);
     if (fileExtension == '.xml') {
@@ -653,7 +851,22 @@ async function updateDecorations() {
   let regexFromAnnVars: RegExp;
   let config =  vscode.workspace.getConfiguration('vscode-antimony').get('annotatedVariableIndicatorOn');
 
+  if (!activeEditor) {
+    return;
+  }
+
   const doc = activeEditor.document;
+
+  // The Output panel, diff views, and Git previews are all TextEditors with
+  // non-file schemes (output:, git:, untitled:). Their URIs are not paths, so
+  // sending one to the server produces
+  //   FileNotFoundError: 'extension-output-stevem.vscode-antimony-#2-...'
+  // once per keystroke while that panel has focus. Only real files on disk are
+  // meaningful to the language server.
+  if (doc.uri.scheme !== 'file' || doc.languageId !== 'antimony') {
+    return;
+  }
+
   const uri = doc.uri.toString();
 
   // wait till client is ready, or the Python server might not have started yet.
@@ -693,278 +906,55 @@ async function updateDecorations() {
   }
 }
 
-/**
- * Virtual Env Functions
- */
-
-const platform = os.platform().toString();
-
-function activateVirtualEnv(pythonPath) {
-  if (vscode.workspace.getConfiguration('vscode-antimony').get('pythonInterpreter').toString() !== pythonPath.toString()) {
-    vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', pythonPath, true);
-    vscode.window.showInformationMessage('Virtual environment exists, it is activated now.');
-  }
-}
-
-// setup virtual environment
-export async function createVirtualEnv(context: vscode.ExtensionContext) {
-  await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
-
-  // asking permissions
-  if (platform === 'darwin' && fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python").toString())) {
-    activateVirtualEnv(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python").toString());
-  } else if ((platform === 'win32' || platform === 'win64') && fs.existsSync(path.normalize(os.homedir() + "\\vscode_antimony_virtual_env\\Scripts\\python.exe").toString())) {
-    activateVirtualEnv(path.normalize(os.homedir() + "\\vscode_antimony_virtual_env\\Scripts\\python").toString());
-  } else if (platform === 'linux' && fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10").toString())) {
-    activateVirtualEnv(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10").toString());
-  } else {
-    let message = `To install dependencies so the extension works properly, allow installation of virtual environment`;
-    vscode.window.showInformationMessage(message, {modal: true}, ...['Yes', 'No'])
-      .then(async selection => {
-        if (selection === 'Yes') {
-          installEnv();
-        } else if (selection === 'No') {
-          vscode.window.showInformationMessage('The default python interpreter will be used.');
-        }
-      });
-  }
-}
-
-async function executeProgressBar(filePath: string) {
-  try {
-    await progressBar(filePath);
-    vscode.window.showInformationMessage(
-      `Installation finished. Reload to activate. Right click in the editor after reload to view features.`,
-      { modal: true },
-      action
-      ).then(selectedAction => {
-        if (selectedAction === action) {
-          vscode.commands.executeCommand('workbench.action.reloadWindow');
-        }
-      });
-  } catch (error) {
-    const isAppleSilicon = process.arch === 'arm64';
-    if (isAppleSilicon) {
-      vscode.window.showErrorMessage(
-        `Installation Error. Download Python3.9. Click "Retry" once Python3.9 has been installed. Link: https://www.python.org/ftp/python/3.9.13/python-3.9.13-macos11.pkg. Error Message: "${error}"`,
-        { modal: true }, "Retry"
-      ).then(async () => {
-        let shellScriptPath: string;
-        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvIntelMac.sh');
-        await progressBar(shellScriptPath);
-        vscode.window.showInformationMessage(
-          `Installation finished. Reload to activate. Right click in the editor after reload to view features.`,
-          { modal: true },
-          action
-          ).then(selectedAction => {
-          if (selectedAction === action) {
-            vscode.commands.executeCommand('workbench.action.reloadWindow');
-          }
-          });
-      });
-    } else {
-      await vscode.window.showErrorMessage(
-        "Once window is reloaded, right click and press 'Delete Virtual Environment'. Installation Error. Try again.",
-        { modal: true }, "Reload window"
-        ).then(() => {
-          vscode.commands.executeCommand('workbench.action.reloadWindow');
-      });
-    }
-  }
-}
-
-async function progressBar(filePath: string) {
-  return vscode.window.withProgress(
-    {
-      location: vscode.ProgressLocation.Notification,
-      title: "Running installation... Do NOT close VSCode. (Appx 5 minutes)",
-      cancellable: false
-    },
-    async (progress, token) => {
-      await new Promise<void>((resolve, reject) => {
-        shell.exec(`${filePath}`, (err, stdout, stderr) => {
-          if (err) {
-            // Handle the error from the shell script execution
-            reject(err);
-            return err;
-          } else {
-            // Continue with the progress if no error occurred
-            const interpreterPaths = {
-              darwin: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python"),
-              win32: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"),
-              win64: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/python"),
-              linux: path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"),
-            };
-
-            const pythonInterpreterPath = interpreterPaths[platform];
-
-            vscode.workspace.getConfiguration('vscode-antimony').update('pythonInterpreter', pythonInterpreterPath, true);
-
-            resolve();
-          }
-        });
-      });
-    }
-  );
-}
-
-async function installEnv() {
-  if (process.env.VIRTUAL_ENV) {
-    const virtualEnvPath = process.env.VIRTUAL_ENV;
-    if (virtualEnvPath !== path.normalize(os.homedir() + '/vscode_antimony_virtual_env')) {
-      await vscode.window.showInformationMessage(`Deactivate current active virtual environment before allowing antimony virtual environment installation.`, action).then((selectedAction) => {
-      if (selectedAction === action) {
-        vscode.commands.executeCommand('workbench.action.reloadWindow');
-      }
-      });
-    } else {
-      let shellScriptPath;
-
-      if (platform === 'darwin') {
-        const isAppleSilicon = process.arch === 'arm64';
-        if (isAppleSilicon) {
-          shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
-        } else {
-          shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvIntelMac.sh');
-        }
-      } else if (platform === 'win32' || platform === 'win64') {
-        shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
-      } else if (platform === 'linux') {
-        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
-      } else {
-        console.error('Unsupported platform:', platform);
-        return;
-      }
-
-      const userIsSpaced = os.userInfo().username.includes(' ');
-      if (userIsSpaced) {
-        await executeProgressBar(`"${shellScriptPath}"`);
-      } else {
-        await executeProgressBar(shellScriptPath);
-      }
-    }
-  } else {
-    let shellScriptPath;
-  
-    if (platform === 'darwin') {
-      const isAppleSilicon = process.arch === 'arm64';
-  
-      if (isAppleSilicon) {
-        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvSilicon.sh');
-      } else {
-        shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvIntelMac.sh');
-      }
-    } else if (platform === 'win32' || platform === 'win64') {
-      shellScriptPath = path.join(__dirname, '..', 'src', 'server') + '\\virtualEnvWin.bat';
-    } else if (platform === 'linux') {
-      shellScriptPath = 'sh ' + path.join(__dirname, '..', 'src', 'server', 'virtualEnvLinux.sh');
-    } else {
-      console.error('Unsupported platform:', platform);
-      return;
-    }
-  
-    const userIsSpaced = os.userInfo().username.includes(' ');
-    if (userIsSpaced) {
-      await executeProgressBar(`"${shellScriptPath}"`);
-    } else {
-      await executeProgressBar(shellScriptPath);
-    }
-  }
-}
-
-
-async function venvErrorFix() {
-  const venvPath = path.normalize(os.homedir() + "/vscode_antimony_virtual_env/");
-  const isWin = platform === 'win32' || platform === 'win64';
-  const hasPip = fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/Scripts/pip3.11.exe"));
-  const hasPythonDarwin = fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9"));
-  const hasPythonLinux = fs.existsSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"));
-
-  if (fs.existsSync(venvPath)) {
-    if ((platform == 'linux' && !hasPythonLinux) || (isWin && !hasPip) || (platform === 'darwin' && !hasPythonDarwin)) {
-      await deleteVirtualEnv(`The incorrect version of python has been installed. 
-      Refer to [VSCode Antimony Extension installation instructions](https://marketplace.visualstudio.com/items?itemName=stevem.vscode-antimony) before restarting VSCode and reinstalling virtual environment.
-      Delete installed virtual environment?`)
-      .then(() => {
-        // Delay and then reload Visual Studio Code
-        setTimeout(() => {
-          vscode.commands.executeCommand('workbench.action.reloadWindow');
-        }, 2000);
-      })
-    } else {
-      await deleteVirtualEnv(`Delete installed virtual environment?`)
-      .then(() => {
-        // Delay and then reload Visual Studio Code
-        setTimeout(() => {
-          vscode.commands.executeCommand('workbench.action.reloadWindow');
-        }, 2000);
-      })
-    }
-  }
-}
-
-async function deleteVirtualEnv(message) {
-  vscode.window.showInformationMessage(message, { modal: true }, ...['Yes', 'No'])
-    .then(async selection => {
-      // installing virtual env
-      if (selection === 'Yes') {
-        if (platform == 'win32' || platform == 'win64') {
-          fs.rmSync(path.normalize(os.homedir() + "\\vscode_antimony_virtual_env\\Scripts\\python.exe"));
-          promptToReloadWindow("Reload for changes to take effect.")
-        } else if (platform == "darwin") {
-          fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.9"));
-          promptToReloadWindow("Reload for changes to take effect.")
-        } else {
-          fs.rmSync(path.normalize(os.homedir() + "/vscode_antimony_virtual_env/bin/python3.10"));
-          promptToReloadWindow("Reload for changes to take effect.")
-        }
-      } else if (selection === 'No') {
-        vscode.window.showWarningMessage(`The extension will not work without deleting and reinstalling the virtual environment.`, {modal: true}, action)
-        .then(selectedAction => {
-          if (selectedAction === action) {
-            vscode.commands.executeCommand('workbench.action.reloadWindow');
-          }
-        });
-      }
-    });
-}
-
 // ****** helper functions ******
 
 // starting language server
-async function startLanguageServer(context: vscode.ExtensionContext) {
-  pythonInterpreter = getPythonInterpreter();
-  // verify the interpreter
+async function startLanguageServer(context: vscode.ExtensionContext, interpreter: string) {
+  pythonInterpreter = interpreter;
+
+  // Verify the interpreter actually runs. With the bundled runtime this should
+  // never fail, so if it does the install is damaged rather than misconfigured
+  // and the useful offer is a reinstall, not a settings page.
   const error = await verifyInterpreter(pythonInterpreter);
   if (error !== 0) {
-    let errMessage: string;
-    if (error === 1) {
-      errMessage = `Failed to launch language server: "${pythonInterpreter}" is not Python 3.7+`;
+    const usingOverride = !!vscode.workspace
+      .getConfiguration('vscode-antimony')
+      .get<string>('pythonInterpreter', '')
+      .trim();
+
+    if (usingOverride) {
+      const choice = await vscode.window.showErrorMessage(
+        `Antimony could not start its language server using the interpreter you configured ("${pythonInterpreter}"). ` +
+        `It must be Python 3.7 or later with the extension's dependencies installed.`,
+        'Edit in settings',
+        'Use bundled Python'
+      );
+      if (choice === 'Edit in settings') {
+        await vscode.commands.executeCommand('workbench.action.openSettings', 'vscode-antimony.pythonInterpreter');
+      } else if (choice === 'Use bundled Python') {
+        await vscode.workspace
+          .getConfiguration('vscode-antimony')
+          .update('pythonInterpreter', '', true);
+        await reinstallRuntime(context);
+      }
     } else {
-      errMessage = `Failed to launch language server: Unable to run "${pythonInterpreter}"`;
-    }
-    const choice = await vscode.window.showErrorMessage(errMessage, 'Edit in settings');
-    if (choice === 'Edit in settings') {
-      await vscode.commands.executeCommand('workbench.action.openSettings', 'vscode-antimony.pythonInterpreter');
+      const choice = await vscode.window.showErrorMessage(
+        'Antimony could not start its language server. Its components may be damaged or incomplete.',
+        'Reinstall components'
+      );
+      if (choice === 'Reinstall components') {
+        await reinstallRuntime(context);
+      }
     }
     return 0;
   }
-  // install dependencies
-  // const parentDir = context.asAbsolutePath(path.join(''));
-  // console.log(parentDir)
-  // const cp = require('child_process')
-  // const command = pythonInterpreter + " -m pip --disable-pip-version-check install --no-cache-dir --upgrade -r ./all-requirements.txt"
-  // cp.exec("dir", {cwd: parentDir}, (err, stdout, stderr) => {
-  // 	console.log('stdout: ' + stdout);
-  // 	console.log('stderr: ' + stderr);
-  // 	if (err) {
-  // 		vscode.window.showErrorMessage(err);
-  // 	}
-  // });
+
   // create language client and launch server
   const pythonMain = context.asAbsolutePath(
     path.join('src', 'server', 'main.py')
   );
+  // Passed as an array, never through a shell, so paths containing spaces
+  // (C:\\Users\\Jane Smith) need no quoting.
   const args = [pythonMain];
   // Add debug options here if needed
   const serverOptions: ServerOptions = { command: pythonInterpreter, args };
@@ -984,12 +974,6 @@ async function startLanguageServer(context: vscode.ExtensionContext) {
   const clientDisposable = client.start();
   context.subscriptions.push(clientDisposable);
   return 1;
-}
-
-// getting python interpretor
-function getPythonInterpreter(): string {
-  const config = vscode.workspace.getConfiguration('vscode-antimony');
-  return config.get('pythonInterpreter');
 }
 
 // verify python interpeter

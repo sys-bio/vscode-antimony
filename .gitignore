@@ -15,6 +15,9 @@ vscode-antimony/*.prof
 __pycache__/
 vscode-antimony/venv_vscode_antimony_virtual_env
 vscode-antimony/server/.venv_vscode_antimony_virtual_env
+vscode-antimony/runtime-build
+vscode-antimony/runtime-cache
+vscode-antimony/runtime-dist
 
 # for ols
 !vscode-antimony/pythonFiles

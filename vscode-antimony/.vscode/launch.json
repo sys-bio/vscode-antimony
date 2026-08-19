@@ -6,6 +6,8 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			// Uses the runtime downloaded from the GitHub Release, exactly as a
+			// real user would. Fails with HTTP 404 until the release exists.
 			"name": "Run Extension",
 			"type": "extensionHost",
 			"request": "launch",
@@ -13,9 +15,48 @@
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			],
 			"outFiles": [
-				"${workspaceFolder}/out/**/*.js"
+				"${workspaceFolder}/dist/**/*.js"
 			],
-			"preLaunchTask": "${defaultBuildTask}"
+			"preLaunchTask": "npm: webpack"
+		},
+		{
+			// Uses the runtime you built locally with scripts/build_runtime.py.
+			// Skips the download entirely. This is the one to use day to day.
+			//
+			// Setting the variable here rather than in the shell matters: the
+			// extension host inherits VS Code's environment, not your terminal's,
+			// and `code .` only focuses an already-running instance rather than
+			// starting a new process with new env vars.
+			"name": "Run Extension (local runtime)",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}"
+			],
+			"outFiles": [
+				"${workspaceFolder}/dist/**/*.js"
+			],
+			"env": {
+				"ANTIMONY_RUNTIME_DIR": "${workspaceFolder}/runtime-build"
+			},
+			"preLaunchTask": "npm: webpack"
+		},
+		{
+			// Installs from the tarball in runtime-dist/, exercising the real
+			// unpack-and-install path minus the network and checksum.
+			"name": "Run Extension (install from local tarball)",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}"
+			],
+			"outFiles": [
+				"${workspaceFolder}/dist/**/*.js"
+			],
+			"env": {
+				"ANTIMONY_RUNTIME_TARBALL": "${workspaceFolder}/runtime-dist/antimony-runtime-1-darwin-arm64.tar.gz"
+			},
+			"preLaunchTask": "npm: webpack"
 		},
 		{
 			"name": "Extension Tests",
