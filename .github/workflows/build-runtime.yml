@@ -33,7 +33,7 @@ jobs:
           - platform: win32-x64
             runner: windows-latest
           - platform: darwin-x64
-            runner: macos-13      # last Intel runner image
+            runner: macos-15-intel
           - platform: darwin-arm64
             runner: macos-14
           - platform: linux-x64
