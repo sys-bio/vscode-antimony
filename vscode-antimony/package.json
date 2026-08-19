@@ -1,10 +1,10 @@
 {
-	"name": "vscode-antimony-2",
-	"displayName": "Antimony 2.0",
+	"name": "vscode-antimony",
+	"displayName": "Antimony",
 	"description": "Extensions for Antimony development in Visual Studio Code.",
 	"author": "Longxuan Fan, Sai Anish Konanki, Eva Liu, Steve Ma, Gary Geng, Joseph Hellerstein, Herbert Sauro",
-	"publisher": "EvaLiu",
-	"version": "0.3.1",
+	"publisher": "stevem",
+	"version": "0.3.0",
 	"icon": "docs/images/logo.png",
 	"engines": {
 		"vscode": "^1.62.0"
